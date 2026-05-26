@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import type { Secret, SignOptions } from "jsonwebtoken";
 import { prisma } from "./db";
 
 export type SessionUser = {
@@ -11,30 +12,51 @@ export type SessionUser = {
   emailVerified: boolean;
 };
 
-type TokenPayload = { sub: string; email: string; role: "USER" | "ADMIN" };
+type TokenPayload = {
+  sub: string;
+  email: string;
+  role: "USER" | "ADMIN";
+};
 
 const COOKIE_NAME = "pg_session";
 
 export function signSession(payload: TokenPayload) {
   const secret = process.env.JWT_SECRET || process.env.AUTH_SECRET;
-  if (!secret) throw new Error("Missing JWT_SECRET or AUTH_SECRET");
 
-  return jwt.sign(payload, secret, {
-    expiresIn: process.env.JWT_EXPIRES_IN || "7d"
-  });
+  if (!secret) {
+    throw new Error("Missing JWT_SECRET or AUTH_SECRET");
+  }
+
+  const options: SignOptions = {
+    expiresIn: (process.env.JWT_EXPIRES_IN || "7d") as SignOptions["expiresIn"]
+  };
+
+  return jwt.sign(payload, secret as Secret, options);
 }
 
 export async function getCurrentUser(): Promise<SessionUser | null> {
   const token = cookies().get(COOKIE_NAME)?.value;
-  if (!token) return null;
+
+  if (!token) {
+    return null;
+  }
 
   const secret = process.env.JWT_SECRET || process.env.AUTH_SECRET;
-  if (!secret) return null;
+
+  if (!secret) {
+    return null;
+  }
 
   try {
-    const decoded = jwt.verify(token, secret) as TokenPayload;
-    const user = await prisma.user.findUnique({ where: { id: decoded.sub } });
-    if (!user) return null;
+    const decoded = jwt.verify(token, secret as Secret) as TokenPayload;
+
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.sub }
+    });
+
+    if (!user) {
+      return null;
+    }
 
     return {
       id: user.id,
