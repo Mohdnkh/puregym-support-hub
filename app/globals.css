@@ -164,3 +164,34 @@ button { cursor: pointer; }
   .topbar { flex-direction: column; }
   .calculator-grid, .admin-fields { grid-template-columns: 1fr; }
 }
+
+/* v3 polish */
+.admin-layout-v2 {
+  grid-template-columns: minmax(310px, 380px) minmax(0, 1fr);
+}
+.admin-layout-v2 .card { min-width: 0; }
+.admin-editor .input,
+.admin-editor .select,
+.admin-editor .textarea { min-width: 0; }
+.admin-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.add-script-card { grid-column: 1 / -1; }
+.add-script-form {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.25fr) minmax(220px, .9fr) minmax(120px, .35fr) minmax(120px, .35fr);
+  gap: 14px;
+  align-items: end;
+}
+.add-script-form .field { margin: 0; }
+.add-script-card .admin-body { min-height: 220px; }
+.script-card-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.link-preview a { font-weight: 850; }
+.chatgpt-shell .section-head { align-items: center; }
+.messages-panel { min-height: 520px; }
+.category-card b { overflow-wrap: anywhere; }
+.script-card p { white-space: pre-wrap; }
+@media (max-width: 1180px) {
+  .add-script-form { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 720px) {
+  .add-script-form, .admin-fields { grid-template-columns: 1fr; }
+}

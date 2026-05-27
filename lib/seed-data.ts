@@ -1718,7 +1718,7 @@ export const seedScripts: SeedScript[] = [
     category: "Membership & Packages",
     country: "KSA",
     language: "AR",
-    body: "💚 باقة كور تتيح لك التمرين في فرعك الأساسي، حجز الكلاسات حسب المدة المتاحة، واستخدام أجهزة النادي.\n\nباقة بلس تمنحك مزايا إضافية حسب نوع العضوية مثل دخول فروع إضافية، حجز الكلاسات بمرونة أكبر، Bring a Friend، وبعض الخدمات الإضافية حسب توفرها.",
+    body: "💚 الفرق بين باقة كور وباقة بلس:\n\n🔹 باقة كور:\nتتمرن في فرعك الأساسي فقط، وتقدر تحجز الكلاسات قبلها بـ 8 أيام، وتستفيد من أجهزة النادي الحديثة والمرافق الأساسية.\nتقدر تجمّد عضويتك حسب المدة المسموحة لنوع عضويتك، وإذا تم تقسيم التجميد قد يكون جزء فقط مجاني والباقي عليه رسوم حسب الشروط.\n\n🔸 باقة بلس:\nمميزاتها أكثر، وتمنحك مرونة أكبر مثل الدخول إلى فروع إضافية حسب شروط العضوية والأسعار، وحجز الكلاسات قبلها بـ 14 يوم.\nتقدر تضيف صديق 4 مرات شهريًا مجانًا حسب توفر الميزة، وتستفيد من مزايا إضافية مثل Boditrax وYanga حسب توفرها في الفرع.\n\nكل باقة مصممة لتناسب احتياج مختلف، وبإمكانك اختيار الأنسب لك من خلال صفحة الانضمام الرسمية.",
     source: "clean-v2",
     sortOrder: 1710
   },
@@ -1728,7 +1728,7 @@ export const seedScripts: SeedScript[] = [
     category: "Membership & Packages",
     country: "KSA",
     language: "EN",
-    body: "💚 Core lets you train at your home gym, book classes according to the available booking window, and use the gym equipment.\n\nPlus gives additional benefits depending on the membership type, such as access to additional gyms, more flexible class booking, Bring a Friend, and extra services where available.",
+    body: "💚 Difference between Core and Plus:\n\n🔹 Core package:\nYou can train at your home gym only, book classes up to 8 days in advance, and use the gym equipment and standard facilities.\nYou can freeze your membership based on the allowance for your membership type. If the freeze is split, part of it may be free and the rest may be chargeable according to the terms.\n\n🔸 Plus package:\nPlus gives you more flexibility, such as access to additional branches depending on membership terms and price rules, and class bookings up to 14 days in advance.\nYou can also bring a friend 4 times per month for free where the benefit is available, and enjoy additional services such as Boditrax and Yanga where available.\n\nEach package is designed for different needs, and you can choose the most suitable option through the official join page.",
     source: "clean-v2",
     sortOrder: 1720
   },
@@ -1738,7 +1738,7 @@ export const seedScripts: SeedScript[] = [
     category: "Membership & Packages",
     country: "UAE",
     language: "AR",
-    body: "💙 باقة كور تتيح لك التمرين في فرعك الأساسي، حجز الكلاسات حسب المدة المتاحة، واستخدام أجهزة النادي.\n\nباقة بلس تمنحك مزايا إضافية حسب نوع العضوية مثل دخول فروع إضافية، حجز الكلاسات بمرونة أكبر، Bring a Friend، وبعض الخدمات الإضافية حسب توفرها.",
+    body: "💙 الفرق بين باقة كور وباقة بلس:\n\n🔹 باقة كور:\nتمنحك إمكانية التمرين في فرعك الأساسي واستخدام أجهزة النادي والمرافق الأساسية، مع حجز الكلاسات حسب سياسة الحجز المتاحة.\n\n🔸 باقة بلس:\nتمنحك مرونة ومزايا أكثر حسب نوع العضوية، مثل إمكانية الدخول إلى فروع إضافية حسب الشروط، والاستفادة من مزايا إضافية متاحة في الفرع مثل Bring a Friend أو خدمات أخرى حسب توفرها.\n\nالأسعار والمزايا قد تختلف حسب الفرع ونوع العضوية، ويمكنك معرفة التفاصيل من صفحة الانضمام الرسمية.",
     source: "clean-v2",
     sortOrder: 1730
   },
@@ -1748,91 +1748,311 @@ export const seedScripts: SeedScript[] = [
     category: "Membership & Packages",
     country: "UAE",
     language: "EN",
-    body: "💙 Core lets you train at your home gym, book classes according to the available booking window, and use the gym equipment.\n\nPlus gives additional benefits depending on the membership type, such as access to additional gyms, more flexible class booking, Bring a Friend, and extra services where available.",
+    body: "💙 Difference between Core and Plus:\n\n🔹 Core package:\nCore allows you to train at your home gym and use the gym equipment and standard facilities, with class booking based on the available booking policy.\n\n🔸 Plus package:\nPlus gives you more flexibility and extra benefits depending on your membership type, such as access to additional branches according to the terms, and selected extra benefits such as Bring a Friend or other services where available.\n\nPrices and benefits may vary by branch and membership type, and you can check the details through the official join page.",
     source: "clean-v2",
     sortOrder: 1740
   },
   {
-    key: "official-links-ksa-ar",
-    title: "الروابط الرسمية",
-    category: "Branches, Hours & Links",
-    country: "KSA",
-    language: "AR",
-    body: "💚 روابط السعودية الرسمية:\n\nالانضمام: https://ksa.puregymarabia.com/join/\nالانضمام English: https://ksa.puregymarabia.com/en-gb/join/\nالصالات الرياضية: https://ksa.puregymarabia.com/gyms/\nGyms English: https://ksa.puregymarabia.com/en-gb/gyms/\nالتطبيق: https://ksa.puregymarabia.com/puregym-app/\nApp English: https://ksa.puregymarabia.com/en-gb/puregym-app/\nتسجيل الدخول: https://ksa.puregymarabia.com/login/",
-    source: "official-links",
-    sortOrder: 1750
-  },
-  {
-    key: "official-links-ksa-en",
-    title: "Official links",
-    category: "Branches, Hours & Links",
-    country: "KSA",
-    language: "EN",
-    body: "💚 Official KSA links:\n\nJoin Arabic: https://ksa.puregymarabia.com/join/\nJoin English: https://ksa.puregymarabia.com/en-gb/join/\nGyms Arabic: https://ksa.puregymarabia.com/gyms/\nGyms English: https://ksa.puregymarabia.com/en-gb/gyms/\nApp Arabic: https://ksa.puregymarabia.com/puregym-app/\nApp English: https://ksa.puregymarabia.com/en-gb/puregym-app/\nLogin: https://ksa.puregymarabia.com/login/",
-    source: "official-links",
-    sortOrder: 1760
-  },
-  {
-    key: "official-links-uae-ar",
-    title: "الروابط الرسمية",
-    category: "Branches, Hours & Links",
-    country: "UAE",
-    language: "AR",
-    body: "💙 روابط الإمارات الرسمية:\n\nالانضمام: https://uae.puregymarabia.com/join/\nالانضمام English: https://uae.puregymarabia.com/en-gb/join/\nالصالات الرياضية: https://uae.puregymarabia.com/gyms/\nGyms English: https://uae.puregymarabia.com/en-gb/gyms/\nالتطبيق: https://uae.puregymarabia.com/puregym-app/\nApp English: https://uae.puregymarabia.com/en-gb/puregym-app/\nتسجيل الدخول: https://uae.puregymarabia.com/login/",
-    source: "official-links",
-    sortOrder: 1770
-  },
-  {
-    key: "official-links-uae-en",
-    title: "Official links",
-    category: "Branches, Hours & Links",
-    country: "UAE",
-    language: "EN",
-    body: "💙 Official UAE links:\n\nJoin Arabic: https://uae.puregymarabia.com/join/\nJoin English: https://uae.puregymarabia.com/en-gb/join/\nGyms Arabic: https://uae.puregymarabia.com/gyms/\nGyms English: https://uae.puregymarabia.com/en-gb/gyms/\nApp Arabic: https://uae.puregymarabia.com/puregym-app/\nApp English: https://uae.puregymarabia.com/en-gb/puregym-app/\nLogin: https://uae.puregymarabia.com/login/",
-    source: "official-links",
-    sortOrder: 1780
-  },
-  {
     key: "working-hours-ksa-ar",
     title: "أوقات العمل",
-    category: "Branches, Hours & Links",
+    category: "Branches & Hours",
     country: "KSA",
     language: "AR",
-    body: "💚 أفرع الرجال تعمل على مدار الساعة طوال أيام الأسبوع. أما أفرع النساء: الجمعة من 6:30 صباحًا إلى 10:30 مساءً، وباقي الأيام من 6:30 صباحًا إلى منتصف الليل.",
+    body: "💚 أفرع الرجال تفتح على مدار الساعة طوال أيام الأسبوع، يعني تقدر تزورنا بأي وقت يناسبك.\n\nأما أفرع النساء فتعمل بالأوقات التالية:\nيوم الجمعة: من 6:30 صباحًا إلى 10:30 مساءً\nباقي الأيام: من 6:30 صباحًا إلى منتصف الليل.",
     source: "clean-v2",
     sortOrder: 1790
   },
   {
     key: "working-hours-ksa-en",
     title: "Working hours",
-    category: "Branches, Hours & Links",
+    category: "Branches & Hours",
     country: "KSA",
     language: "EN",
-    body: "💚 Men’s branches are open 24/7. Women’s branches: Friday from 6:30 AM to 10:30 PM, and all other days from 6:30 AM to midnight.",
+    body: "💚 Men’s branches are open 24/7, so you can visit anytime that suits you.\n\nWomen’s branches operate on the following schedule:\nFriday: 6:30 AM to 10:30 PM\nAll other days: 6:30 AM to 12:00 AM midnight.",
     source: "clean-v2",
     sortOrder: 1800
   },
   {
     key: "working-hours-uae-ar",
     title: "أوقات العمل",
-    category: "Branches, Hours & Links",
+    category: "Branches & Hours",
     country: "UAE",
     language: "AR",
-    body: "💙 أفرع الرجال تعمل على مدار الساعة طوال أيام الأسبوع. أما أفرع النساء: الجمعة من 6:30 صباحًا إلى 10:30 مساءً، وباقي الأيام من 6:30 صباحًا إلى منتصف الليل.",
+    body: "💙 أفرع الرجال تفتح على مدار الساعة طوال أيام الأسبوع، ويمكنك زيارة النادي في أي وقت يناسبك.\n\nأما أفرع النساء فتعمل حسب أوقات الفرع المحددة. يُفضّل التأكد من صفحة الفرع أو التطبيق قبل الزيارة للتأكد من أحدث مواعيد العمل.",
     source: "clean-v2",
     sortOrder: 1810
   },
   {
     key: "working-hours-uae-en",
     title: "Working hours",
-    category: "Branches, Hours & Links",
+    category: "Branches & Hours",
     country: "UAE",
     language: "EN",
-    body: "💙 Men’s branches are open 24/7. Women’s branches: Friday from 6:30 AM to 10:30 PM, and all other days from 6:30 AM to midnight.",
+    body: "💙 Men’s branches are open 24/7, so you can visit anytime that suits you.\n\nWomen’s branch opening hours follow each gym’s schedule. We recommend checking the branch page or the app before visiting for the latest operating hours.",
     source: "clean-v2",
     sortOrder: 1820
+  },
+  {
+    key: "current-offer-ksa-monthly-30-ar",
+    title: "عرض السعودية الحالي - أول شهر",
+    category: "Offers, Prices & PT",
+    country: "KSA",
+    language: "AR",
+    body: "💚 العرض الحالي في السعودية:\nخصم 30% على أول شهر من عضوية Core وPlus الشهرية.\n\nكود الخصم: PGM30\n\nيمكنك تطبيق الكود أثناء الاشتراك من خلال صفحة الانضمام الرسمية.",
+    source: "v3-update",
+    sortOrder: 1830
+  },
+  {
+    key: "current-offer-ksa-monthly-30-en",
+    title: "Current KSA offer - first month",
+    category: "Offers, Prices & PT",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Current KSA offer:\n30% off the first month on Core and Plus monthly memberships.\n\nPromo code: PGM30\n\nYou can apply the code during checkout through the official join page.",
+    source: "v3-update",
+    sortOrder: 1840
+  },
+  {
+    key: "current-offer-ksa-plus-3m-ar",
+    title: "عرض السعودية الحالي - 3 شهور بلس",
+    category: "Offers, Prices & PT",
+    country: "KSA",
+    language: "AR",
+    body: "💚 العرض الحالي في السعودية:\nخصم 20% على عضوية Plus محددة المدة 3 شهور فقط.\n\nكود الخصم: PG3M\n\nملاحظة: هذا العرض خاص بعضوية Plus لمدة 3 شهور وليس لكل العضويات.",
+    source: "v3-update",
+    sortOrder: 1850
+  },
+  {
+    key: "current-offer-ksa-plus-3m-en",
+    title: "Current KSA offer - 3 Month Plus",
+    category: "Offers, Prices & PT",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Current KSA offer:\n20% off the 3-Month Fixed Term Plus membership only.\n\nPromo code: PG3M\n\nNote: This offer applies to the 3-Month Plus membership only, not all memberships.",
+    source: "v3-update",
+    sortOrder: 1860
+  },
+  {
+    key: "current-offer-uae-first-month-ar",
+    title: "عرض الإمارات الحالي - أول شهر",
+    category: "Offers, Prices & PT",
+    country: "UAE",
+    language: "AR",
+    body: "💙 العرض الحالي في الإمارات:\nخصم 30% على أول شهر من عضوية Core وPlus الشهرية.\n\nكود الخصم: PGA30\n\nيمكنك تطبيق الكود أثناء الاشتراك من خلال صفحة الانضمام الرسمية.",
+    source: "v3-update",
+    sortOrder: 1870
+  },
+  {
+    key: "current-offer-uae-first-month-en",
+    title: "Current UAE offer - first month",
+    category: "Offers, Prices & PT",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Current UAE offer:\n30% off the first month on Core and Plus monthly memberships.\n\nPromo code: PGA30\n\nYou can apply the code during checkout through the official join page.",
+    source: "v3-update",
+    sortOrder: 1880
+  },
+  {
+    key: "membership-prices-ksa-ar",
+    title: "أسعار العضويات",
+    category: "Offers, Prices & PT",
+    country: "KSA",
+    language: "AR",
+    body: "💚 أسعار العضويات تختلف حسب نوع العضوية، مدة الاشتراك، والفرع المختار.\n\nبإمكانك الاطلاع على الأسعار الحالية واختيار الفرع والعضوية المناسبة من خلال رابط الانضمام:\nhttps://ksa.puregymarabia.com/join/",
+    source: "v3-update",
+    sortOrder: 1890
+  },
+  {
+    key: "membership-prices-ksa-en",
+    title: "Membership prices",
+    category: "Offers, Prices & PT",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Membership prices vary depending on the membership type, subscription duration, and selected branch.\n\nYou can view the current prices and choose your preferred branch and membership through the join link:\nhttps://ksa.puregymarabia.com/en-gb/join/",
+    source: "v3-update",
+    sortOrder: 1900
+  },
+  {
+    key: "membership-prices-uae-ar",
+    title: "أسعار العضويات",
+    category: "Offers, Prices & PT",
+    country: "UAE",
+    language: "AR",
+    body: "💙 أسعار العضويات تختلف حسب نوع العضوية، مدة الاشتراك، والفرع المختار.\n\nبإمكانك الاطلاع على الأسعار الحالية واختيار الفرع والعضوية المناسبة من خلال رابط الانضمام:\nhttps://uae.puregymarabia.com/join/",
+    source: "v3-update",
+    sortOrder: 1910
+  },
+  {
+    key: "membership-prices-uae-en",
+    title: "Membership prices",
+    category: "Offers, Prices & PT",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Membership prices vary depending on the membership type, subscription duration, and selected branch.\n\nYou can view the current prices and choose your preferred branch and membership through the join link:\nhttps://uae.puregymarabia.com/en-gb/join/",
+    source: "v3-update",
+    sortOrder: 1920
+  },
+  {
+    key: "links-official-ksa-ar",
+    title: "روابط السعودية الرسمية",
+    category: "Links",
+    country: "KSA",
+    language: "AR",
+    body: "💚 روابط السعودية الرسمية:\n\nالانضمام:\nhttps://ksa.puregymarabia.com/join/\n\nصالات رياضية:\nhttps://ksa.puregymarabia.com/gyms/\n\nتطبيق بيورجيم:\nhttps://ksa.puregymarabia.com/puregym-app/\n\nتسجيل الدخول:\nhttps://ksa.puregymarabia.com/login/",
+    source: "v3-update",
+    sortOrder: 10
+  },
+  {
+    key: "links-official-ksa-en",
+    title: "Official KSA links",
+    category: "Links",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Official KSA links:\n\nJoin:\nhttps://ksa.puregymarabia.com/en-gb/join/\n\nGyms:\nhttps://ksa.puregymarabia.com/en-gb/gyms/\n\nPureGym App:\nhttps://ksa.puregymarabia.com/en-gb/puregym-app/\n\nLog in:\nhttps://ksa.puregymarabia.com/login/",
+    source: "v3-update",
+    sortOrder: 20
+  },
+  {
+    key: "links-official-uae-ar",
+    title: "روابط الإمارات الرسمية",
+    category: "Links",
+    country: "UAE",
+    language: "AR",
+    body: "💙 روابط الإمارات الرسمية:\n\nالانضمام:\nhttps://uae.puregymarabia.com/join/\n\nصالات رياضية:\nhttps://uae.puregymarabia.com/gyms/\n\nتطبيق بيورجيم:\nhttps://uae.puregymarabia.com/puregym-app/\n\nتسجيل الدخول:\nhttps://uae.puregymarabia.com/login/",
+    source: "v3-update",
+    sortOrder: 30
+  },
+  {
+    key: "links-official-uae-en",
+    title: "Official UAE links",
+    category: "Links",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Official UAE links:\n\nJoin:\nhttps://uae.puregymarabia.com/en-gb/join/\n\nGyms:\nhttps://uae.puregymarabia.com/en-gb/gyms/\n\nPureGym App:\nhttps://uae.puregymarabia.com/en-gb/puregym-app/\n\nLog in:\nhttps://uae.puregymarabia.com/login/",
+    source: "v3-update",
+    sortOrder: 40
+  },
+  {
+    key: "links-ksa-location-ar",
+    title: "روابط مواقع فروع السعودية",
+    category: "Links",
+    country: "KSA",
+    language: "AR",
+    body: "💚 Location links - KSA:\n\nKhobar Branches:\nAl-Rakah Women: https://goo.gl/maps/qBMRA6rcB2YfdeRi6\nGolden Belt Men: https://goo.gl/maps/HAymbyuT6wY7hffZ9\n\nRiyadh Branches:\nAl-Rabwah Men: https://goo.gl/maps/CpgtzBLSd5GGD81R8\nAl-Yasmin Men: https://goo.gl/maps/y6gTZe3mfPDGa6YA9\nAl-Mansourah Men: https://goo.gl/maps/JSrGSHfqyu9aKvsJ6\nAl-Aziziyah Women: https://goo.gl/maps/sSMLSE6H2gNYnGYG8\nAl-Hamra Women: https://goo.gl/maps/fqRyHVmsKxELA1cG7\nAl-Hamra Men: https://goo.gl/maps/FsLFuoGykaidt7JQ7\nAl-Sahafa Women: https://goo.gl/maps/PfgCDMED3wRfnqDu7\nAl-Munsiyah Men: https://goo.gl/maps/GVUpxGcQtDseBT6i6\nAl-Munsiyah Women: https://goo.gl/maps/DC2Bkjf1LSHbDTqq9\nAl-Nasim Men: https://maps.app.goo.gl/NH9zipUBRXZuruvA7\nAl-Nasim Women: https://maps.app.goo.gl/poYk75XixrHJmX9B7\nAs Saadah Men: https://maps.app.goo.gl/UUUaPG18F6EddUpu9\nAl-Rabwah Women: https://maps.app.goo.gl/QaJ8cPUkCTuGnkuq9\n\nDammam Branches:\nAl-Faisaliyah Men: https://goo.gl/maps/91vsMiDSy2yozSZH6\nAl-Qairawan Men: https://goo.gl/maps/eSe7jX1gy1329CiZ8\nAl-Shatea Women: https://maps.app.goo.gl/fsqpsLZbsdY213uDA\n\nJeddah Branches:\nAlsafa Men: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlsafa Women: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlzahrah Women: https://maps.app.goo.gl/GoWDJ8t2EvVq6tTk7",
+    source: "v3-update",
+    sortOrder: 50
+  },
+  {
+    key: "links-ksa-location-en",
+    title: "KSA branch location links",
+    category: "Links",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Location links - KSA:\n\nKhobar Branches:\nAl-Rakah Women: https://goo.gl/maps/qBMRA6rcB2YfdeRi6\nGolden Belt Men: https://goo.gl/maps/HAymbyuT6wY7hffZ9\n\nRiyadh Branches:\nAl-Rabwah Men: https://goo.gl/maps/CpgtzBLSd5GGD81R8\nAl-Yasmin Men: https://goo.gl/maps/y6gTZe3mfPDGa6YA9\nAl-Mansourah Men: https://goo.gl/maps/JSrGSHfqyu9aKvsJ6\nAl-Aziziyah Women: https://goo.gl/maps/sSMLSE6H2gNYnGYG8\nAl-Hamra Women: https://goo.gl/maps/fqRyHVmsKxELA1cG7\nAl-Hamra Men: https://goo.gl/maps/FsLFuoGykaidt7JQ7\nAl-Sahafa Women: https://goo.gl/maps/PfgCDMED3wRfnqDu7\nAl-Munsiyah Men: https://goo.gl/maps/GVUpxGcQtDseBT6i6\nAl-Munsiyah Women: https://goo.gl/maps/DC2Bkjf1LSHbDTqq9\nAl-Nasim Men: https://maps.app.goo.gl/NH9zipUBRXZuruvA7\nAl-Nasim Women: https://maps.app.goo.gl/poYk75XixrHJmX9B7\nAs Saadah Men: https://maps.app.goo.gl/UUUaPG18F6EddUpu9\nAl-Rabwah Women: https://maps.app.goo.gl/QaJ8cPUkCTuGnkuq9\n\nDammam Branches:\nAl-Faisaliyah Men: https://goo.gl/maps/91vsMiDSy2yozSZH6\nAl-Qairawan Men: https://goo.gl/maps/eSe7jX1gy1329CiZ8\nAl-Shatea Women: https://maps.app.goo.gl/fsqpsLZbsdY213uDA\n\nJeddah Branches:\nAlsafa Men: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlsafa Women: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlzahrah Women: https://maps.app.goo.gl/GoWDJ8t2EvVq6tTk7",
+    source: "v3-update",
+    sortOrder: 60
+  },
+  {
+    key: "links-ksa-virtual-ar",
+    title: "روابط الجولة الافتراضية السعودية",
+    category: "Links",
+    country: "KSA",
+    language: "AR",
+    body: "💚 Virtual Tour links - KSA:\n\nKhobar Branches:\nGolden Belt Men: https://my.matterport.com/show/?m=ft4ft5vD6sx\nAl-Rakah Women: https://my.matterport.com/show/?m=gzePUKqJeWs\n\nRiyadh Branches:\nAl-Mansourah Men: https://my.matterport.com/show/?m=V6tR4bmLB6n\nAl-Yasmin Men: https://my.matterport.com/show/?m=U9KB5yJnw94\nAl-Hamra Men: https://my.matterport.com/show/?m=Wmk94DhwSZ8\nAl-Hamra Women: https://my.matterport.com/show/?m=zLktpNYqcUJ\nAs Sahafa Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Aziziyah Women: https://my.matterport.com/show/?m=7fc8KE68DdE\nAl-Munsiyah Men: https://my.matterport.com/show/?m=9CVhboEe2kj\nAl-Munsiyah Women: https://my.matterport.com/show/?m=HrBZBTBQSry\nAl-Rabwah Men: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Nasim Men: https://my.matterport.com/show/?m=kGC3pviiKyr\nAl-Nasim Women: https://my.matterport.com/show/?m=5btVHXzr1ke\nAs Saadah Men: https://my.matterport.com/show/?m=TbToTDwfdMv\nAl-Rabwah Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\n\nDammam Branches:\nAl-Faisaliyah Men: https://my.matterport.com/show/?m=2sfg6Tv6A7e\nAl-Shatea Women: https://my.matterport.com/show/?m=g1chmo2JBw7\nAl-Qairawan Men: https://virtual.property360.tours/show/?m=n3n9yav3bMf\n\nJeddah Branches:\nAlsafa Women: https://www.youtube.com/watch?v=RrmZsaFwEOE\nAlsafa Men: https://www.youtube.com/watch?v=5QdIVddUqyA\nAlzahrah Women: https://www.youtube.com/watch?v=qS05iTvb2kY",
+    source: "v3-update",
+    sortOrder: 70
+  },
+  {
+    key: "links-ksa-virtual-en",
+    title: "KSA virtual tour links",
+    category: "Links",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Virtual Tour links - KSA:\n\nKhobar Branches:\nGolden Belt Men: https://my.matterport.com/show/?m=ft4ft5vD6sx\nAl-Rakah Women: https://my.matterport.com/show/?m=gzePUKqJeWs\n\nRiyadh Branches:\nAl-Mansourah Men: https://my.matterport.com/show/?m=V6tR4bmLB6n\nAl-Yasmin Men: https://my.matterport.com/show/?m=U9KB5yJnw94\nAl-Hamra Men: https://my.matterport.com/show/?m=Wmk94DhwSZ8\nAl-Hamra Women: https://my.matterport.com/show/?m=zLktpNYqcUJ\nAs Sahafa Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Aziziyah Women: https://my.matterport.com/show/?m=7fc8KE68DdE\nAl-Munsiyah Men: https://my.matterport.com/show/?m=9CVhboEe2kj\nAl-Munsiyah Women: https://my.matterport.com/show/?m=HrBZBTBQSry\nAl-Rabwah Men: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Nasim Men: https://my.matterport.com/show/?m=kGC3pviiKyr\nAl-Nasim Women: https://my.matterport.com/show/?m=5btVHXzr1ke\nAs Saadah Men: https://my.matterport.com/show/?m=TbToTDwfdMv\nAl-Rabwah Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\n\nDammam Branches:\nAl-Faisaliyah Men: https://my.matterport.com/show/?m=2sfg6Tv6A7e\nAl-Shatea Women: https://my.matterport.com/show/?m=g1chmo2JBw7\nAl-Qairawan Men: https://virtual.property360.tours/show/?m=n3n9yav3bMf\n\nJeddah Branches:\nAlsafa Women: https://www.youtube.com/watch?v=RrmZsaFwEOE\nAlsafa Men: https://www.youtube.com/watch?v=5QdIVddUqyA\nAlzahrah Women: https://www.youtube.com/watch?v=qS05iTvb2kY",
+    source: "v3-update",
+    sortOrder: 80
+  },
+  {
+    key: "links-uae-location-ar",
+    title: "روابط مواقع فروع الإمارات",
+    category: "Links",
+    country: "UAE",
+    language: "AR",
+    body: "💙 Location links - UAE:\n\nDubai Nad Al Sheba: https://maps.app.goo.gl/vj6Y7pVJpjqXPYse9\nDubai Al Barsha: https://maps.app.goo.gl/522EbHVZ5y8pBnkJ9",
+    source: "v3-update",
+    sortOrder: 90
+  },
+  {
+    key: "links-uae-location-en",
+    title: "UAE branch location links",
+    category: "Links",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Location links - UAE:\n\nDubai Nad Al Sheba: https://maps.app.goo.gl/vj6Y7pVJpjqXPYse9\nDubai Al Barsha: https://maps.app.goo.gl/522EbHVZ5y8pBnkJ9",
+    source: "v3-update",
+    sortOrder: 100
+  },
+  {
+    key: "links-uae-virtual-ar",
+    title: "روابط الجولة الافتراضية الإمارات",
+    category: "Links",
+    country: "UAE",
+    language: "AR",
+    body: "💙 Virtual Tour links - UAE:\n\nDubai Branches:\nNad Al Sheba: https://my.matterport.com/show/?m=cpYJYiRJycw\nAl Barsha: https://my.matterport.com/show/?m=DrJ1JsW8as9",
+    source: "v3-update",
+    sortOrder: 110
+  },
+  {
+    key: "links-uae-virtual-en",
+    title: "UAE virtual tour links",
+    category: "Links",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Virtual Tour links - UAE:\n\nDubai Branches:\nNad Al Sheba: https://my.matterport.com/show/?m=cpYJYiRJycw\nAl Barsha: https://my.matterport.com/show/?m=DrJ1JsW8as9",
+    source: "v3-update",
+    sortOrder: 120
+  },
+  {
+    key: "eid-al-adha-hours-ksa-ar",
+    title: "أوقات العمل في عيد الأضحى",
+    category: "Branches & Hours",
+    country: "KSA",
+    language: "AR",
+    body: "💚 أفرع الرجال تعمل 24 ساعة طيلة أيام الأسبوع.\n\nأما مواعيد العمل في أفرع السيدات خلال إجازة عيد الأضحى فهي:\n\n🕒 يوم عرفة: مواعيد العمل الطبيعية مع الإغلاق الساعة 10:00 مساءً\n🕒 أول وثاني أيام عيد الأضحى: من 10:00 صباحًا إلى 10:00 مساءً\n🕒 ثالث يوم عيد الأضحى: العمل حسب المواعيد الطبيعية للنادي\n\nعيد مبارك، وإذا كنت بحاجة لأي مساعدة إضافية، نحن جاهزون.",
+    source: "v3-update",
+    sortOrder: 1930
+  },
+  {
+    key: "eid-al-adha-hours-ksa-en",
+    title: "Eid Al Adha operational hours",
+    category: "Branches & Hours",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Men’s branches operate 24 hours a day, 7 days a week.\n\nFor the women’s gym operating hours during Eid Al Adha holidays:\n\n🕒 Arafah Day: Normal operating hours, closing at 10:00 PM\n🕒 First and Second Day of Eid Al Adha: From 10:00 AM to 10:00 PM\n🕒 Third Day of Eid Al Adha: Back to normal operating hours\n\nEid Mubarak! If you need any further assistance, we’re happy to help.",
+    source: "v3-update",
+    sortOrder: 1940
+  },
+  {
+    key: "eid-al-fitr-hours-ksa-ar",
+    title: "أوقات العمل في عيد الفطر",
+    category: "Branches & Hours",
+    country: "KSA",
+    language: "AR",
+    body: "💚 أفرع الرجال تعمل 24 ساعة طيلة أيام الأسبوع.\n\nمواعيد العمل في أفرع السيدات خلال إجازة عيد الفطر:\n\n🕒 ليلة الوقفة: إغلاق الساعة 12:00 منتصف الليل\n🕒 أول وثاني أيام عيد الفطر: من 10:00 صباحًا إلى 10:00 مساءً\n🕒 ثالث يوم عيد الفطر: العمل حسب المواعيد الطبيعية للنادي\n\nوإذا كنت بحاجة لأي مساعدة إضافية، نحن جاهزون.",
+    source: "v3-update",
+    sortOrder: 1950
+  },
+  {
+    key: "eid-al-fitr-hours-ksa-en",
+    title: "Eid Al Fitr operational hours",
+    category: "Branches & Hours",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Men’s branches operate 24 hours a day throughout the week.\n\nThe women’s section working hours during the Eid Al Fitr holiday are as follows:\n\n🕒 Eid Eve: Closing at 12:00 AM midnight\n🕒 First and Second Day of Eid: From 10:00 AM to 10:00 PM\n🕒 Third Day of Eid: Back to the club’s regular working hours\n\nIf you need any further assistance, we’re happy to help.",
+    source: "v3-update",
+    sortOrder: 1960
   }
-];
+ ];
 
 export function getSeedScripts() {
   return seedScripts;

@@ -102,15 +102,21 @@ export async function getKnowledgeBaseText(country?: "KSA" | "UAE", language?: "
 
   const officialKnowledge = country === "KSA"
     ? [
-        "Official KSA join page: https://ksa.puregymarabia.com/en-gb/join/",
-        "Official KSA gyms page: https://ksa.puregymarabia.com/en-gb/gyms/",
-        "Official KSA app page: https://ksa.puregymarabia.com/en-gb/puregym-app/",
+        "Official KSA Arabic join page: https://ksa.puregymarabia.com/join/",
+        "Official KSA English join page: https://ksa.puregymarabia.com/en-gb/join/",
+        "Official KSA Arabic gyms page: https://ksa.puregymarabia.com/gyms/",
+        "Official KSA English gyms page: https://ksa.puregymarabia.com/en-gb/gyms/",
+        "Official KSA Arabic app page: https://ksa.puregymarabia.com/puregym-app/",
+        "Official KSA English app page: https://ksa.puregymarabia.com/en-gb/puregym-app/",
         "Official KSA login page: https://ksa.puregymarabia.com/login/"
       ]
     : [
-        "Official UAE join page: https://uae.puregymarabia.com/en-gb/join/",
-        "Official UAE gyms page: https://uae.puregymarabia.com/gyms/",
-        "Official UAE app page: https://uae.puregymarabia.com/puregym-app/",
+        "Official UAE Arabic join page: https://uae.puregymarabia.com/join/",
+        "Official UAE English join page: https://uae.puregymarabia.com/en-gb/join/",
+        "Official UAE Arabic gyms page: https://uae.puregymarabia.com/gyms/",
+        "Official UAE English gyms page: https://uae.puregymarabia.com/en-gb/gyms/",
+        "Official UAE Arabic app page: https://uae.puregymarabia.com/puregym-app/",
+        "Official UAE English app page: https://uae.puregymarabia.com/en-gb/puregym-app/",
         "Official UAE login page: https://uae.puregymarabia.com/login/"
       ];
 
@@ -129,8 +135,8 @@ export function styleInstruction(country: "KSA" | "UAE", language: "AR" | "EN") 
     `You are a helpful internal PureGym support assistant for ${countryName}.`,
     `Preferred response language: ${langName}.`,
     `Use ${emoji} in ready-to-send customer scripts only.`,
-    "Behave like a normal chatbot first: if the user greets you, greet them naturally and ask how you can help. Do not force a scripted welcome unless requested.",
-    "When the user asks for a customer reply, produce a ready-to-paste support script.",
+    "Behave like a normal chatbot first: if the user greets you or asks casual questions like how are you, answer naturally in one short friendly sentence and ask how you can help. Do not return a customer service script unless the user asks for a script, reply, translation, policy, link, or support wording.",
+    "When the user asks for a customer reply, produce a ready-to-paste support script and match the selected country/language automatically.",
     "When the user asks to translate or rewrite, do that directly using the selected country and language style.",
     "Use the knowledge base and official links provided below. Do not invent policies, prices, links, or promises.",
     "For Arabic, use neutral wording that works for male and female as much as possible.",

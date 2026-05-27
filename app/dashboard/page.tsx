@@ -50,7 +50,8 @@ const CATEGORY_ORDER = [
   "Friend / Bring a Friend",
   "Offers, Prices & PT",
   "Membership & Packages",
-  "Branches, Hours & Links"
+  "Branches & Hours",
+  "Links"
 ];
 
 const HIJRI_MONTHS = [
@@ -344,7 +345,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <textarea className="textarea script-editor" dir={language === "AR" ? "rtl" : "ltr"} value={editorText} onChange={(event) => setEditorText(event.target.value)} />
-              {category === "Branches, Hours & Links" && <div className="link-preview">{linkifyParts(editorText)}</div>}
+              {category === "Links" && <div className="link-preview">{linkifyParts(editorText)}</div>}
             </div>
           </div>
         )}
@@ -398,24 +399,12 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
     }
   }
 
-  async function checkHealth() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/ai/health");
-      const data = await res.json();
-      setMessages((current) => [...current, { role: "assistant", content: JSON.stringify(data, null, 2) }]);
-    } catch (error) {
-      setMessages((current) => [...current, { role: "assistant", content: error instanceof Error ? error.message : "AI health check failed" }]);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <div className="chatgpt-shell card">
       <div className="section-head">
         <div><h2>AI Support Chatbot</h2><p>{country} • {language === "AR" ? "Arabic" : "English"}</p></div>
-        <div className="toolbar"><button className="btn secondary small" onClick={checkHealth} disabled={loading}>Check AI</button><button className="btn ghost small" onClick={() => setMessages([])}>Reset</button></div>
+        <div className="toolbar"><button className="btn ghost small" onClick={() => setMessages([{ role: "assistant", content: "أهلاً! اسألني عن السكربتات، السياسات، الروابط، أو اطلب إعادة صياغة/ترجمة." }])}>Reset</button></div>
       </div>
       <div className="messages-panel" dir={language === "AR" ? "rtl" : "ltr"}>
         {messages.map((msg, index) => <div key={index} className={`message-row ${msg.role}`}><div className="message-bubble">{msg.content}</div></div>)}
@@ -603,12 +592,23 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
         {selected && <><div className="field"><label>Title</label><input className="input" value={selected.title} onChange={(event) => updateSelected({ title: event.target.value })} /></div><div className="admin-fields"><div className="field"><label>Category</label><input className="input" value={selected.category} onChange={(event) => updateSelected({ category: event.target.value })} /></div><div className="field"><label>Country</label><select className="select" value={selected.country} onChange={(event) => updateSelected({ country: event.target.value as Script["country"] })}><option value="KSA">KSA</option><option value="UAE">UAE</option><option value="ALL">ALL</option></select></div><div className="field"><label>Language</label><select className="select" value={selected.language} onChange={(event) => updateSelected({ language: event.target.value as Script["language"] })}><option value="AR">AR</option><option value="EN">EN</option></select></div></div><div className="field"><label>Body</label><textarea className="textarea admin-body" value={selected.body} onChange={(event) => updateSelected({ body: event.target.value })} /></div></>}
       </div>
 
-      <div className="card admin-editor">
-        <h2>Add script</h2>
-        <div className="field"><label>Title</label><input className="input" value={newScript.title} onChange={(e) => setNewScript({ ...newScript, title: e.target.value })} /></div>
-        <div className="admin-fields"><div className="field"><label>Category</label><input className="input" value={newScript.category} onChange={(e) => setNewScript({ ...newScript, category: e.target.value })} /></div><div className="field"><label>Country</label><select className="select" value={newScript.country} onChange={(e) => setNewScript({ ...newScript, country: e.target.value as Script["country"] })}><option value="KSA">KSA</option><option value="UAE">UAE</option><option value="ALL">ALL</option></select></div><div className="field"><label>Language</label><select className="select" value={newScript.language} onChange={(e) => setNewScript({ ...newScript, language: e.target.value as Script["language"] })}><option value="AR">AR</option><option value="EN">EN</option></select></div></div>
+      <div className="card admin-editor add-script-card">
+        <div className="section-head">
+          <div>
+            <h2>Add script</h2>
+            <p>Create a new script and publish it for all users.</p>
+          </div>
+          <button className="btn" onClick={createScript}>Add script for everyone</button>
+        </div>
+
+        <div className="add-script-form">
+          <div className="field add-title"><label>Title</label><input className="input" value={newScript.title} onChange={(e) => setNewScript({ ...newScript, title: e.target.value })} /></div>
+          <div className="field"><label>Category</label><select className="select" value={newScript.category} onChange={(e) => setNewScript({ ...newScript, category: e.target.value })}>{adminCategories.map((cat) => <option key={cat} value={cat}>{cat}</option>)}<option value="Links">Links</option><option value="Branches & Hours">Branches & Hours</option></select></div>
+          <div className="field"><label>Country</label><select className="select" value={newScript.country} onChange={(e) => setNewScript({ ...newScript, country: e.target.value as Script["country"] })}><option value="KSA">KSA</option><option value="UAE">UAE</option><option value="ALL">ALL</option></select></div>
+          <div className="field"><label>Language</label><select className="select" value={newScript.language} onChange={(e) => setNewScript({ ...newScript, language: e.target.value as Script["language"] })}><option value="AR">AR</option><option value="EN">EN</option></select></div>
+        </div>
+
         <div className="field"><label>Body</label><textarea className="textarea admin-body" value={newScript.body} onChange={(e) => setNewScript({ ...newScript, body: e.target.value })} /></div>
-        <button className="btn" onClick={createScript}>Add script for everyone</button>
       </div>
 
       <div className="card admin-panel users-panel">
