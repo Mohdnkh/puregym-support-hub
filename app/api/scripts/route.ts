@@ -1,66 +1,72 @@
 import { NextResponse } from "next/server";
+import { randomUUID } from "crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
-import { getSeedScripts } from "@/lib/seed-data";
 
-const scriptSchema = z.object({
-  key: z.string().min(3).optional(),
+const createSchema = z.object({
   title: z.string().min(2),
   category: z.string().min(2),
   country: z.enum(["ALL", "KSA", "UAE"]),
   language: z.enum(["AR", "EN"]),
-  body: z.string().min(1),
-  active: z.boolean().optional(),
-  sortOrder: z.number().int().optional()
+  body: z.string().min(1)
 });
 
-function makeKey(title: string) {
-  const slug = title
+function slugify(value: string) {
+  return value
     .toLowerCase()
-    .replace(/[^a-z0-9\u0600-\u06ff]+/gi, "-")
+    .trim()
+    .replace(/[^a-z0-9\u0600-\u06FF]+/gi, "-")
     .replace(/^-+|-+$/g, "")
-    .slice(0, 45);
-  return `manual-${slug || "script"}-${Date.now()}`;
+    .slice(0, 42);
 }
 
 export async function GET() {
   const user = await getCurrentUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  try {
-    const scripts = await prisma.script.findMany({
-      where: { active: true },
-      orderBy: [{ category: "asc" }, { sortOrder: "asc" }, { title: "asc" }]
-    });
-    if (scripts.length > 0) return NextResponse.json({ scripts });
-  } catch {
-    // Allow the UI to still work before DB setup by returning fallback seed data.
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  return NextResponse.json({
-    scripts: getSeedScripts().map((script, index) => ({ id: `seed-${index}`, active: true, sortOrder: script.sortOrder || index, ...script }))
+  const scripts = await prisma.script.findMany({
+    where: { active: true },
+    orderBy: [{ category: "asc" }, { sortOrder: "asc" }, { title: "asc" }]
   });
+
+  return NextResponse.json({ scripts });
 }
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return NextResponse.json({ error: "Admin only" }, { status: 403 });
 
-  const body = scriptSchema.parse(await req.json());
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  }
+
+  const data = createSchema.parse(await req.json());
+
+  const lastScript = await prisma.script.findFirst({
+    where: {
+      category: data.category,
+      country: data.country,
+      language: data.language
+    },
+    orderBy: { sortOrder: "desc" }
+  });
+
   const script = await prisma.script.create({
     data: {
-      key: body.key || makeKey(body.title),
-      title: body.title,
-      category: body.category,
-      country: body.country,
-      language: body.language,
-      body: body.body,
-      active: body.active ?? true,
-      sortOrder: body.sortOrder ?? 9999,
-      source: "admin"
+      key: `admin-${slugify(data.category)}-${slugify(data.title)}-${randomUUID().slice(0, 8)}`,
+      title: data.title,
+      category: data.category,
+      country: data.country,
+      language: data.language,
+      body: data.body,
+      source: "admin",
+      active: true,
+      sortOrder: (lastScript?.sortOrder || 0) + 10
     }
   });
 
-  return NextResponse.json({ script });
+  return NextResponse.json({ script }, { status: 201 });
 }
