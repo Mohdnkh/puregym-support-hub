@@ -8,7 +8,8 @@ export const runtime = "nodejs";
 const schema = z.object({
   message: z.string().min(1),
   country: z.enum(["KSA", "UAE"]),
-  language: z.enum(["AR", "EN"])
+  language: z.enum(["AR", "EN"]),
+  messages: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string() })).optional()
 });
 
 export async function POST(req: Request) {
@@ -16,12 +17,13 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized. Please log in again." }, { status: 401 });
 
   try {
-    const { message, country, language } = schema.parse(await req.json());
+    const { message, country, language, messages } = schema.parse(await req.json());
     const knowledgeBase = await getKnowledgeBaseText(country, language);
 
     const answer = await callOpenAIText({
-      system: `You are PureGym Support Hub AI.\n${styleInstruction(country, language)}\n\nKnowledge base:\n${knowledgeBase}`,
-      user: message
+      system: `${styleInstruction(country, language)}\n\nKnowledge base:\n${knowledgeBase}`,
+      user: message,
+      messages
     });
 
     return NextResponse.json({ answer });

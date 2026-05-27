@@ -26,13 +26,18 @@ export default function LoginPage() {
   return (
     <main className="auth-page">
       <form className="auth-card" onSubmit={submit}>
-        <h1>PureGym Support Hub</h1>
-        <p>Login to access scripts, chatbot, and calculators.</p>
-        <div className="field"><label>Email</label><input className="input" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
-        <div className="field"><label>Password</label><input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} /></div>
+        <div className="auth-logo-row">
+          <div className="auth-logo">PG</div>
+          <div>
+            <h1>PureGym Hub</h1>
+            <p>Scripts, AI support, tickets, and calculation tools.</p>
+          </div>
+        </div>
+        <div className="field"><label>Email</label><input className="input" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" /></div>
+        <div className="field"><label>Password</label><input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" /></div>
         {error && <p className="error">{error}</p>}
-        <button className="btn" type="submit">Login</button>
-        <p>New user? <Link href="/signup">Create account</Link></p>
+        <button className="btn full" type="submit">Login</button>
+        <div className="auth-actions"><span>New user?</span><Link href="/signup">Create account</Link></div>
       </form>
     </main>
   );

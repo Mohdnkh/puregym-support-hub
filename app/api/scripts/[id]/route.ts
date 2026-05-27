@@ -9,7 +9,8 @@ const updateSchema = z.object({
   country: z.enum(["ALL", "KSA", "UAE"]).optional(),
   language: z.enum(["AR", "EN"]).optional(),
   body: z.string().min(1).optional(),
-  active: z.boolean().optional()
+  active: z.boolean().optional(),
+  sortOrder: z.number().int().optional()
 });
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {

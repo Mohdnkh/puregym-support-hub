@@ -8,1376 +8,1829 @@ export type SeedScript = {
   language: ScriptLanguage;
   body: string;
   source?: string;
+  sortOrder?: number;
 };
 
 export const seedScripts: SeedScript[] = [
   {
-    key: "quick-ksa-welcome-ar",
+    key: "quick-welcome-ksa-ar",
     title: "ترحيب",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "KSA",
+    language: "AR",
     body: "💚 أهلاً وسهلاً، معك {{employeeName}} من بيورجيم، كيف أقدر أساعدك؟",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 10
   },
   {
-    key: "quick-ksa-welcome-en",
+    key: "quick-welcome-ksa-en",
     title: "Welcome",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "KSA",
+    language: "EN",
     body: "💚 Hello, this is {{employeeName}} from PureGym. How can I assist you?",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 20
   },
   {
-    key: "quick-uae-welcome-ar",
+    key: "quick-welcome-uae-ar",
     title: "ترحيب",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "UAE",
+    language: "AR",
     body: "💙 أهلاً وسهلاً، معك {{employeeName}} من بيورجيم، كيف أقدر أساعدك؟",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 30
   },
   {
-    key: "quick-uae-welcome-en",
+    key: "quick-welcome-uae-en",
     title: "Welcome",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "UAE",
+    language: "EN",
     body: "💙 Hello, this is {{employeeName}} from PureGym. How can I assist you?",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 40
   },
   {
-    key: "quick-ksa-salam-ar",
+    key: "quick-salam-ksa-ar",
     title: "رد السلام",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 وعليكم السلام ورحمة الله وبركاته",
-    source: "quick-clean"
+    country: "KSA",
+    language: "AR",
+    body: "💚 وعليكم السلام ورحمة الله وبركاته، أهلاً وسهلاً.",
+    source: "quick",
+    sortOrder: 50
   },
   {
-    key: "quick-ksa-salam-en",
+    key: "quick-salam-ksa-en",
     title: "Salam reply",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "KSA",
+    language: "EN",
     body: "💚 Hello and welcome.",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 60
   },
   {
-    key: "quick-uae-salam-ar",
+    key: "quick-salam-uae-ar",
     title: "رد السلام",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 وعليكم السلام ورحمة الله وبركاته",
-    source: "quick-clean"
+    country: "UAE",
+    language: "AR",
+    body: "💙 وعليكم السلام ورحمة الله وبركاته، أهلاً وسهلاً.",
+    source: "quick",
+    sortOrder: 70
   },
   {
-    key: "quick-uae-salam-en",
+    key: "quick-salam-uae-en",
     title: "Salam reply",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "UAE",
+    language: "EN",
     body: "💙 Hello and welcome.",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 80
   },
   {
-    key: "quick-ksa-end-ar",
-    title: "إنهاء المحادثة",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏\nراح أترك لك رابط التقييم 🌸",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-end-en",
-    title: "End chat",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 It was a pleasure assisting you 🙏\nWe appreciate your feedback 🌸",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-end-ar",
-    title: "إنهاء المحادثة",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏\nراح أترك لك رابط التقييم 🌸",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-end-en",
-    title: "End chat",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 It was a pleasure assisting you 🙏\nWe appreciate your feedback 🌸",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-member-info-ar",
-    title: "طلب بيانات العضوية",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-member-info-en",
-    title: "Request membership details",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 Kindly provide your email address and phone number linked to your membership so we can assist you better 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-member-info-ar",
-    title: "طلب بيانات العضوية",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-member-info-en",
-    title: "Request membership details",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 Kindly provide your email address and phone number linked to your membership so we can assist you better 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-cancel-info-ar",
-    title: "طلب بيانات الإلغاء",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 ولا يهمك، يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال ورقم الهوية والاسم المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-cancel-info-en",
-    title: "Cancellation details request",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 No worries, please provide us with the email address, phone number, ID number, and the name associated with your membership so we can assist you better 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-cancel-info-ar",
-    title: "طلب بيانات الإلغاء",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 ولا يهمك، يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال ورقم الهوية والاسم المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-cancel-info-en",
-    title: "Cancellation details request",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 No worries, please provide us with the email address, phone number, ID number, and the name associated with your membership so we can assist you better 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-freeze-request-info-ar",
-    title: "طلب بيانات التجميد",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 يرجى تزويدنا بفترة التجميد المطلوبة وتاريخ بدء التجميد.",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-freeze-request-info-en",
-    title: "Freeze details request",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 Please provide us with the requested freeze period and the freeze start date.",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-freeze-request-info-ar",
-    title: "طلب بيانات التجميد",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 يرجى تزويدنا بفترة التجميد المطلوبة وتاريخ بدء التجميد.",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-freeze-request-info-en",
-    title: "Freeze details request",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 Please provide us with the requested freeze period and the freeze start date.",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-wait-ar",
+    key: "quick-wait-ksa-ar",
     title: "لحظات من فضلك",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "KSA",
+    language: "AR",
     body: "💚 ولا يهمك، لحظات من فضلك 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 90
   },
   {
-    key: "quick-ksa-wait-en",
+    key: "quick-wait-ksa-en",
     title: "Please wait",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "KSA",
+    language: "EN",
     body: "💚 No worries, please allow me a moment 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 100
   },
   {
-    key: "quick-uae-wait-ar",
+    key: "quick-wait-uae-ar",
     title: "لحظات من فضلك",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "UAE",
+    language: "AR",
     body: "💙 ولا يهمك، لحظات من فضلك 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 110
   },
   {
-    key: "quick-uae-wait-en",
+    key: "quick-wait-uae-en",
     title: "Please wait",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "UAE",
+    language: "EN",
     body: "💙 No worries, please allow me a moment 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 120
   },
   {
-    key: "quick-ksa-anything-else-ar",
-    title: "هل يوجد استفسار آخر؟",
+    key: "quick-membership-info-ksa-ar",
+    title: "طلب بيانات العضوية",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "KSA",
+    language: "AR",
+    body: "💚 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبطين بالعضوية لنتمكن من خدمتك بشكل أفضل 🙏",
+    source: "quick",
+    sortOrder: 130
+  },
+  {
+    key: "quick-membership-info-ksa-en",
+    title: "Request membership details",
+    category: "Quick Scripts",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Kindly provide the email address and mobile number linked to the membership so we can assist you better 🙏",
+    source: "quick",
+    sortOrder: 140
+  },
+  {
+    key: "quick-membership-info-uae-ar",
+    title: "طلب بيانات العضوية",
+    category: "Quick Scripts",
+    country: "UAE",
+    language: "AR",
+    body: "💙 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبطين بالعضوية لنتمكن من خدمتك بشكل أفضل 🙏",
+    source: "quick",
+    sortOrder: 150
+  },
+  {
+    key: "quick-membership-info-uae-en",
+    title: "Request membership details",
+    category: "Quick Scripts",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Kindly provide the email address and mobile number linked to the membership so we can assist you better 🙏",
+    source: "quick",
+    sortOrder: 160
+  },
+  {
+    key: "quick-cancel-info-ksa-ar",
+    title: "طلب بيانات الإلغاء",
+    category: "Quick Scripts",
+    country: "KSA",
+    language: "AR",
+    body: "💚 يرجى تزويدنا بالبريد الإلكتروني، رقم الجوال، رقم الهوية، والاسم المرتبط بعضويتك لنتمكن من مساعدتك في طلب الإلغاء 🙏",
+    source: "quick",
+    sortOrder: 170
+  },
+  {
+    key: "quick-cancel-info-ksa-en",
+    title: "Cancellation details request",
+    category: "Quick Scripts",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Kindly provide the email address, mobile number, ID number, and name linked to the membership so we can assist you with the cancellation request 🙏",
+    source: "quick",
+    sortOrder: 180
+  },
+  {
+    key: "quick-cancel-info-uae-ar",
+    title: "طلب بيانات الإلغاء",
+    category: "Quick Scripts",
+    country: "UAE",
+    language: "AR",
+    body: "💙 يرجى تزويدنا بالبريد الإلكتروني، رقم الجوال، رقم الهوية، والاسم المرتبط بعضويتك لنتمكن من مساعدتك في طلب الإلغاء 🙏",
+    source: "quick",
+    sortOrder: 190
+  },
+  {
+    key: "quick-cancel-info-uae-en",
+    title: "Cancellation details request",
+    category: "Quick Scripts",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Kindly provide the email address, mobile number, ID number, and name linked to the membership so we can assist you with the cancellation request 🙏",
+    source: "quick",
+    sortOrder: 200
+  },
+  {
+    key: "quick-anything-ksa-ar",
+    title: "استفسار آخر",
+    category: "Quick Scripts",
+    country: "KSA",
+    language: "AR",
     body: "💚 هل يوجد أي خدمة أو استفسار آخر أقدر أساعدك فيه؟ 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 210
   },
   {
-    key: "quick-ksa-anything-else-en",
-    title: "Anything else?",
+    key: "quick-anything-ksa-en",
+    title: "Anything else",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "KSA",
+    language: "EN",
     body: "💚 Is there anything else I can assist you with? 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 220
   },
   {
-    key: "quick-uae-anything-else-ar",
-    title: "هل يوجد استفسار آخر؟",
+    key: "quick-anything-uae-ar",
+    title: "استفسار آخر",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "UAE",
+    language: "AR",
     body: "💙 هل يوجد أي خدمة أو استفسار آخر أقدر أساعدك فيه؟ 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 230
   },
   {
-    key: "quick-uae-anything-else-en",
-    title: "Anything else?",
+    key: "quick-anything-uae-en",
+    title: "Anything else",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "UAE",
+    language: "EN",
     body: "💙 Is there anything else I can assist you with? 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 240
   },
   {
-    key: "quick-ksa-still-with-us-ar",
+    key: "quick-still-ksa-ar",
     title: "هل ما زلت معنا؟",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "KSA",
+    language: "AR",
     body: "💚 هل ما زلت معنا؟ أنا هنا لأي استفسار 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 250
   },
   {
-    key: "quick-ksa-still-with-us-en",
-    title: "Still with us?",
+    key: "quick-still-ksa-en",
+    title: "Still with us",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 Are you still with us? I’m here for any questions 🙏",
-    source: "quick-clean"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Are you still with us? I’m here if you have any questions 🙏",
+    source: "quick",
+    sortOrder: 260
   },
   {
-    key: "quick-uae-still-with-us-ar",
+    key: "quick-still-uae-ar",
     title: "هل ما زلت معنا؟",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "UAE",
+    language: "AR",
     body: "💙 هل ما زلت معنا؟ أنا هنا لأي استفسار 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 270
   },
   {
-    key: "quick-uae-still-with-us-en",
-    title: "Still with us?",
+    key: "quick-still-uae-en",
+    title: "Still with us",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 Are you still with us? I’m here for any questions 🙏",
-    source: "quick-clean"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Are you still with us? I’m here if you have any questions 🙏",
+    source: "quick",
+    sortOrder: 280
   },
   {
-    key: "quick-ksa-busy-ar",
-    title: "العميل مشغول",
+    key: "quick-busy-ksa-ar",
+    title: "الوقت غير مناسب",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "KSA",
+    language: "AR",
     body: "💚 يبدو أن الوقت غير مناسب حاليًا، سيتم إنهاء المحادثة الآن، ويمكنك الرجوع لنا بأي وقت 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 290
   },
   {
-    key: "quick-ksa-busy-en",
-    title: "Customer busy",
+    key: "quick-busy-ksa-en",
+    title: "Not a convenient time",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "KSA",
+    language: "EN",
     body: "💚 It seems this may not be a convenient time. The chat will be closed for now, and you can reach out to us anytime 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 300
   },
   {
-    key: "quick-uae-busy-ar",
-    title: "العميل مشغول",
+    key: "quick-busy-uae-ar",
+    title: "الوقت غير مناسب",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "UAE",
+    language: "AR",
     body: "💙 يبدو أن الوقت غير مناسب حاليًا، سيتم إنهاء المحادثة الآن، ويمكنك الرجوع لنا بأي وقت 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 310
   },
   {
-    key: "quick-uae-busy-en",
-    title: "Customer busy",
+    key: "quick-busy-uae-en",
+    title: "Not a convenient time",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
+    country: "UAE",
+    language: "EN",
     body: "💙 It seems this may not be a convenient time. The chat will be closed for now, and you can reach out to us anytime 🙏",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 320
   },
   {
-    key: "quick-ksa-no-reply-warning-ar",
-    title: "تنبيه عدم الرد",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 إذا ما جانا رد، سيتم إنهاء المحادثة وتقدر ترجع لنا بأي وقت 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-no-reply-warning-en",
-    title: "No response warning",
-    category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 If we don’t hear back from you, the chat will be closed. You can reach out anytime 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-no-reply-warning-ar",
-    title: "تنبيه عدم الرد",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 إذا ما جانا رد، سيتم إنهاء المحادثة وتقدر ترجع لنا بأي وقت 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-uae-no-reply-warning-en",
-    title: "No response warning",
-    category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 If we don’t hear back from you, the chat will be closed. You can reach out anytime 🙏",
-    source: "quick-clean"
-  },
-  {
-    key: "quick-ksa-close-no-reply-ar",
+    key: "quick-close-no-reply-ksa-ar",
     title: "إغلاق بسبب عدم الرد",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "KSA",
+    language: "AR",
     body: "💚 سيتم إنهاء المحادثة بسبب عدم وجود رد، نشكرك على تواصلك معنا، ونسعد بتقييمك لتجربتك 🌸",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 330
   },
   {
-    key: "quick-ksa-close-no-reply-en",
+    key: "quick-close-no-reply-ksa-en",
     title: "Close due to no response",
     category: "Quick Scripts",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 The chat will be closed due to no response.\nThank you for contacting us, we’d appreciate your feedback 🌸",
-    source: "quick-clean"
+    country: "KSA",
+    language: "EN",
+    body: "💚 The chat will be closed due to no response.\nThank you for contacting us, and we’d appreciate your feedback 🌸",
+    source: "quick",
+    sortOrder: 340
   },
   {
-    key: "quick-uae-close-no-reply-ar",
+    key: "quick-close-no-reply-uae-ar",
     title: "إغلاق بسبب عدم الرد",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
+    country: "UAE",
+    language: "AR",
     body: "💙 سيتم إنهاء المحادثة بسبب عدم وجود رد، نشكرك على تواصلك معنا، ونسعد بتقييمك لتجربتك 🌸",
-    source: "quick-clean"
+    source: "quick",
+    sortOrder: 350
   },
   {
-    key: "quick-uae-close-no-reply-en",
+    key: "quick-close-no-reply-uae-en",
     title: "Close due to no response",
     category: "Quick Scripts",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 The chat will be closed due to no response.\nThank you for contacting us, we’d appreciate your feedback 🌸",
-    source: "quick-clean"
+    country: "UAE",
+    language: "EN",
+    body: "💙 The chat will be closed due to no response.\nThank you for contacting us, and we’d appreciate your feedback 🌸",
+    source: "quick",
+    sortOrder: 360
   },
   {
-    key: "membership-details-confirm-ar",
-    title: "تأكيد بيانات العضوية",
-    category: "Membership & Packages",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "بعد التحقق من النظام، هذه هي بيانات عضويتك المسجلة لدينا:\n\nالبريد الإلكتروني: example@email.com\nرقم الجوال: 0000000000\nالاسم: [الاسم]\nنوع العضوية: [نوع العضوية]\n\nهل هذه المعلومات صحيحة؟",
-    source: "quick-file"
+    key: "quick-end-ksa-ar",
+    title: "إنهاء الخدمة",
+    category: "Quick Scripts",
+    country: "KSA",
+    language: "AR",
+    body: "💚 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏\nراح أترك لك رابط التقييم، ونسعد بمشاركتك لتجربتك 🌸",
+    source: "quick",
+    sortOrder: 370
   },
   {
-    key: "membership-details-confirm-en",
-    title: "Membership details confirmation",
-    category: "Membership & Packages",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "After checking the system, here are your membership details:\n\nEmail: example@email.com\nPhone number: 0000000000\nName: [Name]\nMembership type: [Membership Type]\n\nPlease confirm if these details are correct.",
-    source: "quick-file"
+    key: "quick-end-ksa-en",
+    title: "End service",
+    category: "Quick Scripts",
+    country: "KSA",
+    language: "EN",
+    body: "💚 It was a pleasure assisting you 🙏\nWe appreciate your feedback and would be happy to hear about your experience 🌸",
+    source: "quick",
+    sortOrder: 380
+  },
+  {
+    key: "quick-end-uae-ar",
+    title: "إنهاء الخدمة",
+    category: "Quick Scripts",
+    country: "UAE",
+    language: "AR",
+    body: "💙 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏\nراح أترك لك رابط التقييم، ونسعد بمشاركتك لتجربتك 🌸",
+    source: "quick",
+    sortOrder: 390
+  },
+  {
+    key: "quick-end-uae-en",
+    title: "End service",
+    category: "Quick Scripts",
+    country: "UAE",
+    language: "EN",
+    body: "💙 It was a pleasure assisting you 🙏\nWe appreciate your feedback and would be happy to hear about your experience 🌸",
+    source: "quick",
+    sortOrder: 400
   },
   {
     key: "cancel-reason-ksa-ar",
-    title: "سبب الإلغاء",
+    title: "سؤال سبب الإلغاء",
     category: "Cancellation & Retention",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 ممكن توضح لنا سبب رغبتك في إلغاء العضوية؟\nملاحظتك تهمنا كثير وبتساعدنا نحسّن خدماتنا ونقدّم تجربة أفضل 🙏",
-    source: "quick-file"
+    country: "KSA",
+    language: "AR",
+    body: "💚 قبل إتمام الطلب، ممكن توضح لنا سبب رغبتك في إلغاء العضوية؟ ملاحظتك تهمنا وتساعدنا نحسّن تجربتك معنا.",
+    source: "clean-v2",
+    sortOrder: 410
   },
   {
     key: "cancel-reason-ksa-en",
     title: "Cancellation reason",
     category: "Cancellation & Retention",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 Could you please share the reason for cancelling your membership?\nYour feedback is very important to us and helps us improve our services 🙏",
-    source: "quick-file"
-  },
-  {
-    key: "cancel-too-late-ksa-ar",
-    title: "لا يمكن الإلغاء الآن",
-    category: "Cancellation & Retention",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 نأسف لإبلاغك أنه لا يمكن إلغاء العضوية حاليًا.\nحيث تنص شروط وأحكام العضوية على ضرورة التواصل معنا قبل يومين أو أكثر من تاريخ التجديد، وقد تمت الموافقة عليها أثناء التسجيل.\n\nسيتم محاولة السحب بتاريخ: 00-00-2020 في أواخر ساعات الليل.\nوفي حال فشل عملية الدفع، سيتم تعليق العضوية مؤقتًا.\nوسيتم إعادة المحاولة بعد 10 أيام من تاريخ الدفعة الفائتة.\nوفي حال فشلت المحاولة الثانية، سيتم إلغاء العضوية تلقائيًا 🙏",
-    source: "quick-file"
-  },
-  {
-    key: "cancel-too-late-ksa-en",
-    title: "Too late to cancel",
-    category: "Cancellation & Retention",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 We regret to inform you that the membership cannot be cancelled at this time.\nAccording to the membership terms and conditions, you must contact us at least 2 days before the renewal date, which was agreed upon during registration.\n\nA payment attempt will be made on: 00-00-2020 late at night.\nIf the payment fails, the membership will be temporarily suspended.\nA second attempt will be made after 10 days from the failed payment date.\nIf the second attempt also fails, the membership will be automatically cancelled 🙏",
-    source: "quick-file"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Before proceeding, could you please share the reason for cancelling your membership? Your feedback is important and helps us improve your experience.",
+    source: "clean-v2",
+    sortOrder: 420
   },
   {
     key: "cancel-reason-uae-ar",
-    title: "سبب الإلغاء",
+    title: "سؤال سبب الإلغاء",
     category: "Cancellation & Retention",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 ممكن توضح لنا سبب رغبتك في إلغاء العضوية؟\nملاحظتك تهمنا كثير وبتساعدنا نحسّن خدماتنا ونقدّم تجربة أفضل 🙏",
-    source: "quick-file"
+    country: "UAE",
+    language: "AR",
+    body: "💙 قبل إتمام الطلب، ممكن توضح لنا سبب رغبتك في إلغاء العضوية؟ ملاحظتك تهمنا وتساعدنا نحسّن تجربتك معنا.",
+    source: "clean-v2",
+    sortOrder: 430
   },
   {
     key: "cancel-reason-uae-en",
     title: "Cancellation reason",
     category: "Cancellation & Retention",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 Could you please share the reason for cancelling your membership?\nYour feedback is very important to us and helps us improve our services 🙏",
-    source: "quick-file"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Before proceeding, could you please share the reason for cancelling your membership? Your feedback is important and helps us improve your experience.",
+    source: "clean-v2",
+    sortOrder: 440
+  },
+  {
+    key: "cancel-done-ksa-ar",
+    title: "إيقاف التجديد التلقائي - مكتمل",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "AR",
+    body: "💚 تم إيقاف التجديد التلقائي لعضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nستبقى عضويتك فعالة حتى 00-00-2020، ولن يتم خصم أي مبلغ بعد ذلك.\n\nيمكنك متابعة حالة عضويتك عبر التطبيق وستظهر كغير فعالة بعد تاريخ الانتهاء.",
+    source: "clean-v2",
+    sortOrder: 450
+  },
+  {
+    key: "cancel-done-ksa-en",
+    title: "Cancel auto-renewal - Completed",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "EN",
+    body: "💚 The auto-renewal for your [Membership Type] membership has been successfully stopped.\n\nAccount details:\n• Email: \n• Mobile number: \n\nYour membership will remain active until 00-00-2020, and no further charges will be applied after that.\n\nYou can track your membership through the app, and it will show as inactive after the end date.",
+    source: "clean-v2",
+    sortOrder: 460
+  },
+  {
+    key: "cancel-done-uae-ar",
+    title: "إيقاف التجديد التلقائي - مكتمل",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "AR",
+    body: "💙 تم إيقاف التجديد التلقائي لعضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nستبقى عضويتك فعالة حتى 00-00-2020، ولن يتم خصم أي مبلغ بعد ذلك.\n\nيمكنك متابعة حالة عضويتك عبر التطبيق وستظهر كغير فعالة بعد تاريخ الانتهاء.",
+    source: "clean-v2",
+    sortOrder: 470
+  },
+  {
+    key: "cancel-done-uae-en",
+    title: "Cancel auto-renewal - Completed",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "EN",
+    body: "💙 The auto-renewal for your [Membership Type] membership has been successfully stopped.\n\nAccount details:\n• Email: \n• Mobile number: \n\nYour membership will remain active until 00-00-2020, and no further charges will be applied after that.\n\nYou can track your membership through the app, and it will show as inactive after the end date.",
+    source: "clean-v2",
+    sortOrder: 480
+  },
+  {
+    key: "cancel-too-late-ksa-ar",
+    title: "لا يمكن الإلغاء الآن",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "AR",
+    body: "💚 نعتذر، لا يمكن إلغاء العضوية حاليًا لأن الطلب وصل خلال أقل من 48 ساعة قبل موعد التجديد حسب الشروط والأحكام.\n\nسيتم محاولة السحب بتاريخ 00-00-2020 في أواخر ساعات الليل. في حال فشل الدفع سيتم تعليق العضوية مؤقتًا، ثم تتم إعادة المحاولة بعد 10 أيام. وإذا فشلت المحاولة الثانية، سيتم إلغاء العضوية تلقائيًا.",
+    source: "clean-v2",
+    sortOrder: 490
+  },
+  {
+    key: "cancel-too-late-ksa-en",
+    title: "Too late to cancel",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "EN",
+    body: "💚 We’re sorry, the membership cannot be cancelled at this time because the request was received less than 48 hours before the renewal date, as per the terms and conditions.\n\nA payment attempt will be made on 00-00-2020 late at night. If the payment fails, the membership will be temporarily suspended, then another attempt will be made after 10 days. If the second attempt fails, the membership will be cancelled automatically.",
+    source: "clean-v2",
+    sortOrder: 500
   },
   {
     key: "cancel-too-late-uae-ar",
     title: "لا يمكن الإلغاء الآن",
     category: "Cancellation & Retention",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 نأسف لإبلاغك أنه لا يمكن إلغاء العضوية حاليًا.\nحيث تنص شروط وأحكام العضوية على ضرورة التواصل معنا قبل يومين أو أكثر من تاريخ التجديد، وقد تمت الموافقة عليها أثناء التسجيل.\n\nسيتم محاولة السحب بتاريخ: 00-00-2020 في أواخر ساعات الليل.\nوفي حال فشل عملية الدفع، سيتم تعليق العضوية مؤقتًا.\nوسيتم إعادة المحاولة بعد 10 أيام من تاريخ الدفعة الفائتة.\nوفي حال فشلت المحاولة الثانية، سيتم إلغاء العضوية تلقائيًا 🙏",
-    source: "quick-file"
+    country: "UAE",
+    language: "AR",
+    body: "💙 نعتذر، لا يمكن إلغاء العضوية حاليًا لأن الطلب وصل خلال أقل من 48 ساعة قبل موعد التجديد حسب الشروط والأحكام.\n\nسيتم محاولة السحب بتاريخ 00-00-2020 في أواخر ساعات الليل. في حال فشل الدفع سيتم تعليق العضوية مؤقتًا، ثم تتم إعادة المحاولة بعد 10 أيام. وإذا فشلت المحاولة الثانية، سيتم إلغاء العضوية تلقائيًا.",
+    source: "clean-v2",
+    sortOrder: 510
   },
   {
     key: "cancel-too-late-uae-en",
     title: "Too late to cancel",
     category: "Cancellation & Retention",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 We regret to inform you that the membership cannot be cancelled at this time.\nAccording to the membership terms and conditions, you must contact us at least 2 days before the renewal date, which was agreed upon during registration.\n\nA payment attempt will be made on: 00-00-2020 late at night.\nIf the payment fails, the membership will be temporarily suspended.\nA second attempt will be made after 10 days from the failed payment date.\nIf the second attempt also fails, the membership will be automatically cancelled 🙏",
-    source: "quick-file"
+    country: "UAE",
+    language: "EN",
+    body: "💙 We’re sorry, the membership cannot be cancelled at this time because the request was received less than 48 hours before the renewal date, as per the terms and conditions.\n\nA payment attempt will be made on 00-00-2020 late at night. If the payment fails, the membership will be temporarily suspended, then another attempt will be made after 10 days. If the second attempt fails, the membership will be cancelled automatically.",
+    source: "clean-v2",
+    sortOrder: 520
   },
   {
-    key: "retention-freeze-month-ar",
+    key: "payment-failed-suspended-ksa-ar",
+    title: "فشل الدفع والعضوية معلقة",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "AR",
+    body: "💚 نعتذر، لا يمكن إلغاء العضوية في الوقت الحالي لأن عملية التجديد فشلت والعضوية معلقة.\n\nسيتم إعادة محاولة الدفع بعد 10 أيام من تاريخ الدفعة الفائتة. في حال فشلت المحاولة الثانية سيتم إلغاء العضوية تلقائيًا.",
+    source: "clean-v2",
+    sortOrder: 530
+  },
+  {
+    key: "payment-failed-suspended-ksa-en",
+    title: "Payment failed and membership suspended",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "EN",
+    body: "💚 We’re sorry, the membership cannot be cancelled at this time because the renewal payment failed and the membership is currently suspended.\n\nA second payment attempt will be made 10 days after the missed payment date. If the second attempt fails, the membership will be cancelled automatically.",
+    source: "clean-v2",
+    sortOrder: 540
+  },
+  {
+    key: "payment-failed-suspended-uae-ar",
+    title: "فشل الدفع والعضوية معلقة",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "AR",
+    body: "💙 نعتذر، لا يمكن إلغاء العضوية في الوقت الحالي لأن عملية التجديد فشلت والعضوية معلقة.\n\nسيتم إعادة محاولة الدفع بعد 10 أيام من تاريخ الدفعة الفائتة. في حال فشلت المحاولة الثانية سيتم إلغاء العضوية تلقائيًا.",
+    source: "clean-v2",
+    sortOrder: 550
+  },
+  {
+    key: "payment-failed-suspended-uae-en",
+    title: "Payment failed and membership suspended",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "EN",
+    body: "💙 We’re sorry, the membership cannot be cancelled at this time because the renewal payment failed and the membership is currently suspended.\n\nA second payment attempt will be made 10 days after the missed payment date. If the second attempt fails, the membership will be cancelled automatically.",
+    source: "clean-v2",
+    sortOrder: 560
+  },
+  {
+    key: "ret-freeze-ksa-ar",
     title: "عرض تجميد شهر بدل الإلغاء",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "قبل إتمام الإلغاء، نقدر نوفر لك خيار تجميد العضوية لمدة شهر بدل الإلغاء، حتى ترجع تتمرن لما يكون الوقت أنسب لك.\nهل يناسبك هذا الخيار؟",
-    source: "manual-retention"
+    country: "KSA",
+    language: "AR",
+    body: "💚 قبل إتمام الإلغاء، نقدر نعرض عليك تجميد العضوية مجانًا لمدة شهر بدل الإلغاء، حتى ترجع للتمرين بدون رسوم تسجيل جديدة. هل يناسبك هذا الخيار؟",
+    source: "clean-v2",
+    sortOrder: 570
   },
   {
-    key: "retention-freeze-month-en",
-    title: "Retention - Free freeze month",
+    key: "ret-freeze-ksa-en",
+    title: "Retention - one month freeze",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Before proceeding with cancellation, we can offer you a one-month membership freeze instead, so you can return when the timing is better for you.\nWould this option work for you?",
-    source: "manual-retention"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Before proceeding with cancellation, we can offer to freeze your membership for one month for free instead, so you can return without paying a new joining fee. Would this option work for you?",
+    source: "clean-v2",
+    sortOrder: 580
   },
   {
-    key: "retention-transfer-branch-ar",
-    title: "نقل العضوية لفرع آخر بدل الإلغاء",
+    key: "ret-freeze-uae-ar",
+    title: "عرض تجميد شهر بدل الإلغاء",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "إذا سبب الإلغاء هو تغيير السكن أو صعوبة الوصول للفرع الحالي، نقدر نساعدك بنقل العضوية إلى فرع آخر مناسب بدل الإلغاء.\nهل ترغب أن نتحقق لك من الفرع المناسب؟",
-    source: "manual-retention"
+    country: "UAE",
+    language: "AR",
+    body: "💙 قبل إتمام الإلغاء، نقدر نعرض عليك تجميد العضوية مجانًا لمدة شهر بدل الإلغاء، حتى ترجع للتمرين بدون رسوم تسجيل جديدة. هل يناسبك هذا الخيار؟",
+    source: "clean-v2",
+    sortOrder: 590
   },
   {
-    key: "retention-transfer-branch-en",
-    title: "Retention - Branch transfer",
+    key: "ret-freeze-uae-en",
+    title: "Retention - one month freeze",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "If the cancellation reason is a change of location or difficulty reaching your current gym, we can help transfer your membership to another suitable branch instead of cancellation.\nWould you like us to check the suitable branch?",
-    source: "manual-retention"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Before proceeding with cancellation, we can offer to freeze your membership for one month for free instead, so you can return without paying a new joining fee. Would this option work for you?",
+    source: "clean-v2",
+    sortOrder: 600
   },
   {
-    key: "retention-upgrade-plus-ar",
-    title: "ترقية العضوية إلى Plus بدل الإلغاء",
+    key: "ret-transfer-ksa-ar",
+    title: "نقل العضوية لفرع آخر",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "إذا كنت تحتاج مرونة أكثر، ممكن تكون ترقية العضوية إلى Plus خيار أفضل بدل الإلغاء، لأنها تمنحك مزايا أكثر حسب نوع العضوية مثل دخول فروع إضافية وBring a Friend ومزايا أخرى.\nهل ترغب أن نوضح لك خيارات الترقية؟",
-    source: "manual-retention"
+    country: "KSA",
+    language: "AR",
+    body: "💚 إذا سبب الإلغاء هو تغيير مكان السكن أو صعوبة الوصول للفرع الحالي، نقدر نتحقق من إمكانية نقل العضوية إلى فرع أنسب لك بدل الإلغاء.",
+    source: "clean-v2",
+    sortOrder: 610
   },
   {
-    key: "retention-upgrade-plus-en",
-    title: "Retention - Upgrade to Plus",
+    key: "ret-transfer-ksa-en",
+    title: "Retention - branch transfer",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "If you need more flexibility, upgrading to Plus may be a better option than cancellation, as it gives you more benefits depending on your membership type, such as access to more branches, Bring a Friend, and other features.\nWould you like us to explain the upgrade options?",
-    source: "manual-retention"
+    country: "KSA",
+    language: "EN",
+    body: "💚 If the reason for cancellation is a change of location or difficulty reaching your current gym, we can check whether transferring your membership to a more suitable branch is possible instead of cancelling.",
+    source: "clean-v2",
+    sortOrder: 620
   },
   {
-    key: "retention-free-pt-ar",
-    title: "جلسة تدريب شخصي مجانية بدل الإلغاء",
+    key: "ret-transfer-uae-ar",
+    title: "نقل العضوية لفرع آخر",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "قبل إتمام الإلغاء، نقدر نرفع طلب للاستفادة من جلسة تدريب شخصي مجانية حسب المتاح لتحسين تجربتك بالنادي.\nهل ترغب أن نرفع الطلب؟",
-    source: "manual-retention"
+    country: "UAE",
+    language: "AR",
+    body: "💙 إذا سبب الإلغاء هو تغيير مكان السكن أو صعوبة الوصول للفرع الحالي، نقدر نتحقق من إمكانية نقل العضوية إلى فرع أنسب لك بدل الإلغاء.",
+    source: "clean-v2",
+    sortOrder: 630
   },
   {
-    key: "retention-free-pt-en",
-    title: "Retention - Free PT session",
+    key: "ret-transfer-uae-en",
+    title: "Retention - branch transfer",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Before proceeding with cancellation, we can raise a request for a free personal training session depending on availability to improve your gym experience.\nWould you like us to raise the request?",
-    source: "manual-retention"
+    country: "UAE",
+    language: "EN",
+    body: "💙 If the reason for cancellation is a change of location or difficulty reaching your current gym, we can check whether transferring your membership to a more suitable branch is possible instead of cancelling.",
+    source: "clean-v2",
+    sortOrder: 640
   },
   {
-    key: "retention-family-transfer-ar",
-    title: "نقل العضوية لأحد أفراد العائلة بدل الإلغاء",
+    key: "ret-plus-ksa-ar",
+    title: "ترقية العضوية إلى بلس",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "إذا سبب الإلغاء هو السفر أو عدم القدرة على استخدام العضوية، يمكننا التحقق من إمكانية نقل العضوية لأحد أفراد العائلة بدل الإلغاء حسب الشروط.\nهل ترغب أن نتحقق لك من هذا الخيار؟",
-    source: "manual-retention"
+    country: "KSA",
+    language: "AR",
+    body: "💚 إذا تحتاج مرونة أكثر، ممكن تكون عضوية Plus خيار أفضل بدل الإلغاء، لأنها تمنحك مزايا أكثر مثل دخول فروع إضافية وBring a Friend حسب نوع العضوية.",
+    source: "clean-v2",
+    sortOrder: 650
   },
   {
-    key: "retention-family-transfer-en",
-    title: "Retention - Transfer to family member",
+    key: "ret-plus-ksa-en",
+    title: "Retention - Plus upgrade",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "If the cancellation reason is travel or inability to use the membership, we can check whether transferring the membership to a family member is possible instead of cancellation, subject to the terms.\nWould you like us to check this option?",
-    source: "manual-retention"
+    country: "KSA",
+    language: "EN",
+    body: "💚 If you need more flexibility, upgrading to Plus may be a better option than cancelling, as it gives you additional benefits such as access to more branches and Bring a Friend, depending on your membership type.",
+    source: "clean-v2",
+    sortOrder: 660
   },
   {
-    key: "cancel-auto-renewal-completed-ar",
-    title: "إيقاف التجديد التلقائي - مكتمل",
+    key: "ret-plus-uae-ar",
+    title: "ترقية العضوية إلى بلس",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تم إيقاف التجديد التلقائي لعضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: example@email.com\n• رقم الجوال: 0000000000\n\nستبقى عضويتك فعالة حتى 00-00-2020، ولن يتم خصم أي مبلغ بعد ذلك.\n\nيمكنك متابعة حالة عضويتك عبر التطبيق وستكون حالتها غير فعالة.",
-    source: "image-action"
+    country: "UAE",
+    language: "AR",
+    body: "💙 إذا تحتاج مرونة أكثر، ممكن تكون عضوية Plus خيار أفضل بدل الإلغاء، لأنها تمنحك مزايا أكثر مثل دخول فروع إضافية وBring a Friend حسب نوع العضوية.",
+    source: "clean-v2",
+    sortOrder: 670
   },
   {
-    key: "cancel-auto-renewal-completed-en",
-    title: "Cancel Auto-Renewal - Completed",
+    key: "ret-plus-uae-en",
+    title: "Retention - Plus upgrade",
     category: "Cancellation & Retention",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "The auto-renewal for your [Membership Type] membership has been successfully stopped.\n\nAccount details:\n• Email: example@email.com\n• Phone: 0000000000\n\nYour membership will remain active until 00-00-2020, and no further charges will be applied after that.\n\nYou can track your membership through the app, and status will be shown as Inactive.",
-    source: "image-action"
+    country: "UAE",
+    language: "EN",
+    body: "💙 If you need more flexibility, upgrading to Plus may be a better option than cancelling, as it gives you additional benefits such as access to more branches and Bring a Friend, depending on your membership type.",
+    source: "clean-v2",
+    sortOrder: 680
   },
   {
-    key: "freeze-monthly-completed-ar",
-    title: "تجميد العضوية الشهرية - مكتمل",
-    category: "Freeze",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: example@email.com\n• رقم الجوال: 0000000000\n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020 وموعد فاتورتك القادمة 00-00-2020 بقيمة 00 SAR\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد.\n\nيمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
-    source: "image-action"
+    key: "ret-pt-ksa-ar",
+    title: "جلسة تدريب شخصي مجانية",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "AR",
+    body: "💚 قبل الإلغاء، نقدر نرفع طلب للاستفادة من جلسة تدريب شخصي مجانية حسب المتاح لتحسين تجربتك داخل النادي.",
+    source: "clean-v2",
+    sortOrder: 690
   },
   {
-    key: "freeze-monthly-completed-en",
-    title: "Freeze Monthly - Completed",
-    category: "Freeze",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: example@email.com\n• Mobile number: 0000000000\n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020. Your next billing date will be on 00-00-2020 with an amount of 00 SAR.\n\nYour membership will automatically resume once the freeze period ends.\n\nYou can always view your membership details through the app.",
-    source: "image-action"
+    key: "ret-pt-ksa-en",
+    title: "Retention - free PT session",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Before cancelling, we can raise a request for a free personal training session, subject to availability, to help improve your experience at the gym.",
+    source: "clean-v2",
+    sortOrder: 700
   },
   {
-    key: "freeze-pif-completed-ar",
-    title: "تجميد العضوية محددة المدة - مكتمل",
-    category: "Freeze",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: example@email.com\n• رقم الجوال: 0000000000\n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020 وموعد انتهاء عضويتك في 00-00-2020\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد.\n\nيمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
-    source: "image-action"
+    key: "ret-pt-uae-ar",
+    title: "جلسة تدريب شخصي مجانية",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "AR",
+    body: "💙 قبل الإلغاء، نقدر نرفع طلب للاستفادة من جلسة تدريب شخصي مجانية حسب المتاح لتحسين تجربتك داخل النادي.",
+    source: "clean-v2",
+    sortOrder: 710
   },
   {
-    key: "freeze-pif-completed-en",
-    title: "Freeze PIF - Completed",
-    category: "Freeze",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: example@email.com\n• Mobile number: 0000000000\n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020, and your membership will expire on 00-00-2020.\n\nYour membership will automatically resume once the freeze period ends.\n\nYou can always view your membership details through the app.",
-    source: "image-action"
+    key: "ret-pt-uae-en",
+    title: "Retention - free PT session",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Before cancelling, we can raise a request for a free personal training session, subject to availability, to help improve your experience at the gym.",
+    source: "clean-v2",
+    sortOrder: 720
   },
   {
-    key: "freeze-paid-link-39-ar",
-    title: "رابط دفع تجميد مدفوع",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "سيتم إرسال بريد إلكتروني خلال ساعات يحتوي على رابط دفع بقيمة 39 ر.س لإتمام عملية التجميد.\nيرجى ملاحظة أن رابط الدفع صالح لمدة 48 ساعة.\nكما يلزم التواصل معنا بعد الدفع لإتمام تجميد العضوية.",
-    source: "quick-file"
+    key: "ret-family-ksa-ar",
+    title: "نقل العضوية لأحد أفراد العائلة",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "AR",
+    body: "💚 إذا سبب الإلغاء هو السفر أو عدم القدرة على استخدام العضوية، نقدر نتحقق من إمكانية نقلها لأحد أفراد العائلة حسب الشروط بدل الإلغاء.",
+    source: "clean-v2",
+    sortOrder: 730
   },
   {
-    key: "freeze-paid-link-39-en",
-    title: "Paid freeze payment link",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "An email will be sent within a few hours containing a payment link for 39 SAR to complete the freeze process.\nPlease note that the payment link is valid for 48 hours.\nYou will need to contact us after payment to complete the membership freeze.",
-    source: "quick-file"
+    key: "ret-family-ksa-en",
+    title: "Retention - family transfer",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "EN",
+    body: "💚 If the cancellation reason is travel or inability to use the membership, we can check whether it can be transferred to a family member, subject to the terms, instead of cancelling.",
+    source: "clean-v2",
+    sortOrder: 740
   },
   {
-    key: "freeze-policy-core-monthly-ar",
+    key: "ret-family-uae-ar",
+    title: "نقل العضوية لأحد أفراد العائلة",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "AR",
+    body: "💙 إذا سبب الإلغاء هو السفر أو عدم القدرة على استخدام العضوية، نقدر نتحقق من إمكانية نقلها لأحد أفراد العائلة حسب الشروط بدل الإلغاء.",
+    source: "clean-v2",
+    sortOrder: 750
+  },
+  {
+    key: "ret-family-uae-en",
+    title: "Retention - family transfer",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "EN",
+    body: "💙 If the cancellation reason is travel or inability to use the membership, we can check whether it can be transferred to a family member, subject to the terms, instead of cancelling.",
+    source: "clean-v2",
+    sortOrder: 760
+  },
+  {
+    key: "chargeback-block-ksa-ar",
+    title: "إلغاء وحظر العضوية بسبب بلاغ سحب",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "AR",
+    body: "💚 نود إعلامك بأنه تم إلغاء عضويتك وحظرها اعتبارًا من 00-00-2020 بسبب الإبلاغ عن عملية سحب قمنا بمعالجتها، وقد تم رد المبلغ من قبل البنك.\n\nنود التنويه إلى أن عمليات السحب تتم باسم شركة اكتمال الرياضية. إذا كنت ترغب بإعادة الانضمام، يرجى تأكيد عدم الإبلاغ عن أي عملية سحب مستقبلية والالتزام بدفع المبلغ الذي تم استرجاعه مرة أخرى.\n\nإعادة الانضمام تتطلب دفع رسوم العضوية الجديدة بالإضافة إلى رسوم الانضمام، كما سيتم إصدار فاتورة بالمبلغ الذي تم الإبلاغ عنه لدفعه.\n\nإذا كنت موافقًا على هذه الشروط، يرجى إعلامنا حتى نتمكن من إخطار القسم المختص لرفع الحظر عن عضويتك، وبعدها يمكنك إعادة الانضمام.",
+    source: "clean-v2",
+    sortOrder: 770
+  },
+  {
+    key: "chargeback-block-ksa-en",
+    title: "Chargeback block and rejoin terms",
+    category: "Cancellation & Retention",
+    country: "KSA",
+    language: "EN",
+    body: "💚 We would like to inform you that your membership was cancelled and blocked as of 00-00-2020 because a payment processed by us was reported, and the amount was refunded by the bank.\n\nPlease note that payments are processed under Ektimal Sports Company. If you would like to rejoin, please confirm that you will not report any future payments and that you agree to repay the refunded amount.\n\nRejoining will require paying the new membership fee and the joining fee. Once your membership is reactivated, an invoice will also be issued for the reported amount.\n\nIf you agree to these terms, please let us know so we can notify the concerned team to lift the block on your membership, allowing you to rejoin.",
+    source: "clean-v2",
+    sortOrder: 780
+  },
+  {
+    key: "chargeback-block-uae-ar",
+    title: "إلغاء وحظر العضوية بسبب بلاغ سحب",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "AR",
+    body: "💙 نود إعلامك بأنه تم إلغاء عضويتك وحظرها اعتبارًا من 00-00-2020 بسبب الإبلاغ عن عملية سحب قمنا بمعالجتها، وقد تم رد المبلغ من قبل البنك.\n\nنود التنويه إلى أن عمليات السحب تتم باسم شركة اكتمال الرياضية. إذا كنت ترغب بإعادة الانضمام، يرجى تأكيد عدم الإبلاغ عن أي عملية سحب مستقبلية والالتزام بدفع المبلغ الذي تم استرجاعه مرة أخرى.\n\nإعادة الانضمام تتطلب دفع رسوم العضوية الجديدة بالإضافة إلى رسوم الانضمام، كما سيتم إصدار فاتورة بالمبلغ الذي تم الإبلاغ عنه لدفعه.\n\nإذا كنت موافقًا على هذه الشروط، يرجى إعلامنا حتى نتمكن من إخطار القسم المختص لرفع الحظر عن عضويتك، وبعدها يمكنك إعادة الانضمام.",
+    source: "clean-v2",
+    sortOrder: 790
+  },
+  {
+    key: "chargeback-block-uae-en",
+    title: "Chargeback block and rejoin terms",
+    category: "Cancellation & Retention",
+    country: "UAE",
+    language: "EN",
+    body: "💙 We would like to inform you that your membership was cancelled and blocked as of 00-00-2020 because a payment processed by us was reported, and the amount was refunded by the bank.\n\nPlease note that payments are processed under Ektimal Sports Company. If you would like to rejoin, please confirm that you will not report any future payments and that you agree to repay the refunded amount.\n\nRejoining will require paying the new membership fee and the joining fee. Once your membership is reactivated, an invoice will also be issued for the reported amount.\n\nIf you agree to these terms, please let us know so we can notify the concerned team to lift the block on your membership, allowing you to rejoin.",
+    source: "clean-v2",
+    sortOrder: 800
+  },
+  {
+    key: "ksa-core-monthly-ar",
     title: "كور شهري - 30 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "يحق لك تجميد عضويتك مجانًا لمدة ٨ أيام خلال كل ٣٠ يوم.\nلو احتجت تزيد عن ٨ أيام، يتم احتساب ٣٩ ريال لكل ٣٠ يوم إضافي.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية كور الشهرية تشمل 8 أيام تجميد مجانية لكل 30 يوم. إذا احتجت مدة أكثر من 8 أيام، يتم احتساب رسوم 39 ريال لكل 30 يوم إضافي.",
+    source: "freeze-policy",
+    sortOrder: 810
   },
   {
-    key: "freeze-policy-core-monthly-en",
+    key: "ksa-core-monthly-en",
     title: "Core Monthly - 30 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You're entitled to freeze your membership for 8 days for free every 30 days.\nIf you need more than 8 days, a fee of SAR 39 applies for each additional 30 day period.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Core monthly membership includes 8 free freeze days every 30 days. If you need more than 8 days, a fee of SAR 39 applies for each additional 30-day period.",
+    source: "freeze-policy",
+    sortOrder: 820
   },
   {
-    key: "freeze-policy-core-3m-ar",
+    key: "ksa-core-3-ar",
     title: "كور 3 شهور - 90 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "يحق لك ٢٢ يوم تجميد مجاني خلال فترة عضويتك.\nتقدر تجمدها لمرة واحدة مجانًا ويبدأ التجميد من ١١ يوم كحد أدنى، وبعد أول طلب تجميد مجاني أي أيام إضافية يتم احتسابها برسوم ٣٩ ريال لكل ٣٠ يوم.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية كور 3 شهور تشمل 22 يوم تجميد مجاني خلال مدة العضوية. الحد الأدنى للتجميد 11 يوم، وبعد استخدام التجميد المجاني يتم احتساب 39 ريال لكل 30 يوم إضافي.",
+    source: "freeze-policy",
+    sortOrder: 830
   },
   {
-    key: "freeze-policy-core-3m-en",
+    key: "ksa-core-3-en",
     title: "Core 3 Months - 90 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You are entitled to 22 days of free freeze during your membership period.\nYou can freeze your membership once for free, starting from a minimum of 11 days.\nAfter the first free freeze request, any additional days will be charged at 39 SAR per 30 days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Core 3-month membership includes 22 free freeze days during the membership period. The minimum freeze period is 11 days. After the free freeze allowance is used, SAR 39 applies for each additional 30-day period.",
+    source: "freeze-policy",
+    sortOrder: 840
   },
   {
-    key: "freeze-policy-core-4m-ar",
+    key: "ksa-core-4-ar",
     title: "كور 4 شهور - 120 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "يحق لك ٣٠ يوم تجميد مجاني خلال فترة عضويتك.\nتقدر تجمدها لمرة واحدة ويبدأ التجميد من ١٥ يوم كحد أدنى، وبعد أول طلب تجميد مجاني أي أيام إضافية يتم احتسابها برسوم ٣٩ ريال لكل ٣٠ يوم.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية كور 4 شهور تشمل 30 يوم تجميد مجاني خلال مدة العضوية. الحد الأدنى للتجميد 15 يوم، وبعد استخدام التجميد المجاني يتم احتساب 39 ريال لكل 30 يوم إضافي.",
+    source: "freeze-policy",
+    sortOrder: 850
   },
   {
-    key: "freeze-policy-core-4m-en",
+    key: "ksa-core-4-en",
     title: "Core 4 Months - 120 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You are entitled to 30 days of free freeze during your membership period.\nYou can freeze your membership once, starting from a minimum of 15 days.\nAfter the first free freeze request, any additional days will be charged at 39 SAR per 30 days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Core 4-month membership includes 30 free freeze days during the membership period. The minimum freeze period is 15 days. After the free freeze allowance is used, SAR 39 applies for each additional 30-day period.",
+    source: "freeze-policy",
+    sortOrder: 860
   },
   {
-    key: "freeze-policy-core-6m-ar",
+    key: "ksa-core-6-ar",
     title: "كور 6 شهور - 180 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "يحق لك ٤٥ يوم تجميد مجاني خلال فترة عضويتك.\nتقدر تجمدها لمرة واحدة ويبدأ التجميد من ١٥ يوم كحد أدنى، وبعد أول طلب تجميد مجاني أي أيام إضافية يتم احتسابها برسوم ٣٩ ريال لكل ٣٠ يوم.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية كور 6 شهور تشمل 45 يوم تجميد مجاني خلال مدة العضوية. الحد الأدنى للتجميد 15 يوم، وبعد استخدام التجميد المجاني يتم احتساب 39 ريال لكل 30 يوم إضافي.",
+    source: "freeze-policy",
+    sortOrder: 870
   },
   {
-    key: "freeze-policy-core-6m-en",
+    key: "ksa-core-6-en",
     title: "Core 6 Months - 180 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You are entitled to 45 days of free freeze during your membership period.\nYou can freeze your membership once, starting from a minimum of 15 days.\nAfter the first free freeze request, any additional days will be charged at 39 SAR per 30 days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Core 6-month membership includes 45 free freeze days during the membership period. The minimum freeze period is 15 days. After the free freeze allowance is used, SAR 39 applies for each additional 30-day period.",
+    source: "freeze-policy",
+    sortOrder: 880
   },
   {
-    key: "freeze-policy-core-12m-ar",
+    key: "ksa-core-12-ar",
     title: "كور 12 شهر - 365 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "يحق لك ٩١ يوم تجميد مجاني بالسنة.\nتقدر تجمدها لمرة واحدة ويبدأ التجميد من ١٥ يوم كحد أدنى، وبعد أول طلب تجميد مجاني أي أيام إضافية تُحسب عليها رسوم ٤٩ ريال لكل ٣٠ يوم.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية كور 12 شهر تشمل 91 يوم تجميد مجاني بالسنة. الحد الأدنى للتجميد 15 يوم، وبعد استخدام التجميد المجاني يتم احتساب 49 ريال لكل 30 يوم إضافي.",
+    source: "freeze-policy",
+    sortOrder: 890
   },
   {
-    key: "freeze-policy-core-12m-en",
+    key: "ksa-core-12-en",
     title: "Core 12 Months - 365 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You are entitled to 91 days of free freeze per year.\nYou can freeze your membership once, starting from a minimum of 15 days.\nAfter the first free freeze request, any additional days will be charged at 49 SAR per 30 days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Core 12-month membership includes 91 free freeze days per year. The minimum freeze period is 15 days. After the free freeze allowance is used, SAR 49 applies for each additional 30-day period.",
+    source: "freeze-policy",
+    sortOrder: 900
   },
   {
-    key: "freeze-policy-plus-monthly-ar",
+    key: "ksa-plus-monthly-ar",
     title: "بلس شهري - 30 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "عضويتك فيها ٩١ يوم تجميد مجاني، تقدر تستخدمها على فترات خلال اشتراكك، والحد الأدنى للتجميد هو ١٥ يوم.\nما فيه أي رسوم طول ما أنت ما تعديت الحد. لو تجاوزت ٩١ يوم، الرسوم بتكون ٣٩ ريال لكل ٣٠ يوم إضافي.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية بلس الشهرية تشمل حتى 91 يوم تجميد مجاني يمكن استخدامها على فترات خلال الاشتراك، والحد الأدنى للتجميد 15 يوم. لا توجد رسوم طالما لم يتم تجاوز الحد. عند تجاوز 91 يوم، يتم احتساب 39 ريال لكل 30 يوم إضافي.",
+    source: "freeze-policy",
+    sortOrder: 910
   },
   {
-    key: "freeze-policy-plus-monthly-en",
+    key: "ksa-plus-monthly-en",
     title: "Plus Monthly - 30 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Your membership includes 91 free freeze days. You can use them in periods throughout your subscription, and the minimum freeze duration is 15 days. There are no fees as long as you don’t exceed the limit.\nIf you go beyond the 91 days, the fee will be 39 SAR for each additional 30 days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Plus monthly membership includes up to 91 free freeze days that can be used in periods during the subscription. The minimum freeze period is 15 days. There are no fees as long as the limit is not exceeded. If you exceed 91 days, SAR 39 applies for each additional 30-day period.",
+    source: "freeze-policy",
+    sortOrder: 920
   },
   {
-    key: "freeze-policy-plus-3m-ar",
+    key: "ksa-plus-3-ar",
     title: "بلس 3 شهور - 90 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "عندك ٢٢ يوم تجميد مجاني، وتقدر تقسّمهم على مرتين كل مرة ١١ يوم.\nويتم احتساب ٣٩ ريال لكل ٣٠ يوم تجميد إضافي.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية بلس 3 شهور تشمل 22 يوم تجميد مجاني، ويمكن تقسيمها على مرتين كل مرة 11 يوم. أي تجميد إضافي يتم احتسابه برسوم 39 ريال لكل 30 يوم.",
+    source: "freeze-policy",
+    sortOrder: 930
   },
   {
-    key: "freeze-policy-plus-3m-en",
+    key: "ksa-plus-3-en",
     title: "Plus 3 Months - 90 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You have 22 days of free freeze, and you can split them into two periods of 11 days each.\nAny additional freeze days will be charged at 39 SAR per 30 days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Plus 3-month membership includes 22 free freeze days, which can be split into two periods of 11 days each. Any additional freeze is charged at SAR 39 per 30 days.",
+    source: "freeze-policy",
+    sortOrder: 940
   },
   {
-    key: "freeze-policy-plus-4m-ar",
+    key: "ksa-plus-4-ar",
     title: "بلس 4 شهور - 120 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "عندك ٣٠ يوم تجميد مجاني خلال الاشتراك، وتقدر تقسّمهم على مرتين كل مرة ١٥ يوم.\nويتم احتساب ٣٩ ريال لكل ٣٠ يوم تجميد إضافي.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية بلس 4 شهور تشمل 30 يوم تجميد مجاني، ويمكن تقسيمها على مرتين كل مرة 15 يوم. أي تجميد إضافي يتم احتسابه برسوم 39 ريال لكل 30 يوم.",
+    source: "freeze-policy",
+    sortOrder: 950
   },
   {
-    key: "freeze-policy-plus-4m-en",
+    key: "ksa-plus-4-en",
     title: "Plus 4 Months - 120 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You have 30 days of free freeze during your membership, and you can split them into two periods of 15 days each.\nAny additional freeze days will be charged at 39 SAR per 30 days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Plus 4-month membership includes 30 free freeze days, which can be split into two periods of 15 days each. Any additional freeze is charged at SAR 39 per 30 days.",
+    source: "freeze-policy",
+    sortOrder: 960
   },
   {
-    key: "freeze-policy-plus-6m-ar",
+    key: "ksa-plus-6-ar",
     title: "بلس 6 شهور - 180 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "عندك ٤٥ يوم تجميد مجاني خلال مدة العضوية.\nتقدر تستخدمها على فترات بدون أي رسوم، والحد الأدنى للتجميد هو ١٥ يوم.\nولو تجاوزت الـ٤٥ يوم، يتم احتساب ٣٩ ريال لكل ٣٠ يوم إضافي.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية بلس 6 شهور تشمل 45 يوم تجميد مجاني خلال مدة العضوية. يمكن استخدامها على فترات، والحد الأدنى للتجميد 15 يوم. عند تجاوز 45 يوم، يتم احتساب 39 ريال لكل 30 يوم إضافي.",
+    source: "freeze-policy",
+    sortOrder: 970
   },
   {
-    key: "freeze-policy-plus-6m-en",
+    key: "ksa-plus-6-en",
     title: "Plus 6 Months - 180 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You have 45 days of free freeze during your membership period.\nYou can use them in multiple periods with no charge, with a minimum freeze of 15 days.\nIf you exceed the 45 days, an additional 39 SAR will be charged per 30 extra days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Plus 6-month membership includes 45 free freeze days during the membership period. They can be used in multiple periods, with a minimum freeze of 15 days. If you exceed 45 days, SAR 39 applies for each additional 30-day period.",
+    source: "freeze-policy",
+    sortOrder: 980
   },
   {
-    key: "freeze-policy-plus-12m-ar",
+    key: "ksa-plus-12-ar",
     title: "بلس 12 شهر - 365 يوم",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "يحق لك تجميد عضويتك لمدة ٩١ يوم مجانًا خلال السنة.\nتقدر تقسمها وتستخدمها بأي وقت يناسبك والحد الأدنى للتجميد هو ١٥ يوم.\nبعد ما تخلص مدة التجميد المجاني، تُحسب رسوم ٤٩ ريال لكل ٣٠ يوم إضافي.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 عضوية بلس 12 شهر تشمل 91 يوم تجميد مجاني خلال السنة. يمكن تقسيمها واستخدامها حسب الحاجة، والحد الأدنى للتجميد 15 يوم. بعد انتهاء المدة المجانية، يتم احتساب 49 ريال لكل 30 يوم إضافي.",
+    source: "freeze-policy",
+    sortOrder: 990
   },
   {
-    key: "freeze-policy-plus-12m-en",
+    key: "ksa-plus-12-en",
     title: "Plus 12 Months - 365 Days",
-    category: "Freeze",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You are entitled to 91 days of free freeze during the year.\nYou can split it and use it at any time that suits you, with a minimum freeze of 15 days.\nAfter the free freeze period ends, 49 SAR will be charged for each additional 30 days.",
-    source: "image-freeze-policy"
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Plus 12-month membership includes 91 free freeze days during the year. They can be split and used as needed, with a minimum freeze of 15 days. After the free allowance is used, SAR 49 applies for each additional 30-day period.",
+    source: "freeze-policy",
+    sortOrder: 1000
   },
   {
-    key: "transfer-escalated-ar",
-    title: "نقل عضوية - خلال 24 ساعة",
-    category: "Transfers & Refunds",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تم استلام طلب نقل عضويتك [نوع العضوية] بالتفاصيل التالية:\n\nبيانات الحساب:\n• البريد الإلكتروني: example@email.com\n• رقم الجوال: 0000000000\n\nتفاصيل النقل:\n• من فرع: [الفرع الحالي]\n• إلى فرع: [الفرع المطلوب]\n\nتم تحويل الطلب إلى الفريق المختص لتنفيذه.\nسيتم إتمام النقل خلال 24 ساعة، وستظهر التحديثات مباشرة في التطبيق.",
-    source: "image-action"
+    key: "uae-core-monthly-ar",
+    title: "كور شهري - الإمارات",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 عضوية كور الشهرية في الإمارات لا تشمل تجميد مجاني. يبدأ التجميد من تاريخ الدفع القادم ولكل شهر يتم تجميده حسب سياسة العضوية.",
+    source: "freeze-policy",
+    sortOrder: 1010
   },
   {
-    key: "transfer-escalated-en",
-    title: "Transfer - Escalated 24h",
-    category: "Transfers & Refunds",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Your transfer request for your [Membership Type] membership has been received:\n\nAccount details:\n• Email: example@email.com\n• Phone: 0000000000\n\nTransfer details:\n• From branch: [Current Branch]\n• To branch: [Target Branch]\n\nWe’ve shared this with our Membership Services team.\nThe transfer will be completed within 24 hours, and you’ll see the update in your app.",
-    source: "image-action"
+    key: "uae-core-monthly-en",
+    title: "Core Monthly - UAE",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 UAE Core monthly membership does not include free freeze. The freeze starts from the next payment date, and the freeze is applied according to the membership policy.",
+    source: "freeze-policy",
+    sortOrder: 1020
   },
   {
-    key: "transfer-done-ar",
-    title: "نقل عضوية - تم مباشرة",
-    category: "Transfers & Refunds",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تم نقل عضويتك [نوع العضوية] بالتفاصيل التالية:\n\nبيانات الحساب:\n• البريد الإلكتروني: example@email.com\n• رقم الجوال: 0000000000\n\nتفاصيل النقل:\n• من فرع: [الفرع الحالي]\n• إلى فرع: [الفرع المطلوب]\n\nستظهر التحديثات مباشرة في التطبيق.",
-    source: "image-action"
+    key: "uae-core-pif-ar",
+    title: "كور محددة المدة - الإمارات",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 عضويات كور محددة المدة في الإمارات لا تشمل تجميد مجاني خلال 3، 4، 6، أو 12 شهر. يتم قبول التجميد الصحي فقط لمدة أقصاها 3 شهور بشرط أن يكون التقرير الطبي حديثًا.",
+    source: "freeze-policy",
+    sortOrder: 1030
   },
   {
-    key: "transfer-done-en",
-    title: "Transfer - Done Immediately",
-    category: "Transfers & Refunds",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Your transfer for your [Membership Type] membership has been done:\n\nAccount details:\n• Email: example@email.com\n• Phone: 0000000000\n\nTransfer details:\n• From branch: [Current Branch]\n• To branch: [Target Branch]\n\nYou’ll see the update in your app directly.",
-    source: "image-action"
+    key: "uae-core-pif-en",
+    title: "Core PIF - UAE",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 UAE Core fixed-term memberships do not include free freeze for 3, 4, 6, or 12 months. Medical freeze may be accepted for up to 3 months only, provided the medical report is recent.",
+    source: "freeze-policy",
+    sortOrder: 1040
   },
   {
-    key: "refund-requested-ar",
-    title: "طلب استرجاع نقدي",
-    category: "Transfers & Refunds",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تم رفع طلب الاسترجاع النقدي لعضويتك [نوع العضوية] إلى القسم المعني.\n\nبيانات الحساب:\n• البريد الإلكتروني: example@email.com\n• رقم الجوال: 0000000000\n\nتفاصيل الاسترجاع:\n• المبلغ: 00 SAR\n\nسيتم معالجة الاسترجاع خلال 3–5 أيام عمل حسب سياسة البنك.\n\nسيعود المبلغ إلى نفس وسيلة الدفع المستخدمة عند الاشتراك في حال الموافقة على طلبك.",
-    source: "image-action"
+    key: "uae-plus-monthly-ar",
+    title: "بلس شهري - الإمارات",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 عضوية بلس الشهرية في الإمارات تشمل تجميد مجاني لمدة 3 شهور. يبدأ التجميد من تاريخ الدفع القادم.",
+    source: "freeze-policy",
+    sortOrder: 1050
   },
   {
-    key: "refund-requested-en",
-    title: "Refund - Requested",
-    category: "Transfers & Refunds",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Your refund request for your [Membership Type] has been submitted to the concerned department.\n\nAccount details:\n• Email: example@email.com\n• Mobile number: 0000000000\n\nRefund details:\n• Amount: 00 SAR\n\nThe refund will be processed within 3–5 business days according to the bank’s policy.\n\nThe amount will be returned to the same payment method used at the time of subscription, if your request is approved.",
-    source: "image-action"
+    key: "uae-plus-monthly-en",
+    title: "Plus Monthly - UAE",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 UAE Plus monthly membership includes up to 3 months of free freeze. The freeze starts from the next payment date.",
+    source: "freeze-policy",
+    sortOrder: 1060
   },
   {
-    key: "payment-issue-checklist-ar",
-    title: "مشكلة في الدفع",
+    key: "uae-plus-3-ar",
+    title: "بلس 3 شهور - الإمارات",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 عضوية بلس 3 شهور تشمل تجميد مجاني لمدة واحدة بحد أدنى 15 يوم، ولا يمكن تقسيمها أو تمديدها لفترة أكثر ضمن نفس الطلب.",
+    source: "freeze-policy",
+    sortOrder: 1070
+  },
+  {
+    key: "uae-plus-3-en",
+    title: "Plus 3 Months - UAE",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 UAE Plus 3-month membership includes one free freeze period with a minimum of 15 days. It cannot be split or extended for more within the same request.",
+    source: "freeze-policy",
+    sortOrder: 1080
+  },
+  {
+    key: "uae-plus-4-ar",
+    title: "بلس 4 شهور - الإمارات",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 عضوية بلس 4 شهور تشمل تجميد مجاني لمدة واحدة بحد أدنى 15 يوم، ولا يمكن تقسيمها أو تمديدها لفترة أكثر ضمن نفس الطلب.",
+    source: "freeze-policy",
+    sortOrder: 1090
+  },
+  {
+    key: "uae-plus-4-en",
+    title: "Plus 4 Months - UAE",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 UAE Plus 4-month membership includes one free freeze period with a minimum of 15 days. It cannot be split or extended for more within the same request.",
+    source: "freeze-policy",
+    sortOrder: 1100
+  },
+  {
+    key: "uae-plus-6-ar",
+    title: "بلس 6 شهور - الإمارات",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 عضوية بلس 6 شهور تشمل تجميد مجاني لمدة 45 يوم بحد أدنى 15 يوم.",
+    source: "freeze-policy",
+    sortOrder: 1110
+  },
+  {
+    key: "uae-plus-6-en",
+    title: "Plus 6 Months - UAE",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 UAE Plus 6-month membership includes 45 free freeze days with a minimum freeze period of 15 days.",
+    source: "freeze-policy",
+    sortOrder: 1120
+  },
+  {
+    key: "uae-plus-12-ar",
+    title: "بلس 12 شهر - الإمارات",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 عضوية بلس 12 شهر تشمل تجميد مجاني لمدة 90 يوم بحد أدنى 15 يوم.",
+    source: "freeze-policy",
+    sortOrder: 1130
+  },
+  {
+    key: "uae-plus-12-en",
+    title: "Plus 12 Months - UAE",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 UAE Plus 12-month membership includes 90 free freeze days with a minimum freeze period of 15 days.",
+    source: "freeze-policy",
+    sortOrder: 1140
+  },
+  {
+    key: "freeze-complete-monthly-ksa-ar",
+    title: "تجميد العضوية الشهرية - مكتمل",
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020، وموعد فاتورتك القادمة 00-00-2020 بقيمة [قيمة الدفعة القادمة].\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    source: "clean-v2",
+    sortOrder: 1150
+  },
+  {
+    key: "freeze-complete-monthly-ksa-en",
+    title: "Freeze monthly - Completed",
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020. Your next billing date will be on 00-00-2020 with an amount of [Next Payment Amount].\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    source: "clean-v2",
+    sortOrder: 1160
+  },
+  {
+    key: "freeze-complete-monthly-uae-ar",
+    title: "تجميد العضوية الشهرية - مكتمل",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020، وموعد فاتورتك القادمة 00-00-2020 بقيمة [قيمة الدفعة القادمة].\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    source: "clean-v2",
+    sortOrder: 1170
+  },
+  {
+    key: "freeze-complete-monthly-uae-en",
+    title: "Freeze monthly - Completed",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020. Your next billing date will be on 00-00-2020 with an amount of [Next Payment Amount].\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    source: "clean-v2",
+    sortOrder: 1180
+  },
+  {
+    key: "freeze-complete-pif-ksa-ar",
+    title: "تجميد العضوية محددة المدة - مكتمل",
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "AR",
+    body: "💚 تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020، وموعد انتهاء عضويتك الجديد في 00-00-2020.\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    source: "clean-v2",
+    sortOrder: 1190
+  },
+  {
+    key: "freeze-complete-pif-ksa-en",
+    title: "Freeze PIF - Completed",
+    category: "Freeze Policy",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020, and your new membership expiry date will be 00-00-2020.\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    source: "clean-v2",
+    sortOrder: 1200
+  },
+  {
+    key: "freeze-complete-pif-uae-ar",
+    title: "تجميد العضوية محددة المدة - مكتمل",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "AR",
+    body: "💙 تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020، وموعد انتهاء عضويتك الجديد في 00-00-2020.\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    source: "clean-v2",
+    sortOrder: 1210
+  },
+  {
+    key: "freeze-complete-pif-uae-en",
+    title: "Freeze PIF - Completed",
+    category: "Freeze Policy",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020, and your new membership expiry date will be 00-00-2020.\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    source: "clean-v2",
+    sortOrder: 1220
+  },
+  {
+    key: "payment-link-permission-ksa-ar",
+    title: "طلب موافقة لإرسال رابط دفع",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "في حال واجهت مشكلة في الدفع، يرجى التأكد من التالي:\n\n• توفر رصيد كافي في البطاقة.\n• أن البطاقة تدعم الدفع الإلكتروني.\n• إدخال بيانات البطاقة بشكل صحيح.\n• وجود اتصال إنترنت مستقر.\n• عدم استخدام VPN أثناء عملية الدفع.\n• في حال اختيار عضوية شهرية، لن يظهر خيار تابي لأنه متاح فقط للعضويات محددة المدة.\n\nفي حال استمرار المشكلة، يرجى المحاولة مرة أخرى لاحقًا أو التواصل معنا.",
-    source: "quick-file"
+    country: "KSA",
+    language: "AR",
+    body: "💚 قبل إرسال رابط الدفع، هل توافق على استلام فاتورة إلكترونية لإتمام عملية الدفع؟ سيتم إرسالها إلى بريدك الإلكتروني من hyperbill@hyperpay.com.",
+    source: "clean-v2",
+    sortOrder: 1230
   },
   {
-    key: "payment-issue-checklist-en",
-    title: "Payment issue checklist",
+    key: "payment-link-permission-ksa-en",
+    title: "Payment link permission",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "If you are facing a payment issue, please make sure of the following:\n\n• Sufficient balance is available on your card.\n• Your card supports online transactions.\n• Card details are entered correctly.\n• Your internet connection is stable.\n• Do not use a VPN during payment.\n• If you selected a monthly membership, Tabby will not appear as it is only available for fixed-term memberships.\n\nIf the issue persists, please try again later or contact us.",
-    source: "quick-file"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Before sending the payment link, do you agree to receive an electronic invoice to complete the payment? It will be sent to your email from hyperbill@hyperpay.com.",
+    source: "clean-v2",
+    sortOrder: 1240
   },
   {
-    key: "add-membership-payment-request-ar",
-    title: "إضافة عضوية جديدة - تأكيد الطلب",
+    key: "payment-link-permission-uae-ar",
+    title: "طلب موافقة لإرسال رابط دفع",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تقدر تشترك عن طريقنا بإضافة عضوية جديدة على عضويتك الحالية.\nسيتم إرسال بريد إلكتروني يحتوي على رابط دفع بقيمة العضوية الجديدة، وبعد إتمام الدفع سيتم إضافة العضوية الجديدة لتبدأ بعد انتهاء عضويتك الحالية.\n\nيرجى ملاحظة أن رابط الدفع صالح لمدة 48 ساعة.\nكما يلزم التواصل معنا بعد الدفع لإتمام إضافة العضوية.\nعلمًا بأنه لا يمكن الدفع عن طريق تابي لهذه العملية.\n\nهل ترغب في تأكيد الطلب؟",
-    source: "quick-file"
+    country: "UAE",
+    language: "AR",
+    body: "💙 قبل إرسال رابط الدفع، هل توافق على استلام فاتورة إلكترونية لإتمام عملية الدفع؟ سيتم إرسالها إلى بريدك الإلكتروني من hyperbill@hyperpay.com.",
+    source: "clean-v2",
+    sortOrder: 1250
   },
   {
-    key: "add-membership-payment-request-en",
-    title: "Add new membership - Confirm request",
+    key: "payment-link-permission-uae-en",
+    title: "Payment link permission",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "You can subscribe through us by adding a new membership to your current one.\nAn email will be sent to you with a payment link for the new membership. Once the payment is completed, the new membership will be added to start after your current one ends.\n\nPlease note that the payment link is valid for 48 hours.\nYou will need to contact us after payment to complete the process.\nKindly note that Tabby is not available for this type of payment.\n\nWould you like to confirm the request?",
-    source: "quick-file"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Before sending the payment link, do you agree to receive an electronic invoice to complete the payment? It will be sent to your email from hyperbill@hyperpay.com.",
+    source: "clean-v2",
+    sortOrder: 1260
   },
   {
-    key: "payment-link-sent-ar",
-    title: "رابط دفع تم إرساله",
+    key: "payment-link-sent-ksa-ar",
+    title: "إرسال رابط دفع",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "سيتم إرسال بريد إلكتروني خلال ساعات يحتوي على رابط دفع بقيمة (___) ريال.\nبعد إتمام الدفع، سيتم إضافة العضوية الجديدة لتبدأ بعد انتهاء عضويتك الحالية.\n\nيرجى ملاحظة أن رابط الدفع صالح لمدة 48 ساعة.\nكما نرجو التواصل معنا بعد الدفع لإتمام إضافة العضوية.",
-    source: "quick-file"
+    country: "KSA",
+    language: "AR",
+    body: "💚 سيتم إرسال فاتورة إلكترونية من البريد التالي: hyperbill@hyperpay.com\nإلى بريدك الإلكتروني: \nوتتضمن الفاتورة رابطًا لإتمام عملية الدفع الخاصة بمبلغ [المبلغ].\n\nيرجى بعد الدفع التواصل معنا لإتمام طلبك.",
+    source: "clean-v2",
+    sortOrder: 1270
   },
   {
-    key: "payment-link-sent-en",
+    key: "payment-link-sent-ksa-en",
     title: "Payment link sent",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "An email will be sent within a few hours containing a payment link for the amount of (___) SAR.\nOnce the payment is completed, the new membership will be added to start after your current one ends.\n\nPlease note that the payment link is valid for 48 hours.\nKindly contact us after payment to complete adding the membership.",
-    source: "quick-file"
+    country: "KSA",
+    language: "EN",
+    body: "💚 An electronic invoice will be sent from: hyperbill@hyperpay.com\nTo your email: \nThe invoice will include a payment link to complete the payment for the amount of [Amount].\n\nAfter payment, please contact us so we can complete your request.",
+    source: "clean-v2",
+    sortOrder: 1280
   },
   {
-    key: "failed-renewal-suspended-ar",
-    title: "فشل التجديد والعضوية معلقة",
+    key: "payment-link-sent-uae-ar",
+    title: "إرسال رابط دفع",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "نود التوضيح أنه كانت هناك محاولة تجديد تلقائي بتاريخ 00-00-2020 ولم تنجح، لذلك تم تعليق عضويتك لمدة 10 أيام.\n\nبعد انتهاء فترة التعليق، سيتم إجراء محاولة تجديد تلقائي أخرى، وفي حال فشلت سيتم إلغاء العضوية تلقائيًا.\n\nبإمكانك الدخول إلى الموقع وتسجيل الدخول إلى حسابك وسداد المبلغ يدويًا باستخدام أي بطاقة دون الحاجة لانتظار المحاولة القادمة، وذلك لتمكينك من دخول النادي.",
-    source: "quick-file"
+    country: "UAE",
+    language: "AR",
+    body: "💙 سيتم إرسال فاتورة إلكترونية من البريد التالي: hyperbill@hyperpay.com\nإلى بريدك الإلكتروني: \nوتتضمن الفاتورة رابطًا لإتمام عملية الدفع الخاصة بمبلغ [المبلغ].\n\nيرجى بعد الدفع التواصل معنا لإتمام طلبك.",
+    source: "clean-v2",
+    sortOrder: 1290
   },
   {
-    key: "failed-renewal-suspended-en",
-    title: "Failed renewal - Membership suspended",
+    key: "payment-link-sent-uae-en",
+    title: "Payment link sent",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "We would like to inform you that an automatic renewal attempt was made on 00-00-2020, but it was unsuccessful. As a result, your membership has been suspended for 10 days.\n\nAfter this period, another automatic payment attempt will be made. If it fails again, the membership will be cancelled automatically.\n\nYou can log in to your account through the website and complete the payment manually using any card without waiting for the next attempt, so you can regain access to the gym.",
-    source: "quick-file"
+    country: "UAE",
+    language: "EN",
+    body: "💙 An electronic invoice will be sent from: hyperbill@hyperpay.com\nTo your email: \nThe invoice will include a payment link to complete the payment for the amount of [Amount].\n\nAfter payment, please contact us so we can complete your request.",
+    source: "clean-v2",
+    sortOrder: 1300
   },
   {
-    key: "change-card-steps-ar",
-    title: "طريقة تغيير البطاقة",
+    key: "paid-still-suspended-ksa-ar",
+    title: "تم الدفع والعضوية ما زالت غير مفعلة",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "كل اللي عليك تسويه أنك تسجل دخول على حسابك من هذا الرابط:\nhttps://ksa.puregymarabia.com/login/\n\nتضغط على \"يدير\" تحت بطاقة الصالة الرياضية، بعدها تضغط على طريقة الدفع أو السداد وتغير معلومات البطاقة من هناك.",
-    source: "quick-file"
+    country: "KSA",
+    language: "AR",
+    body: "💚 نعتذر عن ذلك. يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبطين بالعضوية، مع صورة أو رقم العملية إن وجد، حتى نتمكن من رفع الطلب للفريق المختص.",
+    source: "clean-v2",
+    sortOrder: 1310
   },
   {
-    key: "change-card-steps-en",
-    title: "Change payment card steps",
+    key: "paid-still-suspended-ksa-en",
+    title: "Paid but membership still inactive",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "All you need to do is log in to your account through this link:\nhttps://ksa.puregymarabia.com/login/\n\nClick “Manage” under the gym membership card, then click on payment method and update your card details from there.",
-    source: "quick-file"
+    country: "KSA",
+    language: "EN",
+    body: "💚 We apologize for that. Please provide the email address and mobile number linked to the membership, along with a payment screenshot or transaction ID if available, so we can escalate it to the concerned team.",
+    source: "clean-v2",
+    sortOrder: 1320
   },
   {
-    key: "monthly-to-pif-conversion-ar",
-    title: "تحويل من شهري إلى محدد المدة",
+    key: "paid-still-suspended-uae-ar",
+    title: "تم الدفع والعضوية ما زالت غير مفعلة",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "في حال رغبتك بتحويل عضويتك من عضوية شهرية إلى عضوية محددة المدة ()، فسيتم سحب فرق السعر بين العضويتين وهو () ريال تقريبًا فجر الغد.\nيرجى التأكد من توفر مبلغ أكثر بقليل من المطلوب للتأكد من إتمام عملية السحب دون مشاكل.\n\nعلمًا بأن عضويتك الجديدة ستبدأ من تاريخ غد، وعملية السحب ستتم من نفس البطاقة المسجلة على عضويتك الشهرية.\n\nإذا فشل تحصيل فرق السعر للمرة الأولى، سيتم محاولة السحب مرة أخرى بعد 10 أيام، وفي حال فشل عملية السحب للمرة الثانية سيتم إلغاء عضويتك بشكل نهائي ولا يمكن استرجاعها.\n\nهل نأكد على العملية؟\n\nملاحظة: إذا تم تحويل عضويتك إلى عضوية ثابتة وتم سحب المبلغ، ولاحقًا وصلك تنبيه بخصوص قرب موعد دفعتك الشهرية، يرجى تجاهل الرسالة لأنها تابعة لعضويتك الشهرية السابقة.",
-    source: "quick-file"
+    country: "UAE",
+    language: "AR",
+    body: "💙 نعتذر عن ذلك. يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبطين بالعضوية، مع صورة أو رقم العملية إن وجد، حتى نتمكن من رفع الطلب للفريق المختص.",
+    source: "clean-v2",
+    sortOrder: 1330
   },
   {
-    key: "monthly-to-pif-conversion-en",
-    title: "Monthly to fixed-term conversion",
+    key: "paid-still-suspended-uae-en",
+    title: "Paid but membership still inactive",
     category: "Payment & Billing",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "If you would like to convert your membership from a monthly membership to a fixed-term membership (), the price difference between both memberships, which is approximately () SAR, will be charged early tomorrow morning.\nPlease make sure that a little more than the required amount is available to ensure the payment is completed without any issues.\n\nPlease note that your new membership will start tomorrow, and the payment will be taken from the same card registered on your monthly membership.\n\nIf the first attempt to collect the price difference fails, another attempt will be made after 10 days. If the second attempt also fails, your membership will be permanently cancelled and cannot be restored.\n\nWould you like us to confirm the process?\n\nPlease note that if your membership is converted to a fixed-term membership and the payment is successfully taken, and you later receive an alert regarding your upcoming monthly payment, please ignore it as it is related to your previous monthly membership.",
-    source: "quick-file"
+    country: "UAE",
+    language: "EN",
+    body: "💙 We apologize for that. Please provide the email address and mobile number linked to the membership, along with a payment screenshot or transaction ID if available, so we can escalate it to the concerned team.",
+    source: "clean-v2",
+    sortOrder: 1340
   },
   {
-    key: "password-reset-permission-ar",
-    title: "طلب إذن إعادة تعيين كلمة السر",
+    key: "tabby-info-ksa-ar",
+    title: "تابي",
+    category: "Payment & Billing",
+    country: "KSA",
+    language: "AR",
+    body: "💚 التقسيط عن طريق تابي متاح لبعض العضويات أو الباقات حسب الخيارات الظاهرة لك أثناء الدفع على الموقع.",
+    source: "clean-v2",
+    sortOrder: 1350
+  },
+  {
+    key: "tabby-info-ksa-en",
+    title: "Tabby",
+    category: "Payment & Billing",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Tabby installments are available for selected memberships or packages depending on the options shown during checkout on the website.",
+    source: "clean-v2",
+    sortOrder: 1360
+  },
+  {
+    key: "tabby-info-uae-ar",
+    title: "تابي",
+    category: "Payment & Billing",
+    country: "UAE",
+    language: "AR",
+    body: "💙 التقسيط عن طريق تابي متاح لبعض العضويات أو الباقات حسب الخيارات الظاهرة لك أثناء الدفع على الموقع.",
+    source: "clean-v2",
+    sortOrder: 1370
+  },
+  {
+    key: "tabby-info-uae-en",
+    title: "Tabby",
+    category: "Payment & Billing",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Tabby installments are available for selected memberships or packages depending on the options shown during checkout on the website.",
+    source: "clean-v2",
+    sortOrder: 1380
+  },
+  {
+    key: "ticket-inactive-transaction-ksa-ar",
+    title: "تذكرة: دفع ولم تتفعل العضوية - Transaction ID",
+    category: "Tickets",
+    country: "KSA",
+    language: "AR",
+    body: "💚 العضو دفع للاشتراك لكن العضوية ما زالت غير فعالة، يرجى التحقق واتخاذ اللازم من طرفكم.\n\nالتفاصيل المطلوبة:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 SAR\nTransaction ID: AD-2ede12ed-9eaf-412b-97cb-5d5c1cc6bb5e\n\nشاكرين تعاونكم.",
+    source: "tickets",
+    sortOrder: 1390
+  },
+  {
+    key: "ticket-inactive-transaction-ksa-en",
+    title: "Ticket: Paid but inactive - Transaction ID",
+    category: "Tickets",
+    country: "KSA",
+    language: "EN",
+    body: "💚 The member paid to join but the membership is still inactive. Please check and do the needed from your side.\n\nNeeded details:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 SAR\nTransaction ID: AD-2ede12ed-9eaf-412b-97cb-5d5c1cc6bb5e\n\nThanks in advance.",
+    source: "tickets",
+    sortOrder: 1400
+  },
+  {
+    key: "ticket-inactive-card-ksa-ar",
+    title: "تذكرة: دفع ولم تتفعل العضوية - Card details",
+    category: "Tickets",
+    country: "KSA",
+    language: "AR",
+    body: "💚 العضو دفع للاشتراك لكن العضوية ما زالت غير فعالة، يرجى التحقق واتخاذ اللازم من طرفكم.\n\nالتفاصيل المطلوبة:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 SAR\nFirst 6 digits: 123456\nLast 4 digits: 1234\nCard Holder Name: [Card Holder Name]\n\nمرفق تقرير الدفع، يرجى التحقق من المشكلة واتخاذ اللازم. شاكرين تعاونكم.",
+    source: "tickets",
+    sortOrder: 1410
+  },
+  {
+    key: "ticket-inactive-card-ksa-en",
+    title: "Ticket: Paid but inactive - Card details",
+    category: "Tickets",
+    country: "KSA",
+    language: "EN",
+    body: "💚 The member paid to join but the membership is still inactive. Please check and do the needed from your side.\n\nNeeded details:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 SAR\nFirst 6 digits: 123456\nLast 4 digits: 1234\nCard Holder Name: [Card Holder Name]\n\nAttached is the payment report. Please check the issue and do the needful from your side. Thanks in advance.",
+    source: "tickets",
+    sortOrder: 1420
+  },
+  {
+    key: "ticket-inactive-transaction-uae-ar",
+    title: "تذكرة: دفع ولم تتفعل العضوية - Transaction ID",
+    category: "Tickets",
+    country: "UAE",
+    language: "AR",
+    body: "💙 العضو دفع للاشتراك لكن العضوية ما زالت غير فعالة، يرجى التحقق واتخاذ اللازم من طرفكم.\n\nالتفاصيل المطلوبة:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 AED\nTransaction ID: AD-2ede12ed-9eaf-412b-97cb-5d5c1cc6bb5e\n\nشاكرين تعاونكم.",
+    source: "tickets",
+    sortOrder: 1430
+  },
+  {
+    key: "ticket-inactive-transaction-uae-en",
+    title: "Ticket: Paid but inactive - Transaction ID",
+    category: "Tickets",
+    country: "UAE",
+    language: "EN",
+    body: "💙 The member paid to join but the membership is still inactive. Please check and do the needed from your side.\n\nNeeded details:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 AED\nTransaction ID: AD-2ede12ed-9eaf-412b-97cb-5d5c1cc6bb5e\n\nThanks in advance.",
+    source: "tickets",
+    sortOrder: 1440
+  },
+  {
+    key: "ticket-inactive-card-uae-ar",
+    title: "تذكرة: دفع ولم تتفعل العضوية - Card details",
+    category: "Tickets",
+    country: "UAE",
+    language: "AR",
+    body: "💙 العضو دفع للاشتراك لكن العضوية ما زالت غير فعالة، يرجى التحقق واتخاذ اللازم من طرفكم.\n\nالتفاصيل المطلوبة:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 AED\nFirst 6 digits: 123456\nLast 4 digits: 1234\nCard Holder Name: [Card Holder Name]\n\nمرفق تقرير الدفع، يرجى التحقق من المشكلة واتخاذ اللازم. شاكرين تعاونكم.",
+    source: "tickets",
+    sortOrder: 1450
+  },
+  {
+    key: "ticket-inactive-card-uae-en",
+    title: "Ticket: Paid but inactive - Card details",
+    category: "Tickets",
+    country: "UAE",
+    language: "EN",
+    body: "💙 The member paid to join but the membership is still inactive. Please check and do the needed from your side.\n\nNeeded details:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 AED\nFirst 6 digits: 123456\nLast 4 digits: 1234\nCard Holder Name: [Card Holder Name]\n\nAttached is the payment report. Please check the issue and do the needful from your side. Thanks in advance.",
+    source: "tickets",
+    sortOrder: 1460
+  },
+  {
+    key: "password-reset-ksa-ar",
+    title: "إعادة تعيين كلمة السر",
     category: "App / Login / Password",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "هل تسمح لي بإعادة تعيين كلمة السر لك؟",
-    source: "manual"
+    country: "KSA",
+    language: "AR",
+    body: "💚 هل تسمح لي بإعادة تعيين كلمة السر لحسابك؟",
+    source: "clean-v2",
+    sortOrder: 1470
   },
   {
-    key: "password-reset-permission-en",
+    key: "password-reset-ksa-en",
     title: "Password reset permission",
     category: "App / Login / Password",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Do I have your permission to reset the password for you?",
-    source: "manual"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Do I have your permission to reset the password for your account?",
+    source: "clean-v2",
+    sortOrder: 1480
   },
   {
-    key: "password-reset-done-ar",
-    title: "تمت إعادة تعيين كلمة السر",
+    key: "password-reset-uae-ar",
+    title: "إعادة تعيين كلمة السر",
     category: "App / Login / Password",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تم إعادة تعيين كلمة السر الخاصة بك بنجاح.\nبإمكانك الآن تسجيل الدخول باستخدام المعلومات التالية:\n\nالبريد الإلكتروني: example@email.com\nكلمة السر: 12345678",
-    source: "manual"
+    country: "UAE",
+    language: "AR",
+    body: "💙 هل تسمح لي بإعادة تعيين كلمة السر لحسابك؟",
+    source: "clean-v2",
+    sortOrder: 1490
   },
   {
-    key: "password-reset-done-en",
-    title: "Password reset completed",
+    key: "password-reset-uae-en",
+    title: "Password reset permission",
     category: "App / Login / Password",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Your password has been successfully reset.\nYou can now log in using the following details:\n\nEmail: example@email.com\nPassword: 12345678",
-    source: "manual"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Do I have your permission to reset the password for your account?",
+    source: "clean-v2",
+    sortOrder: 1500
   },
   {
-    key: "logout-login-update-ar",
-    title: "تسجيل الخروج والدخول لتحديث البيانات",
+    key: "logout-login-ksa-ar",
+    title: "تسجيل خروج ودخول",
     category: "App / Login / Password",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "نرجو منك فقط تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى، وسوف يتم تحديث البيانات تلقائيًا.",
-    source: "manual"
+    country: "KSA",
+    language: "AR",
+    body: "💚 يرجى تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى بنفس بيانات الحساب. هذا الإجراء لا يؤثر على عضويتك.",
+    source: "clean-v2",
+    sortOrder: 1510
   },
   {
-    key: "logout-login-update-en",
-    title: "Logout and login to update",
+    key: "logout-login-ksa-en",
+    title: "Logout and login",
     category: "App / Login / Password",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "We only ask you to log out of the application and then log in again, and the information will be updated automatically.",
-    source: "manual"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Please log out of the app and log back in using the same account details. This will not affect your membership.",
+    source: "clean-v2",
+    sortOrder: 1520
   },
   {
-    key: "logout-login-troubleshoot-ar",
-    title: "حل مشكلة تسجيل الدخول من التطبيق",
+    key: "logout-login-uae-ar",
+    title: "تسجيل خروج ودخول",
     category: "App / Login / Password",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تمام، أرجو منك تجربة التالي:\n\nأغلق التطبيق بشكل كامل، وسجل خروج من الموقع في المتصفح إذا كان مسجل دخول، ثم أغلق المتصفح بشكل كامل.\n\nبعدها ادخل إلى المتصفح مرة أخرى وافتح موقع بيورجيم وسجل دخول:\nhttps://ksa.puregymarabia.com/\n\nبعدها خَلّي المتصفح والموقع شغالين في الخلفية، وادخل التطبيق مرة أخرى وسوي تسجيل دخول أيضًا.\n\nمعلومات التسجيل:\nexample@email.com\n12345678",
-    source: "manual"
+    country: "UAE",
+    language: "AR",
+    body: "💙 يرجى تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى بنفس بيانات الحساب. هذا الإجراء لا يؤثر على عضويتك.",
+    source: "clean-v2",
+    sortOrder: 1530
   },
   {
-    key: "logout-login-troubleshoot-en",
-    title: "App login troubleshooting",
+    key: "logout-login-uae-en",
+    title: "Logout and login",
     category: "App / Login / Password",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Please try the following:\n\nClose the app completely, log out from the website in your browser if you are logged in, then close the browser completely.\n\nAfter that, open the browser again, go to the PureGym website and log in:\nhttps://ksa.puregymarabia.com/\n\nThen keep the browser and website running in the background, open the app again, and log in there as well.\n\nLogin details:\nexample@email.com\n12345678",
-    source: "manual"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Please log out of the app and log back in using the same account details. This will not affect your membership.",
+    source: "clean-v2",
+    sortOrder: 1540
   },
   {
-    key: "remove-friend-confirm-ar",
-    title: "تأكيد إزالة الصديق",
+    key: "remove-friend-ksa-ar",
+    title: "إزالة صديق",
     category: "Friend / Bring a Friend",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "هل تريد إزالة الصديق (اسم الصديق) من عضويتك؟",
-    source: "quick-file"
+    country: "KSA",
+    language: "AR",
+    body: "💚 هل ترغب بإزالة الصديق [اسم الصديق] من عضويتك؟",
+    source: "clean-v2",
+    sortOrder: 1550
   },
   {
-    key: "remove-friend-confirm-en",
-    title: "Remove friend confirmation",
+    key: "remove-friend-ksa-en",
+    title: "Remove a friend",
     category: "Friend / Bring a Friend",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Would you like to remove your friend (Friend Name) from your membership?",
-    source: "quick-file"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Would you like to remove [Friend Name] from your membership?",
+    source: "clean-v2",
+    sortOrder: 1560
   },
   {
-    key: "remove-friend-done-ar",
-    title: "تمت إزالة الصديق",
+    key: "remove-friend-uae-ar",
+    title: "إزالة صديق",
     category: "Friend / Bring a Friend",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "تم إزالة الصديق من عضويتك.\nيمكنك الآن تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى، وسوف يتم تحديث البيانات تلقائيًا.\nبعد ذلك يمكنك إضافة صديق جديد.",
-    source: "quick-file"
+    country: "UAE",
+    language: "AR",
+    body: "💙 هل ترغب بإزالة الصديق [اسم الصديق] من عضويتك؟",
+    source: "clean-v2",
+    sortOrder: 1570
   },
   {
-    key: "remove-friend-done-en",
-    title: "Friend removed",
+    key: "remove-friend-uae-en",
+    title: "Remove a friend",
     category: "Friend / Bring a Friend",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "The friend has been removed from your membership.\nYou can now log out of the application and log in again, and the information will update automatically.\nAfter that, you can add a new friend.",
-    source: "quick-file"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Would you like to remove [Friend Name] from your membership?",
+    source: "clean-v2",
+    sortOrder: 1580
   },
   {
-    key: "bring-friend-plus-ar",
-    title: "ميزة Bring a Friend",
+    key: "bring-friend-info-ksa-ar",
+    title: "إضافة صديق",
     category: "Friend / Bring a Friend",
-    country: "ALL" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "نعم صحيح، باقة Plus تتيح لك دعوة صديق 4 مرات شهريًا من خلال التطبيق.\nفقط ادخل إلى القائمة واختر خيار Bring a Friend.",
-    source: "quick-file"
+    country: "KSA",
+    language: "AR",
+    body: "💚 ميزة Bring a Friend تتيح لك إضافة صديق حسب مزايا عضويتك وشروطها. يرجى التأكد من توفر الميزة في عضويتك من خلال التطبيق.",
+    source: "clean-v2",
+    sortOrder: 1590
   },
   {
-    key: "bring-friend-plus-en",
-    title: "Bring a Friend Plus benefit",
+    key: "bring-friend-info-ksa-en",
+    title: "Bring a Friend info",
     category: "Friend / Bring a Friend",
-    country: "ALL" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Yes, that’s correct. The Plus membership allows you to invite a friend 4 times per month through the application.\nSimply open the menu and select the “Bring a Friend” option.",
-    source: "quick-file"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Bring a Friend allows you to add a friend according to your membership benefits and terms. Please check the app to confirm if this benefit is available on your membership.",
+    source: "clean-v2",
+    sortOrder: 1600
   },
   {
-    key: "prices-ksa-ar",
-    title: "رابط الأسعار",
-    category: "Offers, Prices & PT",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 الأسعار تختلف حسب الفرع ونوع العضوية ومدتها.\nيمكنك الاطلاع على الأسعار واختيار الفرع المناسب من خلال الرابط التالي:\nhttps://ksa.puregymarabia.com/join/",
-    source: "quick-file"
+    key: "bring-friend-info-uae-ar",
+    title: "إضافة صديق",
+    category: "Friend / Bring a Friend",
+    country: "UAE",
+    language: "AR",
+    body: "💙 ميزة Bring a Friend تتيح لك إضافة صديق حسب مزايا عضويتك وشروطها. يرجى التأكد من توفر الميزة في عضويتك من خلال التطبيق.",
+    source: "clean-v2",
+    sortOrder: 1610
   },
   {
-    key: "prices-ksa-en",
-    title: "Prices link",
-    category: "Offers, Prices & PT",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 Prices vary depending on the branch, membership type, and duration.\nYou can check the prices and choose your preferred branch through the following link:\nhttps://ksa.puregymarabia.com/join/",
-    source: "quick-file"
+    key: "bring-friend-info-uae-en",
+    title: "Bring a Friend info",
+    category: "Friend / Bring a Friend",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Bring a Friend allows you to add a friend according to your membership benefits and terms. Please check the app to confirm if this benefit is available on your membership.",
+    source: "clean-v2",
+    sortOrder: 1620
   },
   {
-    key: "offer-pgm30-ksa-ar",
-    title: "العرض الحالي PGM30 / PG3M",
+    key: "no-free-trial-ksa-ar",
+    title: "التجربة المجانية",
     category: "Offers, Prices & PT",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💚 العرض الحالي لفترة محدودة!\n\nعندنا حاليًا عروض بخصم 30٪ 🔥\n\n✅ إذا حاب الاشتراك الشهري، تقدر تحصل على خصم 30٪ على أول شهر لعضويات كور وبلس باستخدام كود: PGM30\n\n✅ وإذا تفضل العضويات محددة المدة، فيه خصم 30٪ على عضوية 3 شهور بلس باستخدام كود: PG3M\n\nالعروض مناسبة جدًا إذا حاب تبدأ النادي بسعر أقل وتستفيد من مميزات العضوية 💪",
-    source: "quick-file"
+    country: "KSA",
+    language: "AR",
+    body: "💚 لا نقدم تجارب مجانية، لكن نرحب بك لزيارة النادي وتلقي جولة من فريقنا. وإذا رغبت بتجربة النادي قبل الاشتراك، يمكنك شراء دخول ليوم واحد من خلال رابط الانضمام الرسمي.",
+    source: "clean-v2",
+    sortOrder: 1630
   },
   {
-    key: "offer-pgm30-ksa-en",
-    title: "Current offer PGM30 / PG3M",
+    key: "no-free-trial-ksa-en",
+    title: "Free trial",
     category: "Offers, Prices & PT",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💚 Limited time offer!\n\nGet 30% off your first month on monthly memberships using code: PGM30.\n\nFor fixed-term memberships, you can get 30% off the 3-month Plus membership using code: PG3M.\n\nA great option to start at a lower price and enjoy the membership benefits 💪",
-    source: "quick-file"
+    country: "KSA",
+    language: "EN",
+    body: "💚 We do not offer free trials, but you are welcome to visit the gym and get a tour from our team. If you would like to try the gym before joining, you can purchase a day pass through the official join link.",
+    source: "clean-v2",
+    sortOrder: 1640
   },
   {
-    key: "prices-uae-ar",
-    title: "رابط الأسعار",
+    key: "no-free-trial-uae-ar",
+    title: "التجربة المجانية",
     category: "Offers, Prices & PT",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 الأسعار تختلف حسب الفرع ونوع العضوية ومدتها.\nيمكنك الاطلاع على الأسعار واختيار الفرع المناسب من خلال الرابط التالي:\nhttps://uae.puregymarabia.com/join/",
-    source: "quick-file"
+    country: "UAE",
+    language: "AR",
+    body: "💙 لا نقدم تجارب مجانية، لكن نرحب بك لزيارة النادي وتلقي جولة من فريقنا. وإذا رغبت بتجربة النادي قبل الاشتراك، يمكنك شراء دخول ليوم واحد من خلال رابط الانضمام الرسمي.",
+    source: "clean-v2",
+    sortOrder: 1650
   },
   {
-    key: "prices-uae-en",
-    title: "Prices link",
+    key: "no-free-trial-uae-en",
+    title: "Free trial",
     category: "Offers, Prices & PT",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 Prices vary depending on the branch, membership type, and duration.\nYou can check the prices and choose your preferred branch through the following link:\nhttps://uae.puregymarabia.com/join/",
-    source: "quick-file"
-  },
-  {
-    key: "offer-pgm30-uae-ar",
-    title: "العرض الحالي PGM30 / PG3M",
-    category: "Offers, Prices & PT",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "💙 العرض الحالي لفترة محدودة!\n\nعندنا حاليًا عروض بخصم 30٪ 🔥\n\n✅ إذا حاب الاشتراك الشهري، تقدر تحصل على خصم 30٪ على أول شهر لعضويات كور وبلس باستخدام كود: PGM30\n\n✅ وإذا تفضل العضويات محددة المدة، فيه خصم 30٪ على عضوية 3 شهور بلس باستخدام كود: PG3M\n\nالعروض مناسبة جدًا إذا حاب تبدأ النادي بسعر أقل وتستفيد من مميزات العضوية 💪",
-    source: "quick-file"
-  },
-  {
-    key: "offer-pgm30-uae-en",
-    title: "Current offer PGM30 / PG3M",
-    category: "Offers, Prices & PT",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "💙 Limited time offer!\n\nGet 30% off your first month on monthly memberships using code: PGM30.\n\nFor fixed-term memberships, you can get 30% off the 3-month Plus membership using code: PG3M.\n\nA great option to start at a lower price and enjoy the membership benefits 💪",
-    source: "quick-file"
+    country: "UAE",
+    language: "EN",
+    body: "💙 We do not offer free trials, but you are welcome to visit the gym and get a tour from our team. If you would like to try the gym before joining, you can purchase a day pass through the official join link.",
+    source: "clean-v2",
+    sortOrder: 1660
   },
   {
     key: "pt-pricing-ksa-ar",
-    title: "أسعار التدريب الشخصي السعودية",
+    title: "أسعار التدريب الشخصي KSA",
     category: "Offers, Prices & PT",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "أسعار التدريب الشخصي ثابتة، وهذه أسعار باقات التدريب الشخصي عندنا:\n\nجلسة وحدة ← 249.55 ريال | صالحة يومين\n5 جلسات ← 1,148.85 ريال | صالحة 21 يوم\n10 جلسات ← 2,276.42 ريال | صالحة 45 يوم\n20 جلسة ← 4,183.70 ريال | صالحة 90 يوم\n30 جلسة ← 5,906.40 ريال | صالحة 120 يوم\n48 جلسة ← 8,921.12 ريال | صالحة 180 يوم\n\nالتقسيط متاح عن طريق تابي فقط من باقة الـ 10 جلسات وفوق. أما جلسة وحدة والـ 5 جلسات فتُدفع كاملة بدون تقسيط.",
-    source: "image"
+    country: "KSA",
+    language: "AR",
+    body: "💚 أسعار التدريب الشخصي:\nجلسة واحدة: 249.55 ريال | صالحة يومين\n5 جلسات: 1,148.85 ريال | صالحة 21 يوم\n10 جلسات: 2,276.42 ريال | صالحة 45 يوم\n20 جلسة: 4,183.70 ريال | صالحة 90 يوم\n30 جلسة: 5,906.40 ريال | صالحة 120 يوم\n48 جلسة: 8,921.12 ريال | صالحة 180 يوم\n\nالتقسيط متاح عن طريق تابي من باقة 10 جلسات وأكثر.",
+    source: "clean-v2",
+    sortOrder: 1670
   },
   {
     key: "pt-pricing-ksa-en",
-    title: "KSA PT Pricing",
+    title: "PT Pricing KSA",
     category: "Offers, Prices & PT",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Our Personal Training prices are fixed, and here are our packages:\n\n1 Session → SAR 249.55 | 2 days\n5 Sessions → SAR 1,148.85 | 21 days\n10 Sessions → SAR 2,276.42 | 45 days\n20 Sessions → SAR 4,183.70 | 90 days\n30 Sessions → SAR 5,906.40 | 120 days\n48 Sessions → SAR 8,921.12 | 180 days\n\nTabby is available from the 10-session package and above. The 1-session and 5-session packages are full payment only.",
-    source: "image"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Personal training prices:\n1 Session: SAR 249.55 | Valid for 2 days\n5 Sessions: SAR 1,148.85 | Valid for 21 days\n10 Sessions: SAR 2,276.42 | Valid for 45 days\n20 Sessions: SAR 4,183.70 | Valid for 90 days\n30 Sessions: SAR 5,906.40 | Valid for 120 days\n48 Sessions: SAR 8,921.12 | Valid for 180 days\n\nTabby installments are available from the 10-session package and above.",
+    source: "clean-v2",
+    sortOrder: 1680
   },
   {
     key: "pt-pricing-uae-ar",
-    title: "أسعار التدريب الشخصي الإمارات",
+    title: "أسعار التدريب الشخصي UAE",
     category: "Offers, Prices & PT",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "بخصوص التدريب الشخصي، الكوتش عندنا فري لانس، يعني كل كوتش يحدد أسعاره بنفسه.\n\nالسيشن الواحدة تبدأ من حوالي 200 درهم\nوباقات الـ 12 سيشن عادةً تتراوح بين 2,700 و3,500 درهم\n\nعندنا كوتشات رجال وحريم في كل الجيمات ويتكلمون لغات كثيرة. تقدر تتواصل مع أي كوتش مباشرة في الجيم وتسأله عن أوقاته وأسعاره.",
-    source: "image"
+    country: "UAE",
+    language: "AR",
+    body: "💙 التدريب الشخصي في الإمارات يتم عن طريق مدربين فري لانس، لذلك كل مدرب يحدد أسعاره بنفسه.\n\nالسيشن الواحدة تبدأ تقريبًا من 200 درهم، وباقات 12 سيشن عادةً تتراوح بين 2,700 و3,500 درهم. يمكنك التواصل مع المدرب مباشرة في النادي لمعرفة الأسعار والأوقات.",
+    source: "clean-v2",
+    sortOrder: 1690
   },
   {
     key: "pt-pricing-uae-en",
-    title: "UAE PT Pricing",
+    title: "PT Pricing UAE",
     category: "Offers, Prices & PT",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "For personal training, our coaches are freelancers, so each coach sets their own rates.\n\nSingle sessions start from around AED 200.\n12-session packages usually range between AED 2,700 and AED 3,500.\n\nWe have male and female coaches across our gyms who speak many languages. Feel free to speak to any coach directly at the gym and ask about their schedule and prices.",
-    source: "image"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Personal training in the UAE is provided by freelance coaches, so each coach sets their own pricing.\n\nSingle sessions usually start from around AED 200, and 12-session packages usually range between AED 2,700 and AED 3,500. You can speak directly with a coach at the gym for pricing and availability.",
+    source: "clean-v2",
+    sortOrder: 1700
   },
   {
-    key: "core-plus-difference-ar",
+    key: "core-plus-difference-ksa-ar",
     title: "الفرق بين كور وبلس",
     category: "Membership & Packages",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "خلّنا نوضح لك الفرق بين الباقتين:\n\n🔹 باقة كور:\nتتمرن في فرعك الأساسي فقط، تحجز الكلاسات قبلها بـ 8 أيام، وتستخدم أكثر من 180 جهاز حديث.\nوتقدر تجمّد عضويتك مجانًا حسب المدة المسموحة، وإذا تجاوزت المدة يتم احتساب رسوم حسب الشروط.\n\n🔸 باقة بلس:\nمميزاتها أكثر. تدخل أكثر من فرع حسب الباقة، وتحجز الكلاسات قبلها بـ 14 يوم.\nتقدر تضيف صديق 4 مرات شهريًا مجانًا، وتستفيد من مزايا إضافية مثل Boditrax ومياه Yanga حسب توفرها.\n\nكل باقة مصممة تناسب احتياجك، اختَر الأنسب وابدأ مشوارك الرياضي معنا.",
-    source: "image"
+    country: "KSA",
+    language: "AR",
+    body: "💚 باقة كور تتيح لك التمرين في فرعك الأساسي، حجز الكلاسات حسب المدة المتاحة، واستخدام أجهزة النادي.\n\nباقة بلس تمنحك مزايا إضافية حسب نوع العضوية مثل دخول فروع إضافية، حجز الكلاسات بمرونة أكبر، Bring a Friend، وبعض الخدمات الإضافية حسب توفرها.",
+    source: "clean-v2",
+    sortOrder: 1710
   },
   {
-    key: "core-plus-difference-en",
+    key: "core-plus-difference-ksa-en",
     title: "Core vs Plus",
     category: "Membership & Packages",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Let us walk you through the difference between the two packages:\n\n🔹 Core Package:\nYou can work out at your home branch only, book classes up to 8 days in advance, and use more than 180 modern machines.\nYou can freeze your membership for free based on the allowed period, and if you exceed it, fees apply according to the terms.\n\n🔸 Plus Package:\nMore benefits. You can access more than one branch depending on the plan and book classes up to 14 days in advance.\nYou can bring a friend 4 times per month for free and enjoy extra benefits such as Boditrax and Yanga where available.\n\nEach package is designed to fit your needs. Choose the one that suits you best and start your fitness journey with us.",
-    source: "image"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Core lets you train at your home gym, book classes according to the available booking window, and use the gym equipment.\n\nPlus gives additional benefits depending on the membership type, such as access to additional gyms, more flexible class booking, Bring a Friend, and extra services where available.",
+    source: "clean-v2",
+    sortOrder: 1720
+  },
+  {
+    key: "core-plus-difference-uae-ar",
+    title: "الفرق بين كور وبلس",
+    category: "Membership & Packages",
+    country: "UAE",
+    language: "AR",
+    body: "💙 باقة كور تتيح لك التمرين في فرعك الأساسي، حجز الكلاسات حسب المدة المتاحة، واستخدام أجهزة النادي.\n\nباقة بلس تمنحك مزايا إضافية حسب نوع العضوية مثل دخول فروع إضافية، حجز الكلاسات بمرونة أكبر، Bring a Friend، وبعض الخدمات الإضافية حسب توفرها.",
+    source: "clean-v2",
+    sortOrder: 1730
+  },
+  {
+    key: "core-plus-difference-uae-en",
+    title: "Core vs Plus",
+    category: "Membership & Packages",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Core lets you train at your home gym, book classes according to the available booking window, and use the gym equipment.\n\nPlus gives additional benefits depending on the membership type, such as access to additional gyms, more flexible class booking, Bring a Friend, and extra services where available.",
+    source: "clean-v2",
+    sortOrder: 1740
+  },
+  {
+    key: "official-links-ksa-ar",
+    title: "الروابط الرسمية",
+    category: "Branches, Hours & Links",
+    country: "KSA",
+    language: "AR",
+    body: "💚 روابط السعودية الرسمية:\n\nالانضمام: https://ksa.puregymarabia.com/join/\nالانضمام English: https://ksa.puregymarabia.com/en-gb/join/\nالصالات الرياضية: https://ksa.puregymarabia.com/gyms/\nGyms English: https://ksa.puregymarabia.com/en-gb/gyms/\nالتطبيق: https://ksa.puregymarabia.com/puregym-app/\nApp English: https://ksa.puregymarabia.com/en-gb/puregym-app/\nتسجيل الدخول: https://ksa.puregymarabia.com/login/",
+    source: "official-links",
+    sortOrder: 1750
+  },
+  {
+    key: "official-links-ksa-en",
+    title: "Official links",
+    category: "Branches, Hours & Links",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Official KSA links:\n\nJoin Arabic: https://ksa.puregymarabia.com/join/\nJoin English: https://ksa.puregymarabia.com/en-gb/join/\nGyms Arabic: https://ksa.puregymarabia.com/gyms/\nGyms English: https://ksa.puregymarabia.com/en-gb/gyms/\nApp Arabic: https://ksa.puregymarabia.com/puregym-app/\nApp English: https://ksa.puregymarabia.com/en-gb/puregym-app/\nLogin: https://ksa.puregymarabia.com/login/",
+    source: "official-links",
+    sortOrder: 1760
+  },
+  {
+    key: "official-links-uae-ar",
+    title: "الروابط الرسمية",
+    category: "Branches, Hours & Links",
+    country: "UAE",
+    language: "AR",
+    body: "💙 روابط الإمارات الرسمية:\n\nالانضمام: https://uae.puregymarabia.com/join/\nالانضمام English: https://uae.puregymarabia.com/en-gb/join/\nالصالات الرياضية: https://uae.puregymarabia.com/gyms/\nGyms English: https://uae.puregymarabia.com/en-gb/gyms/\nالتطبيق: https://uae.puregymarabia.com/puregym-app/\nApp English: https://uae.puregymarabia.com/en-gb/puregym-app/\nتسجيل الدخول: https://uae.puregymarabia.com/login/",
+    source: "official-links",
+    sortOrder: 1770
+  },
+  {
+    key: "official-links-uae-en",
+    title: "Official links",
+    category: "Branches, Hours & Links",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Official UAE links:\n\nJoin Arabic: https://uae.puregymarabia.com/join/\nJoin English: https://uae.puregymarabia.com/en-gb/join/\nGyms Arabic: https://uae.puregymarabia.com/gyms/\nGyms English: https://uae.puregymarabia.com/en-gb/gyms/\nApp Arabic: https://uae.puregymarabia.com/puregym-app/\nApp English: https://uae.puregymarabia.com/en-gb/puregym-app/\nLogin: https://uae.puregymarabia.com/login/",
+    source: "official-links",
+    sortOrder: 1780
   },
   {
     key: "working-hours-ksa-ar",
-    title: "أوقات العمل السعودية",
+    title: "أوقات العمل",
     category: "Branches, Hours & Links",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "أفرع الرجال تفتح على مدار الساعة طوال الأسبوع، يعني تقدر تزورنا بأي وقت يناسبك.\n\nأما أفرع النساء تفتح في الأوقات التالية:\nيوم الجمعة: من 6:30 صباحًا إلى 10:30 مساءً\nباقي الأيام: من 6:30 صباحًا إلى منتصف الليل 💪",
-    source: "image"
+    country: "KSA",
+    language: "AR",
+    body: "💚 أفرع الرجال تعمل على مدار الساعة طوال أيام الأسبوع. أما أفرع النساء: الجمعة من 6:30 صباحًا إلى 10:30 مساءً، وباقي الأيام من 6:30 صباحًا إلى منتصف الليل.",
+    source: "clean-v2",
+    sortOrder: 1790
   },
   {
     key: "working-hours-ksa-en",
-    title: "KSA Working Hours",
+    title: "Working hours",
     category: "Branches, Hours & Links",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Men’s branches are open 24/7, so you can visit anytime.\n\nWomen’s branches operate on the following schedule:\nFridays: 6:30 AM – 10:30 PM\nOther days: 6:30 AM – 12:00 AM 💪",
-    source: "image"
+    country: "KSA",
+    language: "EN",
+    body: "💚 Men’s branches are open 24/7. Women’s branches: Friday from 6:30 AM to 10:30 PM, and all other days from 6:30 AM to midnight.",
+    source: "clean-v2",
+    sortOrder: 1800
   },
   {
-    key: "location-links-ksa-ar",
-    title: "روابط مواقع الفروع KSA",
+    key: "working-hours-uae-ar",
+    title: "أوقات العمل",
     category: "Branches, Hours & Links",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "Khobar Branches:\nAl-Rakah Women: https://goo.gl/maps/qBMRA6rcB2YfdeRi6\nGolden Belt Men: https://goo.gl/maps/HAymbyuT6wY7hffZ9\n\nRiyadh Branches:\nAl-Rabwah Men: https://goo.gl/maps/CpgtzBLSd5GGD81R8\nAl-Yasmin Men: https://goo.gl/maps/y6gTZe3mfPDGa6YA9\nAl-Mansourah Men: https://goo.gl/maps/JSrGSHfqyu9aKvsJ6\nAl-Aziziyah Women: https://goo.gl/maps/sSMLSE6H2gNYnGYG8\nAl-Hamra Women: https://goo.gl/maps/fqRyHVmsKxELA1cG7\nAl-Hamra Men: https://goo.gl/maps/FsLFuoGykaidt7JQ7\nAl-Sahafa Women: https://goo.gl/maps/PfgCDMED3wRfnqDu7\nAl-Munsiyah Men: https://goo.gl/maps/GVUpxGcQtDseBT6i6\nAl-Munsiyah Women: https://goo.gl/maps/DC2Bkjf1LSHbDTqq9\nAl-Nasim Men: https://maps.app.goo.gl/NH9zipUBRXZuruvA7\nAl-Nasim Women: https://maps.app.goo.gl/poYk75XixrHJmX9B7\nAs Saadah Men: https://maps.app.goo.gl/UUUaPG18F6EddUpu9\nAl-Rabwah Women: https://maps.app.goo.gl/QaJ8cPUkCTuGnkuq9\n\nDammam Branches:\nAl-Faisaliyah Men: https://goo.gl/maps/91vsMiDSy2yozSZH6\nAl-Qairawan Men: https://goo.gl/maps/eSe7jX1gy1329CiZ8\nAl-Shatea Women: https://maps.app.goo.gl/fsqpsLZbsdY213uDA\n\nJeddah Branches:\nAlsafa Men: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlsafa Women: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlzahrah Women: https://maps.app.goo.gl/GoWDJ8t2EvVq6tTk7",
-    source: "image"
+    country: "UAE",
+    language: "AR",
+    body: "💙 أفرع الرجال تعمل على مدار الساعة طوال أيام الأسبوع. أما أفرع النساء: الجمعة من 6:30 صباحًا إلى 10:30 مساءً، وباقي الأيام من 6:30 صباحًا إلى منتصف الليل.",
+    source: "clean-v2",
+    sortOrder: 1810
   },
   {
-    key: "location-links-ksa-en",
-    title: "KSA Location Links",
+    key: "working-hours-uae-en",
+    title: "Working hours",
     category: "Branches, Hours & Links",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Khobar Branches:\nAl-Rakah Women: https://goo.gl/maps/qBMRA6rcB2YfdeRi6\nGolden Belt Men: https://goo.gl/maps/HAymbyuT6wY7hffZ9\n\nRiyadh Branches:\nAl-Rabwah Men: https://goo.gl/maps/CpgtzBLSd5GGD81R8\nAl-Yasmin Men: https://goo.gl/maps/y6gTZe3mfPDGa6YA9\nAl-Mansourah Men: https://goo.gl/maps/JSrGSHfqyu9aKvsJ6\nAl-Aziziyah Women: https://goo.gl/maps/sSMLSE6H2gNYnGYG8\nAl-Hamra Women: https://goo.gl/maps/fqRyHVmsKxELA1cG7\nAl-Hamra Men: https://goo.gl/maps/FsLFuoGykaidt7JQ7\nAl-Sahafa Women: https://goo.gl/maps/PfgCDMED3wRfnqDu7\nAl-Munsiyah Men: https://goo.gl/maps/GVUpxGcQtDseBT6i6\nAl-Munsiyah Women: https://goo.gl/maps/DC2Bkjf1LSHbDTqq9\nAl-Nasim Men: https://maps.app.goo.gl/NH9zipUBRXZuruvA7\nAl-Nasim Women: https://maps.app.goo.gl/poYk75XixrHJmX9B7\nAs Saadah Men: https://maps.app.goo.gl/UUUaPG18F6EddUpu9\nAl-Rabwah Women: https://maps.app.goo.gl/QaJ8cPUkCTuGnkuq9\n\nDammam Branches:\nAl-Faisaliyah Men: https://goo.gl/maps/91vsMiDSy2yozSZH6\nAl-Qairawan Men: https://goo.gl/maps/eSe7jX1gy1329CiZ8\nAl-Shatea Women: https://maps.app.goo.gl/fsqpsLZbsdY213uDA\n\nJeddah Branches:\nAlsafa Men: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlsafa Women: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlzahrah Women: https://maps.app.goo.gl/GoWDJ8t2EvVq6tTk7",
-    source: "image"
-  },
-  {
-    key: "virtual-tour-links-ksa-ar",
-    title: "روابط الجولات الافتراضية KSA",
-    category: "Branches, Hours & Links",
-    country: "KSA" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "Khobar Branches:\nGolden Belt Men: https://my.matterport.com/show/?m=ft4ft5vD6sx\nAl-Rakah Women: https://my.matterport.com/show/?m=gzePUKqJeWs\n\nRiyadh Branches:\nAl-Mansourah Men: https://my.matterport.com/show/?m=V6tR4bmLB6n\nAl-Yasmin Men: https://my.matterport.com/show/?m=U9KB5yJnw94\nAl-Hamra Men: https://my.matterport.com/show/?m=Wmk94DhwSZ8\nAl-Hamra Women: https://my.matterport.com/show/?m=zLktpNYqcUJ\nAs Sahafa Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Aziziyah Women: https://my.matterport.com/show/?m=7fc8KE68DdE\nAl-Munsiyah Men: https://my.matterport.com/show/?m=9CVhboEe2kj\nAl-Munsiyah Women: https://my.matterport.com/show/?m=HrBZBTBQSry\nAl-Nasim Men: https://my.matterport.com/show/?m=kGC3pviiKyr\nAl-Nasim Women: https://my.matterport.com/show/?m=5btVHXzr1ke\nAs Saadah Men: https://my.matterport.com/show/?m=TbToTDwfdMv\n\nDammam Branches:\nAl-Faisaliyah Men: https://my.matterport.com/show/?m=2sfg6Tv6A7e\nAl-Shatea Women: https://my.matterport.com/show/?m=g1chmo2JBw7\nAl-Qairawan Men: https://virtual.property360.tours/show/?m=n3n9yav3bMf\n\nJeddah Branches:\nAlsafa Women: https://www.youtube.com/watch?v=RrmZsaFwEOE\nAlsafa Men: https://www.youtube.com/watch?v=5QdIVddUqyA\nAlzahrah Women: https://www.youtube.com/watch?v=qS05iTvb2kY",
-    source: "image"
-  },
-  {
-    key: "virtual-tour-links-ksa-en",
-    title: "KSA Virtual Tour Links",
-    category: "Branches, Hours & Links",
-    country: "KSA" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Khobar Branches:\nGolden Belt Men: https://my.matterport.com/show/?m=ft4ft5vD6sx\nAl-Rakah Women: https://my.matterport.com/show/?m=gzePUKqJeWs\n\nRiyadh Branches:\nAl-Mansourah Men: https://my.matterport.com/show/?m=V6tR4bmLB6n\nAl-Yasmin Men: https://my.matterport.com/show/?m=U9KB5yJnw94\nAl-Hamra Men: https://my.matterport.com/show/?m=Wmk94DhwSZ8\nAl-Hamra Women: https://my.matterport.com/show/?m=zLktpNYqcUJ\nAs Sahafa Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Aziziyah Women: https://my.matterport.com/show/?m=7fc8KE68DdE\nAl-Munsiyah Men: https://my.matterport.com/show/?m=9CVhboEe2kj\nAl-Munsiyah Women: https://my.matterport.com/show/?m=HrBZBTBQSry\nAl-Nasim Men: https://my.matterport.com/show/?m=kGC3pviiKyr\nAl-Nasim Women: https://my.matterport.com/show/?m=5btVHXzr1ke\nAs Saadah Men: https://my.matterport.com/show/?m=TbToTDwfdMv\n\nDammam Branches:\nAl-Faisaliyah Men: https://my.matterport.com/show/?m=2sfg6Tv6A7e\nAl-Shatea Women: https://my.matterport.com/show/?m=g1chmo2JBw7\nAl-Qairawan Men: https://virtual.property360.tours/show/?m=n3n9yav3bMf\n\nJeddah Branches:\nAlsafa Women: https://www.youtube.com/watch?v=RrmZsaFwEOE\nAlsafa Men: https://www.youtube.com/watch?v=5QdIVddUqyA\nAlzahrah Women: https://www.youtube.com/watch?v=qS05iTvb2kY",
-    source: "image"
-  },
-  {
-    key: "location-links-uae-ar",
-    title: "روابط مواقع الفروع UAE",
-    category: "Branches, Hours & Links",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "Dubai Nad Al Sheba: https://maps.app.goo.gl/vj6Y7pVJpjqXPYse9\nDubai Al Barsha: https://maps.app.goo.gl/522EbHVZ5y8pBnkJ9",
-    source: "image"
-  },
-  {
-    key: "location-links-uae-en",
-    title: "UAE Location Links",
-    category: "Branches, Hours & Links",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Dubai Nad Al Sheba: https://maps.app.goo.gl/vj6Y7pVJpjqXPYse9\nDubai Al Barsha: https://maps.app.goo.gl/522EbHVZ5y8pBnkJ9",
-    source: "image"
-  },
-  {
-    key: "virtual-tour-links-uae-ar",
-    title: "روابط الجولات الافتراضية UAE",
-    category: "Branches, Hours & Links",
-    country: "UAE" as Country,
-    language: "AR" as ScriptLanguage,
-    body: "Dubai Branches:\nNad Al Sheba: https://my.matterport.com/show/?m=cpYJYiRJycw\nAl Barsha: https://my.matterport.com/show/?m=DrJ1JsW8as9",
-    source: "image"
-  },
-  {
-    key: "virtual-tour-links-uae-en",
-    title: "UAE Virtual Tour Links",
-    category: "Branches, Hours & Links",
-    country: "UAE" as Country,
-    language: "EN" as ScriptLanguage,
-    body: "Dubai Branches:\nNad Al Sheba: https://my.matterport.com/show/?m=cpYJYiRJycw\nAl Barsha: https://my.matterport.com/show/?m=DrJ1JsW8as9",
-    source: "image"
+    country: "UAE",
+    language: "EN",
+    body: "💙 Men’s branches are open 24/7. Women’s branches: Friday from 6:30 AM to 10:30 PM, and all other days from 6:30 AM to midnight.",
+    source: "clean-v2",
+    sortOrder: 1820
   }
 ];
 

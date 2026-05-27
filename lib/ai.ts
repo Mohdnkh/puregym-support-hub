@@ -4,6 +4,7 @@ import { getSeedScripts } from "./seed-data";
 type OpenAITextOptions = {
   system: string;
   user: string;
+  messages?: Array<{ role: "user" | "assistant"; content: string }>;
   temperature?: number;
   maxOutputTokens?: number;
 };
@@ -15,25 +16,21 @@ export function getOpenAIConfig() {
   return {
     apiKey,
     model,
-    temperature: Number(process.env.OPENAI_TEMPERATURE || 0.2),
-    maxOutputTokens: Number(process.env.OPENAI_MAX_OUTPUT_TOKENS || 1200)
+    temperature: Number(process.env.OPENAI_TEMPERATURE || 0.25),
+    maxOutputTokens: Number(process.env.OPENAI_MAX_OUTPUT_TOKENS || 1400)
   };
 }
 
 function extractResponseText(data: any) {
-  if (typeof data?.output_text === "string" && data.output_text.trim()) {
-    return data.output_text.trim();
-  }
+  if (typeof data?.output_text === "string" && data.output_text.trim()) return data.output_text.trim();
 
   const pieces: string[] = [];
-
   for (const item of data?.output || []) {
     for (const content of item?.content || []) {
       if (typeof content?.text === "string") pieces.push(content.text);
       if (typeof content?.output_text === "string") pieces.push(content.output_text);
     }
   }
-
   if (pieces.length) return pieces.join("\n").trim();
 
   const chatText = data?.choices?.[0]?.message?.content;
@@ -46,8 +43,14 @@ export async function callOpenAIText(options: OpenAITextOptions) {
   const config = getOpenAIConfig();
 
   if (!config.apiKey) {
-    throw new Error("OPENAI_API_KEY is missing. Add it to .env, then restart npm run dev.");
+    throw new Error("OPENAI_API_KEY is missing. Add it to .env / Vercel Variables, then restart or redeploy.");
   }
+
+  const input = [
+    { role: "system", content: options.system },
+    ...(options.messages || []).slice(-10).map((msg) => ({ role: msg.role, content: msg.content })),
+    { role: "user", content: options.user }
+  ];
 
   const response = await fetch("https://api.openai.com/v1/responses", {
     method: "POST",
@@ -57,10 +60,7 @@ export async function callOpenAIText(options: OpenAITextOptions) {
     },
     body: JSON.stringify({
       model: config.model,
-      input: [
-        { role: "system", content: options.system },
-        { role: "user", content: options.user }
-      ],
+      input,
       temperature: options.temperature ?? config.temperature,
       max_output_tokens: options.maxOutputTokens ?? config.maxOutputTokens
     })
@@ -90,7 +90,7 @@ export async function getKnowledgeBaseText(country?: "KSA" | "UAE", language?: "
         ...(language ? { language } : {})
       },
       select: { title: true, category: true, country: true, language: true, body: true },
-      orderBy: [{ category: "asc" }, { title: "asc" }]
+      orderBy: [{ category: "asc" }, { sortOrder: "asc" }, { title: "asc" }]
     });
   } catch {
     scripts = getSeedScripts().filter((script) => {
@@ -100,10 +100,24 @@ export async function getKnowledgeBaseText(country?: "KSA" | "UAE", language?: "
     });
   }
 
-  return scripts
-    .slice(0, 180)
-    .map((script) => `[${script.category} | ${script.country} | ${script.language}] ${script.title}\n${script.body}`)
-    .join("\n\n---\n\n");
+  const officialKnowledge = country === "KSA"
+    ? [
+        "Official KSA join page: https://ksa.puregymarabia.com/en-gb/join/",
+        "Official KSA gyms page: https://ksa.puregymarabia.com/en-gb/gyms/",
+        "Official KSA app page: https://ksa.puregymarabia.com/en-gb/puregym-app/",
+        "Official KSA login page: https://ksa.puregymarabia.com/login/"
+      ]
+    : [
+        "Official UAE join page: https://uae.puregymarabia.com/en-gb/join/",
+        "Official UAE gyms page: https://uae.puregymarabia.com/gyms/",
+        "Official UAE app page: https://uae.puregymarabia.com/puregym-app/",
+        "Official UAE login page: https://uae.puregymarabia.com/login/"
+      ];
+
+  return [
+    officialKnowledge.join("\n"),
+    ...scripts.slice(0, 220).map((script) => `[${script.category} | ${script.country} | ${script.language}] ${script.title}\n${script.body}`)
+  ].join("\n\n---\n\n");
 }
 
 export function styleInstruction(country: "KSA" | "UAE", language: "AR" | "EN") {
@@ -112,13 +126,15 @@ export function styleInstruction(country: "KSA" | "UAE", language: "AR" | "EN") 
   const emoji = country === "KSA" ? "💚" : "💙";
 
   return [
-    `Reply for ${countryName}.`,
-    `Language: ${langName}.`,
-    `Use ${emoji} only when a friendly support script needs an emoji.`,
-    "Use PureGym support tone.",
-    "Keep the reply direct and ready to paste to a customer.",
-    "Make Arabic wording neutral for male and female as much as possible.",
-    "Do not invent policies, prices, links, or promises.",
-    "If the answer is not in the knowledge base, say the agent should verify from the system or official source."
+    `You are a helpful internal PureGym support assistant for ${countryName}.`,
+    `Preferred response language: ${langName}.`,
+    `Use ${emoji} in ready-to-send customer scripts only.`,
+    "Behave like a normal chatbot first: if the user greets you, greet them naturally and ask how you can help. Do not force a scripted welcome unless requested.",
+    "When the user asks for a customer reply, produce a ready-to-paste support script.",
+    "When the user asks to translate or rewrite, do that directly using the selected country and language style.",
+    "Use the knowledge base and official links provided below. Do not invent policies, prices, links, or promises.",
+    "For Arabic, use neutral wording that works for male and female as much as possible.",
+    "If the answer is not available, say the agent should verify from the system or official source.",
+    "Keep answers clear, practical, and not too long unless the user asks for detail."
   ].join(" ");
 }

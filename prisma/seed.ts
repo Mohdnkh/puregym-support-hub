@@ -46,7 +46,8 @@ async function main() {
       language: script.language,
       body: script.body,
       source: script.source || "seed",
-      active: true
+      active: true,
+      sortOrder: script.sortOrder || 0
     })),
     skipDuplicates: true
   });
