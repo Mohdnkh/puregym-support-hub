@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type User = {
@@ -10,6 +10,16 @@ type User = {
   nameEn: string;
   role: "USER" | "ADMIN";
   emailVerified: boolean;
+};
+
+type AdminUser = {
+  id: string;
+  email: string;
+  nameAr: string;
+  nameEn: string;
+  role: "USER" | "ADMIN";
+  emailVerifiedAt: string | null;
+  createdAt: string;
 };
 
 type Script = {
@@ -22,73 +32,68 @@ type Script = {
   body: string;
   source?: string;
   active: boolean;
+  sortOrder?: number;
 };
 
 type Country = "KSA" | "UAE";
 type Lang = "AR" | "EN";
 type Section = "quick" | "scripts" | "chatbot" | "calculator" | "admin";
+type ChatMessage = { role: "user" | "assistant"; content: string };
 
-function cleanScriptText(text: string, language: Lang) {
-  let value = String(text || "").trim();
+const CATEGORY_ORDER = [
+  "Quick Scripts",
+  "Cancellation & Retention",
+  "Freeze Policy",
+  "Payment & Billing",
+  "Tickets",
+  "App / Login / Password",
+  "Friend / Bring a Friend",
+  "Offers, Prices & PT",
+  "Membership & Packages",
+  "Branches & Hours",
+  "Links"
+];
 
-  if (language === "AR") {
-    value = value
-      .replace(
-        /^(حياك الله|حيّاك الله|حياك|حيّاك|يا حيّ الله|يا هلا|ياهلا|يا مرحبا|هلا فيك|هلا والله|هلا وغلا|أهلًا وسهلًا|أهلاً وسهلاً|أهلًا|أهلاً|مرحبًا|مرحبا|نورتنا|نورت|يسعدنا تواصلك|مشكور لتواصلك|مشكور على تواصلك|شكرًا لتواصلك معنا|شكرًا على تواصلك معنا)\s*(@?\[?اسم العميل\]?|@?\(اسم العميل\)|@اسم العميل)?[،,! 👋🌟😊💚💙😍🙌🏻🙌🏽🙌✨-]*\s*/i,
-        ""
-      )
-      .replaceAll("@[اسم العميل]", "[اسم العميل]")
-      .replaceAll("@(اسم العميل)", "[اسم العميل]")
-      .replaceAll("@اسم العميل", "[اسم العميل]")
-      .replaceAll("(اسم العميل)", "[اسم العميل]");
-  } else {
-    value = value
-      .replace(
-        /^(Hi there|Hi|Hey there|Hey|Hello|Welcome|Thanks for reaching out|Thanks for contacting us|We’re glad to hear from you|We're glad to hear from you)\s*(@?\[?Customer Name\]?|@?\(Customer Name\)|@?\[tag\])?[,\s!👋🌟😊💚💙😍🙌🏻🙌🏽🙌✨-]*/i,
-        ""
-      )
-      .replaceAll("@[Customer Name]", "[Customer Name]")
-      .replaceAll("@(Customer Name)", "[Customer Name]")
-      .replaceAll("(Customer Name)", "[Customer Name]")
-      .replaceAll("@[tag]", "[Customer Name]")
-      .replaceAll("[tag]", "[Customer Name]");
-  }
+const HIJRI_MONTHS = [
+  [1, "محرم", "Muharram"],
+  [2, "صفر", "Safar"],
+  [3, "ربيع الأول", "Rabi Al-Awwal"],
+  [4, "ربيع الآخر", "Rabi Al-Thani"],
+  [5, "جمادى الأولى", "Jumada Al-Awwal"],
+  [6, "جمادى الآخرة", "Jumada Al-Thani"],
+  [7, "رجب", "Rajab"],
+  [8, "شعبان", "Shaaban"],
+  [9, "رمضان", "Ramadan"],
+  [10, "شوال", "Shawwal"],
+  [11, "ذو القعدة", "Dhu Al-Qidah"],
+  [12, "ذو الحجة", "Dhu Al-Hijjah"]
+] as const;
 
-  value = value
-    .replaceAll("[Email]", "example@email.com")
-    .replaceAll("[email]", "example@email.com")
-    .replaceAll("[Phone]", "0000000000")
-    .replaceAll("[phone]", "0000000000")
-    .replaceAll("[Mobile]", "0000000000")
-    .replaceAll("[Mobile number]", "0000000000")
-    .replaceAll("[رقم الجوال]", "0000000000")
-    .replaceAll("[البريد الإلكتروني]", "example@email.com")
-    .replaceAll("[Start Date]", "00-00-2020")
-    .replaceAll("[End Date]", "00-00-2020")
-    .replaceAll("[Next Payment Date]", "00-00-2020")
-    .replaceAll("[Membership Expiry Date]", "00-00-2020")
-    .replaceAll("[تاريخ البداية]", "00-00-2020")
-    .replaceAll("[تاريخ النهاية]", "00-00-2020")
-    .replaceAll("[تاريخ الدفعة القادمة]", "00-00-2020")
-    .replaceAll("[تاريخ انتهاء العضوية]", "00-00-2020")
-    .replaceAll("[تاريخ الانتهاء]", "00-00-2020")
-    .replaceAll("[Next Payment Amount]", "00 SAR")
-    .replaceAll("[قيمة الدفعة القادمة]", "00 SAR")
-    .replaceAll("[Amount]", "00 SAR")
-    .replaceAll("[المبلغ]", "00 SAR");
-
-  return value.trim();
+function categoryRank(category: string) {
+  const index = CATEGORY_ORDER.indexOf(category);
+  return index === -1 ? 999 : index;
 }
 
-function renderName(text: string, language: Lang, user: User | null) {
+function emojiFor(country: Country | "ALL") {
+  if (country === "UAE") return "💙";
+  return "💚";
+}
+
+function applyUserName(text: string, language: Lang, user: User | null) {
   const name = language === "AR" ? user?.nameAr || "الفريق" : user?.nameEn || "Team";
 
-  return cleanScriptText(text, language)
+  return String(text || "")
     .replaceAll("{{employeeName}}", name)
-    .replaceAll("(اسم الموظف)", name)
-    .replaceAll("[اسم الموظف]", name)
-    .replaceAll("(Agent Name)", name)
-    .replaceAll("[Agent Name]", name);
+    .replaceAll("example@email.com", "")
+    .replaceAll("example@gmail.com", "")
+    .replaceAll("0000000000", "")
+    .replaceAll("00/00/0000", "00-00-2020")
+    .replaceAll("__/__/____", "00-00-2020");
+}
+
+function preview(text: string) {
+  const clean = text.replace(/\s+/g, " ").trim();
+  return clean.length > 120 ? clean.slice(0, 120) + "..." : clean;
 }
 
 function money(value: number, country: Country) {
@@ -104,81 +109,84 @@ function daysBetween(start: string, end: string) {
   return Math.round((b.getTime() - a.getTime()) / 86400000);
 }
 
+function linkifyParts(text: string) {
+  return text.split(/(https?:\/\/[^\s]+)/g).map((part, index) => {
+    if (/^https?:\/\//.test(part)) {
+      return (
+        <a key={index} href={part} target="_blank" rel="noreferrer">
+          {part}
+        </a>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+}
+
 export default function DashboardPage() {
   const router = useRouter();
-
   const [user, setUser] = useState<User | null>(null);
   const [scripts, setScripts] = useState<Script[]>([]);
   const [country, setCountry] = useState<Country>("KSA");
   const [language, setLanguage] = useState<Lang>("AR");
   const [section, setSection] = useState<Section>("quick");
-  const [category, setCategory] = useState("General");
+  const [category, setCategory] = useState("Cancellation & Retention");
   const [selectedId, setSelectedId] = useState("");
   const [editorText, setEditorText] = useState("");
   const [quickNoteText, setQuickNoteText] = useState("");
   const [message, setMessage] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
+
+  async function loadScripts() {
+    const data = await fetch("/api/scripts").then((res) => res.json());
+    setScripts(data.scripts || []);
+  }
 
   useEffect(() => {
     async function load() {
-      const me = await fetch("/api/auth/me").then((r) => r.json());
-
+      const me = await fetch("/api/auth/me").then((res) => res.json());
       if (!me.user) {
         router.push("/login");
         return;
       }
-
       setUser(me.user);
-
-      const data = await fetch("/api/scripts").then((r) => r.json());
-      setScripts(data.scripts || []);
+      await loadScripts();
     }
-
     load();
   }, [router]);
 
-  const categories = useMemo(() => {
-    const visible = scripts.filter(
-      (script) =>
-        script.active &&
-        script.category !== "Quick Scripts" &&
-        (script.country === "ALL" || script.country === country) &&
-        script.language === language
-    );
-
-    return Array.from(new Set(visible.map((script) => script.category))).sort();
-  }, [scripts, country, language]);
-
-  const filteredScripts = useMemo(() => {
-    return scripts.filter(
-      (script) =>
-        script.active &&
-        script.category !== "Quick Scripts" &&
-        (script.country === "ALL" || script.country === country) &&
-        script.language === language &&
-        script.category === category
-    );
-  }, [scripts, country, language, category]);
-
-  const quickScripts = useMemo(() => {
-    return scripts.filter(
-      (script) =>
-        script.active &&
-        script.category === "Quick Scripts" &&
-        (script.country === "ALL" || script.country === country) &&
-        script.language === language
-    );
-  }, [scripts, country, language]);
-
-  const quickStickyText = useMemo(() => {
-    return quickScripts
-      .map((script) => `${script.title}\n${renderName(script.body, script.language, user)}`)
-      .join("\n\n━━━━━━━━━━━━━━━━━━━━\n\n");
-  }, [quickScripts, user]);
+  useEffect(() => {
+    const saved = localStorage.getItem("pg_theme");
+    setDarkMode(saved === "dark");
+  }, []);
 
   useEffect(() => {
-    if (!categories.includes(category) && categories[0]) {
-      setCategory(categories[0]);
-    }
+    document.documentElement.dataset.theme = darkMode ? "dark" : "light";
+    localStorage.setItem("pg_theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
+  const visibleScripts = useMemo(() => {
+    return scripts
+      .filter((script) => script.active && (script.country === country || script.country === "ALL") && script.language === language)
+      .sort((a, b) => categoryRank(a.category) - categoryRank(b.category) || (a.sortOrder || 0) - (b.sortOrder || 0) || a.title.localeCompare(b.title));
+  }, [scripts, country, language]);
+
+  const categories = useMemo(() => {
+    const set = new Set(visibleScripts.filter((script) => script.category !== "Quick Scripts").map((script) => script.category));
+    return Array.from(set).sort((a, b) => categoryRank(a) - categoryRank(b) || a.localeCompare(b));
+  }, [visibleScripts]);
+
+  const quickScripts = useMemo(() => visibleScripts.filter((script) => script.category === "Quick Scripts"), [visibleScripts]);
+
+  const quickStickyText = useMemo(() => {
+    return quickScripts.map((script) => `${script.title}\n${applyUserName(script.body, script.language, user)}`).join("\n\n━━━━━━━━━━━━━━━━━━━━\n\n");
+  }, [quickScripts, user]);
+
+  const filteredScripts = useMemo(() => visibleScripts.filter((script) => script.category === category), [visibleScripts, category]);
+
+  const selected = useMemo(() => filteredScripts.find((script) => script.id === selectedId) || filteredScripts[0] || null, [filteredScripts, selectedId]);
+
+  useEffect(() => {
+    if (!categories.includes(category) && categories[0]) setCategory(categories[0]);
   }, [categories, category]);
 
   useEffect(() => {
@@ -186,50 +194,46 @@ export default function DashboardPage() {
   }, [quickStickyText]);
 
   useEffect(() => {
-    const first = filteredScripts[0];
-
-    if (first && !filteredScripts.some((script) => script.id === selectedId)) {
-      setSelectedId(first.id);
-      setEditorText(renderName(first.body, first.language, user));
-    }
-
-    if (!first) {
+    if (selected) {
+      setSelectedId(selected.id);
+      setEditorText(applyUserName(selected.body, selected.language, user));
+    } else {
       setSelectedId("");
       setEditorText("");
     }
-  }, [filteredScripts, selectedId, user]);
+  }, [selected?.id, user]);
+
+  function flash(text: string) {
+    setMessage(text);
+    setTimeout(() => setMessage(""), 1400);
+  }
 
   function selectScript(script: Script) {
     setSelectedId(script.id);
-    setEditorText(renderName(script.body, script.language, user));
+    setEditorText(applyUserName(script.body, script.language, user));
   }
 
-  async function copyEditorText() {
-    await navigator.clipboard.writeText(editorText);
-    setMessage("Copied");
-    setTimeout(() => setMessage(""), 1200);
-  }
-
-  async function copyQuickText() {
-    await navigator.clipboard.writeText(quickNoteText);
-    setMessage("Copied");
-    setTimeout(() => setMessage(""), 1200);
+  async function copyText(text: string) {
+    await navigator.clipboard.writeText(text);
+    flash("Copied");
   }
 
   async function spellcheck() {
-    const res = await fetch("/api/ai/spellcheck", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: editorText, language })
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      setEditorText(data.text);
-    } else {
-      setMessage(data.error || "Spellcheck failed");
-      setTimeout(() => setMessage(""), 1600);
+    try {
+      const res = await fetch("/api/ai/spellcheck", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: editorText, language })
+      });
+      const data = await res.json().catch(() => ({ error: "AI route returned a non-JSON response." }));
+      if (res.ok) {
+        setEditorText(data.text);
+        flash("تم التعديل");
+      } else {
+        flash(data.error || "Spellcheck failed");
+      }
+    } catch (error) {
+      flash(error instanceof Error ? error.message : "Spellcheck failed");
     }
   }
 
@@ -238,154 +242,117 @@ export default function DashboardPage() {
     router.push("/login");
   }
 
+  const title = section === "quick" ? "Quick Scripts" : section === "scripts" ? "Script Library" : section === "chatbot" ? "AI Chatbot" : section === "calculator" ? "Calculation Tool" : "Admin Editor";
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div className="brand">PureGym Hub</div>
-        <div className="subbrand">Scripts • AI • Calculations</div>
+        <div className="brand-block">
+          <div className="brand-mark">PG</div>
+          <div>
+            <div className="brand">PureGym Hub</div>
+            <div className="subbrand">Scripts • AI • Tools</div>
+          </div>
+        </div>
 
-        <button className={`nav-button ${section === "quick" ? "active" : ""}`} onClick={() => setSection("quick")}>
-          Quick Sticky Note
-        </button>
+        <button className={`nav-button ${section === "quick" ? "active" : ""}`} onClick={() => setSection("quick")}>Quick Scripts</button>
+        <button className={`nav-button ${section === "scripts" ? "active" : ""}`} onClick={() => setSection("scripts")}>Script Library</button>
+        <button className={`nav-button ${section === "chatbot" ? "active" : ""}`} onClick={() => setSection("chatbot")}>AI Chatbot</button>
+        <button className={`nav-button ${section === "calculator" ? "active" : ""}`} onClick={() => setSection("calculator")}>Calculation Tool</button>
+        {user?.role === "ADMIN" && <button className={`nav-button ${section === "admin" ? "active" : ""}`} onClick={() => setSection("admin")}>Admin Editor</button>}
 
-        <button className={`nav-button ${section === "scripts" ? "active" : ""}`} onClick={() => setSection("scripts")}>
-          Scripts Dashboard
-        </button>
-
-        <button className={`nav-button ${section === "chatbot" ? "active" : ""}`} onClick={() => setSection("chatbot")}>
-          AI Chatbot
-        </button>
-
-        <button className={`nav-button ${section === "calculator" ? "active" : ""}`} onClick={() => setSection("calculator")}>
-          Calculation Tool
-        </button>
-
-        {user?.role === "ADMIN" && (
-          <button className={`nav-button ${section === "admin" ? "active" : ""}`} onClick={() => setSection("admin")}>
-            Admin Editor
-          </button>
-        )}
+        <div className="sidebar-user">
+          <b>{language === "AR" ? user?.nameAr : user?.nameEn}</b>
+          <span>{user?.email}</span>
+          <button className="btn secondary small full" onClick={() => setDarkMode(!darkMode)}>{darkMode ? "Light mode" : "Dark mode"}</button>
+          <button className="btn secondary small full" onClick={logout}>Logout</button>
+        </div>
       </aside>
 
       <main className="main">
         <div className="topbar">
           <div>
-            <h1 style={{ margin: 0 }}>Welcome, {language === "AR" ? user?.nameAr : user?.nameEn}</h1>
-            <p style={{ margin: "6px 0 0", color: "var(--muted)" }}>
-              {user?.email} • {user?.role}
-            </p>
+            <h1>{title}</h1>
+            <p>{country} • {language === "AR" ? "Arabic" : "English"}</p>
           </div>
-
           <div className="toolbar">
-            <button className={`pill ${country === "KSA" ? "active" : ""}`} onClick={() => setCountry("KSA")}>
-              KSA
-            </button>
-            <button className={`pill ${country === "UAE" ? "active" : ""}`} onClick={() => setCountry("UAE")}>
-              UAE
-            </button>
-            <button className={`pill ${language === "AR" ? "active" : ""}`} onClick={() => setLanguage("AR")}>
-              Arabic
-            </button>
-            <button className={`pill ${language === "EN" ? "active" : ""}`} onClick={() => setLanguage("EN")}>
-              English
-            </button>
-            <button className="btn secondary small" onClick={logout}>
-              Logout
-            </button>
+            <button className={`toggle ksa ${country === "KSA" ? "active" : ""}`} onClick={() => setCountry("KSA")}>💚 KSA</button>
+            <button className={`toggle uae ${country === "UAE" ? "active" : ""}`} onClick={() => setCountry("UAE")}>💙 UAE</button>
+            <button className={`toggle ${language === "AR" ? "active" : ""}`} onClick={() => setLanguage("AR")}>Arabic</button>
+            <button className={`toggle ${language === "EN" ? "active" : ""}`} onClick={() => setLanguage("EN")}>English</button>
           </div>
         </div>
 
+        {message && <div className="toast">{message}</div>}
+
         {section === "quick" && (
-          <div className="card">
-            <div className="toolbar" style={{ justifyContent: "space-between" }}>
-              <div>
-                <h2 style={{ margin: 0 }}>Quick Sticky Note</h2>
-                <p style={{ margin: "6px 0 0", color: "var(--muted)" }}>
-                  {country} • {language === "AR" ? "Arabic" : "English"}
-                </p>
+          <div className="quick-layout">
+            <div className="card">
+              <div className="section-head">
+                <div>
+                  <h2>Sticky Note</h2>
+                  <p>كل السكربتات السريعة حسب الدولة واللغة المختارة.</p>
+                </div>
+                <div className="toolbar">
+                  <button className="btn ghost small" onClick={() => setQuickNoteText(quickStickyText)}>Reset</button>
+                  <button className="btn small" onClick={() => copyText(quickNoteText)}>Copy All</button>
+                </div>
               </div>
-
-              <div className="toolbar">
-                <button className="btn ghost small" onClick={() => setQuickNoteText(quickStickyText)}>
-                  Reset
-                </button>
-                <button className="btn small" onClick={copyQuickText}>
-                  Copy All
-                </button>
-              </div>
+              <textarea className="textarea sticky-note" dir={language === "AR" ? "rtl" : "ltr"} value={quickNoteText} onChange={(event) => setQuickNoteText(event.target.value)} />
             </div>
-
-            {message && <p className="success">{message}</p>}
-
-            <textarea
-              className="textarea"
-              dir={language === "AR" ? "rtl" : "ltr"}
-              value={quickNoteText}
-              onChange={(event) => setQuickNoteText(event.target.value)}
-              style={{ minHeight: 620 }}
-            />
+            <div className="quick-cards">
+              {quickScripts.map((script) => {
+                const body = applyUserName(script.body, script.language, user);
+                return <button className="mini-script-card" key={script.id} onClick={() => copyText(body)}><b>{script.title}</b><span>{preview(body)}</span></button>;
+              })}
+            </div>
           </div>
         )}
 
         {section === "scripts" && (
-          <div className="grid two">
-            <div className="card">
-              <h2>Categories</h2>
-
-              <div className="pills" style={{ marginBottom: 16 }}>
-                {categories.map((item) => (
-                  <button key={item} className={`pill ${category === item ? "active" : ""}`} onClick={() => setCategory(item)}>
-                    {item}
-                  </button>
-                ))}
-              </div>
-
-              <div className="script-list">
-                {filteredScripts.map((script) => (
-                  <button
-                    key={script.id}
-                    className={`script-item ${selectedId === script.id ? "active" : ""}`}
-                    onClick={() => selectScript(script)}
-                  >
-                    <div className="script-title">{script.title}</div>
-                    <div className="script-meta">
-                      {script.category} • {script.country} • {script.language}
-                    </div>
-                  </button>
-                ))}
-
-                {!filteredScripts.length && <p style={{ color: "var(--muted)" }}>No scripts found in this category.</p>}
+          <div className="library-layout">
+            <div className="category-panel">
+              <div className="category-grid">
+                {categories.map((item) => {
+                  const count = visibleScripts.filter((script) => script.category === item).length;
+                  return <button key={item} className={`category-card ${category === item ? "active" : ""}`} onClick={() => setCategory(item)}><b>{item}</b><span>{count} scripts</span></button>;
+                })}
               </div>
             </div>
 
-            <div className="card">
-              <div className="toolbar" style={{ justifyContent: "space-between" }}>
-                <h2 style={{ margin: 0 }}>Script Box</h2>
+            <div className="script-results">
+              <div className="section-head"><div><h2>{category}</h2><p>{filteredScripts.length} scripts available</p></div></div>
+              <div className="script-card-grid">
+                {filteredScripts.map((script) => {
+                  const body = applyUserName(script.body, script.language, user);
+                  return (
+                    <button key={script.id} className={`script-card ${selectedId === script.id ? "active" : ""}`} onClick={() => selectScript(script)}>
+                      <div className="script-card-top"><b>{script.title}</b><span>{script.country}</span></div>
+                      <p>{preview(body)}</p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="script-box card">
+              <div className="section-head compact">
+                <div><h2>Script Box</h2><p>{selected?.title || "Select a script"}</p></div>
                 <div className="toolbar">
-                  <button className="btn ghost small" onClick={spellcheck} disabled={!editorText}>
-                    تدقيق إملائي
-                  </button>
-                  <button className="btn small" onClick={copyEditorText} disabled={!editorText}>
-                    Copy
-                  </button>
+                  <button className="btn ghost small" onClick={() => selected && setEditorText(applyUserName(selected.body, selected.language, user))} disabled={!selected}>Reset</button>
+                  <button className="btn ghost small" onClick={spellcheck} disabled={!editorText}>تدقيق</button>
+                  <button className="btn small" onClick={() => copyText(editorText)} disabled={!editorText}>Copy</button>
                 </div>
               </div>
-
-              {message && <p className="success">{message}</p>}
-
-              <textarea
-                className="textarea"
-                dir={language === "AR" ? "rtl" : "ltr"}
-                value={editorText}
-                onChange={(event) => setEditorText(event.target.value)}
-              />
+              <textarea className="textarea script-editor" dir={language === "AR" ? "rtl" : "ltr"} value={editorText} onChange={(event) => setEditorText(event.target.value)} />
+              {category === "Links" && <div className="link-preview">{linkifyParts(editorText)}</div>}
             </div>
           </div>
         )}
 
         {section === "chatbot" && <Chatbot country={country} language={language} />}
         {section === "calculator" && <Calculator country={country} />}
-        {section === "admin" && user?.role === "ADMIN" && <Admin scripts={scripts} setScripts={setScripts} />}
+        {section === "admin" && user?.role === "ADMIN" && <Admin scripts={scripts} setScripts={setScripts} currentUser={user} onScriptsChanged={loadScripts} />}
       </main>
     </div>
   );
@@ -393,53 +360,60 @@ export default function DashboardPage() {
 
 function Chatbot({ country, language }: { country: Country; language: Lang }) {
   const [input, setInput] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    { role: "assistant", content: "أهلاً! اسألني عن السكربتات، السياسات، الروابط، أو اطلب إعادة صياغة/ترجمة." }
+  ]);
   const [loading, setLoading] = useState(false);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, loading]);
 
   async function ask() {
+    const trimmed = input.trim();
+    if (!trimmed || loading) return;
+
+    const nextMessages: ChatMessage[] = [...messages, { role: "user", content: trimmed }];
+    setMessages(nextMessages);
+    setInput("");
     setLoading(true);
-    setAnswer("");
 
-    const res = await fetch("/api/ai/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input, country, language })
-    });
-
-    const data = await res.json();
-
-    setAnswer(res.ok ? data.answer : data.error || "AI failed");
-    setLoading(false);
+    try {
+      const res = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: trimmed, country, language, messages })
+      });
+      const data = await res.json().catch(() => ({ error: "AI route returned a non-JSON response." }));
+      setMessages([...nextMessages, { role: "assistant", content: res.ok ? data.answer : data.error || "AI failed" }]);
+    } catch (error) {
+      setMessages([...nextMessages, { role: "assistant", content: error instanceof Error ? error.message : "AI failed" }]);
+    } finally {
+      setLoading(false);
+    }
   }
 
+  function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      ask();
+    }
+  }
+
+
   return (
-    <div className="card">
-      <div className="toolbar" style={{ justifyContent: "space-between" }}>
-        <div>
-          <h2 style={{ margin: 0 }}>AI Support Chatbot</h2>
-          <p style={{ color: "var(--muted)" }}>
-            Current style: {country} • {language === "AR" ? "Arabic" : "English"}
-          </p>
-        </div>
-
-        <button className="btn" onClick={ask} disabled={loading || !input.trim()}>
-          {loading ? "Thinking..." : "Ask AI"}
-        </button>
+    <div className="chatgpt-shell card">
+      <div className="section-head">
+        <div><h2>AI Support Chatbot</h2><p>{country} • {language === "AR" ? "Arabic" : "English"}</p></div>
+        <div className="toolbar"><button className="btn ghost small" onClick={() => setMessages([{ role: "assistant", content: "أهلاً! اسألني عن السكربتات، السياسات، الروابط، أو اطلب إعادة صياغة/ترجمة." }])}>Reset</button></div>
       </div>
-
-      <div className="field">
-        <label>Ask anything or paste a draft script</label>
-        <textarea
-          className="textarea"
-          dir={language === "AR" ? "rtl" : "ltr"}
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          placeholder="اكتب سؤالك هنا..."
-        />
+      <div className="messages-panel" dir={language === "AR" ? "rtl" : "ltr"}>
+        {messages.map((msg, index) => <div key={index} className={`message-row ${msg.role}`}><div className="message-bubble">{msg.content}</div></div>)}
+        {loading && <div className="message-row assistant"><div className="message-bubble typing">Thinking...</div></div>}
+        <div ref={bottomRef} />
       </div>
-
-      <div className="chat-box" dir={language === "AR" ? "rtl" : "ltr"}>
-        {answer || "AI answer will appear here."}
+      <div className="chat-input-bar">
+        <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={onKeyDown} placeholder="اكتب رسالتك هنا..." rows={2} dir={language === "AR" ? "rtl" : "ltr"} />
+        <button className="send-button" onClick={ask} disabled={loading || !input.trim()}>➤</button>
       </div>
     </div>
   );
@@ -448,14 +422,8 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
 function Calculator({ country }: { country: Country }) {
   const [tool, setTool] = useState("monthly-to-pif");
   const [values, setValues] = useState<Record<string, string>>({});
-
-  function set(name: string, value: string) {
-    setValues((currentValues) => ({ ...currentValues, [name]: value }));
-  }
-
-  function num(name: string) {
-    return Number(values[name] || 0);
-  }
+  function set(name: string, value: string) { setValues((currentValues) => ({ ...currentValues, [name]: value })); }
+  function num(name: string) { return Number(values[name] || 0); }
 
   const current = num("current");
   const next = num("next");
@@ -473,399 +441,177 @@ function Calculator({ country }: { country: Country }) {
 
   return (
     <div className="card">
-      <h2>Calculation Tool</h2>
-
-      <div className="pills" style={{ marginBottom: 18 }}>
-        <button className={`pill ${tool === "monthly-to-pif" ? "active" : ""}`} onClick={() => setTool("monthly-to-pif")}>
-          Monthly to PIF
-        </button>
-        <button className={`pill ${tool === "home-monthly" ? "active" : ""}`} onClick={() => setTool("home-monthly")}>
-          Home Gym Monthly
-        </button>
-        <button className={`pill ${tool === "home-pif" ? "active" : ""}`} onClick={() => setTool("home-pif")}>
-          Home Gym PIF
-        </button>
-        <button className={`pill ${tool === "upgrade" ? "active" : ""}`} onClick={() => setTool("upgrade")}>
-          Upgrade
-        </button>
-        <button className={`pill ${tool === "deduction" ? "active" : ""}`} onClick={() => setTool("deduction")}>
-          Deduction Date
-        </button>
-        <button className={`pill ${tool === "discount" ? "active" : ""}`} onClick={() => setTool("discount")}>
-          Discount
-        </button>
+      <div className="section-head"><div><h2>Calculation Tool</h2><p>Billing tools + Hijri month helper.</p></div></div>
+      <div className="tool-tabs">
+        <button className={`toggle ${tool === "monthly-to-pif" ? "active" : ""}`} onClick={() => setTool("monthly-to-pif")}>Monthly to PIF</button>
+        <button className={`toggle ${tool === "home-monthly" ? "active" : ""}`} onClick={() => setTool("home-monthly")}>Home Gym Monthly</button>
+        <button className={`toggle ${tool === "home-pif" ? "active" : ""}`} onClick={() => setTool("home-pif")}>Home Gym PIF</button>
+        <button className={`toggle ${tool === "upgrade" ? "active" : ""}`} onClick={() => setTool("upgrade")}>Upgrade</button>
+        <button className={`toggle ${tool === "deduction" ? "active" : ""}`} onClick={() => setTool("deduction")}>Deduction Date</button>
+        <button className={`toggle ${tool === "discount" ? "active" : ""}`} onClick={() => setTool("discount")}>Discount</button>
+        <button className={`toggle ${tool === "hijri" ? "active" : ""}`} onClick={() => setTool("hijri")}>Hijri Months</button>
       </div>
-
       {tool === "monthly-to-pif" && <MonthlyToPif values={values} set={set} country={country} />}
-
-      {(tool === "home-monthly" || tool === "upgrade") && (
-        <MonthlyTransfer
-          values={values}
-          set={set}
-          country={country}
-          label={tool === "upgrade" ? "Upgrade" : "Home Gym Transfer Monthly"}
-          priceDiff={priceDiff}
-          nextPayment={nextPayment}
-          days={days}
-        />
-      )}
-
+      {(tool === "home-monthly" || tool === "upgrade") && <MonthlyTransfer values={values} set={set} country={country} label={tool === "upgrade" ? "Upgrade" : "Home Gym Transfer Monthly"} priceDiff={priceDiff} nextPayment={nextPayment} days={days} />}
       {tool === "home-pif" && <PifTransfer values={values} set={set} country={country} pifDays={pifDays} />}
       {tool === "deduction" && <DeductionDate values={values} set={set} country={country} days={deductionDiff} result={changedPayment} />}
       {tool === "discount" && <Discount values={values} set={set} country={country} />}
+      {tool === "hijri" && <HijriMonths />}
     </div>
   );
 }
 
 function NumberField({ label, value, onChange }: { label: string; value?: string; onChange: (value: string) => void }) {
-  return (
-    <div className="field">
-      <label>{label}</label>
-      <input className="input" type="number" step="0.01" value={value || ""} onChange={(event) => onChange(event.target.value)} />
-    </div>
-  );
+  return <div className="field"><label>{label}</label><input className="input" type="number" step="0.01" value={value || ""} onChange={(event) => onChange(event.target.value)} /></div>;
 }
-
 function DateField({ label, value, onChange }: { label: string; value?: string; onChange: (value: string) => void }) {
-  return (
-    <div className="field">
-      <label>{label}</label>
-      <input className="input" type="date" value={value || ""} onChange={(event) => onChange(event.target.value)} />
-    </div>
-  );
+  return <div className="field"><label>{label}</label><input className="input" type="date" value={value || ""} onChange={(event) => onChange(event.target.value)} /></div>;
 }
-
 function MonthlyToPif({ values, set, country }: { values: Record<string, string>; set: (name: string, value: string) => void; country: Country }) {
-  const monthlyPrice = Number(values.monthlyPrice || 0);
-  const start = values.startDate || "";
-  const end = values.endDate || "";
-  const totalPif = Number(values.totalPif || 0);
-  const perDay = monthlyPrice / 31;
-  const usedDays = Math.max(daysBetween(start, end) + 1, 0);
-  const usedAmount = perDay * usedDays;
-  const remaining = totalPif - usedAmount;
-
-  return (
-    <div className="grid two">
-      <div>
-        <NumberField label="Monthly price" value={values.monthlyPrice} onChange={(value) => set("monthlyPrice", value)} />
-        <NumberField label="PIF total price" value={values.totalPif} onChange={(value) => set("totalPif", value)} />
-        <DateField label="Date of transfer" value={start} onChange={(value) => set("startDate", value)} />
-        <DateField label="One day before next deduction date" value={end} onChange={(value) => set("endDate", value)} />
-      </div>
-
-      <div className="calc-result">
-        <h3>Result</h3>
-        <p>
-          Price per day: <b>{money(perDay, country)}</b>
-        </p>
-        <p>
-          Days used: <b>{usedDays}</b>
-        </p>
-        <p>
-          Used amount: <b>{money(usedAmount, country)}</b>
-        </p>
-        <p>
-          Remaining PIF amount: <b>{money(remaining, country)}</b>
-        </p>
-      </div>
-    </div>
-  );
+  const monthlyPrice = Number(values.monthlyPrice || 0); const start = values.startDate || ""; const end = values.endDate || ""; const totalPif = Number(values.totalPif || 0); const perDay = monthlyPrice / 31; const usedDays = Math.max(daysBetween(start, end) + 1, 0); const usedAmount = perDay * usedDays; const remaining = totalPif - usedAmount;
+  return <div className="calculator-grid"><div><NumberField label="Monthly price" value={values.monthlyPrice} onChange={(value) => set("monthlyPrice", value)} /><NumberField label="PIF total price" value={values.totalPif} onChange={(value) => set("totalPif", value)} /><DateField label="Date of transfer" value={start} onChange={(value) => set("startDate", value)} /><DateField label="One day before next deduction date" value={end} onChange={(value) => set("endDate", value)} /></div><ResultBox items={[["Price per day", money(perDay, country)], ["Days used", String(usedDays)], ["Used amount", money(usedAmount, country)], ["Remaining PIF amount", money(remaining, country)]]} /></div>;
 }
-
-function MonthlyTransfer({
-  values,
-  set,
-  country,
-  label,
-  priceDiff,
-  nextPayment,
-  days
-}: {
-  values: Record<string, string>;
-  set: (name: string, value: string) => void;
-  country: Country;
-  label: string;
-  priceDiff: number;
-  nextPayment: number;
-  days: number;
-}) {
-  return (
-    <div className="grid two">
-      <div>
-        <h3>{label}</h3>
-        <NumberField label="Current price" value={values.current} onChange={(value) => set("current", value)} />
-        <NumberField label="New price" value={values.next} onChange={(value) => set("next", value)} />
-        <DateField label="Date of transfer" value={values.transferDate} onChange={(value) => set("transferDate", value)} />
-        <DateField label="One day before next deduction date" value={values.nextDate} onChange={(value) => set("nextDate", value)} />
-      </div>
-
-      <div className="calc-result">
-        <h3>Result</h3>
-        <p>
-          Days: <b>{Math.max(days, 0)}</b>
-        </p>
-        <p>
-          Price difference: <b>{money(priceDiff, country)}</b>
-        </p>
-        <p>
-          Next payment amount: <b>{money(nextPayment, country)}</b>
-        </p>
-      </div>
-    </div>
-  );
+function MonthlyTransfer({ values, set, country, label, priceDiff, nextPayment, days }: { values: Record<string, string>; set: (name: string, value: string) => void; country: Country; label: string; priceDiff: number; nextPayment: number; days: number }) {
+  return <div className="calculator-grid"><div><h3>{label}</h3><NumberField label="Current price" value={values.current} onChange={(value) => set("current", value)} /><NumberField label="New price" value={values.next} onChange={(value) => set("next", value)} /><DateField label="Date of transfer" value={values.transferDate} onChange={(value) => set("transferDate", value)} /><DateField label="One day before next deduction date" value={values.nextDate} onChange={(value) => set("nextDate", value)} /></div><ResultBox items={[["Days", String(Math.max(days, 0))], ["Price difference", money(priceDiff, country)], ["Next payment amount", money(nextPayment, country)]]} /></div>;
 }
-
 function PifTransfer({ values, set, country, pifDays }: { values: Record<string, string>; set: (name: string, value: string) => void; country: Country; pifDays: number }) {
-  return (
-    <div className="grid two">
-      <div>
-        <NumberField label="Current price" value={values.current} onChange={(value) => set("current", value)} />
-        <NumberField label="New price" value={values.next} onChange={(value) => set("next", value)} />
-        <NumberField label="Number of months" value={values.months} onChange={(value) => set("months", value)} />
-      </div>
-
-      <div className="calc-result">
-        <h3>Result</h3>
-        <p>
-          Price difference: <b>{money(Number(values.next || 0) - Number(values.current || 0), country)}</b>
-        </p>
-        <p>
-          Days to be deducted: <b>{Math.max(pifDays, 0).toFixed(1)}</b>
-        </p>
-        <p>Note: If member transfers from higher price gym to lower price gym, no days are added.</p>
-      </div>
-    </div>
-  );
+  return <div className="calculator-grid"><div><NumberField label="Current price" value={values.current} onChange={(value) => set("current", value)} /><NumberField label="New price" value={values.next} onChange={(value) => set("next", value)} /><NumberField label="Number of months" value={values.months} onChange={(value) => set("months", value)} /></div><ResultBox items={[["Price difference", money(Number(values.next || 0) - Number(values.current || 0), country)], ["Days to be deducted", Math.max(pifDays, 0).toFixed(1)]]} note="If member transfers from higher price gym to lower price gym, no days are added." /></div>;
 }
-
-function DeductionDate({
-  values,
-  set,
-  country,
-  days,
-  result
-}: {
-  values: Record<string, string>;
-  set: (name: string, value: string) => void;
-  country: Country;
-  days: number;
-  result: number;
-}) {
-  return (
-    <div className="grid two">
-      <div>
-        <DateField label="Current deduction date" value={values.currentDate} onChange={(value) => set("currentDate", value)} />
-        <DateField label="New deduction date" value={values.newDate} onChange={(value) => set("newDate", value)} />
-        <NumberField label="Membership price" value={values.membershipPrice} onChange={(value) => set("membershipPrice", value)} />
-      </div>
-
-      <div className="calc-result">
-        <h3>Result</h3>
-        <p>
-          Days difference: <b>{days}</b>
-        </p>
-        <p>
-          Next payment amount: <b>{money(result, country)}</b>
-        </p>
-        <p>If deduction date is moved further, payment increases. If moved back, payment decreases.</p>
-      </div>
-    </div>
-  );
+function DeductionDate({ values, set, country, days, result }: { values: Record<string, string>; set: (name: string, value: string) => void; country: Country; days: number; result: number }) {
+  return <div className="calculator-grid"><div><DateField label="Current deduction date" value={values.currentDate} onChange={(value) => set("currentDate", value)} /><DateField label="New deduction date" value={values.newDate} onChange={(value) => set("newDate", value)} /><NumberField label="Membership price" value={values.membershipPrice} onChange={(value) => set("membershipPrice", value)} /></div><ResultBox items={[["Days difference", String(days)], ["Next payment amount", money(result, country)]]} /></div>;
 }
-
 function Discount({ values, set, country }: { values: Record<string, string>; set: (name: string, value: string) => void; country: Country }) {
-  const price = Number(values.current || 0);
-
-  return (
-    <div className="grid two">
-      <div>
-        <NumberField label="Current price" value={values.current} onChange={(value) => set("current", value)} />
-      </div>
-
-      <div className="calc-result">
-        <h3>Result</h3>
-        <p>
-          After 25% discount: <b>{money(price * 0.75, country)}</b>
-        </p>
-        <p>
-          After 20% discount: <b>{money(price * 0.8, country)}</b>
-        </p>
-        <p>Only monthly members who did not join on discounted price are eligible.</p>
-      </div>
-    </div>
-  );
+  const price = Number(values.current || 0); return <div className="calculator-grid"><div><NumberField label="Current price" value={values.current} onChange={(value) => set("current", value)} /></div><ResultBox items={[["After 25% discount", money(price * 0.75, country)], ["After 20% discount", money(price * 0.8, country)]]} note="Only monthly members who did not join on discounted price are eligible." /></div>;
+}
+function ResultBox({ items, note }: { items: [string, string][]; note?: string }) {
+  return <div className="calc-result"><h3>Result</h3>{items.map(([label, value]) => <p key={label}>{label}: <b>{value}</b></p>)}{note && <p>{note}</p>}</div>;
+}
+function HijriMonths() {
+  return <div className="hijri-card"><h3>Hijri Month Helper</h3><p>جدول سريع لأسماء الشهور الهجرية وأرقامها. المقابل الميلادي يتغير سنويًا، لذلك استخدمه كمرجع للأسماء والترتيب.</p><div className="hijri-grid">{HIJRI_MONTHS.map(([num, ar, en]) => <div className="hijri-item" key={num}><b>{num}</b><span>{ar}</span><small>{en}</small></div>)}</div></div>;
 }
 
-function Admin({ scripts, setScripts }: { scripts: Script[]; setScripts: (scripts: Script[]) => void }) {
+function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts: Script[]; setScripts: (scripts: Script[]) => void; currentUser: User; onScriptsChanged: () => Promise<void> }) {
   const [selectedId, setSelectedId] = useState("");
   const [status, setStatus] = useState("");
-  const [newScript, setNewScript] = useState({
-    title: "",
-    category: "General",
-    country: "KSA" as Script["country"],
-    language: "AR" as Script["language"],
-    body: ""
-  });
+  const [adminCategory, setAdminCategory] = useState("Cancellation & Retention");
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [newScript, setNewScript] = useState({ title: "", category: "Cancellation & Retention", country: "KSA" as Script["country"], language: "AR" as Script["language"], body: "" });
 
-  const activeScripts = useMemo(() => {
-    return scripts.filter((script) => script.active !== false);
-  }, [scripts]);
+  const adminCategories = useMemo(() => Array.from(new Set(scripts.map((script) => script.category))).sort((a, b) => categoryRank(a) - categoryRank(b) || a.localeCompare(b)), [scripts]);
+  const adminScripts = useMemo(() => scripts.filter((script) => script.category === adminCategory).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || a.title.localeCompare(b.title)), [scripts, adminCategory]);
+  const selected = useMemo(() => scripts.find((script) => script.id === selectedId) || adminScripts[0] || scripts[0] || null, [scripts, adminScripts, selectedId]);
 
-  const categories = useMemo(() => {
-    const items = Array.from(new Set(activeScripts.map((script) => script.category))).filter(Boolean).sort();
-    return items.length ? items : ["General"];
-  }, [activeScripts]);
+  useEffect(() => { if (!adminCategories.includes(adminCategory) && adminCategories[0]) setAdminCategory(adminCategories[0]); }, [adminCategories, adminCategory]);
+  useEffect(() => { if (selected && !selectedId) setSelectedId(selected.id); }, [selected, selectedId]);
+  useEffect(() => { loadUsers(); }, []);
 
-  const selected = useMemo(() => {
-    return activeScripts.find((script) => script.id === selectedId) || activeScripts[0] || null;
-  }, [activeScripts, selectedId]);
+  async function loadUsers() {
+    const res = await fetch("/api/admin/users");
+    const data = await res.json().catch(() => ({ users: [] }));
+    if (res.ok) setUsers(data.users || []);
+  }
 
-  useEffect(() => {
-    if (!selectedId && activeScripts[0]) {
-      setSelectedId(activeScripts[0].id);
-    }
-  }, [activeScripts, selectedId]);
+  function updateSelected(patch: Partial<Script>) { if (selected) setScripts(scripts.map((script) => (script.id === selected.id ? { ...script, ...patch } : script))); }
 
-  function updateSelected(patch: Partial<Script>) {
+  async function saveSelected() {
     if (!selected) return;
-
-    setScripts(
-      scripts.map((script) => {
-        if (script.id !== selected.id) return script;
-        return { ...script, ...patch };
-      })
-    );
+    const res = await fetch(`/api/scripts/${selected.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title: selected.title, category: selected.category, country: selected.country, language: selected.language, body: selected.body, active: selected.active, sortOrder: selected.sortOrder || 0 }) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Save failed");
+    setStatus("Saved for everyone.");
+    await onScriptsChanged();
   }
 
   async function createScript() {
-    setStatus("");
-
-    if (!newScript.title.trim() || !newScript.body.trim()) {
-      setStatus("Please add title and body.");
-      return;
-    }
-
-    const res = await fetch("/api/scripts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newScript)
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setStatus(data.error || "Create failed");
-      return;
-    }
-
-    const createdScript = data.script as Script;
-    setScripts([createdScript, ...scripts]);
-    setSelectedId(createdScript.id);
-    setNewScript({
-      title: "",
-      category: newScript.category,
-      country: newScript.country,
-      language: newScript.language,
-      body: ""
-    });
-    setStatus("Script added for everyone.");
-  }
-
-  async function save() {
-    if (!selected) return;
-
-    if (selected.id.startsWith("seed-")) {
-      setStatus("Run npm run db:seed first, then edit DB scripts.");
-      return;
-    }
-
-    const res = await fetch(`/api/scripts/${selected.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: selected.title,
-        category: selected.category,
-        country: selected.country,
-        language: selected.language,
-        body: selected.body,
-        active: selected.active
-      })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setStatus(data.error || "Save failed");
-      return;
-    }
-
-    const updatedScript = data.script as Script;
-    setScripts(scripts.map((script) => (script.id === updatedScript.id ? updatedScript : script)));
-    setSelectedId(updatedScript.id);
-    setStatus("Saved for all users.");
-  }
-
-  async function deleteScript(scriptId: string) {
-    const target = scripts.find((script) => script.id === scriptId);
-    const ok = window.confirm(`Delete this script?\n\n${target?.title || ""}`);
-
-    if (!ok) return;
-
-    const res = await fetch(`/api/scripts/${scriptId}`, {
-      method: "DELETE"
-    });
-
+    const res = await fetch("/api/scripts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newScript) });
     const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Create failed");
+    setStatus("Script added.");
+    setNewScript({ title: "", category: newScript.category, country: newScript.country, language: newScript.language, body: "" });
+    await onScriptsChanged();
+    setSelectedId(data.script.id);
+  }
 
-    if (!res.ok) {
-      setStatus(data.error || "Delete failed");
-      return;
-    }
+  async function deleteScript(id: string) {
+    if (!confirm("Delete this script for all users?")) return;
+    const res = await fetch(`/api/scripts/${id}`, { method: "DELETE" });
+    if (!res.ok) return setStatus("Delete failed");
+    setStatus("Script deleted.");
+    await onScriptsChanged();
+    setSelectedId("");
+  }
 
-    const nextScripts = scripts.filter((script) => script.id !== scriptId);
-    setScripts(nextScripts);
-    setSelectedId(nextScripts[0]?.id || "");
-    setStatus("Script deleted for everyone.");
+  function reorderLocal(targetId: string) {
+    if (!draggedId || draggedId === targetId) return;
+    const list = adminScripts.map((script) => script.id);
+    const from = list.indexOf(draggedId);
+    const to = list.indexOf(targetId);
+    if (from === -1 || to === -1) return;
+    const moved = [...adminScripts];
+    const [item] = moved.splice(from, 1);
+    moved.splice(to, 0, item);
+    const movedIds = moved.map((script) => script.id);
+    const remapped = scripts.map((script) => {
+      const index = movedIds.indexOf(script.id);
+      return index >= 0 ? { ...script, sortOrder: (index + 1) * 10 } : script;
+    });
+    setScripts(remapped);
+  }
+
+  async function saveOrder() {
+    const ids = adminScripts.map((script) => script.id);
+    const res = await fetch("/api/scripts/reorder", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ids }) });
+    if (!res.ok) return setStatus("Saving order failed");
+    setStatus("Order saved for everyone.");
+    await onScriptsChanged();
+  }
+
+  async function deleteUser(id: string) {
+    if (!confirm("Delete this user?")) return;
+    const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "User delete failed");
+    setStatus("User deleted.");
+    await loadUsers();
   }
 
   return (
-    <div className="admin-clean-layout">
-      <div className="card admin-add-card">
-        <div className="section-head compact">
+    <div className="admin-layout-v2">
+      <div className="card admin-editor add-script-card admin-wide-card">
+        <div className="section-head">
           <div>
             <h2>Add script</h2>
-            <p>Create a new script and publish it to all users.</p>
+            <p>Create a new script and publish it for all users.</p>
           </div>
+          <button className="btn" onClick={createScript}>Add script for everyone</button>
         </div>
 
-        {status && <p className={status.includes("failed") || status.includes("Please") ? "error" : "success"}>{status}</p>}
+        {status && <p className={status.toLowerCase().includes("failed") || status.toLowerCase().includes("error") ? "error" : "success"}>{status}</p>}
 
-        <div className="admin-add-grid">
-          <div className="field">
+        <div className="add-script-form admin-add-grid">
+          <div className="field add-title">
             <label>Title</label>
             <input
               className="input"
               value={newScript.title}
-              onChange={(event) => setNewScript({ ...newScript, title: event.target.value })}
-              placeholder="Example: Payment link confirmation"
+              placeholder="Example: Payment Link Approval"
+              onChange={(e) => setNewScript({ ...newScript, title: e.target.value })}
             />
           </div>
 
           <div className="field">
             <label>Category</label>
-            <input
-              className="input"
+            <select
+              className="select"
               value={newScript.category}
-              onChange={(event) => setNewScript({ ...newScript, category: event.target.value })}
-              list="admin-category-options"
-              placeholder="Example: Payment & Billing"
-            />
-            <datalist id="admin-category-options">
-              {categories.map((item) => (
-                <option key={item} value={item} />
-              ))}
-            </datalist>
+              onChange={(e) => setNewScript({ ...newScript, category: e.target.value })}
+            >
+              {adminCategories.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+              <option value="Links">Links</option>
+              <option value="Branches & Hours">Branches & Hours</option>
+              <option value="Tickets">Tickets</option>
+            </select>
           </div>
 
           <div className="field">
@@ -873,11 +619,11 @@ function Admin({ scripts, setScripts }: { scripts: Script[]; setScripts: (script
             <select
               className="select"
               value={newScript.country}
-              onChange={(event) => setNewScript({ ...newScript, country: event.target.value as Script["country"] })}
+              onChange={(e) => setNewScript({ ...newScript, country: e.target.value as Script["country"] })}
             >
-              <option value="ALL">ALL</option>
               <option value="KSA">KSA</option>
               <option value="UAE">UAE</option>
+              <option value="ALL">ALL</option>
             </select>
           </div>
 
@@ -886,7 +632,7 @@ function Admin({ scripts, setScripts }: { scripts: Script[]; setScripts: (script
             <select
               className="select"
               value={newScript.language}
-              onChange={(event) => setNewScript({ ...newScript, language: event.target.value as Script["language"] })}
+              onChange={(e) => setNewScript({ ...newScript, language: e.target.value as Script["language"] })}
             >
               <option value="AR">AR</option>
               <option value="EN">EN</option>
@@ -897,57 +643,58 @@ function Admin({ scripts, setScripts }: { scripts: Script[]; setScripts: (script
         <div className="field">
           <label>Body</label>
           <textarea
-            className="textarea admin-add-body"
+            className="textarea admin-body add-script-body"
             value={newScript.body}
-            onChange={(event) => setNewScript({ ...newScript, body: event.target.value })}
             placeholder="Write the script here..."
+            onChange={(e) => setNewScript({ ...newScript, body: e.target.value })}
           />
         </div>
-
-        <button className="btn full" onClick={createScript}>
-          Add script for everyone
-        </button>
       </div>
 
-      <div className="card admin-list-card">
-        <div className="section-head compact">
+      <div className="card admin-panel">
+        <div className="section-head">
           <div>
-            <h2>All scripts</h2>
-            <p>Select a script to edit or delete.</p>
+            <h2>Script order</h2>
+            <p>Drag scripts inside one category, then save order.</p>
           </div>
+          <button className="btn small" onClick={saveOrder}>Save order</button>
         </div>
 
-        <div className="script-list admin-script-list">
-          {activeScripts.map((script) => (
+        <select className="select" value={adminCategory} onChange={(e) => setAdminCategory(e.target.value)}>
+          {adminCategories.map((cat) => <option key={cat}>{cat}</option>)}
+        </select>
+
+        <div className="admin-list draggable-list">
+          {adminScripts.map((script) => (
             <button
               key={script.id}
-              className={`script-item ${selected?.id === script.id ? "active" : ""}`}
+              draggable
+              onDragStart={() => setDraggedId(script.id)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => reorderLocal(script.id)}
+              className={`script-card ${selected?.id === script.id ? "active" : ""}`}
               onClick={() => setSelectedId(script.id)}
             >
-              <div className="script-title">{script.title}</div>
-              <div className="script-meta">
-                {script.category} • {script.country} • {script.language}
-              </div>
+              <b>☰ {script.title}</b>
+              <p>{script.country} • {script.language} • #{script.sortOrder || 0}</p>
             </button>
           ))}
         </div>
       </div>
 
-      <div className="card admin-editor admin-edit-card">
-        <div className="section-head compact">
+      <div className="card admin-editor">
+        <div className="section-head">
           <div>
-            <h2>Admin Script Editor</h2>
-            <p>Update the selected script for all users.</p>
+            <h2>Edit script</h2>
+            <p>Changes apply to all users.</p>
           </div>
-
-          {selected && (
-            <button className="btn danger small" onClick={() => deleteScript(selected.id)}>
-              Delete script
-            </button>
-          )}
+          <div className="toolbar">
+            <button className="btn ghost small danger-btn" onClick={() => selected && deleteScript(selected.id)} disabled={!selected}>Delete script</button>
+            <button className="btn small" onClick={saveSelected} disabled={!selected}>Save changes</button>
+          </div>
         </div>
 
-        {!selected && <p className="error">No script selected.</p>}
+        {status && <p className={status.toLowerCase().includes("failed") || status.toLowerCase().includes("error") ? "error" : "success"}>{status}</p>}
 
         {selected && (
           <>
@@ -956,23 +703,18 @@ function Admin({ scripts, setScripts }: { scripts: Script[]; setScripts: (script
               <input className="input" value={selected.title} onChange={(event) => updateSelected({ title: event.target.value })} />
             </div>
 
-            <div className="admin-edit-grid">
+            <div className="admin-fields">
               <div className="field">
                 <label>Category</label>
-                <input className="input" value={selected.category} onChange={(event) => updateSelected({ category: event.target.value })} list="admin-category-options-edit" />
-                <datalist id="admin-category-options-edit">
-                  {categories.map((item) => (
-                    <option key={item} value={item} />
-                  ))}
-                </datalist>
+                <input className="input" value={selected.category} onChange={(event) => updateSelected({ category: event.target.value })} />
               </div>
 
               <div className="field">
                 <label>Country</label>
                 <select className="select" value={selected.country} onChange={(event) => updateSelected({ country: event.target.value as Script["country"] })}>
-                  <option value="ALL">ALL</option>
                   <option value="KSA">KSA</option>
                   <option value="UAE">UAE</option>
+                  <option value="ALL">ALL</option>
                 </select>
               </div>
 
@@ -987,14 +729,25 @@ function Admin({ scripts, setScripts }: { scripts: Script[]; setScripts: (script
 
             <div className="field">
               <label>Body</label>
-              <textarea className="textarea admin-edit-body" value={selected.body} onChange={(event) => updateSelected({ body: event.target.value })} />
+              <textarea className="textarea admin-body" value={selected.body} onChange={(event) => updateSelected({ body: event.target.value })} />
             </div>
-
-            <button className="btn full" onClick={save}>
-              Save update for everyone
-            </button>
           </>
         )}
+      </div>
+
+      <div className="card admin-panel users-panel">
+        <h2>Users</h2>
+        <div className="admin-list">
+          {users.map((member) => (
+            <div className="user-row" key={member.id}>
+              <div>
+                <b>{member.nameEn} / {member.nameAr}</b>
+                <span>{member.email} • {member.role} • {member.emailVerifiedAt ? "Verified" : "Not verified"}</span>
+              </div>
+              <button className="btn ghost small danger-btn" onClick={() => deleteUser(member.id)} disabled={member.id === currentUser.id}>Delete user</button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
