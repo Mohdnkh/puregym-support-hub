@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { makeToken, hashToken } from "@/lib/crypto";
-import { sendVerificationEmail } from "@/lib/mail";
+import { hashToken } from "@/lib/crypto";
+import { sendVerificationCode } from "@/lib/mail";
 
 const schema = z.object({
   email: z.string().email(),
@@ -12,35 +12,46 @@ const schema = z.object({
   nameEn: z.string().min(2)
 });
 
+function makeCode() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
 export async function POST(req: Request) {
   try {
     const body = schema.parse(await req.json());
-    const existing = await prisma.user.findUnique({ where: { email: body.email.toLowerCase() } });
-    if (existing) {
+    const email = body.email.toLowerCase();
+
+    const existing = await prisma.user.findUnique({ where: { email } });
+
+    if (existing?.emailVerifiedAt) {
       return NextResponse.json({ error: "Email already exists" }, { status: 409 });
+    }
+
+    if (existing && !existing.emailVerifiedAt) {
+      await prisma.user.delete({ where: { id: existing.id } });
     }
 
     const passwordHash = await bcrypt.hash(body.password, 12);
     const user = await prisma.user.create({
       data: {
-        email: body.email.toLowerCase(),
+        email,
         passwordHash,
         nameAr: body.nameAr,
         nameEn: body.nameEn
       }
     });
 
-    const token = makeToken();
-    const tokenHash = hashToken(token);
-    const expiresAt = new Date(Date.now() + Number(process.env.VERIFY_EMAIL_TOKEN_EXPIRES_MINUTES || 1440) * 60 * 1000);
+    const code = makeCode();
+    const tokenHash = hashToken(`${email}:${code}`);
+    const expiresAt = new Date(Date.now() + Number(process.env.VERIFY_EMAIL_TOKEN_EXPIRES_MINUTES || 30) * 60 * 1000);
 
     await prisma.verificationToken.create({
       data: { tokenHash, userId: user.id, expiresAt }
     });
 
-    await sendVerificationEmail(user.email, token);
+    await sendVerificationCode(user.email, code);
 
-    return NextResponse.json({ ok: true, message: "Account created. Please verify your email." });
+    return NextResponse.json({ ok: true, email: user.email, message: "Account created. Verification code sent to your email." });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Invalid request";
     return NextResponse.json({ error: message }, { status: 400 });

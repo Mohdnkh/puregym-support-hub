@@ -12,29 +12,30 @@ export function getTransporter() {
   });
 }
 
-export async function sendVerificationEmail(email: string, token: string) {
-  const appUrl = process.env.APP_URL || "http://localhost:3000";
-  const verifyUrl = `${appUrl}/verify?token=${encodeURIComponent(token)}`;
+export async function sendVerificationCode(email: string, code: string) {
   const fromEmail = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER;
   const fromName = process.env.SMTP_FROM_NAME || "PureGym Support Hub";
 
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !fromEmail) {
-    console.warn("SMTP variables are missing. Verification link:", verifyUrl);
+    console.warn("SMTP variables are missing. Verification code:", code);
     return;
   }
 
   await getTransporter().sendMail({
     from: `"${fromName}" <${fromEmail}>`,
     to: email,
-    subject: "Verify your PureGym Support Hub account",
+    subject: "PureGym Support Hub verification code",
     html: `
-      <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827">
-        <h2>PureGym Support Hub</h2>
-        <p>Please verify your account by clicking the button below:</p>
-        <p><a href="${verifyUrl}" style="display:inline-block;background:#111827;color:white;padding:10px 16px;border-radius:8px;text-decoration:none">Verify account</a></p>
-        <p>If the button does not work, copy this link:</p>
-        <p>${verifyUrl}</p>
+      <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827;max-width:560px;margin:auto;padding:24px">
+        <h2 style="margin:0 0 12px">PureGym Support Hub</h2>
+        <p>Please use the code below to verify your account:</p>
+        <div style="font-size:30px;letter-spacing:8px;font-weight:800;background:#f3f4f6;border-radius:14px;padding:16px;text-align:center;margin:18px 0">${code}</div>
+        <p>This code will expire soon. If you did not request this account, you can ignore this email.</p>
       </div>
     `
   });
+}
+
+export async function sendVerificationEmail(email: string, tokenOrCode: string) {
+  return sendVerificationCode(email, tokenOrCode);
 }

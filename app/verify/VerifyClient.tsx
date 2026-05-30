@@ -1,33 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function VerifyClient() {
-  const params = useSearchParams();
-  const token = params.get("token") || "";
-  const [status, setStatus] = useState("Verifying account...");
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function verify() {
-      const res = await fetch("/api/auth/verify-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token })
-      });
-      const data = await res.json();
-      setStatus(res.ok ? "Account verified successfully. You can now login." : data.error || "Verification failed");
+  async function verify(event: FormEvent) {
+    event.preventDefault();
+    setStatus("");
+    setLoading(true);
+
+    const res = await fetch("/api/auth/verify-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, code })
+    });
+
+    const data = await res.json().catch(() => ({}));
+    setLoading(false);
+
+    if (!res.ok) {
+      setStatus(data.error || "Verification failed");
+      return;
     }
-    if (token) verify();
-    else setStatus("Missing verification token.");
-  }, [token]);
+
+    setStatus("Account verified successfully. Redirecting to login...");
+    setTimeout(() => router.push("/login"), 900);
+  }
 
   return (
     <div className="auth-card">
-      <h1>Email verification</h1>
-      <p>{status}</p>
-      <Link href="/login"><button className="btn">Go to login</button></Link>
+      <div className="auth-logo-row">
+        <div className="auth-logo">PG</div>
+        <div>
+          <h1>Email verification</h1>
+          <p>Enter the verification code sent to your email.</p>
+        </div>
+      </div>
+
+      <form onSubmit={verify}>
+        <div className="field"><label>Email</label><input className="input" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" /></div>
+        <div className="field"><label>Verification code</label><input className="input verification-code-input" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" autoComplete="one-time-code" placeholder="000000" /></div>
+        {status && <p className={status.includes("success") ? "success" : "error"}>{status}</p>}
+        <button className="btn full" type="submit" disabled={loading || !email || code.length < 6}>{loading ? "Verifying..." : "Verify account"}</button>
+      </form>
+
+      <div className="auth-actions"><span>Already verified?</span><Link href="/login">Go to login</Link></div>
     </div>
   );
 }

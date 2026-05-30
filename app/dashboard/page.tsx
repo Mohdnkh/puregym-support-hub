@@ -8,6 +8,7 @@ type User = {
   email: string;
   nameAr: string;
   nameEn: string;
+  profileImage: string | null;
   role: "USER" | "ADMIN";
   emailVerified: boolean;
 };
@@ -17,6 +18,7 @@ type AdminUser = {
   email: string;
   nameAr: string;
   nameEn: string;
+  profileImage: string | null;
   role: "USER" | "ADMIN";
   emailVerifiedAt: string | null;
   createdAt: string;
@@ -37,7 +39,7 @@ type Script = {
 
 type Country = "KSA" | "UAE";
 type Lang = "AR" | "EN";
-type Section = "quick" | "scripts" | "chatbot" | "calculator" | "admin";
+type Section = "quick" | "scripts" | "chatbot" | "calculator" | "profile" | "admin";
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
 const CATEGORY_ORDER = [
@@ -109,6 +111,61 @@ function daysBetween(start: string, end: string) {
   return Math.round((b.getTime() - a.getTime()) / 86400000);
 }
 
+
+function normalizeDigits(value: string) {
+  const arabic = "٠١٢٣٤٥٦٧٨٩";
+  const persian = "۰۱۲۳۴۵۶۷۸۹";
+  return value.replace(/[٠-٩۰-۹]/g, (digit) => {
+    const arabicIndex = arabic.indexOf(digit);
+    if (arabicIndex >= 0) return String(arabicIndex);
+    const persianIndex = persian.indexOf(digit);
+    return persianIndex >= 0 ? String(persianIndex) : digit;
+  });
+}
+
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }).format(date).replace(/\//g, "-");
+}
+
+function gregorianToHijri(date: Date) {
+  const formatter = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    timeZone: "UTC"
+  });
+
+  const parts = formatter.formatToParts(date);
+  const day = Number(normalizeDigits(parts.find((part) => part.type === "day")?.value || "0"));
+  const month = Number(normalizeDigits(parts.find((part) => part.type === "month")?.value || "0"));
+  const year = Number(normalizeDigits(parts.find((part) => part.type === "year")?.value || "0"));
+
+  return { day, month, year };
+}
+
+function hijriToGregorian(hijriDay: number, hijriMonth: number, hijriYear: number) {
+  if (!hijriDay || !hijriMonth || !hijriYear) return null;
+
+  const estimatedGregorianYear = Math.floor(hijriYear * 0.970224 + 621.5774);
+  const start = Date.UTC(estimatedGregorianYear - 1, 0, 1, 12);
+  const end = Date.UTC(estimatedGregorianYear + 1, 11, 31, 12);
+
+  for (let time = start; time <= end; time += 86400000) {
+    const date = new Date(time);
+    const hijri = gregorianToHijri(date);
+    if (hijri.day === hijriDay && hijri.month === hijriMonth && hijri.year === hijriYear) {
+      return date;
+    }
+  }
+
+  return null;
+}
+
+function hijriMonthName(month: number) {
+  const found = HIJRI_MONTHS.find(([num]) => num === month);
+  return found ? `${found[1]} / ${found[2]}` : "";
+}
+
 function linkifyParts(text: string) {
   return text.split(/(https?:\/\/[^\s]+)/g).map((part, index) => {
     if (/^https?:\/\//.test(part)) {
@@ -135,10 +192,16 @@ export default function DashboardPage() {
   const [quickNoteText, setQuickNoteText] = useState("");
   const [message, setMessage] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
 
   async function loadScripts() {
     const data = await fetch("/api/scripts").then((res) => res.json());
     setScripts(data.scripts || []);
+  }
+
+  async function loadFavorites() {
+    const data = await fetch("/api/favorites").then((res) => res.json()).catch(() => ({ scriptIds: [] }));
+    setFavoriteIds(data.scriptIds || []);
   }
 
   useEffect(() => {
@@ -150,6 +213,7 @@ export default function DashboardPage() {
       }
       setUser(me.user);
       await loadScripts();
+      await loadFavorites();
     }
     load();
   }, [router]);
@@ -183,6 +247,8 @@ export default function DashboardPage() {
 
   const filteredScripts = useMemo(() => visibleScripts.filter((script) => script.category === category), [visibleScripts, category]);
 
+  const favoriteScripts = useMemo(() => visibleScripts.filter((script) => favoriteIds.includes(script.id) && script.category !== "Quick Scripts"), [visibleScripts, favoriteIds]);
+
   const selected = useMemo(() => filteredScripts.find((script) => script.id === selectedId) || filteredScripts[0] || null, [filteredScripts, selectedId]);
 
   useEffect(() => {
@@ -211,6 +277,22 @@ export default function DashboardPage() {
   function selectScript(script: Script) {
     setSelectedId(script.id);
     setEditorText(applyUserName(script.body, script.language, user));
+  }
+
+  async function toggleFavorite(scriptId: string) {
+    const isFavorite = favoriteIds.includes(scriptId);
+    setFavoriteIds((current) => (isFavorite ? current.filter((id) => id !== scriptId) : [scriptId, ...current]));
+
+    const res = await fetch("/api/favorites", {
+      method: isFavorite ? "DELETE" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scriptId })
+    });
+
+    if (!res.ok) {
+      await loadFavorites();
+      flash("Favorite update failed");
+    }
   }
 
   async function copyText(text: string) {
@@ -242,7 +324,7 @@ export default function DashboardPage() {
     router.push("/login");
   }
 
-  const title = section === "quick" ? "Quick Scripts" : section === "scripts" ? "Script Library" : section === "chatbot" ? "AI Chatbot" : section === "calculator" ? "Calculation Tool" : "Admin Editor";
+  const title = section === "quick" ? "Quick Scripts" : section === "scripts" ? "Script Library" : section === "chatbot" ? "AI Chatbot" : section === "calculator" ? "Calculation Tool" : section === "profile" ? "Profile" : "Admin Editor";
 
   return (
     <div className="app-shell">
@@ -259,11 +341,16 @@ export default function DashboardPage() {
         <button className={`nav-button ${section === "scripts" ? "active" : ""}`} onClick={() => setSection("scripts")}>Script Library</button>
         <button className={`nav-button ${section === "chatbot" ? "active" : ""}`} onClick={() => setSection("chatbot")}>AI Chatbot</button>
         <button className={`nav-button ${section === "calculator" ? "active" : ""}`} onClick={() => setSection("calculator")}>Calculation Tool</button>
+        <button className={`nav-button ${section === "profile" ? "active" : ""}`} onClick={() => setSection("profile")}>Profile</button>
         {user?.role === "ADMIN" && <button className={`nav-button ${section === "admin" ? "active" : ""}`} onClick={() => setSection("admin")}>Admin Editor</button>}
 
         <div className="sidebar-user">
-          <b>{language === "AR" ? user?.nameAr : user?.nameEn}</b>
+          <button className="profile-chip" onClick={() => setSection("profile")}>
+            {user?.profileImage ? <img src={user.profileImage} alt="Profile" /> : <span>{(language === "AR" ? user?.nameAr : user?.nameEn)?.slice(0, 1) || "P"}</span>}
+            <b>{language === "AR" ? user?.nameAr : user?.nameEn}</b>
+          </button>
           <span>{user?.email}</span>
+          <button className="btn secondary small full" onClick={() => setSection("profile")}>Profile</button>
           <button className="btn secondary small full" onClick={() => setDarkMode(!darkMode)}>{darkMode ? "Light mode" : "Dark mode"}</button>
           <button className="btn secondary small full" onClick={logout}>Logout</button>
         </div>
@@ -310,7 +397,27 @@ export default function DashboardPage() {
         )}
 
         {section === "scripts" && (
-          <div className="library-layout">
+          <>
+            <div className="favorites-strip card">
+              <div className="section-head compact">
+                <div><h2>⭐ Favorite Scripts</h2><p>Your personal favorites only. They do not affect other users.</p></div>
+              </div>
+              {favoriteScripts.length ? (
+                <div className="favorite-card-grid">
+                  {favoriteScripts.map((script) => {
+                    const body = applyUserName(script.body, script.language, user);
+                    return (
+                      <button key={script.id} className="mini-script-card" onClick={() => { setCategory(script.category); selectScript(script); }}>
+                        <b>{script.title}</b>
+                        <span>{script.category} • {script.country}</span>
+                        <span>{preview(body)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : <p className="muted-text">Click the star on any script to keep it here.</p>}
+            </div>
+            <div className="library-layout">
             <div className="category-panel">
               <div className="category-grid">
                 {categories.map((item) => {
@@ -325,11 +432,18 @@ export default function DashboardPage() {
               <div className="script-card-grid">
                 {filteredScripts.map((script) => {
                   const body = applyUserName(script.body, script.language, user);
+                  const isFavorite = favoriteIds.includes(script.id);
                   return (
-                    <button key={script.id} className={`script-card ${selectedId === script.id ? "active" : ""}`} onClick={() => selectScript(script)}>
-                      <div className="script-card-top"><b>{script.title}</b><span>{script.country}</span></div>
+                    <div key={script.id} className={`script-card ${selectedId === script.id ? "active" : ""}`} onClick={() => selectScript(script)} role="button" tabIndex={0}>
+                      <div className="script-card-top">
+                        <b>{script.title}</b>
+                        <div className="script-card-actions">
+                          <span>{script.country}</span>
+                          <button className={`star-button ${isFavorite ? "active" : ""}`} onClick={(event) => { event.stopPropagation(); toggleFavorite(script.id); }} title="Favorite">{isFavorite ? "★" : "☆"}</button>
+                        </div>
+                      </div>
                       <p>{preview(body)}</p>
-                    </button>
+                    </div>
                   );
                 })}
               </div>
@@ -348,10 +462,12 @@ export default function DashboardPage() {
               {category === "Links" && <div className="link-preview">{linkifyParts(editorText)}</div>}
             </div>
           </div>
+          </>
         )}
 
         {section === "chatbot" && <Chatbot country={country} language={language} />}
         {section === "calculator" && <Calculator country={country} />}
+        {section === "profile" && user && <Profile user={user} setUser={setUser} />}
         {section === "admin" && user?.role === "ADMIN" && <Admin scripts={scripts} setScripts={setScripts} currentUser={user} onScriptsChanged={loadScripts} />}
       </main>
     </div>
@@ -441,7 +557,7 @@ function Calculator({ country }: { country: Country }) {
 
   return (
     <div className="card">
-      <div className="section-head"><div><h2>Calculation Tool</h2><p>Billing tools + Hijri month helper.</p></div></div>
+      <div className="section-head"><div><h2>Calculation Tool</h2><p>Billing tools + Hijri date converter.</p></div></div>
       <div className="tool-tabs">
         <button className={`toggle ${tool === "monthly-to-pif" ? "active" : ""}`} onClick={() => setTool("monthly-to-pif")}>Monthly to PIF</button>
         <button className={`toggle ${tool === "home-monthly" ? "active" : ""}`} onClick={() => setTool("home-monthly")}>Home Gym Monthly</button>
@@ -487,7 +603,170 @@ function ResultBox({ items, note }: { items: [string, string][]; note?: string }
   return <div className="calc-result"><h3>Result</h3>{items.map(([label, value]) => <p key={label}>{label}: <b>{value}</b></p>)}{note && <p>{note}</p>}</div>;
 }
 function HijriMonths() {
-  return <div className="hijri-card"><h3>Hijri Month Helper</h3><p>جدول سريع لأسماء الشهور الهجرية وأرقامها. المقابل الميلادي يتغير سنويًا، لذلك استخدمه كمرجع للأسماء والترتيب.</p><div className="hijri-grid">{HIJRI_MONTHS.map(([num, ar, en]) => <div className="hijri-item" key={num}><b>{num}</b><span>{ar}</span><small>{en}</small></div>)}</div></div>;
+  const [today, setToday] = useState(new Date());
+  const todayUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 12));
+  const todayHijri = gregorianToHijri(todayUtc);
+  const [day, setDay] = useState(String(todayHijri.day || 1));
+  const [month, setMonth] = useState(String(todayHijri.month || 1));
+  const [year, setYear] = useState(String(todayHijri.year || 1447));
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setToday(new Date()), 60 * 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const converted = useMemo(() => {
+    return hijriToGregorian(Number(day), Number(month), Number(year));
+  }, [day, month, year]);
+
+  return (
+    <div className="hijri-card">
+      <div className="section-head compact">
+        <div>
+          <h3>Hijri Date Helper</h3>
+          <p>Convert a Hijri date to Gregorian, and check today’s date in both calendars.</p>
+        </div>
+      </div>
+
+      <div className="today-date-grid">
+        <div className="date-card">
+          <span>Today Gregorian</span>
+          <b>{formatDate(today)}</b>
+        </div>
+        <div className="date-card">
+          <span>Today Hijri</span>
+          <b>{todayHijri.day} {hijriMonthName(todayHijri.month)} {todayHijri.year}</b>
+        </div>
+      </div>
+
+      <div className="hijri-converter-grid">
+        <div className="field"><label>Hijri day</label><input className="input" inputMode="numeric" value={day} onChange={(e) => setDay(e.target.value.replace(/\D/g, "").slice(0, 2))} /></div>
+        <div className="field"><label>Hijri month</label><select className="select" value={month} onChange={(e) => setMonth(e.target.value)}>{HIJRI_MONTHS.map(([num, ar, en]) => <option key={num} value={num}>{num} - {ar} / {en}</option>)}</select></div>
+        <div className="field"><label>Hijri year</label><input className="input" inputMode="numeric" value={year} onChange={(e) => setYear(e.target.value.replace(/\D/g, "").slice(0, 4))} /></div>
+      </div>
+
+      <div className="calc-result">
+        <h3>Gregorian result</h3>
+        {converted ? <p><b>{formatDate(converted)}</b></p> : <p>Enter a valid Hijri date.</p>}
+        <p className="small-note">The result uses the Umm Al-Qura / Islamic calendar available in the browser and may differ by one day depending on the official calendar.</p>
+      </div>
+
+      <div className="hijri-grid">
+        {HIJRI_MONTHS.map(([num, ar, en]) => <div className="hijri-item" key={num}><b>{num}</b><span>{ar}</span><small>{en}</small></div>)}
+      </div>
+    </div>
+  );
+}
+
+function Profile({ user, setUser }: { user: User; setUser: (user: User) => void }) {
+  const [form, setForm] = useState({ nameAr: user.nameAr, nameEn: user.nameEn, profileImage: user.profileImage || "", currentPassword: "", newPassword: "" });
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function onImageChange(file: File | null) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setStatus("Please select an image file.");
+      return;
+    }
+    if (file.size > 900_000) {
+      setStatus("Image is too large. Please use an image under 900 KB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => setForm((current) => ({ ...current, profileImage: String(reader.result || "") }));
+    reader.readAsDataURL(file);
+  }
+
+  async function saveProfile() {
+    setStatus("");
+    setLoading(true);
+
+    const payload: Record<string, string | null> = {
+      nameAr: form.nameAr,
+      nameEn: form.nameEn,
+      profileImage: form.profileImage || null
+    };
+
+    if (form.newPassword) {
+      payload.currentPassword = form.currentPassword;
+      payload.newPassword = form.newPassword;
+    }
+
+    const res = await fetch("/api/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json().catch(() => ({}));
+    setLoading(false);
+
+    if (!res.ok) {
+      setStatus(data.error || "Profile update failed");
+      return;
+    }
+
+    setUser({
+      id: data.user.id,
+      email: data.user.email,
+      nameAr: data.user.nameAr,
+      nameEn: data.user.nameEn,
+      profileImage: data.user.profileImage,
+      role: data.user.role,
+      emailVerified: Boolean(data.user.emailVerifiedAt)
+    });
+
+    setForm((current) => ({ ...current, currentPassword: "", newPassword: "" }));
+    setStatus("Profile updated successfully.");
+  }
+
+  return (
+    <div className="profile-layout">
+      <div className="card profile-card">
+        <div className="profile-avatar-large">
+          {form.profileImage ? <img src={form.profileImage} alt="Profile" /> : <span>{form.nameEn.slice(0, 1) || "P"}</span>}
+        </div>
+        <h2>{form.nameEn}</h2>
+        <p>{user.email}</p>
+        <span className="role-badge">{user.role}</span>
+      </div>
+
+      <div className="card profile-form-card">
+        <div className="section-head">
+          <div>
+            <h2>Profile Settings</h2>
+            <p>Update your display names, optional profile image, and password.</p>
+          </div>
+          <button className="btn" onClick={saveProfile} disabled={loading}>{loading ? "Saving..." : "Save profile"}</button>
+        </div>
+
+        {status && <p className={status.includes("success") ? "success" : "error"}>{status}</p>}
+
+        <div className="profile-form-grid">
+          <div className="field"><label>Arabic name</label><input className="input" value={form.nameAr} onChange={(e) => setForm({ ...form, nameAr: e.target.value })} /></div>
+          <div className="field"><label>English name</label><input className="input" value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} /></div>
+        </div>
+
+        <div className="field">
+          <label>Profile image optional</label>
+          <input className="input" type="file" accept="image/*" onChange={(e) => onImageChange(e.target.files?.[0] || null)} />
+        </div>
+
+        {form.profileImage && <button className="btn ghost small" type="button" onClick={() => setForm({ ...form, profileImage: "" })}>Remove image</button>}
+
+        <div className="password-panel">
+          <h3>Reset password</h3>
+          <p>Leave these fields empty if you do not want to change your password.</p>
+          <div className="profile-form-grid">
+            <div className="field"><label>Current password</label><input className="input" type="password" value={form.currentPassword} onChange={(e) => setForm({ ...form, currentPassword: e.target.value })} autoComplete="current-password" /></div>
+            <div className="field"><label>New password</label><input className="input" type="password" value={form.newPassword} onChange={(e) => setForm({ ...form, newPassword: e.target.value })} autoComplete="new-password" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts: Script[]; setScripts: (scripts: Script[]) => void; currentUser: User; onScriptsChanged: () => Promise<void> }) {

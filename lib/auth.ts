@@ -8,6 +8,7 @@ export type SessionUser = {
   email: string;
   nameAr: string;
   nameEn: string;
+  profileImage: string | null;
   role: "USER" | "ADMIN";
   emailVerified: boolean;
 };
@@ -20,7 +21,7 @@ type TokenPayload = {
 
 const COOKIE_NAME = "pg_session";
 
-export function signSession(payload: TokenPayload) {
+export function signSession(payload: TokenPayload, rememberMe = false) {
   const secret = process.env.JWT_SECRET || process.env.AUTH_SECRET;
 
   if (!secret) {
@@ -28,7 +29,7 @@ export function signSession(payload: TokenPayload) {
   }
 
   const options: SignOptions = {
-    expiresIn: (process.env.JWT_EXPIRES_IN || "7d") as SignOptions["expiresIn"]
+    expiresIn: (rememberMe ? "30d" : process.env.JWT_EXPIRES_IN || "7d") as SignOptions["expiresIn"]
   };
 
   return jwt.sign(payload, secret as Secret, options);
@@ -63,6 +64,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       email: user.email,
       nameAr: user.nameAr,
       nameEn: user.nameEn,
+      profileImage: user.profileImage,
       role: user.role,
       emailVerified: Boolean(user.emailVerifiedAt)
     };
@@ -71,13 +73,13 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   }
 }
 
-export function sessionCookieOptions() {
+export function sessionCookieOptions(rememberMe = false) {
   return {
     httpOnly: true,
     secure: process.env.COOKIE_SECURE === "true" || process.env.NODE_ENV === "production",
     sameSite: (process.env.COOKIE_SAME_SITE as "lax" | "strict" | "none") || "lax",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7
+    maxAge: 60 * 60 * 24 * (rememberMe ? 30 : 7)
   };
 }
 

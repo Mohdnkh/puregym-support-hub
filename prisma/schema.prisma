@@ -29,11 +29,13 @@ model User {
   passwordHash    String
   nameAr          String
   nameEn          String
+  profileImage    String?
   role            Role      @default(USER)
   emailVerifiedAt DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   tokens          VerificationToken[]
+  favorites       ScriptFavorite[]
 }
 
 model VerificationToken {
@@ -59,4 +61,18 @@ model Script {
   sortOrder Int            @default(0)
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
+  favorites ScriptFavorite[]
+}
+
+model ScriptFavorite {
+  id        String   @id @default(cuid())
+  userId    String
+  scriptId  String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  script    Script   @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, scriptId])
+  @@index([userId])
+  @@index([scriptId])
 }

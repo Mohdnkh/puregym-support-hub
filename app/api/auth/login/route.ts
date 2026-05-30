@@ -6,7 +6,8 @@ import { SESSION_COOKIE_NAME, sessionCookieOptions, signSession } from "@/lib/au
 
 const schema = z.object({
   email: z.string().email(),
-  password: z.string().min(1)
+  password: z.string().min(1),
+  rememberMe: z.boolean().optional()
 });
 
 export async function POST(req: Request) {
@@ -22,9 +23,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Please verify your email before logging in." }, { status: 403 });
     }
 
-    const token = signSession({ sub: user.id, email: user.email, role: user.role });
+    const rememberMe = Boolean(body.rememberMe);
+    const token = signSession({ sub: user.id, email: user.email, role: user.role }, rememberMe);
     const res = NextResponse.json({ ok: true });
-    res.cookies.set(SESSION_COOKIE_NAME, token, sessionCookieOptions());
+    res.cookies.set(SESSION_COOKIE_NAME, token, sessionCookieOptions(rememberMe));
     return res;
   } catch (err) {
     const message = err instanceof Error ? err.message : "Invalid request";
