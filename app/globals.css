@@ -1306,3 +1306,134 @@ body {
     max-height: none;
   }
 }
+/* Compact top area across dashboard pages */
+.main {
+  padding-top: 18px !important;
+}
+
+.topbar {
+  margin-bottom: 12px !important;
+  align-items: center !important;
+}
+
+.topbar h1 {
+  font-size: 26px !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.03em !important;
+}
+
+.topbar p {
+  margin-top: 4px !important;
+  font-size: 14px !important;
+}
+
+.toolbar {
+  gap: 7px !important;
+}
+
+.toggle {
+  min-width: auto !important;
+  padding: 7px 12px !important;
+  font-size: 14px !important;
+  border-radius: 999px !important;
+}
+
+/* Compact search box / search header area */
+.script-search-card,
+.search-card,
+.library-search-card,
+.script-search-panel {
+  padding: 14px 18px !important;
+  border-radius: 22px !important;
+  margin-bottom: 14px !important;
+}
+
+.script-search-card .section-head,
+.search-card .section-head,
+.library-search-card .section-head,
+.script-search-panel .section-head {
+  margin-bottom: 0 !important;
+  align-items: center !important;
+}
+
+.script-search-card h2,
+.search-card h2,
+.library-search-card h2,
+.script-search-panel h2 {
+  font-size: 20px !important;
+  line-height: 1.1 !important;
+}
+
+.script-search-card p,
+.search-card p,
+.library-search-card p,
+.script-search-panel p {
+  font-size: 13px !important;
+  margin-top: 4px !important;
+}
+
+.script-search-row,
+.search-row,
+.library-search-row {
+  display: grid !important;
+  grid-template-columns: minmax(260px, 1fr) minmax(320px, 0.65fr) !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+
+.script-search-input,
+.search-input,
+.library-search-input {
+  min-height: 42px !important;
+  padding: 9px 14px !important;
+  font-size: 14px !important;
+  border-radius: 16px !important;
+}
+
+/* If the search input is a normal .input inside the search card */
+.script-search-card .input,
+.search-card .input,
+.library-search-card .input,
+.script-search-panel .input {
+  min-height: 42px !important;
+  padding: 9px 14px !important;
+  font-size: 14px !important;
+  border-radius: 16px !important;
+}
+
+/* Keep content below untouched, only reduce top spacing */
+.favorites-strip {
+  margin-top: 0 !important;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .main {
+    padding-top: 16px !important;
+  }
+
+  .topbar {
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .topbar h1 {
+    font-size: 24px !important;
+  }
+
+  .toolbar {
+    gap: 6px !important;
+  }
+
+  .toggle {
+    padding: 7px 10px !important;
+    font-size: 13px !important;
+  }
+
+  .script-search-row,
+  .search-row,
+  .library-search-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+}
