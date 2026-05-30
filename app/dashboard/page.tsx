@@ -40,7 +40,8 @@ type Script = {
 type Country = "KSA" | "UAE";
 type Lang = "AR" | "EN";
 type Section = "quick" | "scripts" | "chatbot" | "calculator" | "profile" | "admin";
-type ChatMessage = { role: "user" | "assistant"; content: string };
+type ChatMessage = { role: "user" | "assistant"; content: string; imageData?: string | null; imageName?: string | null };
+type ChatSessionSummary = { id: string; title: string; country: Country; language: Lang; updatedAt: string; _count?: { messages: number } };
 
 const CATEGORY_ORDER = [
   "Quick Scripts",
@@ -474,32 +475,99 @@ export default function DashboardPage() {
 }
 
 function Chatbot({ country, language }: { country: Country; language: Lang }) {
+  const welcome = language === "AR"
+    ? "أهلاً! اسألني عن السكربتات، السياسات، الروابط، أو ارفق صورة واطلب مني تحليلها."
+    : "Hi! Ask me about scripts, policies, links, or attach an image and ask me to analyze it.";
+
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: "assistant", content: "أهلاً! اسألني عن السكربتات، السياسات، الروابط، أو اطلب إعادة صياغة/ترجمة." }
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: welcome }]);
+  const [sessions, setSessions] = useState<ChatSessionSummary[]>([]);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [attachedImage, setAttachedImage] = useState<{ dataUrl: string; name: string } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, loading]);
+  useEffect(() => { loadSessions(); }, []);
+
+  useEffect(() => {
+    if (!activeSessionId) setMessages([{ role: "assistant", content: welcome }]);
+  }, [country, language]);
+
+  async function loadSessions() {
+    const data = await fetch("/api/ai/history").then((res) => res.json()).catch(() => ({ sessions: [] }));
+    setSessions(data.sessions || []);
+  }
+
+  async function openSession(id: string) {
+    setHistoryLoading(true);
+    try {
+      const data = await fetch(`/api/ai/history?sessionId=${encodeURIComponent(id)}`).then((res) => res.json());
+      if (data.session) {
+        setActiveSessionId(data.session.id);
+        setMessages((data.session.messages || []).map((msg: ChatMessage) => ({ role: msg.role, content: msg.content, imageData: msg.imageData, imageName: msg.imageName })));
+      }
+    } finally {
+      setHistoryLoading(false);
+    }
+  }
+
+  function newChat() {
+    setActiveSessionId(null);
+    setAttachedImage(null);
+    setInput("");
+    setMessages([{ role: "assistant", content: welcome }]);
+  }
+
+  async function deleteSession(id: string) {
+    if (!confirm(language === "AR" ? "حذف هذه المحادثة؟" : "Delete this chat?")) return;
+    await fetch(`/api/ai/history?sessionId=${encodeURIComponent(id)}`, { method: "DELETE" });
+    if (activeSessionId === id) newChat();
+    await loadSessions();
+  }
+
+  async function onFileSelected(file: File | null) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert(language === "AR" ? "يرجى اختيار صورة فقط." : "Please choose an image file only.");
+      return;
+    }
+    if (file.size > 3_200_000) {
+      alert(language === "AR" ? "الصورة كبيرة جدًا. اختر صورة أقل من 3MB." : "Image is too large. Please use an image under 3MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => setAttachedImage({ dataUrl: String(reader.result || ""), name: file.name });
+    reader.readAsDataURL(file);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
 
   async function ask() {
     const trimmed = input.trim();
-    if (!trimmed || loading) return;
+    if ((!trimmed && !attachedImage) || loading) return;
 
-    const nextMessages: ChatMessage[] = [...messages, { role: "user", content: trimmed }];
+    const userText = trimmed || (language === "AR" ? "حلّل الصورة المرفقة" : "Analyze the attached image");
+    const nextMessages: ChatMessage[] = [...messages, { role: "user", content: userText, imageData: attachedImage?.dataUrl || null, imageName: attachedImage?.name || null }];
+    const imagePayload = attachedImage ? { dataUrl: attachedImage.dataUrl, name: attachedImage.name } : null;
+
     setMessages(nextMessages);
     setInput("");
+    setAttachedImage(null);
     setLoading(true);
 
     try {
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed, country, language, messages })
+        body: JSON.stringify({ message: userText, country, language, sessionId: activeSessionId, image: imagePayload, messages })
       });
       const data = await res.json().catch(() => ({ error: "AI route returned a non-JSON response." }));
+      if (data.sessionId) setActiveSessionId(data.sessionId);
       setMessages([...nextMessages, { role: "assistant", content: res.ok ? data.answer : data.error || "AI failed" }]);
+      await loadSessions();
     } catch (error) {
       setMessages([...nextMessages, { role: "assistant", content: error instanceof Error ? error.message : "AI failed" }]);
     } finally {
@@ -514,26 +582,72 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
     }
   }
 
-
   return (
-    <div className="chatgpt-shell card">
-      <div className="section-head">
-        <div><h2>AI Support Chatbot</h2><p>{country} • {language === "AR" ? "Arabic" : "English"}</p></div>
-        <div className="toolbar"><button className="btn ghost small" onClick={() => setMessages([{ role: "assistant", content: "أهلاً! اسألني عن السكربتات، السياسات، الروابط، أو اطلب إعادة صياغة/ترجمة." }])}>Reset</button></div>
-      </div>
-      <div className="messages-panel" dir={language === "AR" ? "rtl" : "ltr"}>
-        {messages.map((msg, index) => <div key={index} className={`message-row ${msg.role}`}><div className="message-bubble">{msg.content}</div></div>)}
-        {loading && <div className="message-row assistant"><div className="message-bubble typing">Thinking...</div></div>}
-        <div ref={bottomRef} />
-      </div>
-      <div className="chat-input-bar">
-        <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={onKeyDown} placeholder="اكتب رسالتك هنا..." rows={2} dir={language === "AR" ? "rtl" : "ltr"} />
-        <button className="send-button" onClick={ask} disabled={loading || !input.trim()}>➤</button>
+    <div className="ai-chat-layout">
+      <aside className="chat-history-panel card">
+        <div className="section-head compact">
+          <div>
+            <h2>{language === "AR" ? "المحادثات" : "Chat history"}</h2>
+            <p>{language === "AR" ? "ذاكرة المحادثات الخاصة بك فقط." : "Private to your account."}</p>
+          </div>
+          <button className="btn small" onClick={newChat}>{language === "AR" ? "جديد" : "New"}</button>
+        </div>
+        <div className="chat-session-list">
+          {sessions.map((session) => (
+            <div key={session.id} className={`chat-session-card ${activeSessionId === session.id ? "active" : ""}`}>
+              <button onClick={() => openSession(session.id)} disabled={historyLoading}>
+                <b>{session.title || "New chat"}</b>
+                <span>{session.country} • {session.language} • {session._count?.messages || 0} messages</span>
+              </button>
+              <button className="chat-delete-button" onClick={() => deleteSession(session.id)} title="Delete">×</button>
+            </div>
+          ))}
+          {!sessions.length && <p className="muted-text">{language === "AR" ? "لا توجد محادثات محفوظة بعد." : "No saved chats yet."}</p>}
+        </div>
+      </aside>
+
+      <div className="chatgpt-shell card">
+        <div className="section-head">
+          <div>
+            <h2>AI Support Chatbot</h2>
+            <p>{country} • {language === "AR" ? "Arabic" : "English"} • {language === "AR" ? "يدعم النص والصور" : "Text and image support"}</p>
+          </div>
+          <div className="toolbar"><button className="btn ghost small" onClick={newChat}>{language === "AR" ? "إعادة ضبط" : "Reset"}</button></div>
+        </div>
+        <div className="messages-panel" dir={language === "AR" ? "rtl" : "ltr"}>
+          {messages.map((msg, index) => (
+            <div key={index} className={`message-row ${msg.role}`}>
+              <div className="message-bubble">
+                {msg.imageData && <img className="chat-image" src={msg.imageData} alt={msg.imageName || "Attachment"} />}
+                {msg.content}
+              </div>
+            </div>
+          ))}
+          {loading && <div className="message-row assistant"><div className="message-bubble typing">{language === "AR" ? "جاري التفكير..." : "Thinking..."}</div></div>}
+          <div ref={bottomRef} />
+        </div>
+
+        {attachedImage && (
+          <div className="attachment-preview">
+            <img src={attachedImage.dataUrl} alt={attachedImage.name} />
+            <div>
+              <b>{attachedImage.name}</b>
+              <span>{language === "AR" ? "جاهزة للإرسال مع الرسالة" : "Ready to send with your message"}</span>
+            </div>
+            <button className="btn ghost small" onClick={() => setAttachedImage(null)}>×</button>
+          </div>
+        )}
+
+        <div className="chat-input-bar enhanced">
+          <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={(event) => onFileSelected(event.target.files?.[0] || null)} />
+          <button className="attach-button" onClick={() => fileInputRef.current?.click()} title={language === "AR" ? "إرفاق صورة" : "Attach image"}>📎</button>
+          <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={onKeyDown} placeholder={language === "AR" ? "اكتب رسالتك هنا أو ارفق صورة..." : "Type your message or attach an image..."} rows={2} dir={language === "AR" ? "rtl" : "ltr"} />
+          <button className="send-button" onClick={ask} disabled={loading || (!input.trim() && !attachedImage)}>➤</button>
+        </div>
       </div>
     </div>
   );
 }
-
 function Calculator({ country }: { country: Country }) {
   const [tool, setTool] = useState("monthly-to-pif");
   const [values, setValues] = useState<Record<string, string>>({});
