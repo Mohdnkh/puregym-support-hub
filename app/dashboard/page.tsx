@@ -341,14 +341,13 @@ export default function DashboardPage() {
         <button className={`nav-button ${section === "scripts" ? "active" : ""}`} onClick={() => setSection("scripts")}>Script Library</button>
         <button className={`nav-button ${section === "chatbot" ? "active" : ""}`} onClick={() => setSection("chatbot")}>AI Chatbot</button>
         <button className={`nav-button ${section === "calculator" ? "active" : ""}`} onClick={() => setSection("calculator")}>Calculation Tool</button>
-        <button className={`nav-button ${section === "profile" ? "active" : ""}`} onClick={() => setSection("profile")}>Profile</button>
         {user?.role === "ADMIN" && <button className={`nav-button ${section === "admin" ? "active" : ""}`} onClick={() => setSection("admin")}>Admin Editor</button>}
 
         <div className="sidebar-user">
-          <button className="profile-chip" onClick={() => setSection("profile")}>
+          <div className="profile-chip" aria-label="User account summary">
             {user?.profileImage ? <img src={user.profileImage} alt="Profile" /> : <span>{(language === "AR" ? user?.nameAr : user?.nameEn)?.slice(0, 1) || "P"}</span>}
             <b>{language === "AR" ? user?.nameAr : user?.nameEn}</b>
-          </button>
+          </div>
           <span>{user?.email}</span>
           <button className="btn secondary small full" onClick={() => setSection("profile")}>Profile</button>
           <button className="btn secondary small full" onClick={() => setDarkMode(!darkMode)}>{darkMode ? "Light mode" : "Dark mode"}</button>

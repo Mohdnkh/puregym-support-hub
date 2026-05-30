@@ -461,3 +461,17 @@ button { cursor: pointer; }
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Profile sidebar cleanup: the account chip is display-only; only the Profile button opens profile */
+.profile-chip {
+  cursor: default;
+  user-select: none;
+}
+.profile-chip:hover {
+  transform: none;
+  border-color: rgba(255,255,255,.18);
+}
+.sidebar-user .btn.full {
+  text-align: center;
+}
