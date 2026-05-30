@@ -180,6 +180,19 @@ function linkifyParts(text: string) {
   });
 }
 
+function normalizeSearchText(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .replace(/[أإآ]/g, "ا")
+    .replace(/ة/g, "ه")
+    .replace(/ى/g, "ي")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ي")
+    .replace(/ـ/g, "")
+    .trim();
+}
+
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -193,6 +206,7 @@ export default function DashboardPage() {
   const [quickNoteText, setQuickNoteText] = useState("");
   const [message, setMessage] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [scriptSearch, setScriptSearch] = useState("");
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
 
   async function loadScripts() {
@@ -247,6 +261,31 @@ export default function DashboardPage() {
   }, [quickScripts, user]);
 
   const filteredScripts = useMemo(() => visibleScripts.filter((script) => script.category === category), [visibleScripts, category]);
+
+  const scriptSearchValue = scriptSearch.trim();
+
+  const searchedScripts = useMemo(() => {
+    const query = normalizeSearchText(scriptSearchValue);
+    if (!query) return [];
+
+    const words = query.split(/\s+/).filter(Boolean);
+
+    return visibleScripts.filter((script) => {
+      const body = applyUserName(script.body, script.language, user);
+      const haystack = normalizeSearchText([
+        script.title,
+        script.category,
+        script.country,
+        script.language,
+        script.key,
+        body
+      ].join(" "));
+
+      return words.every((word) => haystack.includes(word));
+    });
+  }, [visibleScripts, scriptSearchValue, user]);
+
+  const displayedScripts = scriptSearchValue ? searchedScripts : filteredScripts;
 
   const favoriteScripts = useMemo(() => visibleScripts.filter((script) => favoriteIds.includes(script.id) && script.category !== "Quick Scripts"), [visibleScripts, favoriteIds]);
 
@@ -398,6 +437,27 @@ export default function DashboardPage() {
 
         {section === "scripts" && (
           <>
+            <div className="script-search-card card">
+              <div className="script-search-copy">
+                <h2>{language === "AR" ? "بحث السكربتات" : "Script Search"}</h2>
+                <p>{language === "AR" ? "اكتب أي كلمة من العنوان أو محتوى السكربت مثل: سبب إلغاء، دفع، تجميد، صديق." : "Search by title, category, country, or script content. Example: cancel reason, payment, freeze, friend."}</p>
+              </div>
+              <div className="script-search-box">
+                <input
+                  className="input"
+                  value={scriptSearch}
+                  onChange={(event) => setScriptSearch(event.target.value)}
+                  placeholder={language === "AR" ? "ابحث عن أي سكربت..." : "Search any script..."}
+                  dir={language === "AR" ? "rtl" : "ltr"}
+                />
+                {scriptSearchValue && (
+                  <button className="btn ghost small" onClick={() => setScriptSearch("")}>
+                    {language === "AR" ? "مسح" : "Clear"}
+                  </button>
+                )}
+              </div>
+            </div>
+
             <div className="favorites-strip card">
               <div className="section-head compact">
                 <div><h2>⭐ Favorite Scripts</h2><p>Your personal favorites only. They do not affect other users.</p></div>
@@ -428,25 +488,42 @@ export default function DashboardPage() {
             </div>
 
             <div className="script-results">
-              <div className="section-head"><div><h2>{category}</h2><p>{filteredScripts.length} scripts available</p></div></div>
-              <div className="script-card-grid">
-                {filteredScripts.map((script) => {
-                  const body = applyUserName(script.body, script.language, user);
-                  const isFavorite = favoriteIds.includes(script.id);
-                  return (
-                    <div key={script.id} className={`script-card ${selectedId === script.id ? "active" : ""}`} onClick={() => selectScript(script)} role="button" tabIndex={0}>
-                      <div className="script-card-top">
-                        <b>{script.title}</b>
-                        <div className="script-card-actions">
-                          <span>{script.country}</span>
-                          <button className={`star-button ${isFavorite ? "active" : ""}`} onClick={(event) => { event.stopPropagation(); toggleFavorite(script.id); }} title="Favorite">{isFavorite ? "★" : "☆"}</button>
-                        </div>
-                      </div>
-                      <p>{preview(body)}</p>
-                    </div>
-                  );
-                })}
+              <div className="section-head">
+                <div>
+                  <h2>{scriptSearchValue ? (language === "AR" ? "نتائج البحث" : "Search Results") : category}</h2>
+                  <p>
+                    {scriptSearchValue
+                      ? `${displayedScripts.length} ${language === "AR" ? "نتيجة مطابقة" : "matching results"}`
+                      : `${filteredScripts.length} ${language === "AR" ? "سكربت متاح" : "scripts available"}`}
+                  </p>
+                </div>
               </div>
+              {scriptSearchValue && displayedScripts.length === 0 ? (
+                <div className="empty-search-state">
+                  <b>{language === "AR" ? "لا توجد نتائج" : "No results found"}</b>
+                  <span>{language === "AR" ? "جرّب كلمة ثانية أو ابحث بجزء من نص السكربت." : "Try another keyword or search by part of the script text."}</span>
+                </div>
+              ) : (
+                <div className="script-card-grid">
+                  {displayedScripts.map((script) => {
+                    const body = applyUserName(script.body, script.language, user);
+                    const isFavorite = favoriteIds.includes(script.id);
+                    return (
+                      <div key={script.id} className={`script-card ${selectedId === script.id ? "active" : ""}`} onClick={() => selectScript(script)} role="button" tabIndex={0}>
+                        <div className="script-card-top">
+                          <b>{script.title}</b>
+                          <div className="script-card-actions">
+                            {scriptSearchValue && <span>{script.category}</span>}
+                            <span>{script.country}</span>
+                            <button className={`star-button ${isFavorite ? "active" : ""}`} onClick={(event) => { event.stopPropagation(); toggleFavorite(script.id); }} title="Favorite">{isFavorite ? "★" : "☆"}</button>
+                          </div>
+                        </div>
+                        <p>{preview(body)}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <div className="script-box card">

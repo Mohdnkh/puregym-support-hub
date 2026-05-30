@@ -835,3 +835,65 @@ button { cursor: pointer; }
   line-height: 1.25 !important;
 }
 
+
+
+/* Script search box - safe scoped patch */
+.script-search-card {
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(320px, 520px);
+  gap: 16px;
+  align-items: center;
+}
+
+.script-search-copy h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  letter-spacing: -.03em;
+}
+
+.script-search-copy p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.script-search-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.script-search-box .input {
+  min-height: 48px;
+  border-radius: 18px;
+}
+
+.empty-search-state {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 8px;
+  border: 1px dashed var(--border);
+  border-radius: 20px;
+  background: var(--soft);
+  color: var(--muted);
+  padding: 24px;
+}
+
+.empty-search-state b {
+  color: var(--text);
+  font-size: 18px;
+}
+
+@media (max-width: 1050px) {
+  .script-search-card {
+    grid-template-columns: 1fr;
+  }
+
+  .script-search-box {
+    grid-template-columns: 1fr;
+  }
+}
