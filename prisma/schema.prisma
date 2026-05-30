@@ -36,6 +36,8 @@ model User {
   updatedAt       DateTime  @updatedAt
   tokens          VerificationToken[]
   favorites       ScriptFavorite[]
+  chatSessions    ChatSession[]
+  aiMemories      UserAiMemory[]
 }
 
 model VerificationToken {
@@ -75,4 +77,48 @@ model ScriptFavorite {
   @@unique([userId, scriptId])
   @@index([userId])
   @@index([scriptId])
+}
+
+model ChatSession {
+  id            String         @id @default(cuid())
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String         @default("New chat")
+  country       Country        @default(KSA)
+  language      ScriptLanguage @default(AR)
+  memorySummary String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  messages      ChatMessage[]
+
+  @@index([userId, updatedAt])
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId    String
+  role      String
+  content   String
+  imageData String?
+  imageName String?
+  createdAt DateTime    @default(now())
+
+  @@index([sessionId, createdAt])
+  @@index([userId])
+}
+
+model UserAiMemory {
+  id        String         @id @default(cuid())
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country   Country        @default(KSA)
+  language  ScriptLanguage @default(AR)
+  summary   String         @default("")
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@unique([userId, country, language])
+  @@index([userId])
 }
