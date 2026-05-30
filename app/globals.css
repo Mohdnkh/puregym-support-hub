@@ -1182,3 +1182,127 @@ body {
     animation: none !important;
   }
 }
+/* Layout polish: fixed sidebar + larger script box + compact favorites */
+@media (min-width: 901px) {
+  .app-shell {
+    display: block !important;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 286px;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    overflow-y: auto;
+    z-index: 20;
+  }
+
+  .main {
+    margin-left: 286px;
+    width: calc(100% - 286px);
+    max-width: none;
+    min-height: 100vh;
+    padding: 30px 34px;
+  }
+}
+
+/* Make selected script editor bigger and more comfortable */
+.script-box,
+.script-editor,
+.admin-editor {
+  min-width: 0;
+}
+
+.script-editor {
+  min-height: 560px !important;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.library-layout {
+  grid-template-columns: 250px minmax(380px, 0.85fr) minmax(540px, 1.15fr);
+}
+
+/* Compact favorites section */
+.favorites-strip {
+  margin-bottom: 14px;
+}
+
+.favorites-strip .card,
+.favorites-strip {
+  max-height: 230px;
+  overflow: auto;
+}
+
+.favorite-card-grid {
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.favorite-card-grid .script-card,
+.favorite-card-grid .mini-script-card {
+  padding: 10px 12px;
+  border-radius: 15px;
+}
+
+.favorite-card-grid .script-card p,
+.favorite-card-grid .mini-script-card span {
+  font-size: 12px;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Admin page: make edit area wider and sidebar order panel cleaner */
+.admin-layout-v2 {
+  grid-template-columns: minmax(300px, 390px) minmax(0, 1fr) !important;
+  gap: 24px;
+}
+
+.admin-list {
+  max-height: calc(100vh - 250px);
+}
+
+.admin-editor .admin-body,
+.admin-editor textarea.textarea {
+  min-height: 430px !important;
+}
+
+/* Sidebar buttons cleaner */
+.sidebar-user {
+  gap: 10px;
+}
+
+.sidebar-user .btn.full {
+  width: 100%;
+  min-height: 42px;
+}
+
+.profile-chip {
+  margin-bottom: 4px;
+}
+
+/* Mobile stays normal */
+@media (max-width: 900px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .library-layout,
+  .admin-layout-v2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .favorites-strip,
+  .favorites-strip .card {
+    max-height: none;
+  }
+}
