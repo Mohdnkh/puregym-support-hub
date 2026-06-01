@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 import { seedScripts } from "../lib/seed-data";
+import { DEFAULT_AI_KNOWLEDGE_ITEMS } from "../lib/ai";
 
 const prisma = new PrismaClient();
 
@@ -46,13 +47,39 @@ async function main() {
       language: script.language,
       body: script.body,
       source: script.source || "seed",
-      active: true,
-      sortOrder: script.sortOrder || 0
+      active: true
     })),
     skipDuplicates: true
   });
 
   console.log(`Deleted old scripts and seeded ${seedScripts.length} clean scripts.`);
+
+  for (const item of DEFAULT_AI_KNOWLEDGE_ITEMS) {
+    await prisma.aiKnowledgeItem.upsert({
+      where: { id: `${item.sourceType}-${item.country}-${item.language}-${item.title}`.replace(/[^a-zA-Z0-9_-]/g, "-").slice(0, 120) },
+      update: {
+        title: item.title,
+        body: item.body,
+        country: item.country,
+        language: item.language,
+        sourceType: item.sourceType,
+        sourceUrl: item.sourceUrl || null,
+        active: true
+      },
+      create: {
+        id: `${item.sourceType}-${item.country}-${item.language}-${item.title}`.replace(/[^a-zA-Z0-9_-]/g, "-").slice(0, 120),
+        title: item.title,
+        body: item.body,
+        country: item.country,
+        language: item.language,
+        sourceType: item.sourceType,
+        sourceUrl: item.sourceUrl || null,
+        active: true
+      }
+    });
+  }
+
+  console.log(`AI knowledge ready: ${DEFAULT_AI_KNOWLEDGE_ITEMS.length} default items.`);
 }
 
 main()
