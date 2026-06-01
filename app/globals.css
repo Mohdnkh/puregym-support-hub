@@ -1633,3 +1633,194 @@ body {
     animation: none !important;
   }
 }
+
+/* v6 premium design + category manager, additive and safe */
+:root {
+  --premium-glass: rgba(255,255,255,.76);
+  --premium-glass-strong: rgba(255,255,255,.90);
+  --premium-line: rgba(143, 185, 255, .34);
+  --premium-accent: #05b9c8;
+  --premium-accent-2: #0876d8;
+}
+[data-theme="dark"] {
+  --premium-glass: rgba(15,26,43,.74);
+  --premium-glass-strong: rgba(15,26,43,.90);
+  --premium-line: rgba(83, 132, 190, .34);
+  --premium-accent: #22d6df;
+  --premium-accent-2: #4aa3ff;
+}
+
+body {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(5,185,200,.19), transparent 28%),
+    radial-gradient(circle at 88% 16%, rgba(8,118,216,.18), transparent 30%),
+    radial-gradient(circle at 70% 88%, rgba(0,166,81,.12), transparent 28%),
+    linear-gradient(135deg, #edf8ff 0%, #f8fbff 48%, #eef9f6 100%) !important;
+  background-size: 180% 180%;
+  animation: pgPremiumGradient 20s ease-in-out infinite;
+}
+[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 16% 12%, rgba(5,185,200,.20), transparent 28%),
+    radial-gradient(circle at 88% 16%, rgba(8,118,216,.18), transparent 30%),
+    radial-gradient(circle at 72% 86%, rgba(0,166,81,.10), transparent 30%),
+    linear-gradient(135deg, #06101d 0%, #081525 48%, #0b1220 100%) !important;
+}
+.app-shell::after,
+.auth-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .30;
+  background-image:
+    linear-gradient(rgba(8,118,216,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5,185,200,.08) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(circle at center, black, transparent 74%);
+  animation: pgPremiumGrid 26s linear infinite;
+}
+[data-theme="dark"] .app-shell::after,
+[data-theme="dark"] .auth-page::after { opacity: .18; }
+
+.sidebar {
+  background:
+    linear-gradient(180deg, rgba(6,16,29,.96), rgba(8,17,31,.94)),
+    radial-gradient(circle at 20% 0%, rgba(5,185,200,.18), transparent 34%) !important;
+  border-right: 1px solid rgba(255,255,255,.10);
+  box-shadow: 18px 0 50px rgba(5, 18, 32, .16);
+}
+.brand-block {
+  background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04)) !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+}
+.brand-mark,
+.auth-logo {
+  background: transparent !important;
+  border: 1px solid rgba(5,185,200,.20);
+  box-shadow: 0 16px 36px rgba(3, 31, 47, .24), 0 0 0 5px rgba(5,185,200,.07) !important;
+}
+.brand-mark img,
+.auth-logo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  padding: 0 !important;
+}
+
+.main {
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.04)) !important;
+}
+.card,
+.auth-card {
+  background: var(--premium-glass-strong) !important;
+  border: 1px solid var(--premium-line) !important;
+  box-shadow: 0 22px 60px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.55) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+[data-theme="dark"] .card,
+[data-theme="dark"] .auth-card {
+  box-shadow: 0 22px 60px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.nav-button {
+  border-radius: 16px !important;
+  position: relative;
+  overflow: hidden;
+}
+.nav-button.active {
+  background: linear-gradient(135deg, rgba(5,185,200,.22), rgba(8,118,216,.16)) !important;
+  border-color: rgba(5,185,200,.28) !important;
+  box-shadow: inset 3px 0 0 var(--premium-accent);
+}
+.toggle.active,
+.btn:not(.ghost):not(.secondary) {
+  background: linear-gradient(135deg, #07111f, #12233a) !important;
+  color: white !important;
+  box-shadow: 0 12px 26px rgba(8,17,31,.18);
+}
+.toggle.ksa.active { background: linear-gradient(135deg, #049f58, #03b3a5) !important; }
+.toggle.uae.active { background: linear-gradient(135deg, #0876d8, #05b9c8) !important; }
+.input,
+.textarea,
+.select {
+  background: rgba(255,255,255,.72) !important;
+  border-color: rgba(148,163,184,.34) !important;
+}
+[data-theme="dark"] .input,
+[data-theme="dark"] .textarea,
+[data-theme="dark"] .select { background: rgba(8,17,31,.50) !important; }
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: var(--premium-accent) !important;
+  box-shadow: 0 0 0 4px rgba(5,185,200,.13) !important;
+}
+
+.category-manager-card { grid-column: 1 / -1; }
+.category-manager-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.25fr);
+  gap: 14px;
+}
+.category-tool-box {
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--soft), var(--card));
+  border-radius: 20px;
+  padding: 16px;
+  min-width: 0;
+}
+.category-tool-box h3 { margin: 0 0 5px; }
+.category-tool-box p { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+.inline-action-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+.inline-action-row.rename-row { grid-template-columns: minmax(160px,.75fr) minmax(220px,1fr) auto; }
+.empty-state-card {
+  border: 1px dashed var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  background: var(--soft);
+  color: var(--muted);
+}
+.empty-state-card h3 { color: var(--text); margin: 0 0 6px; }
+
+.script-card,
+.category-card,
+.mini-script-card,
+.trainer-item,
+.user-row {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.script-card:hover,
+.category-card:hover,
+.mini-script-card:hover,
+.trainer-item:hover,
+.user-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(15,23,42,.08);
+}
+
+@keyframes pgPremiumGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes pgPremiumGrid {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 92px 92px, 92px 92px; }
+}
+@media (max-width: 1000px) {
+  .category-manager-grid,
+  .inline-action-row.rename-row { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .app-shell::after,
+  .auth-page::after { animation: none !important; }
+}

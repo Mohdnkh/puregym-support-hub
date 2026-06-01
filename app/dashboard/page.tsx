@@ -990,12 +990,17 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
   const [trainerItems, setTrainerItems] = useState<TrainerItem[]>([]);
   const [trainerForm, setTrainerForm] = useState({ id: "", title: "", content: "", country: "ALL" as TrainerItem["country"], language: "BOTH" as TrainerItem["language"], kind: "Internal Note", sourceUrl: "", active: true });
   const [newScript, setNewScript] = useState({ title: "", category: "Cancellation & Retention", country: "KSA" as Script["country"], language: "AR" as Script["language"], body: "" });
+  const [customCategories, setCustomCategories] = useState<string[]>([]);
+  const [categoryDraft, setCategoryDraft] = useState("");
+  const [renameCategoryText, setRenameCategoryText] = useState("Cancellation & Retention");
 
   const adminCategories = useMemo(() => Array.from(new Set(scripts.map((script) => script.category))).sort((a, b) => categoryRank(a) - categoryRank(b) || a.localeCompare(b)), [scripts]);
+  const categoryOptions = useMemo(() => Array.from(new Set([...CATEGORY_ORDER, ...adminCategories, ...customCategories])).filter(Boolean).sort((a, b) => categoryRank(a) - categoryRank(b) || a.localeCompare(b)), [adminCategories, customCategories]);
   const adminScripts = useMemo(() => scripts.filter((script) => script.category === adminCategory).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || a.title.localeCompare(b.title)), [scripts, adminCategory]);
-  const selected = useMemo(() => scripts.find((script) => script.id === selectedId) || adminScripts[0] || scripts[0] || null, [scripts, adminScripts, selectedId]);
+  const selected = useMemo(() => scripts.find((script) => script.id === selectedId) || adminScripts[0] || null, [scripts, adminScripts, selectedId]);
 
-  useEffect(() => { if (!adminCategories.includes(adminCategory) && adminCategories[0]) setAdminCategory(adminCategories[0]); }, [adminCategories, adminCategory]);
+  useEffect(() => { if (!categoryOptions.includes(adminCategory) && categoryOptions[0]) setAdminCategory(categoryOptions[0]); }, [categoryOptions, adminCategory]);
+  useEffect(() => { setRenameCategoryText(adminCategory); }, [adminCategory]);
   useEffect(() => { if (selected && !selectedId) setSelectedId(selected.id); }, [selected, selectedId]);
   useEffect(() => { loadUsers(); loadTrainerItems(); }, []);
 
@@ -1012,6 +1017,50 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
   }
 
   function updateSelected(patch: Partial<Script>) { if (selected) setScripts(scripts.map((script) => (script.id === selected.id ? { ...script, ...patch } : script))); }
+
+  function addCategory() {
+    const name = categoryDraft.trim();
+    if (!name) return setStatus("Write a category name first.");
+    if (categoryOptions.includes(name)) {
+      setAdminCategory(name);
+      setNewScript((current) => ({ ...current, category: name }));
+      setCategoryDraft("");
+      return setStatus("Category already exists. Selected it for you.");
+    }
+
+    setCustomCategories((current) => [...current, name]);
+    setAdminCategory(name);
+    setNewScript((current) => ({ ...current, category: name }));
+    setRenameCategoryText(name);
+    setCategoryDraft("");
+    setStatus("Category added. Add a script inside it to publish it for users.");
+  }
+
+  async function renameCategory() {
+    const oldName = adminCategory;
+    const newName = renameCategoryText.trim();
+
+    if (!oldName) return setStatus("Select a category first.");
+    if (!newName) return setStatus("Write the new category name.");
+    if (oldName === newName) return setStatus("Category name is already the same.");
+    if (categoryOptions.includes(newName) && !confirm("A category with this name already exists. Move scripts into it?")) return;
+
+    const res = await fetch("/api/scripts/categories", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ oldName, newName })
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Category rename failed");
+
+    setScripts(scripts.map((script) => (script.category === oldName ? { ...script, category: newName } : script)));
+    setCustomCategories((current) => Array.from(new Set([...current.filter((cat) => cat !== oldName), newName])));
+    setAdminCategory(newName);
+    setNewScript((current) => ({ ...current, category: current.category === oldName ? newName : current.category }));
+    setStatus(`Category renamed for everyone. Updated ${data.count || 0} scripts.`);
+    await onScriptsChanged();
+  }
 
   async function saveSelected() {
     if (!selected) return;
@@ -1151,10 +1200,7 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
               value={newScript.category}
               onChange={(e) => setNewScript({ ...newScript, category: e.target.value })}
             >
-              {adminCategories.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
-              <option value="Links">Links</option>
-              <option value="Branches & Hours">Branches & Hours</option>
-              <option value="Tickets">Tickets</option>
+              {categoryOptions.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
             </select>
           </div>
 
@@ -1195,6 +1241,38 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
         </div>
       </div>
 
+      <div className="card admin-panel category-manager-card admin-wide-card">
+        <div className="section-head compact">
+          <div>
+            <h2>Category manager</h2>
+            <p>Add categories and rename existing categories. Renaming moves all scripts in that category for every user. Favorites stay personal and are not affected.</p>
+          </div>
+        </div>
+
+        <div className="category-manager-grid">
+          <div className="category-tool-box">
+            <h3>Add category</h3>
+            <p>Create a category option, then add scripts inside it.</p>
+            <div className="inline-action-row">
+              <input className="input" value={categoryDraft} placeholder="Example: Refunds" onChange={(e) => setCategoryDraft(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") addCategory(); }} />
+              <button className="btn small" type="button" onClick={addCategory}>Add</button>
+            </div>
+          </div>
+
+          <div className="category-tool-box">
+            <h3>Rename category</h3>
+            <p>Choose a category, write the new name, then apply it globally.</p>
+            <div className="inline-action-row rename-row">
+              <select className="select" value={adminCategory} onChange={(e) => setAdminCategory(e.target.value)}>
+                {categoryOptions.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+              </select>
+              <input className="input" value={renameCategoryText} onChange={(e) => setRenameCategoryText(e.target.value)} />
+              <button className="btn small" type="button" onClick={renameCategory}>Rename</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="card admin-panel">
         <div className="section-head">
           <div>
@@ -1205,7 +1283,7 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
         </div>
 
         <select className="select" value={adminCategory} onChange={(e) => setAdminCategory(e.target.value)}>
-          {adminCategories.map((cat) => <option key={cat}>{cat}</option>)}
+          {categoryOptions.map((cat) => <option key={cat}>{cat}</option>)}
         </select>
 
         <div className="admin-list draggable-list">
@@ -1223,6 +1301,7 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
               <p>{script.country} • {script.language} • #{script.sortOrder || 0}</p>
             </button>
           ))}
+          {!adminScripts.length && <p className="muted-text">No scripts in this category yet. Add the first script above.</p>}
         </div>
       </div>
 
@@ -1240,7 +1319,7 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
 
         {status && <p className={status.toLowerCase().includes("failed") || status.toLowerCase().includes("error") ? "error" : "success"}>{status}</p>}
 
-        {selected && (
+        {selected ? (
           <>
             <div className="field">
               <label>Title</label>
@@ -1250,7 +1329,10 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
             <div className="admin-fields">
               <div className="field">
                 <label>Category</label>
-                <input className="input" value={selected.category} onChange={(event) => updateSelected({ category: event.target.value })} />
+                <select className="select" value={selected.category} onChange={(event) => updateSelected({ category: event.target.value })}>
+                  {!categoryOptions.includes(selected.category) && <option value={selected.category}>{selected.category}</option>}
+                  {categoryOptions.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+                </select>
               </div>
 
               <div className="field">
@@ -1276,6 +1358,11 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
               <textarea className="textarea admin-body" value={selected.body} onChange={(event) => updateSelected({ body: event.target.value })} />
             </div>
           </>
+        ) : (
+          <div className="empty-state-card">
+            <h3>No script selected</h3>
+            <p>Choose a category with scripts, or add a new script above.</p>
+          </div>
         )}
       </div>
 
