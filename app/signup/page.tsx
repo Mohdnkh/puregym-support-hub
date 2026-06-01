@@ -59,7 +59,7 @@ export default function SignupPage() {
     <main className="auth-page">
       <div className="auth-card">
         <div className="auth-logo-row">
-          <div className="auth-logo">PG</div>
+          <div className="auth-logo"><img src="/pg-hub-mark.svg" alt="PureGym Hub" /></div>
           <div>
             <h1>Create account</h1>
             <p>{step === "form" ? "Your Arabic and English names will be used automatically in scripts." : "Enter the 6-digit verification code sent to your email."}</p>

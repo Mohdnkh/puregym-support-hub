@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { buildMemoryInstruction, callOpenAIMultimodal, getKnowledgeBaseText, styleInstruction, summarizeAiMemory } from "@/lib/ai";
+import { buildMemoryInstruction, callOpenAIMultimodal, detectAiSignals, getAiGlobalMemoryText, getKnowledgeBaseText, styleInstruction, summarizeAiMemory, summarizeAiGlobalMemory } from "@/lib/ai";
 
 export const runtime = "nodejs";
 
@@ -13,8 +13,8 @@ const imageSchema = z.object({
 
 const schema = z.object({
   message: z.string().trim().min(1).max(6000),
-  country: z.enum(["KSA", "UAE"]),
-  language: z.enum(["AR", "EN"]),
+  country: z.enum(["KSA", "UAE"]).optional().nullable(),
+  language: z.enum(["AR", "EN"]).optional().nullable(),
   sessionId: z.string().optional().nullable(),
   image: imageSchema,
   messages: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string() })).optional()
@@ -28,15 +28,10 @@ function makeTitle(message: string) {
 
 async function getOrCreateSession(params: { userId: string; sessionId?: string | null; country: "KSA" | "UAE"; language: "AR" | "EN"; message: string }) {
   if (params.sessionId) {
-    const existing = await prisma.chatSession.findFirst({
-      where: { id: params.sessionId, userId: params.userId }
-    });
+    const existing = await prisma.chatSession.findFirst({ where: { id: params.sessionId, userId: params.userId } });
 
     if (existing) {
-      return prisma.chatSession.update({
-        where: { id: existing.id },
-        data: { country: params.country, language: params.language }
-      });
+      return prisma.chatSession.update({ where: { id: existing.id }, data: { country: params.country, language: params.language } });
     }
   }
 
@@ -55,9 +50,52 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized. Please log in again." }, { status: 401 });
 
   try {
-    const { message, country, language, sessionId, image, messages } = schema.parse(await req.json());
+  const {
+    message,
+    country: countryFromClient,
+    language: languageFromClient,
+    sessionId,
+    image,
+    messages
+  } = schema.parse(await req.json());
 
-    const session = await getOrCreateSession({ userId: user.id, sessionId, country, language, message });
+  const signals = detectAiSignals(message);
+
+  const previousSession = sessionId
+    ? await prisma.chatSession.findFirst({
+        where: { id: sessionId, userId: user.id },
+        select: { country: true, language: true }
+      })
+    : null;
+
+  const detectedLanguage =
+    signals.language ||
+    languageFromClient ||
+    previousSession?.language ||
+    "AR";
+
+  const detectedCountry =
+    signals.country ||
+    countryFromClient ||
+    previousSession?.country ||
+    "KSA";
+
+  const countryIsExplicit = Boolean(signals.country || countryFromClient);
+
+  // DB/session can support ALL/BOTH, but the AI helper expects specific KSA/UAE + AR/EN.
+  const sessionCountry =
+    detectedCountry === "ALL" ? "KSA" : detectedCountry;
+
+  const sessionLanguage =
+    detectedLanguage === "BOTH" ? "AR" : detectedLanguage;
+
+  const session = await getOrCreateSession({
+    userId: user.id,
+    sessionId,
+    country: sessionCountry,
+    language: sessionLanguage,
+    message
+  });
 
     await prisma.chatMessage.create({
       data: {
@@ -78,20 +116,25 @@ export async function POST(req: Request) {
     });
 
     const memory = await prisma.userAiMemory.findUnique({
-      where: { userId_country_language: { userId: user.id, country, language } }
+      where: { userId_country_language: { userId: user.id, country: detectedCountry, language: detectedLanguage } }
     });
 
-    const knowledgeBase = await getKnowledgeBaseText(country, language);
+    const globalMemory = await getAiGlobalMemoryText();
+    const knowledgeBase = await getKnowledgeBaseText(countryIsExplicit ? detectedCountry : null, detectedLanguage);
     const historyForAI = storedHistory
-      .filter((entry) => entry.role === "user" || entry.role === "assistant")
+      .filter((entry: { role: string; content: string }) => entry.role === "user" || entry.role === "assistant")
       .slice(0, -1)
-      .map((entry) => ({ role: entry.role as "user" | "assistant", content: entry.content }));
+      .map((entry: { role: string; content: string }) => ({ role: entry.role as "user" | "assistant", content: entry.content }));
 
     const fallbackHistory = (messages || []).slice(-8);
     const finalHistory = historyForAI.length ? historyForAI : fallbackHistory;
 
+    const countryInstruction = countryIsExplicit
+      ? `The user's country context appears to be ${detectedCountry}.`
+      : "The user did not clearly specify KSA or UAE. For country-specific policy, ask a short clarifying question before answering.";
+
     const answer = await callOpenAIMultimodal({
-      system: `${styleInstruction(country, language)}${buildMemoryInstruction(memory?.summary)}\n\nKnowledge base:\n${knowledgeBase}`,
+      system: `${styleInstruction(countryIsExplicit ? detectedCountry : null, detectedLanguage)} ${countryInstruction}${buildMemoryInstruction(memory?.summary, globalMemory)}\n\nKnowledge base:\n${knowledgeBase}`,
       user: image?.dataUrl ? `${message}\n\nThe user attached an image. Analyze the image together with the request.` : message,
       imageDataUrl: image?.dataUrl || null,
       messages: finalHistory
@@ -106,31 +149,38 @@ export async function POST(req: Request) {
       }
     });
 
-    await prisma.chatSession.update({
-      where: { id: session.id },
-      data: { updatedAt: new Date() }
-    });
+    await prisma.chatSession.update({ where: { id: session.id }, data: { updatedAt: new Date() } });
 
-    // Lightweight self-improving memory. If summarization fails, the answer still returns normally.
     prisma.chatMessage.count({ where: { sessionId: session.id, role: "assistant" } })
-      .then(async (assistantCount) => {
+      .then(async (assistantCount: number) => {
         if (assistantCount % 3 !== 0) return;
         const updatedSummary = await summarizeAiMemory({
           existingSummary: memory?.summary,
           userMessage: message,
           assistantAnswer: answer,
-          country,
-          language
+          country: detectedCountry,
+          language: detectedLanguage
         });
         await prisma.userAiMemory.upsert({
-          where: { userId_country_language: { userId: user.id, country, language } },
-          create: { userId: user.id, country, language, summary: updatedSummary },
+          where: { userId_country_language: { userId: user.id, country: detectedCountry, language: detectedLanguage } },
+          create: { userId: user.id, country: detectedCountry, language: detectedLanguage, summary: updatedSummary },
           update: { summary: updatedSummary }
         });
       })
       .catch(() => undefined);
 
-    return NextResponse.json({ answer, sessionId: session.id });
+    prisma.aiGlobalMemory.findUnique({ where: { key: "global" } })
+      .then(async (existing: { summary: string | null } | null) => {
+        const updatedGlobal = await summarizeAiGlobalMemory({ existingSummary: existing?.summary, userMessage: message, assistantAnswer: answer });
+        await prisma.aiGlobalMemory.upsert({
+          where: { key: "global" },
+          create: { key: "global", summary: updatedGlobal },
+          update: { summary: updatedGlobal }
+        });
+      })
+      .catch(() => undefined);
+
+    return NextResponse.json({ answer, sessionId: session.id, inferred: { country: countryIsExplicit ? detectedCountry : null, language: detectedLanguage } });
   } catch (err) {
     const message = err instanceof Error ? err.message : "AI request failed";
     return NextResponse.json({ error: message }, { status: 400 });

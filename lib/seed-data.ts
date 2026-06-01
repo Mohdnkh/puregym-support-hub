@@ -1,4 +1,6 @@
-import type { Country, ScriptLanguage } from "@prisma/client";
+import type { Country } from "@prisma/client";
+
+export type ScriptLanguage = "AR" | "EN" | "BOTH";
 
 export type SeedScript = {
   key: string;

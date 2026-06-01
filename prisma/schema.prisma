@@ -34,36 +34,49 @@ model User {
   emailVerifiedAt DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  tokens          VerificationToken[]
-  favorites       ScriptFavorite[]
-  chatSessions    ChatSession[]
-  aiMemories      UserAiMemory[]
+
+  tokens       VerificationToken[]
+  favorites    ScriptFavorite[]
+  chatSessions ChatSession[]
+  aiMemories   UserAiMemory[]
 }
 
 model VerificationToken {
-  id        String   @id @default(cuid())
-  tokenHash String   @unique
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }
 
 model Script {
-  id        String         @id @default(cuid())
-  key       String         @unique
+  id        String   @id @default(cuid())
+  key       String   @unique
   title     String
   category  String
-  country   Country        @default(ALL)
-  language  ScriptLanguage @default(AR)
+  country   Country  @default(ALL)
+
+  // String عشان نقدر نخزن AR / EN / BOTH بدون مشاكل
+  language  String   @default("BOTH")
+
   body      String
-  source    String         @default("manual")
-  active    Boolean        @default(true)
-  sortOrder Int            @default(0)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  source    String   @default("manual")
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   favorites ScriptFavorite[]
+
+  @@index([category])
+  @@index([country])
+  @@index([language])
+  @@index([active])
+  @@index([sortOrder])
 }
 
 model ScriptFavorite {
@@ -71,8 +84,9 @@ model ScriptFavorite {
   userId    String
   scriptId  String
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  script    Script   @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  script Script @relation(fields: [scriptId], references: [id], onDelete: Cascade)
 
   @@unique([userId, scriptId])
   @@index([userId])
@@ -80,24 +94,31 @@ model ScriptFavorite {
 }
 
 model ChatSession {
-  id            String         @id @default(cuid())
+  id            String        @id @default(cuid())
   userId        String
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title         String         @default("New chat")
-  country       Country        @default(KSA)
-  language      ScriptLanguage @default(AR)
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String        @default("New chat")
+  country       Country       @default(ALL)
+
+  // String عشان يدعم BOTH
+  language      String        @default("BOTH")
+
   memorySummary String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
   messages      ChatMessage[]
 
   @@index([userId, updatedAt])
+  @@index([country])
+  @@index([language])
 }
 
 model ChatMessage {
   id        String      @id @default(cuid())
   sessionId String
   session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
   userId    String
   role      String
   content   String
@@ -110,15 +131,59 @@ model ChatMessage {
 }
 
 model UserAiMemory {
-  id        String         @id @default(cuid())
+  id        String   @id @default(cuid())
   userId    String
-  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  country   Country        @default(KSA)
-  language  ScriptLanguage @default(AR)
-  summary   String         @default("")
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country   Country  @default(ALL)
+
+  // String عشان يدعم BOTH
+  language  String   @default("BOTH")
+
+  summary   String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, country, language])
   @@index([userId])
+  @@index([country])
+  @@index([language])
+}
+
+model AiKnowledgeItem {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @default("")
+  country   Country  @default(ALL)
+
+  // String عشان نقدر نخزن AR / EN / BOTH
+  language  String   @default("BOTH")
+
+  // نوع المعلومة: Policy / FAQ / Internal Note / Official Source / Script Rule
+  kind      String   @default("Internal Note")
+
+  sourceUrl String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([country, active])
+  @@index([language, active])
+  @@index([kind])
+  @@map("AiKnowledgeItem")
+}
+
+model AiGlobalMemory {
+  id        String   @id @default(cuid())
+
+  // مفتاح ثابت للذاكرة العامة، غالبًا global
+  key       String   @unique @default("global")
+
+  // خليت الاثنين عشان لو الكود عندك يستخدم summary أو value ما يعطيك error
+  summary   String   @default("")
+  value     String   @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("AiGlobalMemory")
 }

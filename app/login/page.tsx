@@ -34,7 +34,7 @@ export default function LoginPage() {
     <main className="auth-page">
       <form className="auth-card" onSubmit={submit}>
         <div className="auth-logo-row">
-          <div className="auth-logo">PG</div>
+          <div className="auth-logo"><img src="/pg-hub-mark.svg" alt="PureGym Hub" /></div>
           <div>
             <h1>PureGym Hub</h1>
             <p>Scripts, AI support, tickets, and calculation tools.</p>

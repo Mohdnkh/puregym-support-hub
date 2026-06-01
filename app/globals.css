@@ -1437,3 +1437,199 @@ body {
     gap: 10px !important;
   }
 }
+
+/* Premium brand + AI trainer patch (additive only) */
+.brand-mark,
+.auth-logo {
+  overflow: hidden;
+  background: transparent !important;
+  box-shadow: 0 14px 32px rgba(6, 16, 24, .20);
+}
+.brand-mark img,
+.auth-logo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.brand-block {
+  padding: 10px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+.auth-logo {
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+}
+.auth-card {
+  border-radius: 34px;
+}
+
+/* Hide country/language switches only on AI page via React; keep top area compact */
+.ai-chat-layout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: stretch;
+}
+.ai-chat-layout .chatgpt-shell {
+  max-width: none;
+  margin: 0;
+}
+.ai-chat-layout .messages-panel {
+  min-height: 560px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(8,118,216,.08), transparent 28%),
+    radial-gradient(circle at 80% 10%, rgba(0,166,81,.07), transparent 30%),
+    var(--soft);
+}
+.chat-session-list {
+  align-content: start !important;
+  grid-auto-rows: max-content !important;
+}
+.ai-chat-layout .chat-session-card {
+  min-height: 76px !important;
+  height: auto !important;
+  align-items: center !important;
+}
+.ai-chat-layout .chat-delete-button {
+  width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  align-self: center !important;
+  justify-self: center !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+/* Admin user role controls + AI trainer */
+.user-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.ai-trainer-card {
+  grid-column: 1 / -1;
+}
+.trainer-grid {
+  display: grid;
+  grid-template-columns: minmax(360px, .95fr) minmax(320px, .85fr);
+  gap: 18px;
+  align-items: start;
+}
+.trainer-form,
+.trainer-list {
+  min-width: 0;
+}
+.trainer-body {
+  min-height: 280px !important;
+}
+.trainer-list {
+  display: grid;
+  gap: 10px;
+  max-height: 620px;
+  overflow: auto;
+  padding-right: 4px;
+}
+.trainer-item {
+  display: grid;
+  grid-template-columns: 1fr 36px;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--card), var(--soft));
+  border-radius: 18px;
+  padding: 10px;
+}
+.trainer-item.active {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(8,118,216,.11);
+}
+.trainer-item > button:first-child {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  display: grid;
+  gap: 4px;
+  text-align: start;
+}
+.trainer-item span,
+.trainer-item p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Client-ready premium motion, safe and subtle */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef8f4, #eef5ff, #f7fbff, #eaf7ff);
+  background-size: 350% 350%;
+  animation: pgGradientMove 18s ease infinite;
+}
+[data-theme="dark"] body {
+  background: linear-gradient(135deg, #06101d, #081a24, #0b1328, #07111f);
+  background-size: 350% 350%;
+  animation: pgGradientMove 18s ease infinite;
+}
+.app-shell,
+.auth-page {
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+}
+.app-shell::before,
+.auth-page::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(0, 166, 81, 0.20), transparent 18%),
+    radial-gradient(circle at 82% 18%, rgba(8, 118, 216, 0.22), transparent 20%),
+    radial-gradient(circle at 65% 78%, rgba(0, 166, 81, 0.13), transparent 18%),
+    radial-gradient(circle at 25% 82%, rgba(8, 118, 216, 0.13), transparent 20%);
+  filter: blur(18px);
+  animation: pgGlowFloat 20s ease-in-out infinite alternate;
+}
+.sidebar,
+.main,
+.auth-card {
+  position: relative;
+  z-index: 1;
+}
+.card,
+.auth-card {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+@keyframes pgGradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes pgGlowFloat {
+  0% { transform: translate3d(-30px, -20px, 0) scale(1); }
+  50% { transform: translate3d(35px, 24px, 0) scale(1.08); }
+  100% { transform: translate3d(-10px, 45px, 0) scale(1.12); }
+}
+@media (max-width: 1050px) {
+  .ai-chat-layout,
+  .trainer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .app-shell::before,
+  .auth-page::before {
+    animation: none !important;
+  }
+}

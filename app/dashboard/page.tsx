@@ -24,6 +24,18 @@ type AdminUser = {
   createdAt: string;
 };
 
+type TrainerItem = {
+  id: string;
+  title: string;
+  content: string;
+  country: "ALL" | "KSA" | "UAE";
+  language: "BOTH" | "AR" | "EN";
+  kind: string;
+  sourceUrl?: string | null;
+  active: boolean;
+  updatedAt?: string;
+};
+
 type Script = {
   id: string;
   key: string;
@@ -370,7 +382,7 @@ export default function DashboardPage() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand-block">
-          <div className="brand-mark">PG</div>
+          <div className="brand-mark"><img src="/pg-hub-mark.svg" alt="PureGym Hub" /></div>
           <div>
             <div className="brand">PureGym Hub</div>
             <div className="subbrand">Scripts • AI • Tools</div>
@@ -399,14 +411,16 @@ export default function DashboardPage() {
         <div className="topbar">
           <div>
             <h1>{title}</h1>
-            <p>{country} • {language === "AR" ? "Arabic" : "English"}</p>
+            <p>{section === "chatbot" ? "General AI • auto language and country detection" : `${country} • ${language === "AR" ? "Arabic" : "English"}`}</p>
           </div>
-          <div className="toolbar">
-            <button className={`toggle ksa ${country === "KSA" ? "active" : ""}`} onClick={() => setCountry("KSA")}>💚 KSA</button>
-            <button className={`toggle uae ${country === "UAE" ? "active" : ""}`} onClick={() => setCountry("UAE")}>💙 UAE</button>
-            <button className={`toggle ${language === "AR" ? "active" : ""}`} onClick={() => setLanguage("AR")}>Arabic</button>
-            <button className={`toggle ${language === "EN" ? "active" : ""}`} onClick={() => setLanguage("EN")}>English</button>
-          </div>
+          {section !== "chatbot" && (
+            <div className="toolbar">
+              <button className={`toggle ksa ${country === "KSA" ? "active" : ""}`} onClick={() => setCountry("KSA")}>💚 KSA</button>
+              <button className={`toggle uae ${country === "UAE" ? "active" : ""}`} onClick={() => setCountry("UAE")}>💙 UAE</button>
+              <button className={`toggle ${language === "AR" ? "active" : ""}`} onClick={() => setLanguage("AR")}>Arabic</button>
+              <button className={`toggle ${language === "EN" ? "active" : ""}`} onClick={() => setLanguage("EN")}>English</button>
+            </div>
+          )}
         </div>
 
         {message && <div className="toast">{message}</div>}
@@ -542,7 +556,7 @@ export default function DashboardPage() {
           </>
         )}
 
-        {section === "chatbot" && <Chatbot country={country} language={language} />}
+        {section === "chatbot" && <Chatbot />}
         {section === "calculator" && <Calculator country={country} />}
         {section === "profile" && user && <Profile user={user} setUser={setUser} />}
         {section === "admin" && user?.role === "ADMIN" && <Admin scripts={scripts} setScripts={setScripts} currentUser={user} onScriptsChanged={loadScripts} />}
@@ -551,10 +565,15 @@ export default function DashboardPage() {
   );
 }
 
-function Chatbot({ country, language }: { country: Country; language: Lang }) {
-  const welcome = language === "AR"
-    ? "أهلاً! اسألني عن السكربتات، السياسات، الروابط، أو ارفق صورة واطلب مني تحليلها."
-    : "Hi! Ask me about scripts, policies, links, or attach an image and ask me to analyze it.";
+function detectUiLanguage(value: string): Lang {
+  return /[\u0600-\u06FF]/.test(value) ? "AR" : "EN";
+}
+
+function Chatbot() {
+  const [uiLanguage, setUiLanguage] = useState<Lang>("AR");
+  const welcome = uiLanguage === "AR"
+    ? "أهلاً! اسألني أي شيء عن PureGym، السياسات، السكربتات، الروابط، أو ارفق صورة واطلب مني تحليلها."
+    : "Hi! Ask me anything about PureGym policies, scripts, links, or attach an image and ask me to analyze it.";
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: welcome }]);
@@ -569,10 +588,6 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, loading]);
   useEffect(() => { loadSessions(); }, []);
 
-  useEffect(() => {
-    if (!activeSessionId) setMessages([{ role: "assistant", content: welcome }]);
-  }, [country, language]);
-
   async function loadSessions() {
     const data = await fetch("/api/ai/history").then((res) => res.json()).catch(() => ({ sessions: [] }));
     setSessions(data.sessions || []);
@@ -584,7 +599,10 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
       const data = await fetch(`/api/ai/history?sessionId=${encodeURIComponent(id)}`).then((res) => res.json());
       if (data.session) {
         setActiveSessionId(data.session.id);
-        setMessages((data.session.messages || []).map((msg: ChatMessage) => ({ role: msg.role, content: msg.content, imageData: msg.imageData, imageName: msg.imageName })));
+        const loaded = (data.session.messages || []).map((msg: ChatMessage) => ({ role: msg.role, content: msg.content, imageData: msg.imageData, imageName: msg.imageName }));
+        setMessages(loaded.length ? loaded : [{ role: "assistant", content: welcome }]);
+        const lastUser = loaded.filter((msg: ChatMessage) => msg.role === "user").slice(-1)[0];
+        if (lastUser?.content) setUiLanguage(detectUiLanguage(lastUser.content));
       }
     } finally {
       setHistoryLoading(false);
@@ -599,7 +617,7 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
   }
 
   async function deleteSession(id: string) {
-    if (!confirm(language === "AR" ? "حذف هذه المحادثة؟" : "Delete this chat?")) return;
+    if (!confirm(uiLanguage === "AR" ? "حذف هذه المحادثة؟" : "Delete this chat?")) return;
     await fetch(`/api/ai/history?sessionId=${encodeURIComponent(id)}`, { method: "DELETE" });
     if (activeSessionId === id) newChat();
     await loadSessions();
@@ -608,11 +626,11 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
   async function onFileSelected(file: File | null) {
     if (!file) return;
     if (!file.type.startsWith("image/")) {
-      alert(language === "AR" ? "يرجى اختيار صورة فقط." : "Please choose an image file only.");
+      alert(uiLanguage === "AR" ? "يرجى اختيار صورة فقط." : "Please choose an image file only.");
       return;
     }
     if (file.size > 3_200_000) {
-      alert(language === "AR" ? "الصورة كبيرة جدًا. اختر صورة أقل من 3MB." : "Image is too large. Please use an image under 3MB.");
+      alert(uiLanguage === "AR" ? "الصورة كبيرة جدًا. اختر صورة أقل من 3MB." : "Image is too large. Please use an image under 3MB.");
       return;
     }
 
@@ -626,7 +644,9 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
     const trimmed = input.trim();
     if ((!trimmed && !attachedImage) || loading) return;
 
-    const userText = trimmed || (language === "AR" ? "حلّل الصورة المرفقة" : "Analyze the attached image");
+    const nextLang = trimmed ? detectUiLanguage(trimmed) : uiLanguage;
+    setUiLanguage(nextLang);
+    const userText = trimmed || (nextLang === "AR" ? "حلّل الصورة المرفقة" : "Analyze the attached image");
     const nextMessages: ChatMessage[] = [...messages, { role: "user", content: userText, imageData: attachedImage?.dataUrl || null, imageName: attachedImage?.name || null }];
     const imagePayload = attachedImage ? { dataUrl: attachedImage.dataUrl, name: attachedImage.name } : null;
 
@@ -639,10 +659,11 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userText, country, language, sessionId: activeSessionId, image: imagePayload, messages })
+        body: JSON.stringify({ message: userText, sessionId: activeSessionId, image: imagePayload, messages })
       });
       const data = await res.json().catch(() => ({ error: "AI route returned a non-JSON response." }));
       if (data.sessionId) setActiveSessionId(data.sessionId);
+      if (data.inferred?.language) setUiLanguage(data.inferred.language);
       setMessages([...nextMessages, { role: "assistant", content: res.ok ? data.answer : data.error || "AI failed" }]);
       await loadSessions();
     } catch (error) {
@@ -664,10 +685,10 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
       <aside className="chat-history-panel card">
         <div className="section-head compact">
           <div>
-            <h2>{language === "AR" ? "المحادثات" : "Chat history"}</h2>
-            <p>{language === "AR" ? "ذاكرة المحادثات الخاصة بك فقط." : "Private to your account."}</p>
+            <h2>{uiLanguage === "AR" ? "المحادثات" : "Chat history"}</h2>
+            <p>{uiLanguage === "AR" ? "محادثاتك الخاصة فقط. الذاكرة العامة لا تكشف بيانات المستخدمين." : "Your private chats only. Global memory never exposes user data."}</p>
           </div>
-          <button className="btn small" onClick={newChat}>{language === "AR" ? "جديد" : "New"}</button>
+          <button className="btn small" onClick={newChat}>{uiLanguage === "AR" ? "جديد" : "New"}</button>
         </div>
         <div className="chat-session-list">
           {sessions.map((session) => (
@@ -679,7 +700,7 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
               <button className="chat-delete-button" onClick={() => deleteSession(session.id)} title="Delete">×</button>
             </div>
           ))}
-          {!sessions.length && <p className="muted-text">{language === "AR" ? "لا توجد محادثات محفوظة بعد." : "No saved chats yet."}</p>}
+          {!sessions.length && <p className="muted-text">{uiLanguage === "AR" ? "لا توجد محادثات محفوظة بعد." : "No saved chats yet."}</p>}
         </div>
       </aside>
 
@@ -687,11 +708,11 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
         <div className="section-head">
           <div>
             <h2>AI Support Chatbot</h2>
-            <p>{country} • {language === "AR" ? "Arabic" : "English"} • {language === "AR" ? "يدعم النص والصور" : "Text and image support"}</p>
+            <p>{uiLanguage === "AR" ? "عام • يكتشف اللغة والدولة من السؤال • يدعم النص والصور" : "General • detects language and country from the question • text and image support"}</p>
           </div>
-          <div className="toolbar"><button className="btn ghost small" onClick={newChat}>{language === "AR" ? "إعادة ضبط" : "Reset"}</button></div>
+          <div className="toolbar"><button className="btn ghost small" onClick={newChat}>{uiLanguage === "AR" ? "محادثة جديدة" : "New chat"}</button></div>
         </div>
-        <div className="messages-panel" dir={language === "AR" ? "rtl" : "ltr"}>
+        <div className="messages-panel" dir={uiLanguage === "AR" ? "rtl" : "ltr"}>
           {messages.map((msg, index) => (
             <div key={index} className={`message-row ${msg.role}`}>
               <div className="message-bubble">
@@ -700,7 +721,7 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
               </div>
             </div>
           ))}
-          {loading && <div className="message-row assistant"><div className="message-bubble typing">{language === "AR" ? "جاري التفكير..." : "Thinking..."}</div></div>}
+          {loading && <div className="message-row assistant"><div className="message-bubble typing">{uiLanguage === "AR" ? "جاري التفكير..." : "Thinking..."}</div></div>}
           <div ref={bottomRef} />
         </div>
 
@@ -709,7 +730,7 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
             <img src={attachedImage.dataUrl} alt={attachedImage.name} />
             <div>
               <b>{attachedImage.name}</b>
-              <span>{language === "AR" ? "جاهزة للإرسال مع الرسالة" : "Ready to send with your message"}</span>
+              <span>{uiLanguage === "AR" ? "جاهزة للإرسال مع الرسالة" : "Ready to send with your message"}</span>
             </div>
             <button className="btn ghost small" onClick={() => setAttachedImage(null)}>×</button>
           </div>
@@ -717,14 +738,15 @@ function Chatbot({ country, language }: { country: Country; language: Lang }) {
 
         <div className="chat-input-bar enhanced">
           <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={(event) => onFileSelected(event.target.files?.[0] || null)} />
-          <button className="attach-button" onClick={() => fileInputRef.current?.click()} title={language === "AR" ? "إرفاق صورة" : "Attach image"}>📎</button>
-          <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={onKeyDown} placeholder={language === "AR" ? "اكتب رسالتك هنا أو ارفق صورة..." : "Type your message or attach an image..."} rows={2} dir={language === "AR" ? "rtl" : "ltr"} />
+          <button className="attach-button" onClick={() => fileInputRef.current?.click()} title={uiLanguage === "AR" ? "إرفاق صورة" : "Attach image"}>📎</button>
+          <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={onKeyDown} placeholder={uiLanguage === "AR" ? "اكتب سؤالك عن PureGym أو ارفق صورة..." : "Ask about PureGym or attach an image..."} rows={2} dir={uiLanguage === "AR" ? "rtl" : "ltr"} />
           <button className="send-button" onClick={ask} disabled={loading || (!input.trim() && !attachedImage)}>➤</button>
         </div>
       </div>
     </div>
   );
 }
+
 function Calculator({ country }: { country: Country }) {
   const [tool, setTool] = useState("monthly-to-pif");
   const [values, setValues] = useState<Record<string, string>>({});
@@ -965,6 +987,8 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
   const [adminCategory, setAdminCategory] = useState("Cancellation & Retention");
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
+  const [trainerItems, setTrainerItems] = useState<TrainerItem[]>([]);
+  const [trainerForm, setTrainerForm] = useState({ id: "", title: "", content: "", country: "ALL" as TrainerItem["country"], language: "BOTH" as TrainerItem["language"], kind: "Internal Note", sourceUrl: "", active: true });
   const [newScript, setNewScript] = useState({ title: "", category: "Cancellation & Retention", country: "KSA" as Script["country"], language: "AR" as Script["language"], body: "" });
 
   const adminCategories = useMemo(() => Array.from(new Set(scripts.map((script) => script.category))).sort((a, b) => categoryRank(a) - categoryRank(b) || a.localeCompare(b)), [scripts]);
@@ -973,12 +997,18 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
 
   useEffect(() => { if (!adminCategories.includes(adminCategory) && adminCategories[0]) setAdminCategory(adminCategories[0]); }, [adminCategories, adminCategory]);
   useEffect(() => { if (selected && !selectedId) setSelectedId(selected.id); }, [selected, selectedId]);
-  useEffect(() => { loadUsers(); }, []);
+  useEffect(() => { loadUsers(); loadTrainerItems(); }, []);
 
   async function loadUsers() {
     const res = await fetch("/api/admin/users");
     const data = await res.json().catch(() => ({ users: [] }));
     if (res.ok) setUsers(data.users || []);
+  }
+
+  async function loadTrainerItems() {
+    const res = await fetch("/api/ai/trainer");
+    const data = await res.json().catch(() => ({ items: [] }));
+    if (res.ok) setTrainerItems(data.items || []);
   }
 
   function updateSelected(patch: Partial<Script>) { if (selected) setScripts(scripts.map((script) => (script.id === selected.id ? { ...script, ...patch } : script))); }
@@ -1043,6 +1073,51 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
     if (!res.ok) return setStatus(data.error || "User delete failed");
     setStatus("User deleted.");
     await loadUsers();
+  }
+
+  async function changeUserRole(id: string, role: "USER" | "ADMIN") {
+    const res = await fetch(`/api/admin/users/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ role }) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Role update failed");
+    setStatus(role === "ADMIN" ? "User promoted to admin." : "Admin changed to user.");
+    await loadUsers();
+  }
+
+  function editTrainerItem(item: TrainerItem) {
+    setTrainerForm({
+      id: item.id,
+      title: item.title,
+      content: item.content,
+      country: item.country,
+      language: item.language,
+      kind: item.kind,
+      sourceUrl: item.sourceUrl || "",
+      active: item.active
+    });
+  }
+
+  function resetTrainerForm() {
+    setTrainerForm({ id: "", title: "", content: "", country: "ALL", language: "BOTH", kind: "Internal Note", sourceUrl: "", active: true });
+  }
+
+  async function saveTrainerItem() {
+    const method = trainerForm.id ? "PUT" : "POST";
+    const res = await fetch("/api/ai/trainer", { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(trainerForm) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "AI trainer save failed");
+    setStatus("AI trainer knowledge saved.");
+    resetTrainerForm();
+    await loadTrainerItems();
+  }
+
+  async function deleteTrainerItem(id: string) {
+    if (!confirm("Delete this AI knowledge item?")) return;
+    const res = await fetch(`/api/ai/trainer?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "AI trainer delete failed");
+    setStatus("AI trainer knowledge deleted.");
+    if (trainerForm.id === id) resetTrainerForm();
+    await loadTrainerItems();
   }
 
   return (
@@ -1205,7 +1280,7 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
       </div>
 
       <div className="card admin-panel users-panel">
-        <h2>Users</h2>
+        <div className="section-head compact"><div><h2>Users</h2><p>Manage users without affecting scripts or personal favorites.</p></div></div>
         <div className="admin-list">
           {users.map((member) => (
             <div className="user-row" key={member.id}>
@@ -1213,9 +1288,57 @@ function Admin({ scripts, setScripts, currentUser, onScriptsChanged }: { scripts
                 <b>{member.nameEn} / {member.nameAr}</b>
                 <span>{member.email} • {member.role} • {member.emailVerifiedAt ? "Verified" : "Not verified"}</span>
               </div>
-              <button className="btn ghost small danger-btn" onClick={() => deleteUser(member.id)} disabled={member.id === currentUser.id}>Delete user</button>
+              <div className="user-actions">
+                {member.role === "USER" ? (
+                  <button className="btn ghost small" onClick={() => changeUserRole(member.id, "ADMIN")} disabled={member.id === currentUser.id}>Promote to admin</button>
+                ) : (
+                  <button className="btn ghost small" onClick={() => changeUserRole(member.id, "USER")} disabled={member.id === currentUser.id}>Make user</button>
+                )}
+                <button className="btn ghost small danger-btn" onClick={() => deleteUser(member.id)} disabled={member.id === currentUser.id}>Delete user</button>
+              </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      <div className="card admin-panel users-panel ai-trainer-card">
+        <div className="section-head">
+          <div>
+            <h2>AI Chatbot Trainer</h2>
+            <p>Add official policies, internal notes, FAQs, links, and approved answers. The AI uses this knowledge without exposing private user chats.</p>
+          </div>
+          <div className="toolbar">
+            <button className="btn ghost small" onClick={resetTrainerForm}>New item</button>
+            <button className="btn small" onClick={saveTrainerItem}>{trainerForm.id ? "Update knowledge" : "Add knowledge"}</button>
+          </div>
+        </div>
+
+        <div className="trainer-grid">
+          <div className="trainer-form">
+            <div className="field"><label>Title</label><input className="input" value={trainerForm.title} onChange={(e) => setTrainerForm({ ...trainerForm, title: e.target.value })} /></div>
+            <div className="admin-fields">
+              <div className="field"><label>Country</label><select className="select" value={trainerForm.country} onChange={(e) => setTrainerForm({ ...trainerForm, country: e.target.value as TrainerItem["country"] })}><option value="ALL">ALL</option><option value="KSA">KSA</option><option value="UAE">UAE</option></select></div>
+              <div className="field"><label>Language</label><select className="select" value={trainerForm.language} onChange={(e) => setTrainerForm({ ...trainerForm, language: e.target.value as TrainerItem["language"] })}><option value="BOTH">BOTH</option><option value="AR">AR</option><option value="EN">EN</option></select></div>
+              <div className="field"><label>Kind</label><input className="input" value={trainerForm.kind} onChange={(e) => setTrainerForm({ ...trainerForm, kind: e.target.value })} placeholder="Policy / FAQ / Internal Note" /></div>
+            </div>
+            <div className="field"><label>Source URL or file name</label><input className="input" value={trainerForm.sourceUrl} onChange={(e) => setTrainerForm({ ...trainerForm, sourceUrl: e.target.value })} placeholder="https://... or internal file" /></div>
+            <label className="remember-row"><input type="checkbox" checked={trainerForm.active} onChange={(e) => setTrainerForm({ ...trainerForm, active: e.target.checked })} /> <span>Active for AI</span></label>
+            <div className="field"><label>Knowledge content</label><textarea className="textarea trainer-body" value={trainerForm.content} onChange={(e) => setTrainerForm({ ...trainerForm, content: e.target.value })} placeholder="Write the exact policy, approved answer, FAQ, or internal rule here..." /></div>
+          </div>
+
+          <div className="trainer-list">
+            {trainerItems.map((item) => (
+              <div className={`trainer-item ${trainerForm.id === item.id ? "active" : ""}`} key={item.id}>
+                <button onClick={() => editTrainerItem(item)}>
+                  <b>{item.title}</b>
+                  <span>{item.kind} • {item.country} • {item.language} • {item.active ? "Active" : "Inactive"}</span>
+                  <p>{preview(item.content)}</p>
+                </button>
+                <button className="chat-delete-button" onClick={() => deleteTrainerItem(item.id)} title="Delete">×</button>
+              </div>
+            ))}
+            {!trainerItems.length && <p className="muted-text">No AI knowledge items yet.</p>}
+          </div>
         </div>
       </div>
     </div>
