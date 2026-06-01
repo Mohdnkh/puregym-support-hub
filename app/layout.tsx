@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PureGym Hub",
-  description: "PureGym scripts, AI support, knowledge base, and calculation tools",
+  title: "PureGym Support Hub",
+  description: "PureGym scripts, AI support, and calculation tools",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
-    apple: "/pg-hub-mark.svg"
+    apple: "/pg-logo.svg"
   }
 };
 
