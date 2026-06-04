@@ -941,7 +941,7 @@ function ExtensionShortcuts({
 
   const extensionUrl =
     process.env.NEXT_PUBLIC_EXTENSION_URL ||
-    "https://chromewebstore.google.com/";
+    "https://chromewebstore.google.com/detail/puregym-scripts-helper/ljjfhnpkdadhipmnihfokpgkmpboaiap";
 
   const scriptOptions = useMemo(
     () =>
@@ -958,6 +958,23 @@ function ExtensionShortcuts({
   const selectedScript = scriptOptions.find(
     (script) => script.id === selectedScriptId,
   );
+
+  const groupedScriptOptions = useMemo(() => {
+    const groups = new Map<string, Script[]>();
+
+    scriptOptions.forEach((script) => {
+      const groupName = script.category || "Other";
+      const current = groups.get(groupName) || [];
+      current.push(script);
+      groups.set(groupName, current);
+    });
+
+    return Array.from(groups.entries()).sort(
+      ([categoryA], [categoryB]) =>
+        categoryRank(categoryA) - categoryRank(categoryB) ||
+        categoryA.localeCompare(categoryB),
+    );
+  }, [scriptOptions]);
 
   useEffect(() => {
     loadExtensionData();
@@ -1116,10 +1133,14 @@ function ExtensionShortcuts({
           <div className="field">
             <label>Script</label>
             <select className="select" value={selectedScriptId} onChange={(event) => setSelectedScriptId(event.target.value)}>
-              {scriptOptions.map((script) => (
-                <option key={script.id} value={script.id}>
-                  {script.category} • {script.country} • {script.language} • {script.title}
-                </option>
+              {groupedScriptOptions.map(([groupName, groupScripts]) => (
+                <optgroup key={groupName} label={groupName}>
+                  {groupScripts.map((script) => (
+                    <option key={script.id} value={script.id}>
+                      {script.country} • {script.language} • {script.title}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </div>
