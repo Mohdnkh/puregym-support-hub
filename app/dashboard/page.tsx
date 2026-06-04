@@ -36,6 +36,22 @@ type TrainerItem = {
   updatedAt?: string;
 };
 
+
+type ExtensionShortcut = {
+  id: string;
+  shortcut: string;
+  title: string | null;
+  scriptId: string;
+  active: boolean;
+  script?: {
+    id: string;
+    title: string;
+    category: string;
+    country: "ALL" | "KSA" | "UAE";
+    language: "AR" | "EN" | string;
+  };
+};
+
 type Script = {
   id: string;
   key: string;
@@ -56,6 +72,7 @@ type Section =
   | "scripts"
   | "chatbot"
   | "calculator"
+  | "extension"
   | "profile"
   | "admin";
 type ChatMessage = {
@@ -482,7 +499,9 @@ export default function DashboardPage() {
           ? "AI Chatbot"
           : section === "calculator"
             ? "Calculation Tool"
-            : section === "profile"
+            : section === "extension"
+              ? "Extension Shortcuts"
+              : section === "profile"
               ? "Profile"
               : "Admin Editor";
 
@@ -522,6 +541,12 @@ export default function DashboardPage() {
           onClick={() => setSection("calculator")}
         >
           Calculation Tool
+        </button>
+        <button
+          className={`nav-button ${section === "extension" ? "active" : ""}`}
+          onClick={() => setSection("extension")}
+        >
+          Extension Shortcuts
         </button>
         {user?.role === "ADMIN" && (
           <button
@@ -572,10 +597,12 @@ export default function DashboardPage() {
             <p>
               {section === "chatbot"
                 ? "General AI • auto language and country detection"
-                : `${country} • ${language === "AR" ? "Arabic" : "English"}`}
+                : section === "extension"
+                  ? "Chrome Extension • personal shortcuts synced from your account"
+                  : `${country} • ${language === "AR" ? "Arabic" : "English"}`}
             </p>
           </div>
-          {section !== "chatbot" && (
+          {section !== "chatbot" && section !== "extension" && (
             <div className="toolbar">
               <button
                 className={`toggle ksa ${country === "KSA" ? "active" : ""}`}
@@ -875,6 +902,9 @@ export default function DashboardPage() {
 
         {section === "chatbot" && <Chatbot />}
         {section === "calculator" && <Calculator country={country} />}
+        {section === "extension" && user && (
+          <ExtensionShortcuts scripts={scripts} currentUser={user} />
+        )}
         {section === "profile" && user && (
           <Profile user={user} setUser={setUser} />
         )}
@@ -887,6 +917,261 @@ export default function DashboardPage() {
           />
         )}
       </main>
+    </div>
+  );
+}
+
+
+function ExtensionShortcuts({
+  scripts,
+  currentUser,
+}: {
+  scripts: Script[];
+  currentUser: User;
+}) {
+  const [shortcuts, setShortcuts] = useState<ExtensionShortcut[]>([]);
+  const [selectedScriptId, setSelectedScriptId] = useState("");
+  const [shortcutText, setShortcutText] = useState("");
+  const [shortcutTitle, setShortcutTitle] = useState("");
+  const [accessToken, setAccessToken] = useState("");
+  const [tokens, setTokens] = useState<
+    { id: string; label: string; createdAt: string; lastUsedAt: string | null }[]
+  >([]);
+  const [status, setStatus] = useState("");
+
+  const extensionUrl =
+    process.env.NEXT_PUBLIC_EXTENSION_URL ||
+    "https://chromewebstore.google.com/";
+
+  const scriptOptions = useMemo(
+    () =>
+      scripts
+        .filter((script) => script.active)
+        .sort(
+          (a, b) =>
+            categoryRank(a.category) - categoryRank(b.category) ||
+            a.title.localeCompare(b.title),
+        ),
+    [scripts],
+  );
+
+  const selectedScript = scriptOptions.find(
+    (script) => script.id === selectedScriptId,
+  );
+
+  useEffect(() => {
+    loadExtensionData();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedScriptId && scriptOptions[0]) setSelectedScriptId(scriptOptions[0].id);
+  }, [scriptOptions, selectedScriptId]);
+
+  async function loadExtensionData() {
+    const [shortcutsRes, tokensRes] = await Promise.all([
+      fetch("/api/extension/shortcuts"),
+      fetch("/api/extension/connect"),
+    ]);
+    const shortcutsData = await shortcutsRes.json().catch(() => ({ shortcuts: [] }));
+    const tokensData = await tokensRes.json().catch(() => ({ tokens: [] }));
+    if (shortcutsRes.ok) setShortcuts(shortcutsData.shortcuts || []);
+    if (tokensRes.ok) setTokens(tokensData.tokens || []);
+  }
+
+  async function createToken() {
+    setStatus("");
+    const res = await fetch("/api/extension/connect", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ label: "Chrome Extension" }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Could not create extension token.");
+    setAccessToken(data.accessToken || "");
+    await navigator.clipboard.writeText(data.accessToken || "").catch(() => null);
+    setStatus("Extension token created and copied. Paste it once inside the Chrome extension.");
+    await loadExtensionData();
+  }
+
+  async function revokeToken(id: string) {
+    if (!confirm("Revoke this extension connection?")) return;
+    const res = await fetch("/api/extension/connect", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    if (!res.ok) return setStatus("Could not revoke token.");
+    setStatus("Extension connection revoked.");
+    await loadExtensionData();
+  }
+
+  async function saveShortcut() {
+    const shortcut = shortcutText.trim().replace(/^\/+/, "").toLowerCase();
+    if (!shortcut) return setStatus("Write a shortcut first, for example: kah or freeze1.");
+    if (!selectedScriptId) return setStatus("Choose a script first.");
+
+    const res = await fetch("/api/extension/shortcuts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        shortcut,
+        scriptId: selectedScriptId,
+        title: shortcutTitle || selectedScript?.title || "Shortcut",
+        active: true,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Shortcut save failed.");
+    setShortcutText("");
+    setShortcutTitle("");
+    setStatus("Shortcut saved. Open the extension and press Sync now.");
+    await loadExtensionData();
+  }
+
+  async function deleteShortcut(id: string) {
+    if (!confirm("Delete this shortcut?")) return;
+    const res = await fetch(`/api/extension/shortcuts/${id}`, { method: "DELETE" });
+    if (!res.ok) return setStatus("Shortcut delete failed.");
+    setStatus("Shortcut deleted. Sync the extension to update it.");
+    await loadExtensionData();
+  }
+
+  async function toggleShortcut(item: ExtensionShortcut) {
+    const res = await fetch(`/api/extension/shortcuts/${item.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ active: !item.active }),
+    });
+    if (!res.ok) return setStatus("Shortcut update failed.");
+    await loadExtensionData();
+  }
+
+  return (
+    <div className="extension-page-grid">
+      <div className="card extension-hero-card">
+        <div className="section-head">
+          <div>
+            <h2>Chrome Extension Integration</h2>
+            <p>
+              Your shortcuts are saved in PureGym Hub and synced to the Chrome extension.
+              Names are taken from your profile automatically: {currentUser.nameEn} / {currentUser.nameAr}.
+            </p>
+          </div>
+          <a className="btn" href={extensionUrl} target="_blank" rel="noreferrer">
+            Install Extension
+          </a>
+        </div>
+        <div className="extension-steps">
+          <div><b>1</b><span>Create or copy your extension token.</span></div>
+          <div><b>2</b><span>Paste it once in the extension popup.</span></div>
+          <div><b>3</b><span>Press Sync. Your personal shortcuts will work anywhere.</span></div>
+        </div>
+      </div>
+
+      <div className="card extension-token-card">
+        <div className="section-head compact">
+          <div>
+            <h2>Connect Extension</h2>
+            <p>Use this token once. It links the extension to your account only.</p>
+          </div>
+          <button className="btn small" onClick={createToken}>Create Token</button>
+        </div>
+        {accessToken && (
+          <div className="token-box">
+            <code>{accessToken}</code>
+            <button className="btn ghost small" onClick={() => navigator.clipboard.writeText(accessToken)}>Copy</button>
+          </div>
+        )}
+        <div className="connected-token-list">
+          {tokens.map((token) => (
+            <div key={token.id} className="connected-token-row">
+              <div>
+                <b>{token.label}</b>
+                <span>Created {new Date(token.createdAt).toLocaleDateString()} • Last sync {token.lastUsedAt ? new Date(token.lastUsedAt).toLocaleString() : "Never"}</span>
+              </div>
+              <button className="btn ghost small danger-text" onClick={() => revokeToken(token.id)}>Revoke</button>
+            </div>
+          ))}
+          {!tokens.length && <p className="muted-text">No connected extensions yet.</p>}
+        </div>
+      </div>
+
+      <div className="card shortcut-builder-card">
+        <div className="section-head compact">
+          <div>
+            <h2>Add Shortcut</h2>
+            <p>Choose any script from the library. The shortcut is private to your account.</p>
+          </div>
+        </div>
+        <div className="shortcut-builder-grid">
+          <div className="field">
+            <label>Shortcut</label>
+            <input
+              className="input ltr"
+              placeholder="Example: kah, cancel1, freeze-core"
+              value={shortcutText}
+              onChange={(event) => setShortcutText(event.target.value)}
+            />
+          </div>
+          <div className="field">
+            <label>Script</label>
+            <select className="select" value={selectedScriptId} onChange={(event) => setSelectedScriptId(event.target.value)}>
+              {scriptOptions.map((script) => (
+                <option key={script.id} value={script.id}>
+                  {script.category} • {script.country} • {script.language} • {script.title}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label>Optional display title</label>
+            <input
+              className="input"
+              placeholder={selectedScript?.title || "Shortcut title"}
+              value={shortcutTitle}
+              onChange={(event) => setShortcutTitle(event.target.value)}
+            />
+          </div>
+          <button className="btn shortcut-save-btn" onClick={saveShortcut}>Save Shortcut</button>
+        </div>
+        {selectedScript && (
+          <div className="shortcut-preview-box">
+            <b>{selectedScript.title}</b>
+            <span>{selectedScript.category} • {selectedScript.country} • {selectedScript.language}</span>
+            <p>{preview(applyUserName(selectedScript.body, selectedScript.language, currentUser))}</p>
+          </div>
+        )}
+      </div>
+
+      <div className="card shortcut-list-card">
+        <div className="section-head compact">
+          <div>
+            <h2>Your Extension Shortcuts</h2>
+            <p>{shortcuts.length} personal shortcuts. These do not affect other users.</p>
+          </div>
+          <button className="btn ghost small" onClick={loadExtensionData}>Refresh</button>
+        </div>
+        <div className="shortcut-list">
+          {shortcuts.map((item) => (
+            <div key={item.id} className="shortcut-row">
+              <code>{item.shortcut}</code>
+              <div>
+                <b>{item.title || item.script?.title}</b>
+                <span>{item.script?.category} • {item.script?.country} • {item.script?.language}</span>
+              </div>
+              <button className="btn ghost small" onClick={() => toggleShortcut(item)}>{item.active ? "Disable" : "Enable"}</button>
+              <button className="btn ghost small danger-text" onClick={() => deleteShortcut(item.id)}>Delete</button>
+            </div>
+          ))}
+          {!shortcuts.length && (
+            <div className="empty-state-card">
+              <h3>No shortcuts yet</h3>
+              <p>Add a shortcut above, then open the extension and press Sync.</p>
+            </div>
+          )}
+        </div>
+        {status && <p className="status-line">{status}</p>}
+      </div>
     </div>
   );
 }

@@ -39,6 +39,8 @@ model User {
   favorites    ScriptFavorite[]
   chatSessions ChatSession[]
   aiMemories   UserAiMemory[]
+  extensionTokens ExtensionAccessToken[]
+  shortcuts    UserShortcut[]
 }
 
 model VerificationToken {
@@ -71,6 +73,7 @@ model Script {
   updatedAt DateTime @updatedAt
 
   favorites ScriptFavorite[]
+  shortcuts UserShortcut[]
 
   @@index([category])
   @@index([country])
@@ -186,4 +189,35 @@ model AiGlobalMemory {
   updatedAt DateTime @updatedAt
 
   @@map("AiGlobalMemory")
+}
+
+model ExtensionAccessToken {
+  id         String    @id @default(cuid())
+  tokenHash  String    @unique
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label      String    @default("Chrome Extension")
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+
+  @@index([userId])
+  @@index([tokenHash])
+}
+
+model UserShortcut {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scriptId  String
+  script    Script   @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  shortcut  String
+  title     String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, shortcut])
+  @@index([userId])
+  @@index([scriptId])
 }
