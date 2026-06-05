@@ -41,6 +41,7 @@ model User {
   aiMemories   UserAiMemory[]
   extensionTokens ExtensionAccessToken[]
   shortcuts    UserShortcut[]
+  quickScripts UserQuickScript[]
 }
 
 model VerificationToken {
@@ -220,4 +221,24 @@ model UserShortcut {
   @@unique([userId, shortcut])
   @@index([userId])
   @@index([scriptId])
+}
+
+model UserQuickScript {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  country   Country  @default(ALL)
+  language  String   @default("AR")
+  body      String
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([country])
+  @@index([language])
+  @@index([active])
+  @@index([sortOrder])
 }

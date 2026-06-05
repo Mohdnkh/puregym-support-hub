@@ -52,6 +52,17 @@ type ExtensionShortcut = {
   };
 };
 
+
+type UserQuickScript = {
+  id: string;
+  title: string;
+  country: "ALL" | "KSA" | "UAE";
+  language: "AR" | "EN" | string;
+  body: string;
+  active: boolean;
+  sortOrder?: number;
+};
+
 type Script = {
   id: string;
   key: string;
@@ -268,6 +279,8 @@ export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [scripts, setScripts] = useState<Script[]>([]);
+  const [personalQuickScripts, setPersonalQuickScripts] = useState<UserQuickScript[]>([]);
+  const [editingQuickId, setEditingQuickId] = useState<string | null>(null);
   const [country, setCountry] = useState<Country>("KSA");
   const [language, setLanguage] = useState<Lang>("AR");
   const [section, setSection] = useState<Section>("quick");
@@ -292,6 +305,57 @@ export default function DashboardPage() {
     setFavoriteIds(data.scriptIds || []);
   }
 
+  async function loadPersonalQuickScripts() {
+    const data = await fetch("/api/quick-scripts")
+      .then((res) => res.json())
+      .catch(() => ({ quickScripts: [] }));
+    setPersonalQuickScripts(data.quickScripts || []);
+  }
+
+  async function savePersonalQuickScript(item: UserQuickScript) {
+    const res = await fetch(`/api/quick-scripts/${item.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: item.title,
+        country: item.country,
+        language: item.language === "EN" ? "EN" : "AR",
+        body: item.body,
+      }),
+    });
+    if (!res.ok) return alert("Quick script save failed.");
+    setEditingQuickId(null);
+    await loadPersonalQuickScripts();
+  }
+
+  async function addPersonalQuickScript() {
+    const res = await fetch("/api/quick-scripts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "New Quick Script",
+        country,
+        language,
+        body: language === "AR" ? "اكتب السكربت هنا" : "Write the script here",
+      }),
+    });
+    if (!res.ok) return alert("Quick script create failed.");
+    await loadPersonalQuickScripts();
+  }
+
+  async function deletePersonalQuickScript(id: string) {
+    if (!confirm("Delete this quick script?")) return;
+    const res = await fetch(`/api/quick-scripts/${id}`, { method: "DELETE" });
+    if (!res.ok) return alert("Quick script delete failed.");
+    await loadPersonalQuickScripts();
+  }
+
+  function updatePersonalQuickScript(id: string, patch: Partial<UserQuickScript>) {
+    setPersonalQuickScripts((current) =>
+      current.map((item) => (item.id === id ? { ...item, ...patch } : item)),
+    );
+  }
+
   useEffect(() => {
     async function load() {
       const me = await fetch("/api/auth/me").then((res) => res.json());
@@ -302,6 +366,7 @@ export default function DashboardPage() {
       setUser(me.user);
       await loadScripts();
       await loadFavorites();
+      await loadPersonalQuickScripts();
     }
     load();
   }, [router]);
@@ -345,15 +410,26 @@ export default function DashboardPage() {
 
   const quickScripts = useMemo(
     () =>
-      visibleScripts.filter((script) => script.category === "Quick Scripts"),
-    [visibleScripts],
+      personalQuickScripts
+        .filter(
+          (script) =>
+            script.active &&
+            (script.country === country || script.country === "ALL") &&
+            script.language === language,
+        )
+        .sort(
+          (a, b) =>
+            (a.sortOrder || 0) - (b.sortOrder || 0) ||
+            a.title.localeCompare(b.title),
+        ),
+    [personalQuickScripts, country, language],
   );
 
   const quickStickyText = useMemo(() => {
     return quickScripts
       .map(
         (script) =>
-          `${script.title}\n${applyUserName(script.body, script.language, user)}`,
+          `${script.title}\n${applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user)}`,
       )
       .join("\n\n━━━━━━━━━━━━━━━━━━━━\n\n");
   }, [quickScripts, user]);
@@ -372,7 +448,7 @@ export default function DashboardPage() {
     const words = query.split(/\s+/).filter(Boolean);
 
     return visibleScripts.filter((script) => {
-      const body = applyUserName(script.body, script.language, user);
+      const body = applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user);
       const haystack = normalizeSearchText(
         [
           script.title,
@@ -636,48 +712,78 @@ export default function DashboardPage() {
 
         {section === "quick" && (
           <div className="quick-layout">
-            <div className="card">
-              <div className="section-head">
+            <div className="quick-note card">
+              <div className="section-head compact">
                 <div>
-                  <h2>Sticky Note</h2>
-                  <p>كل السكربتات السريعة حسب الدولة واللغة المختارة.</p>
+                  <h2>Personal Quick Scripts</h2>
+                  <p>These quick scripts are private to your account. Admin changes will not overwrite them.</p>
                 </div>
-                <div className="toolbar">
-                  <button
-                    className="btn ghost small"
-                    onClick={() => setQuickNoteText(quickStickyText)}
-                  >
-                    Reset
-                  </button>
-                  <button
-                    className="btn small"
-                    onClick={() => copyText(quickNoteText)}
-                  >
-                    Copy All
-                  </button>
-                </div>
+                <button className="btn small" onClick={addPersonalQuickScript}>Add Quick Script</button>
               </div>
               <textarea
-                className="textarea sticky-note"
-                dir={language === "AR" ? "rtl" : "ltr"}
+                className="textarea"
                 value={quickNoteText}
                 onChange={(event) => setQuickNoteText(event.target.value)}
+                placeholder="Quick note..."
               />
+              <div className="inline-actions">
+                <button
+                  className="btn ghost small"
+                  onClick={() => setQuickNoteText(quickStickyText)}
+                >
+                  Reset to current quick scripts
+                </button>
+                <button
+                  className="btn small"
+                  onClick={() => copyText(quickNoteText)}
+                >
+                  Copy note
+                </button>
+              </div>
             </div>
             <div className="quick-cards">
               {quickScripts.map((script) => {
-                const body = applyUserName(script.body, script.language, user);
+                const body = applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user);
+                const isEditing = editingQuickId === script.id;
                 return (
-                  <button
-                    className="mini-script-card"
-                    key={script.id}
-                    onClick={() => copyText(body)}
-                  >
-                    <b>{script.title}</b>
-                    <span>{preview(body)}</span>
-                  </button>
+                  <div className="mini-script-card" key={script.id}>
+                    {isEditing ? (
+                      <>
+                        <input
+                          className="input"
+                          value={script.title}
+                          onChange={(event) => updatePersonalQuickScript(script.id, { title: event.target.value })}
+                        />
+                        <textarea
+                          className="textarea"
+                          value={script.body}
+                          onChange={(event) => updatePersonalQuickScript(script.id, { body: event.target.value })}
+                        />
+                        <div className="inline-actions">
+                          <button className="btn small" onClick={() => savePersonalQuickScript(script)}>Save</button>
+                          <button className="btn ghost small" onClick={() => setEditingQuickId(null)}>Cancel</button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <b>{script.title}</b>
+                        <p>{preview(body)}</p>
+                        <div className="inline-actions">
+                          <button className="btn small" onClick={() => copyText(body)}>Copy</button>
+                          <button className="btn ghost small" onClick={() => setEditingQuickId(script.id)}>Edit</button>
+                          <button className="btn ghost small danger-text" onClick={() => deletePersonalQuickScript(script.id)}>Delete</button>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 );
               })}
+              {!quickScripts.length && (
+                <div className="empty-state-card">
+                  <h3>No quick scripts</h3>
+                  <p>Add a quick script for this country and language.</p>
+                </div>
+              )}
             </div>
           </div>
         )}
