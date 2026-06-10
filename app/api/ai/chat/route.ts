@@ -81,6 +81,7 @@ export async function POST(req: Request) {
     "KSA";
 
   const countryIsExplicit = Boolean(signals.country || countryFromClient);
+  const knowledgeCountry = countryIsExplicit ? detectedCountry : null;
 
   // DB/session can support ALL/BOTH, but the AI helper expects specific KSA/UAE + AR/EN.
   const sessionCountry =
@@ -120,7 +121,7 @@ export async function POST(req: Request) {
     });
 
     const globalMemory = await getAiGlobalMemoryText();
-    const knowledgeBase = await getKnowledgeBaseText(countryIsExplicit ? detectedCountry : null, detectedLanguage);
+    const knowledgeBase = await getKnowledgeBaseText(knowledgeCountry, detectedLanguage);
     const historyForAI = storedHistory
       .filter((entry: { role: string; content: string }) => entry.role === "user" || entry.role === "assistant")
       .slice(0, -1)
@@ -130,8 +131,8 @@ export async function POST(req: Request) {
     const finalHistory = historyForAI.length ? historyForAI : fallbackHistory;
 
     const countryInstruction = countryIsExplicit
-      ? `The user's country context appears to be ${detectedCountry}.`
-      : "The user did not clearly specify KSA or UAE. For country-specific policy, ask a short clarifying question before answering.";
+      ? `The user's country context appears to be ${detectedCountry}. Answer for this country unless the user explicitly asks for a comparison.`
+      : "The user did not clearly specify KSA or UAE, so the knowledge base includes both countries. Be smart: if the answer is the same for both countries, answer once and say it applies to both; if it differs, give a short KSA answer and a short UAE answer; ask for clarification only when the user needs one exact country-specific action, branch, price, link, or policy.";
 
     const answer = await callOpenAIMultimodal({
       system: `${styleInstruction(countryIsExplicit ? detectedCountry : null, detectedLanguage)} ${countryInstruction}${buildMemoryInstruction(memory?.summary, globalMemory)}\n\nKnowledge base:\n${knowledgeBase}`,

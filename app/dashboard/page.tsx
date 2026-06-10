@@ -697,12 +697,12 @@ export default function DashboardPage() {
               <div className="section-head compact">
                 <div>
                   <h2>Personal Quick Scripts</h2>
-                  <p>These quick scripts are private to your account. Admin changes will not overwrite them.</p>
+                  <p>Private quick scripts. Click any card to copy it instantly.</p>
                 </div>
                 <button className="btn small" onClick={addPersonalQuickScript}>Add Quick Script</button>
               </div>
               <textarea
-                className="textarea"
+                className="textarea quick-note-textarea"
                 value={quickNoteText}
                 onChange={(event) => setQuickNoteText(event.target.value)}
                 placeholder="Quick note..."
@@ -780,10 +780,11 @@ export default function DashboardPage() {
                         >
                           Edit
                         </button>
-                        <div className="quick-script-emoji">{emojiFor(script.country)}</div>
-                        <b>{script.title}</b>
+                        <div className="quick-script-topline">
+                          <div className="quick-script-emoji">{emojiFor(script.country)}</div>
+                          <b>{script.title}</b>
+                        </div>
                         <p>{preview(body)}</p>
-                        <span className="quick-copy-hint">Click card to copy</span>
                       </>
                     )}
                   </div>
