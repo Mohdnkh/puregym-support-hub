@@ -1,0 +1,10 @@
+Delete these old extension files from the project:
+
+app/api/extension/connect/route.ts
+app/api/extension/shortcuts/route.ts
+app/api/extension/shortcuts/[id]/route.ts
+lib/extensionAuth.ts
+
+PowerShell command from project root:
+Remove-Item -Recurse -Force "app/api/extension"
+Remove-Item -Force "lib/extensionAuth.ts"

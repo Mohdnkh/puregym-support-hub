@@ -15,7 +15,7 @@ const updateSchema = z.object({
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")) return NextResponse.json({ error: "Admin only" }, { status: 403 });
 
   if (params.id.startsWith("seed-")) {
     return NextResponse.json({ error: "Seed scripts must be seeded into DB before editing." }, { status: 400 });
@@ -28,7 +28,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")) return NextResponse.json({ error: "Admin only" }, { status: 403 });
 
   if (params.id.startsWith("seed-")) {
     return NextResponse.json({ error: "Seed scripts must be seeded into DB before deleting." }, { status: 400 });

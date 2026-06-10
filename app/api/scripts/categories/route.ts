@@ -10,7 +10,7 @@ const renameSchema = z.object({
 
 export async function PATCH(req: Request) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")) return NextResponse.json({ error: "Admin only" }, { status: 403 });
 
   const { oldName, newName } = renameSchema.parse(await req.json());
   const cleanOld = oldName.trim();

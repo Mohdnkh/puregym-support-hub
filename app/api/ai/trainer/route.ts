@@ -18,7 +18,7 @@ const itemSchema = z.object({
 
 async function requireAdmin() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return null;
+  if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")) return null;
   return user;
 }
 

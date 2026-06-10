@@ -1,5 +1,5 @@
 import { prisma } from "./db";
-import { getSeedScripts } from "./seed-data";
+import { seedScripts } from "./seed-data";
 
 type ChatRole = "user" | "assistant";
 
@@ -232,7 +232,7 @@ export async function getKnowledgeBaseText(country?: AiCountry | null, language?
       take: 320
     });
   } catch {
-    scripts = getSeedScripts().filter((script) => {
+    scripts = seedScripts.filter((script) => {
       const countryOk = !country || script.country === country || script.country === "ALL";
       const langOk = !language || script.language === language;
       return countryOk && langOk;

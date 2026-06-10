@@ -7,7 +7,7 @@ const schema = z.object({ ids: z.array(z.string()).min(1) });
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
-  if (!user || user.role !== "ADMIN") return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")) return NextResponse.json({ error: "Admin only" }, { status: 403 });
 
   const { ids } = schema.parse(await req.json());
 

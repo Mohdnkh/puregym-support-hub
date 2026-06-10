@@ -9,14 +9,14 @@ export type SessionUser = {
   nameAr: string;
   nameEn: string;
   profileImage: string | null;
-  role: "USER" | "ADMIN";
+  role: "USER" | "ADMIN" | "SUPER_ADMIN";
   emailVerified: boolean;
 };
 
 type TokenPayload = {
   sub: string;
   email: string;
-  role: "USER" | "ADMIN";
+  role: "USER" | "ADMIN" | "SUPER_ADMIN";
 };
 
 const COOKIE_NAME = "pg_session";
@@ -59,13 +59,19 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       return null;
     }
 
+    const superAdminEmail = (process.env.SUPER_ADMIN_EMAIL || process.env.ADMIN_EMAIL || "").toLowerCase();
+    const role =
+      superAdminEmail && user.email.toLowerCase() === superAdminEmail
+        ? "SUPER_ADMIN"
+        : user.role;
+
     return {
       id: user.id,
       email: user.email,
       nameAr: user.nameAr,
       nameEn: user.nameEn,
       profileImage: user.profileImage,
-      role: user.role,
+      role,
       emailVerified: Boolean(user.emailVerifiedAt)
     };
   } catch {

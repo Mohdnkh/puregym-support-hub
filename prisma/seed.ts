@@ -435,12 +435,12 @@ async function main() {
         passwordHash,
         nameAr: process.env.ADMIN_NAME_AR || "Admin",
         nameEn: process.env.ADMIN_NAME_EN || "Admin",
-        role: "ADMIN",
+        role: "SUPER_ADMIN",
         emailVerifiedAt: new Date(),
       },
     });
 
-    console.log(`Admin ready: ${adminEmail}`);
+    console.log(`Super Admin ready: ${adminEmail}`);
   } else {
     console.log("ADMIN_EMAIL / ADMIN_PASSWORD not set. Skipping admin user.");
   }
