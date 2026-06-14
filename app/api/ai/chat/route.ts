@@ -3,6 +3,8 @@ import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { buildMemoryInstruction, callOpenAIMultimodal, detectAiSignals, getAiGlobalMemoryText, getKnowledgeBaseText, styleInstruction, summarizeAiMemory, summarizeAiGlobalMemory } from "@/lib/ai";
+import { runAfterResponse } from "@/lib/after";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -48,6 +50,15 @@ async function getOrCreateSession(params: { userId: string; sessionId?: string |
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Unauthorized. Please log in again." }, { status: 401 });
+
+  // Protect OpenAI spend: cap each user to 20 chat requests per minute.
+  const limit = rateLimit(`ai-chat:${user.id}`, 20, 60_000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+    );
+  }
 
   try {
   const {
@@ -152,34 +163,39 @@ export async function POST(req: Request) {
 
     await prisma.chatSession.update({ where: { id: session.id }, data: { updatedAt: new Date() } });
 
-    prisma.chatMessage.count({ where: { sessionId: session.id, role: "assistant" } })
-      .then(async (assistantCount: number) => {
-        if (assistantCount % 3 !== 0) return;
-        const updatedSummary = await summarizeAiMemory({
-          existingSummary: memory?.summary,
-          userMessage: message,
-          assistantAnswer: answer,
-          country: detectedCountry,
-          language: detectedLanguage
-        });
-        await prisma.userAiMemory.upsert({
-          where: { userId_country_language: { userId: user.id, country: detectedCountry, language: detectedLanguage } },
-          create: { userId: user.id, country: detectedCountry, language: detectedLanguage, summary: updatedSummary },
-          update: { summary: updatedSummary }
-        });
-      })
-      .catch(() => undefined);
+    // Memory summarization runs after the response is sent. On Vercel the
+    // instance can freeze once the response returns, so we hand these promises
+    // to waitUntil (via runAfterResponse) to make sure they actually finish.
+    runAfterResponse(
+      prisma.chatMessage.count({ where: { sessionId: session.id, role: "assistant" } })
+        .then(async (assistantCount: number) => {
+          if (assistantCount % 3 !== 0) return;
+          const updatedSummary = await summarizeAiMemory({
+            existingSummary: memory?.summary,
+            userMessage: message,
+            assistantAnswer: answer,
+            country: detectedCountry,
+            language: detectedLanguage
+          });
+          await prisma.userAiMemory.upsert({
+            where: { userId_country_language: { userId: user.id, country: detectedCountry, language: detectedLanguage } },
+            create: { userId: user.id, country: detectedCountry, language: detectedLanguage, summary: updatedSummary },
+            update: { summary: updatedSummary }
+          });
+        })
+    );
 
-    prisma.aiGlobalMemory.findUnique({ where: { key: "global" } })
-      .then(async (existing: { summary: string | null } | null) => {
-        const updatedGlobal = await summarizeAiGlobalMemory({ existingSummary: existing?.summary, userMessage: message, assistantAnswer: answer });
-        await prisma.aiGlobalMemory.upsert({
-          where: { key: "global" },
-          create: { key: "global", summary: updatedGlobal },
-          update: { summary: updatedGlobal }
-        });
-      })
-      .catch(() => undefined);
+    runAfterResponse(
+      prisma.aiGlobalMemory.findUnique({ where: { key: "global" } })
+        .then(async (existing: { summary: string | null } | null) => {
+          const updatedGlobal = await summarizeAiGlobalMemory({ existingSummary: existing?.summary, userMessage: message, assistantAnswer: answer });
+          await prisma.aiGlobalMemory.upsert({
+            where: { key: "global" },
+            create: { key: "global", summary: updatedGlobal },
+            update: { summary: updatedGlobal }
+          });
+        })
+    );
 
     return NextResponse.json({ answer, sessionId: session.id, inferred: { country: countryIsExplicit ? detectedCountry : null, language: detectedLanguage } });
   } catch (err) {

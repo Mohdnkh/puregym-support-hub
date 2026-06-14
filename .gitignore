@@ -16,3 +16,7 @@ Thumbs.db
 .idea/
 *.sqlite
 *.sqlite3
+
+# build artifacts
+tsconfig.tsbuildinfo
+next-env.d.ts

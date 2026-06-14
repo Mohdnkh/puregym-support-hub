@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { hashToken } from "@/lib/crypto";
 import { sendPasswordResetCode } from "@/lib/mail";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   email: z.string().email(),
@@ -13,6 +14,15 @@ function generateCode() {
 }
 
 export async function POST(req: Request) {
+  // Limit reset-code emails: 5 per IP per 10 minutes.
+  const limit = rateLimit(`reset:${getClientIp(req)}`, 5, 10 * 60_000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many reset requests. Please wait a few minutes and try again." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+    );
+  }
+
   try {
     const { email } = schema.parse(await req.json());
     const normalizedEmail = email.toLowerCase().trim();

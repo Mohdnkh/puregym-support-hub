@@ -4,6 +4,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { hashToken } from "@/lib/crypto";
 import { sendVerificationCode } from "@/lib/mail";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   email: z.string().email(),
@@ -17,6 +18,15 @@ function makeCode() {
 }
 
 export async function POST(req: Request) {
+  // Limit signups + verification emails: 5 per IP per 10 minutes.
+  const limit = rateLimit(`signup:${getClientIp(req)}`, 5, 10 * 60_000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many sign-up attempts. Please wait a few minutes and try again." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+    );
+  }
+
   try {
     const body = schema.parse(await req.json());
     const email = body.email.toLowerCase();

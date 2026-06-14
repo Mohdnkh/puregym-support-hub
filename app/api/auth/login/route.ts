@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { SESSION_COOKIE_NAME, sessionCookieOptions, signSession } from "@/lib/auth";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   email: z.string().email(),
@@ -11,6 +12,15 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  // Slow down brute-force: 10 login attempts per IP per minute.
+  const limit = rateLimit(`login:${getClientIp(req)}`, 10, 60_000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many login attempts. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+    );
+  }
+
   try {
     const body = schema.parse(await req.json());
     const user = await prisma.user.findUnique({ where: { email: body.email.toLowerCase() } });
