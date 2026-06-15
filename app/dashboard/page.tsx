@@ -649,7 +649,7 @@ export default function DashboardPage() {
         </div>
       </aside>
 
-      <main className="main">
+      <main className="main" dir={language === "AR" ? "rtl" : "ltr"}>
         <div className="topbar">
           <div>
             <h1>{title}</h1>
