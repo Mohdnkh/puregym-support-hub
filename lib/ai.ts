@@ -233,9 +233,10 @@ export async function getKnowledgeBaseText(country?: AiCountry | null, language?
     });
   } catch {
     scripts = seedScripts.filter((script) => {
+      const activeOk = script.active !== false;
       const countryOk = !country || script.country === country || script.country === "ALL";
       const langOk = !language || script.language === language;
-      return countryOk && langOk;
+      return activeOk && countryOk && langOk;
     });
   }
 

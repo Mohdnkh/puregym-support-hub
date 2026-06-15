@@ -11,111 +11,189 @@ export type SeedScript = {
   body: string;
   source?: string;
   sortOrder?: number;
+  active?: boolean;
 };
 
 // Synced from the current Neon/Admin script library.
 // IMPORTANT: prisma/seed.ts only applies this list when SYNC_SEED_SCRIPTS=true,
 // so production/Admin edits are not overwritten by accident.
+// Regenerate with: npm run db:export
 export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-password-d6574659",
     "title": "Password",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "ALL",
     "language": "EN",
     "body": "Would you allow me to reset your account password?\n\nYour password has been reset successfully.\nYou can now log in using the following details:\nEmail:\nPassword:",
     "source": "admin",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "logout-login-ksa-ar",
     "title": "تسجيل خروج ودخول",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "ALL",
     "language": "AR",
     "body": "  نرجو منك فقط تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى، وسوف يتم تحديث البيانات تلقائيًا",
     "source": "clean-v2",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "admin-app-login-password-كلمة-السر-10229385",
     "title": "كلمة السر ",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "ALL",
     "language": "AR",
     "body": "هل تسمح لي بإعادة تعيين كلمة المرور الخاصة بحسابك؟\n\nتم إعادة تعيين كلمة المرور الخاصة بك بنجاح.\nيمكنك الآن تسجيل الدخول باستخدام المعلومات التالية:\nالبريد الإلكتروني:\nكلمة المرور:",
     "source": "admin",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "logout-login-ksa-en",
     "title": "Logout and login",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "ALL",
     "language": "EN",
     "body": "we only ask you to log out of the application and then log in again, and the information will be updated automatically.",
     "source": "clean-v2",
-    "sortOrder": 20
+    "sortOrder": 20,
+    "active": true
   },
   {
     "key": "logout-login-uae-ar",
     "title": "تسجيل خروج ودخول",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "UAE",
     "language": "AR",
     "body": "💙 يرجى تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى بنفس بيانات الحساب. هذا الإجراء لا يؤثر على عضويتك.",
     "source": "clean-v2",
-    "sortOrder": 30
+    "sortOrder": 30,
+    "active": false
   },
   {
     "key": "logout-login-uae-en",
     "title": "Logout and login",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "UAE",
     "language": "EN",
     "body": "💙 Please log out of the app and log back in using the same account details. This will not affect your membership.",
     "source": "clean-v2",
-    "sortOrder": 40
+    "sortOrder": 40,
+    "active": false
   },
   {
     "key": "password-reset-ksa-ar",
     "title": "إعادة تعيين كلمة السر",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "KSA",
     "language": "AR",
     "body": "💚 هل تسمح لي بإعادة تعيين كلمة السر لحسابك؟",
     "source": "clean-v2",
-    "sortOrder": 1470
+    "sortOrder": 1470,
+    "active": false
   },
   {
     "key": "password-reset-ksa-en",
     "title": "Password reset permission",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "KSA",
     "language": "EN",
     "body": "💚 Do I have your permission to reset the password for your account?",
     "source": "clean-v2",
-    "sortOrder": 1480
+    "sortOrder": 1480,
+    "active": false
+  },
+  {
+    "key": "admin-app-login-password-التطبيق-الجديد-ec12711c",
+    "title": "التطبيق الجديد ",
+    "category": "App / Login / Password / Registration Issue",
+    "country": "KSA",
+    "language": "AR",
+    "body": "يسعدنا تعريفك بالتطبيق الجديد لبيور جيم، المصمم ليمنحك تجربة أسرع وأسهل لإدارة عضويتك وجميع خدماتك في مكان واحد. من خلال التطبيق يمكنك الوصول إلى رمز الـ QR للدخول للنادي، حجز الكلاسات وإدارة الحجوزات، متابعة تفاصيل عضويتك ودفعاتك القادمة، الاطلاع على سجل زياراتك، الاستفادة من خيارات التدريب الشخصي، ودعوة أصدقائك بكل سهولة.💚\n\nكما يتيح لك التطبيق استقبال الإشعارات والتنبيهات المهمة المتعلقة بعضويتك وحجوزاتك، مع دعم اللغتين العربية والإنجليزية. وقد تم تطويره ليقدم أداءً أفضل وتجربة أكثر أمانًا وسلاسة مع نقل جميع بياناتك وتفاصيل حسابك تلقائيًا. بعد اكتمال الانتقال للتطبيق الجديد، سيكون استخدامه ضروريًا للوصول إلى رمز الـ QR والاستفادة من خدمات الدخول للنادي. 🙏",
+    "source": "admin",
+    "sortOrder": 1480,
+    "active": true
+  },
+  {
+    "key": "admin-app-login-password-new-app-15cbc577",
+    "title": "New app",
+    "category": "App / Login / Password / Registration Issue",
+    "country": "KSA",
+    "language": "EN",
+    "body": "We’re excited to introduce the new PureGym app, designed to give you a faster, smoother, and more convenient experience. The app allows you to access your gym entry QR code, book and manage classes, view membership details, check payment information, track your gym visits, explore personal training options, and refer friends—all in one place.💚\n\nThe new app also provides important notifications and updates related to your membership and bookings, supports both English and Arabic, and offers improved security and performance. All your account information will transfer automatically, and once the transition is complete, the new app will be required to access your QR code and gym entry features. 🙏",
+    "source": "admin",
+    "sortOrder": 1490,
+    "active": true
   },
   {
     "key": "password-reset-uae-ar",
     "title": "إعادة تعيين كلمة السر",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "UAE",
     "language": "AR",
     "body": "💙 هل تسمح لي بإعادة تعيين كلمة السر لحسابك؟",
     "source": "clean-v2",
-    "sortOrder": 1490
+    "sortOrder": 1490,
+    "active": false
+  },
+  {
+    "key": "admin-app-login-password-مشكلة-اثناء-التسجيل-d4633f37",
+    "title": "مشكلة اثناء التسجيل ",
+    "category": "App / Login / Password / Registration Issue",
+    "country": "KSA",
+    "language": "AR",
+    "body": "عزيزي، نعتذر عن الإزعاج الذي تواجهه أثناء التسجيل.\n\nفي حال ظهور رسالة خطأ عند التسجيل باستخدام رقم الهوية، نرجو منك اختيار \"جواز السفر\" كنوع الهوية وإدخال رقم الهوية الوطنية في خانة رقم الجواز. أما بالنسبة للدولة، يرجى اختيار السعودية، وفي حال لم تكن متاحة يمكنك اختيار أي دولة أخرى لإتمام عملية التسجيل.",
+    "source": "admin",
+    "sortOrder": 1490,
+    "active": true
   },
   {
     "key": "password-reset-uae-en",
     "title": "Password reset permission",
-    "category": "App / Login / Password",
+    "category": "App / Login / Password / Registration Issue",
     "country": "UAE",
     "language": "EN",
     "body": "💙 Do I have your permission to reset the password for your account?",
     "source": "clean-v2",
-    "sortOrder": 1500
+    "sortOrder": 1500,
+    "active": false
+  },
+  {
+    "key": "admin-app-login-password-registration-issue-7ce57bae",
+    "title": "Registration Issue",
+    "category": "App / Login / Password / Registration Issue",
+    "country": "KSA",
+    "language": "EN",
+    "body": "Dear,\n\nWe apologize for the inconvenience you are experiencing during the registration process.\n\nIf you receive an error message when registering using your National ID, please select \"Passport\" as the ID type and enter your National ID number in the passport number field. For the country selection, please choose Saudi Arabia. If it is not available, you may select any other country to complete the registration process.",
+    "source": "admin",
+    "sortOrder": 1500,
+    "active": true
+  },
+  {
+    "key": "admin-app-login-password-التطبيق-الجديد-5b5c8ee5",
+    "title": "التطبيق الجديد",
+    "category": "App / Login / Password / Registration Issue",
+    "country": "UAE",
+    "language": "AR",
+    "body": "يسعدنا تقديم التطبيق الجديد لبيور جيم، والذي تم تطويره ليجمع جميع خدمات العضوية في مكان واحد بطريقة أسهل وأسرع. من خلال التطبيق تقدر تعرض رمز الـ QR للدخول للنادي، تحجز الكلاسات وتدير حجوزاتك، تتابع عضويتك ومدفوعاتك، تشوف سجل زياراتك، تستفيد من خدمات التدريب الشخصي، وترسل دعوات لأصدقائك بكل سهولة.💙\n\nالتطبيق يوفر تجربة أكثر سرعة وأمانًا، مع إشعارات مهمة تخص العضوية والحجوزات، ودعم للغتين العربية والإنجليزية. كما سيتم نقل جميع بياناتك تلقائيًا إلى التطبيق الجديد، والذي سيصبح الوسيلة الأساسية للوصول إلى رمز الدخول والاستفادة من خدمات النادي مستقبلاً. 🙏",
+    "source": "admin",
+    "sortOrder": 1500,
+    "active": true
+  },
+  {
+    "key": "admin-app-login-password-new-app-b7f67fb7",
+    "title": "New app",
+    "category": "App / Login / Password / Registration Issue",
+    "country": "UAE",
+    "language": "EN",
+    "body": "We’re pleased to introduce the new PureGym app, built to make managing your membership easier than ever. Through the app, you can access your QR code for gym entry, book and manage classes, review membership and payment details, track your visits, explore personal training services, and invite friends directly from your account.💙\n\nThe app delivers a more secure, reliable, and user-friendly experience, with support for both English and Arabic and automatic transfer of your account information. Following the transition, the new app will be the primary way to access your QR code and gym entry services. 🙏",
+    "source": "admin",
+    "sortOrder": 1510,
+    "active": true
   },
   {
     "key": "working-hours-ksa-ar",
@@ -125,7 +203,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 أفرع الرجال تفتح على مدار الساعة طوال أيام الأسبوع، يعني تقدر تزورنا بأي وقت يناسبك.\n\nأما أفرع النساء فتعمل بالأوقات التالية:\nيوم الجمعة: من 6:30 صباحًا إلى 10:30 مساءً\nباقي الأيام: من 6:30 صباحًا إلى منتصف الليل.",
     "source": "clean-v2",
-    "sortOrder": 1790
+    "sortOrder": 1790,
+    "active": true
   },
   {
     "key": "working-hours-ksa-en",
@@ -135,7 +214,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Men’s branches are open 24/7, so you can visit anytime that suits you.\n\nWomen’s branches operate on the following schedule:\nFriday: 6:30 AM to 10:30 PM\nAll other days: 6:30 AM to 12:00 AM midnight.",
     "source": "clean-v2",
-    "sortOrder": 1800
+    "sortOrder": 1800,
+    "active": true
   },
   {
     "key": "working-hours-uae-ar",
@@ -143,9 +223,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Branches & Hours",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 أفرع الرجال تفتح على مدار الساعة طوال أيام الأسبوع، ويمكنك زيارة النادي في أي وقت يناسبك.\n\nأما أفرع النساء فتعمل حسب أوقات الفرع المحددة. يُفضّل التأكد من صفحة الفرع أو التطبيق قبل الزيارة للتأكد من أحدث مواعيد العمل.",
+    "body": "💙 جميع فروعنا تعمل على مدار الساعة طوال أيام الأسبوع (24/7)، ويمكنك زيارة النادي في أي وقت يناسبك. 🙏",
     "source": "clean-v2",
-    "sortOrder": 1810
+    "sortOrder": 1810,
+    "active": true
   },
   {
     "key": "working-hours-uae-en",
@@ -153,9 +234,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Branches & Hours",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 Men’s branches are open 24/7, so you can visit anytime that suits you.\n\nWomen’s branch opening hours follow each gym’s schedule. We recommend checking the branch page or the app before visiting for the latest operating hours.",
+    "body": "💙 All our branches operate 24 hours a day, 7 days a week, allowing you to visit the gym at any time that suits you. 🙏",
     "source": "clean-v2",
-    "sortOrder": 1820
+    "sortOrder": 1820,
+    "active": true
   },
   {
     "key": "eid-al-adha-hours-ksa-ar",
@@ -165,7 +247,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 أفرع الرجال تعمل 24 ساعة طيلة أيام الأسبوع.\n\nأما مواعيد العمل في أفرع السيدات خلال إجازة عيد الأضحى فهي:\n\n🕒 يوم عرفة: مواعيد العمل الطبيعية مع الإغلاق الساعة 10:00 مساءً\n🕒 أول وثاني أيام عيد الأضحى: من 10:00 صباحًا إلى 10:00 مساءً\n🕒 ثالث يوم عيد الأضحى: العمل حسب المواعيد الطبيعية للنادي\n\nعيد مبارك، وإذا كنت بحاجة لأي مساعدة إضافية، نحن جاهزون.",
     "source": "v3-update",
-    "sortOrder": 1930
+    "sortOrder": 1930,
+    "active": true
   },
   {
     "key": "eid-al-adha-hours-ksa-en",
@@ -175,7 +258,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Men’s branches operate 24 hours a day, 7 days a week.\n\nFor the women’s gym operating hours during Eid Al Adha holidays:\n\n🕒 Arafah Day: Normal operating hours, closing at 10:00 PM\n🕒 First and Second Day of Eid Al Adha: From 10:00 AM to 10:00 PM\n🕒 Third Day of Eid Al Adha: Back to normal operating hours\n\nEid Mubarak! If you need any further assistance, we’re happy to help.",
     "source": "v3-update",
-    "sortOrder": 1940
+    "sortOrder": 1940,
+    "active": true
   },
   {
     "key": "eid-al-fitr-hours-ksa-ar",
@@ -185,7 +269,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 أفرع الرجال تعمل 24 ساعة طيلة أيام الأسبوع.\n\nمواعيد العمل في أفرع السيدات خلال إجازة عيد الفطر:\n\n🕒 ليلة الوقفة: إغلاق الساعة 12:00 منتصف الليل\n🕒 أول وثاني أيام عيد الفطر: من 10:00 صباحًا إلى 10:00 مساءً\n🕒 ثالث يوم عيد الفطر: العمل حسب المواعيد الطبيعية للنادي\n\nوإذا كنت بحاجة لأي مساعدة إضافية، نحن جاهزون.",
     "source": "v3-update",
-    "sortOrder": 1950
+    "sortOrder": 1950,
+    "active": true
   },
   {
     "key": "eid-al-fitr-hours-ksa-en",
@@ -195,7 +280,30 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Men’s branches operate 24 hours a day throughout the week.\n\nThe women’s section working hours during the Eid Al Fitr holiday are as follows:\n\n🕒 Eid Eve: Closing at 12:00 AM midnight\n🕒 First and Second Day of Eid: From 10:00 AM to 10:00 PM\n🕒 Third Day of Eid: Back to the club’s regular working hours\n\nIf you need any further assistance, we’re happy to help.",
     "source": "v3-update",
-    "sortOrder": 1960
+    "sortOrder": 1960,
+    "active": true
+  },
+  {
+    "key": "admin-cancellation-retention-membership-suspended-following-failed-auto-0c0c829a",
+    "title": "Membership Suspended Following Failed Auto-Renewal",
+    "category": "Cancellation & Retention",
+    "country": "ALL",
+    "language": "EN",
+    "body": "We would like to inform you that an automatic renewal attempt was made on 00/00/0000, but it was unsuccessful. As a result, your membership has been suspended for 10 days.\n\nAfter this period, another automatic payment attempt will be made. If it fails again, the membership will be cancelled automatically.\n\nYou can log in to your account through the website and complete the payment manually using any card without waiting for the next attempt, so you can regain access to the gym.\n",
+    "source": "admin",
+    "sortOrder": 10,
+    "active": true
+  },
+  {
+    "key": "admin-cancellation-retention-العضوية-معلقة-بسبب-فشل-التجديد-التلقائي-8ab3be5f",
+    "title": "العضوية معلقة بسبب فشل التجديد التلقائي ",
+    "category": "Cancellation & Retention",
+    "country": "ALL",
+    "language": "AR",
+    "body": "نود التوضيح أنه كانت هناك محاولة تجديد تلقائي بتاريخ 00/00/0000 ولم تنجح، لذلك تم تعليق عضويتك لمدة 10 أيام.\n\nبعد انتهاء فترة التعليق، سيتم إجراء محاولة تجديد تلقائي أخرى، وفي حال فشلت سيتم إلغاء العضوية تلقائيًا.\n\nبإمكانك الدخول إلى الموقع وتسجيل الدخول إلى حسابك وسداد المبلغ يدويًا باستخدام أي بطاقة دون الحاجة لانتظار المحاولة القادمة، وذلك لتمكينك من دخول النادي.\n",
+    "source": "admin",
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "cancel-reason-ksa-ar",
@@ -205,7 +313,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 قبل إتمام الطلب، ممكن توضح لنا سبب رغبتك في إلغاء العضوية؟ ملاحظتك تهمنا وتساعدنا نحسّن تجربتك معنا.",
     "source": "clean-v2",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "cancel-reason-ksa-en",
@@ -215,7 +324,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Before proceeding, could you please share the reason for cancelling your membership? Your feedback is important and helps us improve your experience.",
     "source": "clean-v2",
-    "sortOrder": 20
+    "sortOrder": 20,
+    "active": true
   },
   {
     "key": "cancel-reason-uae-ar",
@@ -225,7 +335,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 قبل إتمام الطلب، ممكن توضح لنا سبب رغبتك في إلغاء العضوية؟ ملاحظتك تهمنا وتساعدنا نحسّن تجربتك معنا.",
     "source": "clean-v2",
-    "sortOrder": 30
+    "sortOrder": 30,
+    "active": true
   },
   {
     "key": "cancel-reason-uae-en",
@@ -235,7 +346,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Before proceeding, could you please share the reason for cancelling your membership? Your feedback is important and helps us improve your experience.",
     "source": "clean-v2",
-    "sortOrder": 40
+    "sortOrder": 40,
+    "active": true
   },
   {
     "key": "cancel-done-ksa-ar",
@@ -243,9 +355,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Cancellation & Retention",
     "country": "KSA",
     "language": "AR",
-    "body": "💚 تم إيقاف التجديد التلقائي لعضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nستبقى عضويتك فعالة حتى 00-00-2020، ولن يتم خصم أي مبلغ بعد ذلك.\n\nيمكنك متابعة حالة عضويتك عبر التطبيق وستظهر كغير فعالة بعد تاريخ الانتهاء.",
+    "body": "💚 تم إيقاف التجديد التلقائي لعضويتك  بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nستبقى عضويتك فعالة حتى 00-00-0000، ولن يتم خصم أي مبلغ بعد ذلك.\n\nيمكنك متابعة حالة عضويتك عبر التطبيق وستظهر كغير فعالة بعد تاريخ الانتهاء.",
     "source": "clean-v2",
-    "sortOrder": 50
+    "sortOrder": 50,
+    "active": true
   },
   {
     "key": "cancel-done-ksa-en",
@@ -253,9 +366,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Cancellation & Retention",
     "country": "KSA",
     "language": "EN",
-    "body": "💚 The auto-renewal for your [Membership Type] membership has been successfully stopped.\n\nAccount details:\n• Email: \n• Mobile number: \n\nYour membership will remain active until 00-00-2020, and no further charges will be applied after that.\n\nYou can track your membership through the app, and it will show as inactive after the end date.",
+    "body": "💚 The auto-renewal for your membership has been successfully stopped.\n\nAccount details:\n• Email: \n• Mobile number: \n\nYour membership will remain active until 00-00-0000, and no further charges will be applied after that.\n\nYou can track your membership through the app, and it will show as inactive after the end date.",
     "source": "clean-v2",
-    "sortOrder": 60
+    "sortOrder": 60,
+    "active": true
   },
   {
     "key": "cancel-done-uae-ar",
@@ -263,9 +377,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Cancellation & Retention",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 تم إيقاف التجديد التلقائي لعضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nستبقى عضويتك فعالة حتى 00-00-2020، ولن يتم خصم أي مبلغ بعد ذلك.\n\nيمكنك متابعة حالة عضويتك عبر التطبيق وستظهر كغير فعالة بعد تاريخ الانتهاء.",
+    "body": "💙 تم إيقاف التجديد التلقائي لعضويتك بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nستبقى عضويتك فعالة حتى 00-00-0000، ولن يتم خصم أي مبلغ بعد ذلك.\n\nيمكنك متابعة حالة عضويتك عبر التطبيق وستظهر كغير فعالة بعد تاريخ الانتهاء.",
     "source": "clean-v2",
-    "sortOrder": 70
+    "sortOrder": 70,
+    "active": true
   },
   {
     "key": "cancel-done-uae-en",
@@ -273,9 +388,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Cancellation & Retention",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 The auto-renewal for your [Membership Type] membership has been successfully stopped.\n\nAccount details:\n• Email: \n• Mobile number: \n\nYour membership will remain active until 00-00-2020, and no further charges will be applied after that.\n\nYou can track your membership through the app, and it will show as inactive after the end date.",
+    "body": "💙 The auto-renewal for your membership has been successfully stopped.\n\nAccount details:\n• Email: \n• Mobile number: \n\nYour membership will remain active until 00-00-0000, and no further charges will be applied after that.\n\nYou can track your membership through the app, and it will show as inactive after the end date.",
     "source": "clean-v2",
-    "sortOrder": 80
+    "sortOrder": 80,
+    "active": true
   },
   {
     "key": "cancel-too-late-ksa-ar",
@@ -285,7 +401,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 نعتذر، لا يمكن إلغاء العضوية حاليًا لأن الطلب وصل خلال أقل من 48 ساعة قبل موعد التجديد حسب الشروط والأحكام.\n\nسيتم محاولة السحب بتاريخ 00-00-2020 في أواخر ساعات الليل. في حال فشل الدفع سيتم تعليق العضوية مؤقتًا، ثم تتم إعادة المحاولة بعد 10 أيام. وإذا فشلت المحاولة الثانية، سيتم إلغاء العضوية تلقائيًا.",
     "source": "clean-v2",
-    "sortOrder": 90
+    "sortOrder": 90,
+    "active": true
   },
   {
     "key": "cancel-too-late-ksa-en",
@@ -295,7 +412,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 We’re sorry, the membership cannot be cancelled at this time because the request was received less than 48 hours before the renewal date, as per the terms and conditions.\n\nA payment attempt will be made on 00-00-2020 late at night. If the payment fails, the membership will be temporarily suspended, then another attempt will be made after 10 days. If the second attempt fails, the membership will be cancelled automatically.",
     "source": "clean-v2",
-    "sortOrder": 100
+    "sortOrder": 100,
+    "active": true
   },
   {
     "key": "cancel-too-late-uae-ar",
@@ -305,7 +423,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 نعتذر، لا يمكن إلغاء العضوية حاليًا لأن الطلب وصل خلال أقل من 48 ساعة قبل موعد التجديد حسب الشروط والأحكام.\n\nسيتم محاولة السحب بتاريخ 00-00-2020 في أواخر ساعات الليل. في حال فشل الدفع سيتم تعليق العضوية مؤقتًا، ثم تتم إعادة المحاولة بعد 10 أيام. وإذا فشلت المحاولة الثانية، سيتم إلغاء العضوية تلقائيًا.",
     "source": "clean-v2",
-    "sortOrder": 110
+    "sortOrder": 110,
+    "active": true
   },
   {
     "key": "cancel-too-late-uae-en",
@@ -315,7 +434,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 We’re sorry, the membership cannot be cancelled at this time because the request was received less than 48 hours before the renewal date, as per the terms and conditions.\n\nA payment attempt will be made on 00-00-2020 late at night. If the payment fails, the membership will be temporarily suspended, then another attempt will be made after 10 days. If the second attempt fails, the membership will be cancelled automatically.",
     "source": "clean-v2",
-    "sortOrder": 120
+    "sortOrder": 120,
+    "active": true
   },
   {
     "key": "payment-failed-suspended-ksa-ar",
@@ -325,7 +445,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 نعتذر، لا يمكن إلغاء العضوية في الوقت الحالي لأن عملية التجديد فشلت والعضوية معلقة.\n\nسيتم إعادة محاولة الدفع بعد 10 أيام من تاريخ الدفعة الفائتة. في حال فشلت المحاولة الثانية سيتم إلغاء العضوية تلقائيًا.",
     "source": "clean-v2",
-    "sortOrder": 130
+    "sortOrder": 130,
+    "active": true
   },
   {
     "key": "payment-failed-suspended-ksa-en",
@@ -335,7 +456,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 We’re sorry, the membership cannot be cancelled at this time because the renewal payment failed and the membership is currently suspended.\n\nA second payment attempt will be made 10 days after the missed payment date. If the second attempt fails, the membership will be cancelled automatically.",
     "source": "clean-v2",
-    "sortOrder": 140
+    "sortOrder": 140,
+    "active": true
   },
   {
     "key": "payment-failed-suspended-uae-ar",
@@ -345,7 +467,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 نعتذر، لا يمكن إلغاء العضوية في الوقت الحالي لأن عملية التجديد فشلت والعضوية معلقة.\n\nسيتم إعادة محاولة الدفع بعد 10 أيام من تاريخ الدفعة الفائتة. في حال فشلت المحاولة الثانية سيتم إلغاء العضوية تلقائيًا.",
     "source": "clean-v2",
-    "sortOrder": 150
+    "sortOrder": 150,
+    "active": true
   },
   {
     "key": "payment-failed-suspended-uae-en",
@@ -355,7 +478,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 We’re sorry, the membership cannot be cancelled at this time because the renewal payment failed and the membership is currently suspended.\n\nA second payment attempt will be made 10 days after the missed payment date. If the second attempt fails, the membership will be cancelled automatically.",
     "source": "clean-v2",
-    "sortOrder": 160
+    "sortOrder": 160,
+    "active": true
   },
   {
     "key": "ret-freeze-ksa-ar",
@@ -365,7 +489,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 قبل إتمام الإلغاء، نقدر نعرض عليك تجميد العضوية مجانًا لمدة شهر بدل الإلغاء، حتى ترجع للتمرين بدون رسوم تسجيل جديدة. هل يناسبك هذا الخيار؟",
     "source": "clean-v2",
-    "sortOrder": 170
+    "sortOrder": 170,
+    "active": true
   },
   {
     "key": "ret-freeze-ksa-en",
@@ -375,7 +500,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Before proceeding with cancellation, we can offer to freeze your membership for one month for free instead, so you can return without paying a new joining fee. Would this option work for you?",
     "source": "clean-v2",
-    "sortOrder": 180
+    "sortOrder": 180,
+    "active": true
   },
   {
     "key": "ret-freeze-uae-ar",
@@ -385,7 +511,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 قبل إتمام الإلغاء، نقدر نعرض عليك تجميد العضوية مجانًا لمدة شهر بدل الإلغاء، حتى ترجع للتمرين بدون رسوم تسجيل جديدة. هل يناسبك هذا الخيار؟",
     "source": "clean-v2",
-    "sortOrder": 190
+    "sortOrder": 190,
+    "active": true
   },
   {
     "key": "ret-freeze-uae-en",
@@ -395,7 +522,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Before proceeding with cancellation, we can offer to freeze your membership for one month for free instead, so you can return without paying a new joining fee. Would this option work for you?",
     "source": "clean-v2",
-    "sortOrder": 200
+    "sortOrder": 200,
+    "active": true
   },
   {
     "key": "ret-transfer-ksa-ar",
@@ -405,7 +533,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 إذا سبب الإلغاء هو تغيير مكان السكن أو صعوبة الوصول للفرع الحالي، نقدر نتحقق من إمكانية نقل العضوية إلى فرع أنسب لك بدل الإلغاء.",
     "source": "clean-v2",
-    "sortOrder": 210
+    "sortOrder": 210,
+    "active": true
   },
   {
     "key": "ret-transfer-ksa-en",
@@ -415,7 +544,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 If the reason for cancellation is a change of location or difficulty reaching your current gym, we can check whether transferring your membership to a more suitable branch is possible instead of cancelling.",
     "source": "clean-v2",
-    "sortOrder": 220
+    "sortOrder": 220,
+    "active": true
   },
   {
     "key": "ret-transfer-uae-ar",
@@ -425,7 +555,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 إذا سبب الإلغاء هو تغيير مكان السكن أو صعوبة الوصول للفرع الحالي، نقدر نتحقق من إمكانية نقل العضوية إلى فرع أنسب لك بدل الإلغاء.",
     "source": "clean-v2",
-    "sortOrder": 230
+    "sortOrder": 230,
+    "active": true
   },
   {
     "key": "ret-transfer-uae-en",
@@ -435,7 +566,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 If the reason for cancellation is a change of location or difficulty reaching your current gym, we can check whether transferring your membership to a more suitable branch is possible instead of cancelling.",
     "source": "clean-v2",
-    "sortOrder": 240
+    "sortOrder": 240,
+    "active": true
   },
   {
     "key": "ret-plus-ksa-ar",
@@ -445,7 +577,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 إذا تحتاج مرونة أكثر، ممكن تكون عضوية Plus خيار أفضل بدل الإلغاء، لأنها تمنحك مزايا أكثر مثل دخول فروع إضافية وBring a Friend حسب نوع العضوية.",
     "source": "clean-v2",
-    "sortOrder": 250
+    "sortOrder": 250,
+    "active": true
   },
   {
     "key": "ret-plus-ksa-en",
@@ -455,7 +588,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 If you need more flexibility, upgrading to Plus may be a better option than cancelling, as it gives you additional benefits such as access to more branches and Bring a Friend, depending on your membership type.",
     "source": "clean-v2",
-    "sortOrder": 260
+    "sortOrder": 260,
+    "active": true
   },
   {
     "key": "ret-plus-uae-ar",
@@ -465,7 +599,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 إذا تحتاج مرونة أكثر، ممكن تكون عضوية Plus خيار أفضل بدل الإلغاء، لأنها تمنحك مزايا أكثر مثل دخول فروع إضافية وBring a Friend حسب نوع العضوية.",
     "source": "clean-v2",
-    "sortOrder": 270
+    "sortOrder": 270,
+    "active": true
   },
   {
     "key": "ret-plus-uae-en",
@@ -475,7 +610,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 If you need more flexibility, upgrading to Plus may be a better option than cancelling, as it gives you additional benefits such as access to more branches and Bring a Friend, depending on your membership type.",
     "source": "clean-v2",
-    "sortOrder": 280
+    "sortOrder": 280,
+    "active": true
   },
   {
     "key": "ret-pt-ksa-ar",
@@ -485,7 +621,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 قبل الإلغاء، نقدر نرفع طلب للاستفادة من جلسة تدريب شخصي مجانية حسب المتاح لتحسين تجربتك داخل النادي.",
     "source": "clean-v2",
-    "sortOrder": 290
+    "sortOrder": 290,
+    "active": true
   },
   {
     "key": "ret-pt-ksa-en",
@@ -495,7 +632,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Before cancelling, we can raise a request for a free personal training session, subject to availability, to help improve your experience at the gym.",
     "source": "clean-v2",
-    "sortOrder": 300
+    "sortOrder": 300,
+    "active": true
   },
   {
     "key": "ret-pt-uae-ar",
@@ -505,7 +643,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 قبل الإلغاء، نقدر نرفع طلب للاستفادة من جلسة تدريب شخصي مجانية حسب المتاح لتحسين تجربتك داخل النادي.",
     "source": "clean-v2",
-    "sortOrder": 310
+    "sortOrder": 310,
+    "active": true
   },
   {
     "key": "ret-pt-uae-en",
@@ -515,7 +654,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Before cancelling, we can raise a request for a free personal training session, subject to availability, to help improve your experience at the gym.",
     "source": "clean-v2",
-    "sortOrder": 320
+    "sortOrder": 320,
+    "active": true
   },
   {
     "key": "ret-family-ksa-ar",
@@ -525,7 +665,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 إذا سبب الإلغاء هو السفر أو عدم القدرة على استخدام العضوية، نقدر نتحقق من إمكانية نقلها لأحد أفراد العائلة حسب الشروط بدل الإلغاء.",
     "source": "clean-v2",
-    "sortOrder": 330
+    "sortOrder": 330,
+    "active": true
   },
   {
     "key": "ret-family-ksa-en",
@@ -535,7 +676,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 If the cancellation reason is travel or inability to use the membership, we can check whether it can be transferred to a family member, subject to the terms, instead of cancelling.",
     "source": "clean-v2",
-    "sortOrder": 340
+    "sortOrder": 340,
+    "active": true
   },
   {
     "key": "ret-family-uae-ar",
@@ -545,7 +687,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 إذا سبب الإلغاء هو السفر أو عدم القدرة على استخدام العضوية، نقدر نتحقق من إمكانية نقلها لأحد أفراد العائلة حسب الشروط بدل الإلغاء.",
     "source": "clean-v2",
-    "sortOrder": 350
+    "sortOrder": 350,
+    "active": true
   },
   {
     "key": "ret-family-uae-en",
@@ -555,7 +698,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 If the cancellation reason is travel or inability to use the membership, we can check whether it can be transferred to a family member, subject to the terms, instead of cancelling.",
     "source": "clean-v2",
-    "sortOrder": 360
+    "sortOrder": 360,
+    "active": true
   },
   {
     "key": "chargeback-block-ksa-ar",
@@ -565,7 +709,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 نود إعلامك بأنه تم إلغاء عضويتك وحظرها اعتبارًا من 00-00-2020 بسبب الإبلاغ عن عملية سحب قمنا بمعالجتها، وقد تم رد المبلغ من قبل البنك.\n\nنود التنويه إلى أن عمليات السحب تتم باسم شركة اكتمال الرياضية. إذا كنت ترغب بإعادة الانضمام، يرجى تأكيد عدم الإبلاغ عن أي عملية سحب مستقبلية والالتزام بدفع المبلغ الذي تم استرجاعه مرة أخرى.\n\nإعادة الانضمام تتطلب دفع رسوم العضوية الجديدة بالإضافة إلى رسوم الانضمام، كما سيتم إصدار فاتورة بالمبلغ الذي تم الإبلاغ عنه لدفعه.\n\nإذا كنت موافقًا على هذه الشروط، يرجى إعلامنا حتى نتمكن من إخطار القسم المختص لرفع الحظر عن عضويتك، وبعدها يمكنك إعادة الانضمام.",
     "source": "clean-v2",
-    "sortOrder": 370
+    "sortOrder": 370,
+    "active": true
   },
   {
     "key": "chargeback-block-ksa-en",
@@ -575,7 +720,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 We would like to inform you that your membership was cancelled and blocked as of 00-00-2020 because a payment processed by us was reported, and the amount was refunded by the bank.\n\nPlease note that payments are processed under Ektimal Sports Company. If you would like to rejoin, please confirm that you will not report any future payments and that you agree to repay the refunded amount.\n\nRejoining will require paying the new membership fee and the joining fee. Once your membership is reactivated, an invoice will also be issued for the reported amount.\n\nIf you agree to these terms, please let us know so we can notify the concerned team to lift the block on your membership, allowing you to rejoin.",
     "source": "clean-v2",
-    "sortOrder": 380
+    "sortOrder": 380,
+    "active": true
   },
   {
     "key": "chargeback-block-uae-ar",
@@ -585,7 +731,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 نود إعلامك بأنه تم إلغاء عضويتك وحظرها اعتبارًا من 00-00-2020 بسبب الإبلاغ عن عملية سحب قمنا بمعالجتها، وقد تم رد المبلغ من قبل البنك.\n\nنود التنويه إلى أن عمليات السحب تتم باسم شركة اكتمال الرياضية. إذا كنت ترغب بإعادة الانضمام، يرجى تأكيد عدم الإبلاغ عن أي عملية سحب مستقبلية والالتزام بدفع المبلغ الذي تم استرجاعه مرة أخرى.\n\nإعادة الانضمام تتطلب دفع رسوم العضوية الجديدة بالإضافة إلى رسوم الانضمام، كما سيتم إصدار فاتورة بالمبلغ الذي تم الإبلاغ عنه لدفعه.\n\nإذا كنت موافقًا على هذه الشروط، يرجى إعلامنا حتى نتمكن من إخطار القسم المختص لرفع الحظر عن عضويتك، وبعدها يمكنك إعادة الانضمام.",
     "source": "clean-v2",
-    "sortOrder": 390
+    "sortOrder": 390,
+    "active": true
   },
   {
     "key": "chargeback-block-uae-en",
@@ -595,7 +742,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 We would like to inform you that your membership was cancelled and blocked as of 00-00-2020 because a payment processed by us was reported, and the amount was refunded by the bank.\n\nPlease note that payments are processed under Ektimal Sports Company. If you would like to rejoin, please confirm that you will not report any future payments and that you agree to repay the refunded amount.\n\nRejoining will require paying the new membership fee and the joining fee. Once your membership is reactivated, an invoice will also be issued for the reported amount.\n\nIf you agree to these terms, please let us know so we can notify the concerned team to lift the block on your membership, allowing you to rejoin.",
     "source": "clean-v2",
-    "sortOrder": 400
+    "sortOrder": 400,
+    "active": true
   },
   {
     "key": "ksa-core-monthly-ar",
@@ -605,7 +753,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية كور الشهرية تشمل 8 أيام تجميد مجانية لكل 30 يوم. إذا احتجت مدة أكثر من 8 أيام، يتم احتساب رسوم 39 ريال لكل 30 يوم إضافي.",
     "source": "freeze-policy",
-    "sortOrder": 810
+    "sortOrder": 810,
+    "active": true
   },
   {
     "key": "ksa-core-monthly-en",
@@ -615,7 +764,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Core monthly membership includes 8 free freeze days every 30 days. If you need more than 8 days, a fee of SAR 39 applies for each additional 30-day period.",
     "source": "freeze-policy",
-    "sortOrder": 820
+    "sortOrder": 820,
+    "active": true
   },
   {
     "key": "ksa-core-3-ar",
@@ -625,7 +775,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية كور 3 شهور تشمل 22 يوم تجميد مجاني خلال مدة العضوية. الحد الأدنى للتجميد 11 يوم، وبعد استخدام التجميد المجاني يتم احتساب 39 ريال لكل 30 يوم إضافي.",
     "source": "freeze-policy",
-    "sortOrder": 830
+    "sortOrder": 830,
+    "active": true
   },
   {
     "key": "ksa-core-3-en",
@@ -635,7 +786,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Core 3-month membership includes 22 free freeze days during the membership period. The minimum freeze period is 11 days. After the free freeze allowance is used, SAR 39 applies for each additional 30-day period.",
     "source": "freeze-policy",
-    "sortOrder": 840
+    "sortOrder": 840,
+    "active": true
   },
   {
     "key": "ksa-core-4-ar",
@@ -645,7 +797,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية كور 4 شهور تشمل 30 يوم تجميد مجاني خلال مدة العضوية. الحد الأدنى للتجميد 15 يوم، وبعد استخدام التجميد المجاني يتم احتساب 39 ريال لكل 30 يوم إضافي.",
     "source": "freeze-policy",
-    "sortOrder": 850
+    "sortOrder": 850,
+    "active": true
   },
   {
     "key": "ksa-core-4-en",
@@ -655,7 +808,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Core 4-month membership includes 30 free freeze days during the membership period. The minimum freeze period is 15 days. After the free freeze allowance is used, SAR 39 applies for each additional 30-day period.",
     "source": "freeze-policy",
-    "sortOrder": 860
+    "sortOrder": 860,
+    "active": true
   },
   {
     "key": "ksa-core-6-ar",
@@ -665,7 +819,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية كور 6 شهور تشمل 45 يوم تجميد مجاني خلال مدة العضوية. الحد الأدنى للتجميد 15 يوم، وبعد استخدام التجميد المجاني يتم احتساب 39 ريال لكل 30 يوم إضافي.",
     "source": "freeze-policy",
-    "sortOrder": 870
+    "sortOrder": 870,
+    "active": true
   },
   {
     "key": "ksa-core-6-en",
@@ -675,7 +830,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Core 6-month membership includes 45 free freeze days during the membership period. The minimum freeze period is 15 days. After the free freeze allowance is used, SAR 39 applies for each additional 30-day period.",
     "source": "freeze-policy",
-    "sortOrder": 880
+    "sortOrder": 880,
+    "active": true
   },
   {
     "key": "ksa-core-12-ar",
@@ -685,7 +841,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية كور 12 شهر تشمل 91 يوم تجميد مجاني بالسنة. الحد الأدنى للتجميد 15 يوم، وبعد استخدام التجميد المجاني يتم احتساب 49 ريال لكل 30 يوم إضافي.",
     "source": "freeze-policy",
-    "sortOrder": 890
+    "sortOrder": 890,
+    "active": true
   },
   {
     "key": "ksa-core-12-en",
@@ -695,7 +852,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Core 12-month membership includes 91 free freeze days per year. The minimum freeze period is 15 days. After the free freeze allowance is used, SAR 49 applies for each additional 30-day period.",
     "source": "freeze-policy",
-    "sortOrder": 900
+    "sortOrder": 900,
+    "active": true
   },
   {
     "key": "ksa-plus-monthly-ar",
@@ -705,7 +863,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية بلس الشهرية تشمل حتى 91 يوم تجميد مجاني يمكن استخدامها على فترات خلال الاشتراك، والحد الأدنى للتجميد 15 يوم. لا توجد رسوم طالما لم يتم تجاوز الحد. عند تجاوز 91 يوم، يتم احتساب 39 ريال لكل 30 يوم إضافي.",
     "source": "freeze-policy",
-    "sortOrder": 910
+    "sortOrder": 910,
+    "active": true
   },
   {
     "key": "ksa-plus-monthly-en",
@@ -715,7 +874,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Plus monthly membership includes up to 91 free freeze days that can be used in periods during the subscription. The minimum freeze period is 15 days. There are no fees as long as the limit is not exceeded. If you exceed 91 days, SAR 39 applies for each additional 30-day period.",
     "source": "freeze-policy",
-    "sortOrder": 920
+    "sortOrder": 920,
+    "active": true
   },
   {
     "key": "ksa-plus-3-ar",
@@ -725,7 +885,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية بلس 3 شهور تشمل 22 يوم تجميد مجاني، ويمكن تقسيمها على مرتين كل مرة 11 يوم. أي تجميد إضافي يتم احتسابه برسوم 39 ريال لكل 30 يوم.",
     "source": "freeze-policy",
-    "sortOrder": 930
+    "sortOrder": 930,
+    "active": true
   },
   {
     "key": "ksa-plus-3-en",
@@ -735,7 +896,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Plus 3-month membership includes 22 free freeze days, which can be split into two periods of 11 days each. Any additional freeze is charged at SAR 39 per 30 days.",
     "source": "freeze-policy",
-    "sortOrder": 940
+    "sortOrder": 940,
+    "active": true
   },
   {
     "key": "ksa-plus-4-ar",
@@ -745,7 +907,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية بلس 4 شهور تشمل 30 يوم تجميد مجاني، ويمكن تقسيمها على مرتين كل مرة 15 يوم. أي تجميد إضافي يتم احتسابه برسوم 39 ريال لكل 30 يوم.",
     "source": "freeze-policy",
-    "sortOrder": 950
+    "sortOrder": 950,
+    "active": true
   },
   {
     "key": "ksa-plus-4-en",
@@ -755,7 +918,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Plus 4-month membership includes 30 free freeze days, which can be split into two periods of 15 days each. Any additional freeze is charged at SAR 39 per 30 days.",
     "source": "freeze-policy",
-    "sortOrder": 960
+    "sortOrder": 960,
+    "active": true
   },
   {
     "key": "ksa-plus-6-ar",
@@ -765,7 +929,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية بلس 6 شهور تشمل 45 يوم تجميد مجاني خلال مدة العضوية. يمكن استخدامها على فترات، والحد الأدنى للتجميد 15 يوم. عند تجاوز 45 يوم، يتم احتساب 39 ريال لكل 30 يوم إضافي.",
     "source": "freeze-policy",
-    "sortOrder": 970
+    "sortOrder": 970,
+    "active": true
   },
   {
     "key": "ksa-plus-6-en",
@@ -775,7 +940,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Plus 6-month membership includes 45 free freeze days during the membership period. They can be used in multiple periods, with a minimum freeze of 15 days. If you exceed 45 days, SAR 39 applies for each additional 30-day period.",
     "source": "freeze-policy",
-    "sortOrder": 980
+    "sortOrder": 980,
+    "active": true
   },
   {
     "key": "ksa-plus-12-ar",
@@ -785,7 +951,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 عضوية بلس 12 شهر تشمل 91 يوم تجميد مجاني خلال السنة. يمكن تقسيمها واستخدامها حسب الحاجة، والحد الأدنى للتجميد 15 يوم. بعد انتهاء المدة المجانية، يتم احتساب 49 ريال لكل 30 يوم إضافي.",
     "source": "freeze-policy",
-    "sortOrder": 990
+    "sortOrder": 990,
+    "active": true
   },
   {
     "key": "ksa-plus-12-en",
@@ -795,7 +962,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Plus 12-month membership includes 91 free freeze days during the year. They can be split and used as needed, with a minimum freeze of 15 days. After the free allowance is used, SAR 49 applies for each additional 30-day period.",
     "source": "freeze-policy",
-    "sortOrder": 1000
+    "sortOrder": 1000,
+    "active": true
   },
   {
     "key": "uae-core-monthly-ar",
@@ -803,9 +971,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 عضوية كور الشهرية في الإمارات لا تشمل تجميد مجاني. يبدأ التجميد من تاريخ الدفع القادم ولكل شهر يتم تجميده حسب سياسة العضوية.",
+    "body": "عضوية كور الشهرية لا تشمل تجميدًا مجانيًا. في حال الرغبة بتجميد العضوية، يتم تطبيق رسوم تجميد بقيمة 39 درهمً لكل 30 يوم تجميد حسب سياسة العضوية.",
     "source": "freeze-policy",
-    "sortOrder": 1010
+    "sortOrder": 1010,
+    "active": true
   },
   {
     "key": "uae-core-monthly-en",
@@ -813,9 +982,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 UAE Core monthly membership does not include free freeze. The freeze starts from the next payment date, and the freeze is applied according to the membership policy.",
+    "body": "The Core Monthly Membership does not include complimentary freeze days. If you wish to freeze your membership, a freeze fee of AED 39 per 30 days of freeze will apply in accordance with the membership policy.",
     "source": "freeze-policy",
-    "sortOrder": 1020
+    "sortOrder": 1020,
+    "active": true
   },
   {
     "key": "uae-core-pif-ar",
@@ -823,9 +993,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 عضويات كور محددة المدة في الإمارات لا تشمل تجميد مجاني خلال 3، 4، 6، أو 12 شهر. يتم قبول التجميد الصحي فقط لمدة أقصاها 3 شهور بشرط أن يكون التقرير الطبي حديثًا.",
+    "body": "عضويات كور محددة المدة لمدة 3 أو 4 أو 6 أو 12 شهرًا لا تشمل تجميدًا مجانيًا.\n\nيتم قبول طلبات التجميد الطبي فقط لمدة أقصاها 3 أشهر، بشرط أن يكون التقرير الطبي حديثًا وصادرًا من جهة معتمدة.",
     "source": "freeze-policy",
-    "sortOrder": 1030
+    "sortOrder": 1030,
+    "active": true
   },
   {
     "key": "uae-core-pif-en",
@@ -833,9 +1004,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 UAE Core fixed-term memberships do not include free freeze for 3, 4, 6, or 12 months. Medical freeze may be accepted for up to 3 months only, provided the medical report is recent.",
+    "body": "Fixed-Term Core Memberships of 3, 4, 6, or 12 months do not include complimentary freeze days.\n\nOnly medical freeze requests are accepted for a maximum period of 3 months, provided that a recent medical report issued by an authorized healthcare provider is submitted.",
     "source": "freeze-policy",
-    "sortOrder": 1040
+    "sortOrder": 1040,
+    "active": true
   },
   {
     "key": "uae-plus-monthly-ar",
@@ -843,9 +1015,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 عضوية بلس الشهرية في الإمارات تشمل تجميد مجاني لمدة 3 شهور. يبدأ التجميد من تاريخ الدفع القادم.",
+    "body": "عضوية بلس الشهرية تشمل 3 أشهر تجميد مجاني يمكن استخدامها وفقًا لسياسة العضوية.\n\nويبدأ التجميد من تاريخ التجديد أو الدفع القادم.",
     "source": "freeze-policy",
-    "sortOrder": 1050
+    "sortOrder": 1050,
+    "active": true
   },
   {
     "key": "uae-plus-monthly-en",
@@ -853,9 +1026,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 UAE Plus monthly membership includes up to 3 months of free freeze. The freeze starts from the next payment date.",
+    "body": "The Plus Monthly Membership includes up to 3 months of complimentary freeze, which can be used in accordance with the membership policy.\n\nThe freeze period starts from your next renewal or payment date.",
     "source": "freeze-policy",
-    "sortOrder": 1060
+    "sortOrder": 1060,
+    "active": true
   },
   {
     "key": "uae-plus-3-ar",
@@ -863,9 +1037,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 عضوية بلس 3 شهور تشمل تجميد مجاني لمدة واحدة بحد أدنى 15 يوم، ولا يمكن تقسيمها أو تمديدها لفترة أكثر ضمن نفس الطلب.",
+    "body": "عضوية بلس لمدة 3 أشهر تشمل فترة تجميد مجانية واحدة بحد أدنى 15 يومًا.\n\nلا يمكن تقسيم فترة التجميد إلى عدة فترات، كما لا يمكن تمديدها لأكثر من المدة المسموح بها ضمن نفس الطلب.",
     "source": "freeze-policy",
-    "sortOrder": 1070
+    "sortOrder": 1070,
+    "active": true
   },
   {
     "key": "uae-plus-3-en",
@@ -873,9 +1048,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 UAE Plus 3-month membership includes one free freeze period with a minimum of 15 days. It cannot be split or extended for more within the same request.",
+    "body": "The 3-Month Plus Membership includes one complimentary freeze period with a minimum duration of 15 days.\n\nThe freeze period cannot be split into multiple periods or extended beyond the allowed duration within the same request.",
     "source": "freeze-policy",
-    "sortOrder": 1080
+    "sortOrder": 1080,
+    "active": true
   },
   {
     "key": "uae-plus-4-ar",
@@ -883,9 +1059,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 عضوية بلس 4 شهور تشمل تجميد مجاني لمدة واحدة بحد أدنى 15 يوم، ولا يمكن تقسيمها أو تمديدها لفترة أكثر ضمن نفس الطلب.",
+    "body": "عضوية بلس لمدة 4 أشهر تشمل فترة تجميد مجانية واحدة بحد أدنى 15 يومًا.\n\nلا يمكن تقسيم فترة التجميد إلى عدة فترات، كما لا يمكن تمديدها لأكثر من المدة المسموح بها ضمن نفس الطلب.",
     "source": "freeze-policy",
-    "sortOrder": 1090
+    "sortOrder": 1090,
+    "active": true
   },
   {
     "key": "uae-plus-4-en",
@@ -893,9 +1070,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 UAE Plus 4-month membership includes one free freeze period with a minimum of 15 days. It cannot be split or extended for more within the same request.",
+    "body": "The 4-Month Plus Membership includes one complimentary freeze period with a minimum duration of 15 days.\n\nThe freeze period cannot be split into multiple periods or extended beyond the allowed duration within the same request.",
     "source": "freeze-policy",
-    "sortOrder": 1100
+    "sortOrder": 1100,
+    "active": true
   },
   {
     "key": "uae-plus-6-ar",
@@ -903,9 +1081,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 عضوية بلس 6 شهور تشمل تجميد مجاني لمدة 45 يوم بحد أدنى 15 يوم.",
+    "body": "عضوية بلس لمدة 6 أشهر تشمل 45 يومًا من التجميد المجاني، مع حد أدنى 15 يومًا لكل فترة تجميد.\n\nيمكن استخدام أيام التجميد على فترات متعددة خلال مدة العضوية، بشرط ألا تقل كل فترة تجميد عن 15 يومًا.",
     "source": "freeze-policy",
-    "sortOrder": 1110
+    "sortOrder": 1110,
+    "active": true
   },
   {
     "key": "uae-plus-6-en",
@@ -913,9 +1092,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 UAE Plus 6-month membership includes 45 free freeze days with a minimum freeze period of 15 days.",
+    "body": "The 6-Month Plus Membership includes 45 days of complimentary freeze, with a minimum freeze period of 15 days per request.\n\nThe freeze days can be used across multiple periods during the membership term, provided that each freeze period is at least 15 days long.",
     "source": "freeze-policy",
-    "sortOrder": 1120
+    "sortOrder": 1120,
+    "active": true
   },
   {
     "key": "uae-plus-12-ar",
@@ -923,9 +1103,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 عضوية بلس 12 شهر تشمل تجميد مجاني لمدة 90 يوم بحد أدنى 15 يوم.",
+    "body": "عضوية بلس لمدة 12 شهرًا تشمل 90 يومًا من التجميد المجاني، مع حد أدنى 15 يومًا لكل فترة تجميد.\n\nيمكن استخدام أيام التجميد على فترات متعددة خلال مدة العضوية، بشرط ألا تقل كل فترة تجميد عن 15 يومًا.",
     "source": "freeze-policy",
-    "sortOrder": 1130
+    "sortOrder": 1130,
+    "active": true
   },
   {
     "key": "uae-plus-12-en",
@@ -933,9 +1114,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 UAE Plus 12-month membership includes 90 free freeze days with a minimum freeze period of 15 days.",
+    "body": "The 12-Month Plus Membership includes 90 days of complimentary freeze, with a minimum freeze period of 15 days per request.\n\nThe freeze days can be used across multiple periods during the membership term, provided that each freeze period is at least 15 days long.",
     "source": "freeze-policy",
-    "sortOrder": 1140
+    "sortOrder": 1140,
+    "active": true
   },
   {
     "key": "freeze-complete-monthly-ksa-ar",
@@ -943,9 +1125,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "KSA",
     "language": "AR",
-    "body": "💚 تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020، وموعد فاتورتك القادمة 00-00-2020 بقيمة [قيمة الدفعة القادمة].\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    "body": "💚 تم تجميد عضويتك  بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\n [  ] من 00-00-0000 إلى 00-00-0000 ، وموعد فاتورتك القادمة 00-00-0000 بقيمة [  ].\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
     "source": "clean-v2",
-    "sortOrder": 1150
+    "sortOrder": 1150,
+    "active": true
   },
   {
     "key": "freeze-complete-monthly-ksa-en",
@@ -953,9 +1136,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "KSA",
     "language": "EN",
-    "body": "💚 Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020. Your next billing date will be on 00-00-2020 with an amount of [Next Payment Amount].\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    "body": "💚 Your  membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-0000 to 00-00-0000. Your next billing date will be on 00-00-0000 with an amount of [ ].\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
     "source": "clean-v2",
-    "sortOrder": 1160
+    "sortOrder": 1160,
+    "active": true
   },
   {
     "key": "freeze-complete-monthly-uae-ar",
@@ -963,9 +1147,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020، وموعد فاتورتك القادمة 00-00-2020 بقيمة [قيمة الدفعة القادمة].\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    "body": "💙 تم تجميد عضويتك  بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\n [ ] من 00-00-0000 إلى 00-00-0000، وموعد فاتورتك القادمة 00-00-0000 بقيمة .\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
     "source": "clean-v2",
-    "sortOrder": 1170
+    "sortOrder": 1170,
+    "active": true
   },
   {
     "key": "freeze-complete-monthly-uae-en",
@@ -973,9 +1158,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020. Your next billing date will be on 00-00-2020 with an amount of [Next Payment Amount].\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    "body": "💙 Your membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-0000 to 00-00-0000. Your next billing date will be on 00-00-0000 with an amount of [  ].\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
     "source": "clean-v2",
-    "sortOrder": 1180
+    "sortOrder": 1180,
+    "active": true
   },
   {
     "key": "freeze-complete-pif-ksa-ar",
@@ -983,9 +1169,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "KSA",
     "language": "AR",
-    "body": "💚 تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020، وموعد انتهاء عضويتك الجديد في 00-00-2020.\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    "body": "💚 تم تجميد عضويتك  بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-0000 إلى 00-00-0000، وموعد انتهاء عضويتك الجديد في 00-00-0000.\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
     "source": "clean-v2",
-    "sortOrder": 1190
+    "sortOrder": 1190,
+    "active": true
   },
   {
     "key": "freeze-complete-pif-ksa-en",
@@ -993,9 +1180,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "KSA",
     "language": "EN",
-    "body": "💚 Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020, and your new membership expiry date will be 00-00-2020.\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    "body": "💚 Your  membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-0000 to 00-00-0000, and your new membership expiry date will be 00-00-0000.\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
     "source": "clean-v2",
-    "sortOrder": 1200
+    "sortOrder": 1200,
+    "active": true
   },
   {
     "key": "freeze-complete-pif-uae-ar",
@@ -1003,9 +1191,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 تم تجميد عضويتك [نوع العضوية] بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-2020 إلى 00-00-2020، وموعد انتهاء عضويتك الجديد في 00-00-2020.\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    "body": "💙 تم تجميد عضويتك  بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\nمن 00-00-0000 إلى 00-00-0000، وموعد انتهاء عضويتك الجديد في 00-00-0000.\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
     "source": "clean-v2",
-    "sortOrder": 1210
+    "sortOrder": 1210,
+    "active": true
   },
   {
     "key": "freeze-complete-pif-uae-en",
@@ -1013,9 +1202,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 Your [Membership Type] membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-2020, and your new membership expiry date will be 00-00-2020.\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    "body": "💙 Your  membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-2020 to 00-00-0000, and your new membership expiry date will be 00-00-2020.\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
     "source": "clean-v2",
-    "sortOrder": 1220
+    "sortOrder": 1220,
+    "active": true
   },
   {
     "key": "admin-friend-bring-a-friend-bring-a-friend-info-3bfa3029",
@@ -1025,7 +1215,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "Bring a Friend allows you to add a friend according to your membership benefits and terms. Please check the app to confirm if this benefit is available on your membership.",
     "source": "admin",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "admin-friend-bring-a-friend-إضافة-صديق-c1889381",
@@ -1035,7 +1226,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "ميزة Bring a Friend تتيح لك إضافة صديق حسب مزايا عضويتك وشروطها. يرجى التأكد من توفر الميزة في عضويتك من خلال التطبيق.",
     "source": "admin",
-    "sortOrder": 20
+    "sortOrder": 20,
+    "active": true
   },
   {
     "key": "admin-friend-bring-a-friend-remove-friend-7c8e7f7d",
@@ -1045,7 +1237,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "Would you like to remove (Friend Name) from your membership?\n\nThe friend has been removed from your membership successfully.\nYou can now log out of the app and log back in again, and the information will update automatically.\nAfter that, you can add a new friend.",
     "source": "admin",
-    "sortOrder": 30
+    "sortOrder": 30,
+    "active": true
   },
   {
     "key": "admin-friend-bring-a-friend-ازالة-صديق-7b1e9b24",
@@ -1055,7 +1248,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "هل ترغب بإزالة الصديق (اسم الصديق) من عضويتك؟\n\nتمت إزالة الصديق من عضويتك بنجاح.\nيمكنك الآن تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى، وسيتم تحديث البيانات تلقائيًا.\nبعد ذلك يمكنك إضافة صديق جديد.",
     "source": "admin",
-    "sortOrder": 40
+    "sortOrder": 40,
+    "active": true
   },
   {
     "key": "remove-friend-ksa-ar",
@@ -1065,7 +1259,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 هل ترغب بإزالة الصديق [اسم الصديق] من عضويتك؟",
     "source": "clean-v2",
-    "sortOrder": 1550
+    "sortOrder": 1550,
+    "active": false
   },
   {
     "key": "remove-friend-ksa-en",
@@ -1075,7 +1270,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Would you like to remove [Friend Name] from your membership?",
     "source": "clean-v2",
-    "sortOrder": 1560
+    "sortOrder": 1560,
+    "active": false
   },
   {
     "key": "remove-friend-uae-ar",
@@ -1085,7 +1281,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 هل ترغب بإزالة الصديق [اسم الصديق] من عضويتك؟",
     "source": "clean-v2",
-    "sortOrder": 1570
+    "sortOrder": 1570,
+    "active": false
   },
   {
     "key": "remove-friend-uae-en",
@@ -1095,7 +1292,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Would you like to remove [Friend Name] from your membership?",
     "source": "clean-v2",
-    "sortOrder": 1580
+    "sortOrder": 1580,
+    "active": false
   },
   {
     "key": "bring-friend-info-ksa-ar",
@@ -1105,7 +1303,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 ميزة Bring a Friend تتيح لك إضافة صديق حسب مزايا عضويتك وشروطها. يرجى التأكد من توفر الميزة في عضويتك من خلال التطبيق.",
     "source": "clean-v2",
-    "sortOrder": 1590
+    "sortOrder": 1590,
+    "active": false
   },
   {
     "key": "bring-friend-info-ksa-en",
@@ -1115,7 +1314,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Bring a Friend allows you to add a friend according to your membership benefits and terms. Please check the app to confirm if this benefit is available on your membership.",
     "source": "clean-v2",
-    "sortOrder": 1600
+    "sortOrder": 1600,
+    "active": false
   },
   {
     "key": "bring-friend-info-uae-ar",
@@ -1125,7 +1325,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 ميزة Bring a Friend تتيح لك إضافة صديق حسب مزايا عضويتك وشروطها. يرجى التأكد من توفر الميزة في عضويتك من خلال التطبيق.",
     "source": "clean-v2",
-    "sortOrder": 1610
+    "sortOrder": 1610,
+    "active": false
   },
   {
     "key": "bring-friend-info-uae-en",
@@ -1135,7 +1336,470 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Bring a Friend allows you to add a friend according to your membership benefits and terms. Please check the app to confirm if this benefit is available on your membership.",
     "source": "clean-v2",
-    "sortOrder": 1620
+    "sortOrder": 1620,
+    "active": false
+  },
+  {
+    "key": "google-review-hours-24-ar",
+    "title": "ساعات العمل - لماذا النادي ليس مفتوح لمدة 24 ساعة؟",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "حياك الله (اسم العميل)، نشكرك على تعليقك. حالياً أوقات العمل محددة حسب سياسة النادي وجدول التشغيل لكل فرع، لذلك ما نقدر حالياً نشغل النادي 24 ساعة. ومع ذلك، نراجع باستمرار أوقات العمل ونقيّم إمكانية تمديدها مستقبلاً إذا كان هذا يخدم مشتركينا بشكل أفضل.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9000,
+    "active": true
+  },
+  {
+    "key": "google-review-hours-24-en",
+    "title": "Operating Hours - Why is the gym not open 24/7?",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi (Member Name), thank you for your comment. Currently, our operating hours are set based on gym policy and each branch’s schedule. That’s why we’re unable to open 24/7 at the moment. However, we regularly review our hours and evaluate the possibility of extending them if it better serves our members.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9010,
+    "active": true
+  },
+  {
+    "key": "google-review-classes-ar",
+    "title": "الكلاسات - الكلاسات",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا فيك (اسم العميل)، شكرًا على تعليقك. بيورجيم يقدم مجموعة من الكلاسات المتنوعة بإشراف مدربين معتمدين، ونتابع تحديث الجداول بشكل مستمر حسب الإقبال والظروف التشغيلية. لو عندك استفسار أو ملاحظات بخصوص جدول الكلاسات، تقدر تتواصل مع مدير النادي مباشرة أو مع فريق خدمات الأعضاء، وراح نحرص نوصل صوتك ونساعدك تستفيد أكثر من تجربتك معنا.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9020,
+    "active": true
+  },
+  {
+    "key": "google-review-classes-en",
+    "title": "Classes - Classes",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hey (Member Name), thanks for your comment. PureGym offers a variety of classes led by certified trainers, and we continuously update the schedules based on demand and operational capacity. If you have questions or feedback about the class schedule, feel free to speak directly with the gym manager or reach out to our Member Services Team, we’ll make sure your voice is heard and help you make the most of your experience.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9030,
+    "active": true
+  },
+  {
+    "key": "google-review-complaint-transfer-ar",
+    "title": "شكوى - تحويل - تعليق سلبي - التحويل إلى GM/MS",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "حياك الله (اسم العميل)، نعتذر إن تجربتك ما كانت بالمستوى اللي نتمناه لك. ودنا نسمع منك أكثر عن التفاصيل عشان نقدر نعالج الموضوع بأسرع وقت. تقدر تراسلنا على ksa.member.services@puregymarabia.com، وحنا بنتابع معك مباشرة.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9040,
+    "active": true
+  },
+  {
+    "key": "google-review-complaint-transfer-en",
+    "title": "Complaint Transfer - Negative Review to GM/MS",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), we’re sorry your experience didn’t meet your expectations. We’d love to hear more details so we can address it promptly. You can email us at: ksa.member.services@puregymarabia.com and we’ll follow up with you directly.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9050,
+    "active": true
+  },
+  {
+    "key": "google-review-negative-internal-ar",
+    "title": "شكوى - توجيه داخلي - مراجعة سلبية إلى GM/MS",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا (العميل)، شكراً على تعليقك. إذا تقدر تتواصل مع مدير النادي أو فريق خدمات الأعضاء وتزودنا بتفاصيل مثل التاريخ والوقت والأسماء، بنكون شاكرين لك ونقدر نراجع الموضوع بدقة.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9060,
+    "active": true
+  },
+  {
+    "key": "google-review-negative-internal-en",
+    "title": "Internal Direction - Negative Review to GM/MS",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hey (Member Name), thank you for your feedback. If you could speak directly with the gym manager or our Member Services Team and provide details like date, time, and staff involved, we’d really appreciate it, that’ll help us review the issue properly.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9070,
+    "active": true
+  },
+  {
+    "key": "google-review-negative-private-ar",
+    "title": "شكوى - توجيه خاص - مراجعة سلبية على الخاص",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا (اسم العميل)، نسعد دائماً بخدمة مشتركينا. أرسل لنا تفاصيل أكثر على ksa.member.services@puregymarabia.com، وبإذن الله بنتابع معك ونحرص ترجع تجربتك أفضل.\n(اسم الموظف)، فريق خدمات الأعضاء.",
+    "source": "google-reviews",
+    "sortOrder": 9080,
+    "active": true
+  },
+  {
+    "key": "google-review-negative-private-en",
+    "title": "Private Follow-up - Negative Review",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi (Member Name), we’re always happy to support our members. Please email us more details at: ksa.member.services@puregymarabia.com and we’ll follow up with you to make sure your next visit is better.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9090,
+    "active": true
+  },
+  {
+    "key": "google-review-negative-experience-ar",
+    "title": "تجربة سلبية - تجربة سلبية",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "حياك الله (اسم العميل)، يؤسفنا إن تجربتك معنا ما كانت بالمستوى اللي نطمح له، ونعتذر عن أي إزعاج سببناه لك. نراجع كل التعليقات ونتأكد من معالجة الملاحظات في النادي، وحرصنا دائم إن التجربة تتحسن للأفضل. إذا لاحظت تحسن في تجربتك القادمة، نتمنى يعكس تقييمك القادم انطباعك الجديد.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9100,
+    "active": true
+  },
+  {
+    "key": "google-review-negative-experience-en",
+    "title": "Negative Experience - Negative Experience",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), we’re sorry your experience wasn’t up to the standard we aim for, and we apologize for any inconvenience caused. We carefully review all feedback to ensure that concerns are addressed at the gym level. If you notice an improvement on your next visit, we’d love for your future review to reflect that updated experience.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9110,
+    "active": true
+  },
+  {
+    "key": "google-review-crowded-app-ar",
+    "title": "الزحمة - تعليق سلبي - مشغول ومزدحم",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا فيك (اسم العميل)، نعرف أن بعض الأوقات يكون فيها النادي مزدحم أكثر، وهذا طبيعي لأن المشتركين يحبون يتمرنون بنفس الفترات. همّنا راحتك، وعشان تجربتك تكون أهدأ وأمتع، تقدر من خلال التطبيق تشوف العدد الحالي وأوقات الزحمة المتوقعة وتختار الوقت اللي يناسبك. هدفنا دايم نخليك تستمتع بتمرينك وتطلع وأنت راضي.\n(اسم الموظف)، فريق خدمات الأعضاء.",
+    "source": "google-reviews",
+    "sortOrder": 9120,
+    "active": true
+  },
+  {
+    "key": "google-review-crowded-app-en",
+    "title": "Crowding - Busy and Crowded",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi (Member Name), we know some times of day can be busier than others, it’s normal as many members prefer working out at the same peak times. Your comfort matters to us, and the app can help by showing real-time gym capacity and peak times so you can choose a quieter time to visit. Our goal is to help you enjoy your workout and leave feeling great.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9130,
+    "active": true
+  },
+  {
+    "key": "google-review-crowded-apology-ar",
+    "title": "الزحمة - اعتذار عن الزحمة",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "حياك الله (اسم العميل)، نعتذر إذا الزحمة أثرت على استمتاعك بالنادي. حرصنا دائماً يكون على راحتك وسلامتك، وبإمكانك عبر التطبيق معرفة العدد الحالي وأوقات الذروة عشان تختار وقت أهدأ لتمرينك. ملاحظتك تهمنا، ونتمنى تكون تجربتك القادمة أفضل وأمتع.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9140,
+    "active": true
+  },
+  {
+    "key": "google-review-crowded-apology-en",
+    "title": "Crowding - Apology for Crowd Impact",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), we’re sorry if the crowd impacted your visit. We care about your comfort and safety, and through the app you can check live member count and peak times to better plan your workout. We appreciate your feedback and hope your next visit is even better.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9150,
+    "active": true
+  },
+  {
+    "key": "google-review-equipment-maintenance-ar",
+    "title": "الأعطال والصيانة - مراجعة سلبية فيما يتعلق بالمعدات",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا (اسم العميل)، نشكرك على تقييمك وملاحظتك بخصوص الأجهزة. نهتم كثير إن تكون كل معداتنا بحالة ممتازة، ونعتذر إذا واجهت أي إزعاج. فريقنا يقوم بصيانة دورية، ونعمل بشكل مستمر مع مزوّدي الأجهزة للتأكد من إصلاح أي عطل بأسرع وقت ممكن وبأعلى معايير السلامة. إذا لاحظت أي مشكلة في جهاز، يهمنا تبلغ الموظفين مباشرة عشان نتصرف بسرعة ونحافظ على جودة تجربتك.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9160,
+    "active": true
+  },
+  {
+    "key": "google-review-equipment-maintenance-en",
+    "title": "Equipment & Maintenance - Negative Equipment Review",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hey (Member Name), thanks for your feedback about the equipment. We care a lot about keeping everything in top condition and apologize if anything caused you inconvenience. Our team performs regular maintenance and works closely with our suppliers to resolve issues as fast and safely as possible. If you spot any issue, please notify the staff directly, we’ll act fast to keep your experience smooth.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9170,
+    "active": true
+  },
+  {
+    "key": "google-review-supplies-manager-ar",
+    "title": "اللوازم - مراجعة سلبية لوازم النادي / داخل النادي",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا(اسم العميل)، نشكرك على تقييمك، وحرصنا دائماً يكون على استقبال الملاحظات عشان نقدر نحسن خدماتنا. بما أن المشكلة داخل النادي، الأفضل تتواصل مباشرة مع مدير النادي حتى يتابعها معك ويحلها بأسرع وقت ممكن. واكيد بيكون سعيد بخدمتك.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9180,
+    "active": true
+  },
+  {
+    "key": "google-review-supplies-manager-en",
+    "title": "Supplies - Inside Gym Issue",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi (Member Name), thank you for your feedback. We’re always open to hearing your concerns so we can improve our service. Since the issue is inside the gym, it’s best to speak directly with the gym manager, they’ll be happy to help and follow up with you quickly.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9190,
+    "active": true
+  },
+  {
+    "key": "google-review-cleaning-supplies-ar",
+    "title": "اللوازم - مستلزمات التنظيف",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "حياك الله (اسم العميل)، نشكرك على ملاحظتك وناخذها بعين الاعتبار دائماً. هدفنا نوفر بيئة آمنة ونظيفة لكل مشتركينا. نعتذر إذا كانت هناك أي ملاحظات بخصوص مستلزمات التنظيف، وبمجرد إبلاغ أي موظف بالنادي، راح يتأكد من معالجتها فوراً. يهمنا أنك تستمتع بتجربتك معنا ونرحب بك دائماً.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9200,
+    "active": true
+  },
+  {
+    "key": "google-review-cleaning-supplies-en",
+    "title": "Supplies - Cleaning Supplies",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), thank you for your feedback, we truly take it to heart. Our goal is to provide a clean, safe, and welcoming space for all members. We’re sorry if there were any concerns about the cleaning supplies, once notified, our team acts quickly to resolve it. We’re glad you’re enjoying the gym overall and always happy to have you with us.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9210,
+    "active": true
+  },
+  {
+    "key": "google-review-general-praise-rating-ar",
+    "title": "إطراءات عامة - إطراءات",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا (اسم العميل)، شكراً على تقييمك! نحب نسمع أكثر منك إذا حاب تشاركنا بتفاصيل عن تجربتك أو أي شي نقدر نحسّنه. تواصلك يهمنا دايم.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9220,
+    "active": true
+  },
+  {
+    "key": "google-review-general-praise-rating-en",
+    "title": "General Praise - Rating",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hey (Member Name), thanks for your rating! We’d love to hear more about your experience or anything we could improve. Your feedback always matters to us.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9230,
+    "active": true
+  },
+  {
+    "key": "google-review-general-praise-day-ar",
+    "title": "إطراءات عامة - تقييم أسعدنا",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا فيك (اسم العميل)، تقييمك أسعدنا! إذا عندك أي تفاصيل حاب تشاركنا فيها عن تجربتك، نحب نسمع منك ونوصلها للفريق. وجودك معنا يعني لنا كثير.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9240,
+    "active": true
+  },
+  {
+    "key": "google-review-general-praise-day-en",
+    "title": "General Praise - Made Our Day",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), your rating made our day! If you have more to share about your experience, we’d love to hear it and pass it on to the team. It really means a lot to have you with us.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9250,
+    "active": true
+  },
+  {
+    "key": "google-review-general-praise-journey-ar",
+    "title": "إطراءات عامة - رحلة رياضية",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "حياك الله (اسم العميل)، تعليقك محل تقدير، ونسعد دايم إننا نكون جزء من رحلتك الرياضية. نتمنى لك التوفيق في أهدافك، وإحنا معك خطوة بخطوة!\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9260,
+    "active": true
+  },
+  {
+    "key": "google-review-general-praise-journey-en",
+    "title": "General Praise - Fitness Journey",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hey (Member Name), your comment is truly appreciated. We're always happy to be part of your fitness journey. Wishing you all the best in reaching your goals, we’re right here cheering you on!\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9270,
+    "active": true
+  },
+  {
+    "key": "google-review-general-praise-stars-ar",
+    "title": "إطراءات عامة - تقييم 4 أو 5 نجوم",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا (اسم العميل)، شكرًا إنك كتبت لنا هالتقييم. ويا زين ما شفنا تقييمك (5، 4) نجوم! وإذا عندك أي ملاحظات كيف نقدر نحسن خدماتنا بالمستقبل، لا تتردد تتواصل معنا!\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9280,
+    "active": true
+  },
+  {
+    "key": "google-review-general-praise-stars-en",
+    "title": "General Praise - 4 or 5 Stars",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), thank you for your great rating (4 or 5 stars)! We’re happy to know you're satisfied with your experience. If you have any suggestions on how we can improve our services further, feel free to reach out anytime.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9290,
+    "active": true
+  },
+  {
+    "key": "google-review-coach-praise-general-ar",
+    "title": "إطراء مدرب - إطراء للمدرب",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا فيك (اسم العميل)، أسعدنا كثير تعليقك الجميل عن مدربينا. نهتم إن كل مشترك يعيش تجربة تدريب ملهمة، وكلماتك الطيبة تعطينا دافع أكبر نستمر ونقدّم أفضل ما عندنا. فخورين بفريق التدريب اللي يشتغل بحب وإخلاص، وأكيد بنوصل لهم تحياتك. ننتظر نشوفك تحقق أهدافك ونكون جزء من نجاحك.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9300,
+    "active": true
+  },
+  {
+    "key": "google-review-coach-praise-general-en",
+    "title": "Coach Praise - Coach Compliment",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi (Member Name), we really appreciated your kind words about our coaches. We always strive to offer inspiring training, and your message gives us even more motivation to keep going. We’re proud of our dedicated team, and we’ll be sure to pass along your message. Hope to see you reach your goals soon!\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9310,
+    "active": true
+  },
+  {
+    "key": "google-review-coach-praise-name-ar",
+    "title": "إطراء مدرب - إطراء لمدرب محدد",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "حياك الله (اسم العميل)، فرحنا إنك استمتعت بالتدريب مع المدرب [اسم المدرب]. هو يبذل جهد كبير عشان يلهم المشتركين ويدعمهم خطوة بخطوة، وكلماتك تشجعه وتخلّيه يستمر بعطائه. هدفنا دايم إنك تلقى الدعم والتحفيز اللي تحتاجه، ونسعد نكون معك في كل مرحلة من رحلتك الرياضية.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9320,
+    "active": true
+  },
+  {
+    "key": "google-review-coach-praise-name-en",
+    "title": "Coach Praise - Named Coach",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), we’re so glad you enjoyed training with [Coach Name]! They work hard to support and inspire every member, and your words go a long way in encouraging them to keep it up. We're always here to support your journey.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9330,
+    "active": true
+  },
+  {
+    "key": "google-review-coach-praise-inspiring-ar",
+    "title": "إطراء مدرب - كلمات عن المدربين",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "أهلاً وسهلاً (اسم العميل)، كلامك عن مدربينا أفرحنا وألهمنا. حنا نؤمن إن النجاح ما يجي بالصدفة، بل بجهدك وتعاون فريق التدريب معك، وهذا بالضبط اللي نشوفه فيك. نتمنى تواصل تقدمك ونشوفك تحقق أهدافك، وأبوابنا مفتوحة لأي دعم تحتاجه.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9340,
+    "active": true
+  },
+  {
+    "key": "google-review-coach-praise-inspiring-en",
+    "title": "Coach Praise - Inspiring Coaches",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi (Member Name), your message about our coaches made our day. We believe success doesn’t happen by accident, it comes from your effort and your connection with the training team. That’s exactly what we see in you. Keep going, and know that we’re always here if you need anything.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9350,
+    "active": true
+  },
+  {
+    "key": "google-review-praise-small-note-ar",
+    "title": "إطراء + ملاحظة بسيطة - إطراء وتعليق سلبي بسيط",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا فيك (اسم العميل)، نشكرك على تقييمك وملاحظتك، ونحرص دائماً على أخذ ملاحظات مشتركينا بعين الاعتبار. هدفنا نوفر لك بيئة آمنة ونظيفة تتمرن فيها براحة. يسعدنا أنك مستمتع بتجربتك معنا، وإذا فيه أي شيء إضافي ممكن نساعدك فيه، حنا حاضرين في أي وقت.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9360,
+    "active": true
+  },
+  {
+    "key": "google-review-praise-small-note-en",
+    "title": "Praise + Small Note - Positive with Minor Feedback",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi (Member Name), thanks so much for your feedback. We always value hearing from our members. Our goal is to give you a clean, safe, and welcoming place to train. We’re glad you’re enjoying your time with us, and we’re always here if there’s anything more we can help with.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9370,
+    "active": true
+  },
+  {
+    "key": "google-review-suggestions-general-ar",
+    "title": "اقتراحات - إقتراحات",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "يا هلا (اسم العميل)، نشكرك على تقييمك وملاحظتك، ودايم نسعى نطور خدماتنا عشان نقدم لك أفضل تجربة ممكنة. إذا عندك أي اقتراح إضافي، يا ليت توصله لمدير النادي أو فريق خدمات الأعضاء عشان نراجعه ونستفيد منه.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9380,
+    "active": true
+  },
+  {
+    "key": "google-review-suggestions-general-en",
+    "title": "Suggestions - Suggestions",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), thanks for your feedback, we’re always looking for ways to improve the experience for you. If you have additional suggestions, please feel free to share them with the gym manager or Member Services so we can review and learn from them.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9390,
+    "active": true
+  },
+  {
+    "key": "google-review-suggestions-facilities-ar",
+    "title": "اقتراحات - تطوير المرافق",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "AR",
+    "body": "حياك الله (اسم العميل)، كل اقتراح من مشتركينا يساعدنا نطوّر المرافق ونحافظ على النادي نظيف وآمن. يسعدنا نسمع منك أي أفكار أو اقتراحات مستقبلية عن طريق مدير النادي أو فريق خدمات الأعضاء. هدفنا دايم نلبي توقعاتك ونرفع مستوى التجربة.\n(اسم الموظف)، فريق خدمات الأعضاء",
+    "source": "google-reviews",
+    "sortOrder": 9400,
+    "active": true
+  },
+  {
+    "key": "google-review-suggestions-facilities-en",
+    "title": "Suggestions - Facilities Improvement",
+    "category": "Google Reviews",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Hi there (Member Name), every suggestion from our members helps us improve our facilities and keep the gym safe and clean. We’d love to hear any future ideas or feedback, just share them with the gym manager or Member Services. We’re always striving to exceed your expectations.\n(Agent Name), Member Services Team",
+    "source": "google-reviews",
+    "sortOrder": 9410,
+    "active": true
   },
   {
     "key": "links-official-ksa-ar",
@@ -1145,7 +1809,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 روابط السعودية الرسمية:\n\nالانضمام:\nhttps://ksa.puregymarabia.com/join/\n\nصالات رياضية:\nhttps://ksa.puregymarabia.com/gyms/\n\nتطبيق بيورجيم:\nhttps://ksa.puregymarabia.com/puregym-app/\n\nتسجيل الدخول:\nhttps://ksa.puregymarabia.com/login/",
     "source": "v3-update",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "links-official-ksa-en",
@@ -1155,7 +1820,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Official KSA links:\n\nJoin:\nhttps://ksa.puregymarabia.com/en-gb/join/\n\nGyms:\nhttps://ksa.puregymarabia.com/en-gb/gyms/\n\nPureGym App:\nhttps://ksa.puregymarabia.com/en-gb/puregym-app/\n\nLog in:\nhttps://ksa.puregymarabia.com/login/",
     "source": "v3-update",
-    "sortOrder": 20
+    "sortOrder": 20,
+    "active": true
   },
   {
     "key": "links-official-uae-ar",
@@ -1165,7 +1831,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 روابط الإمارات الرسمية:\n\nالانضمام:\nhttps://uae.puregymarabia.com/join/\n\nصالات رياضية:\nhttps://uae.puregymarabia.com/gyms/\n\nتطبيق بيورجيم:\nhttps://uae.puregymarabia.com/puregym-app/\n\nتسجيل الدخول:\nhttps://uae.puregymarabia.com/login/",
     "source": "v3-update",
-    "sortOrder": 30
+    "sortOrder": 30,
+    "active": true
   },
   {
     "key": "links-official-uae-en",
@@ -1175,7 +1842,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Official UAE links:\n\nJoin:\nhttps://uae.puregymarabia.com/en-gb/join/\n\nGyms:\nhttps://uae.puregymarabia.com/en-gb/gyms/\n\nPureGym App:\nhttps://uae.puregymarabia.com/en-gb/puregym-app/\n\nLog in:\nhttps://uae.puregymarabia.com/login/",
     "source": "v3-update",
-    "sortOrder": 40
+    "sortOrder": 40,
+    "active": true
   },
   {
     "key": "links-ksa-location-ar",
@@ -1185,7 +1853,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 Location links - KSA:\n\nKhobar Branches:\nAl-Rakah Women: https://goo.gl/maps/qBMRA6rcB2YfdeRi6\nGolden Belt Men: https://goo.gl/maps/HAymbyuT6wY7hffZ9\n\nRiyadh Branches:\nAl-Rabwah Men: https://goo.gl/maps/CpgtzBLSd5GGD81R8\nAl-Yasmin Men: https://goo.gl/maps/y6gTZe3mfPDGa6YA9\nAl-Mansourah Men: https://goo.gl/maps/JSrGSHfqyu9aKvsJ6\nAl-Aziziyah Women: https://goo.gl/maps/sSMLSE6H2gNYnGYG8\nAl-Hamra Women: https://goo.gl/maps/fqRyHVmsKxELA1cG7\nAl-Hamra Men: https://goo.gl/maps/FsLFuoGykaidt7JQ7\nAl-Sahafa Women: https://goo.gl/maps/PfgCDMED3wRfnqDu7\nAl-Munsiyah Men: https://goo.gl/maps/GVUpxGcQtDseBT6i6\nAl-Munsiyah Women: https://goo.gl/maps/DC2Bkjf1LSHbDTqq9\nAl-Nasim Men: https://maps.app.goo.gl/NH9zipUBRXZuruvA7\nAl-Nasim Women: https://maps.app.goo.gl/poYk75XixrHJmX9B7\nAs Saadah Men: https://maps.app.goo.gl/UUUaPG18F6EddUpu9\nAl-Rabwah Women: https://maps.app.goo.gl/QaJ8cPUkCTuGnkuq9\n\nDammam Branches:\nAl-Faisaliyah Men: https://goo.gl/maps/91vsMiDSy2yozSZH6\nAl-Qairawan Men: https://goo.gl/maps/eSe7jX1gy1329CiZ8\nAl-Shatea Women: https://maps.app.goo.gl/fsqpsLZbsdY213uDA\n\nJeddah Branches:\nAlsafa Men: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlsafa Women: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlzahrah Women: https://maps.app.goo.gl/GoWDJ8t2EvVq6tTk7",
     "source": "v3-update",
-    "sortOrder": 50
+    "sortOrder": 50,
+    "active": true
   },
   {
     "key": "links-ksa-location-en",
@@ -1195,7 +1864,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Location links - KSA:\n\nKhobar Branches:\nAl-Rakah Women: https://goo.gl/maps/qBMRA6rcB2YfdeRi6\nGolden Belt Men: https://goo.gl/maps/HAymbyuT6wY7hffZ9\n\nRiyadh Branches:\nAl-Rabwah Men: https://goo.gl/maps/CpgtzBLSd5GGD81R8\nAl-Yasmin Men: https://goo.gl/maps/y6gTZe3mfPDGa6YA9\nAl-Mansourah Men: https://goo.gl/maps/JSrGSHfqyu9aKvsJ6\nAl-Aziziyah Women: https://goo.gl/maps/sSMLSE6H2gNYnGYG8\nAl-Hamra Women: https://goo.gl/maps/fqRyHVmsKxELA1cG7\nAl-Hamra Men: https://goo.gl/maps/FsLFuoGykaidt7JQ7\nAl-Sahafa Women: https://goo.gl/maps/PfgCDMED3wRfnqDu7\nAl-Munsiyah Men: https://goo.gl/maps/GVUpxGcQtDseBT6i6\nAl-Munsiyah Women: https://goo.gl/maps/DC2Bkjf1LSHbDTqq9\nAl-Nasim Men: https://maps.app.goo.gl/NH9zipUBRXZuruvA7\nAl-Nasim Women: https://maps.app.goo.gl/poYk75XixrHJmX9B7\nAs Saadah Men: https://maps.app.goo.gl/UUUaPG18F6EddUpu9\nAl-Rabwah Women: https://maps.app.goo.gl/QaJ8cPUkCTuGnkuq9\n\nDammam Branches:\nAl-Faisaliyah Men: https://goo.gl/maps/91vsMiDSy2yozSZH6\nAl-Qairawan Men: https://goo.gl/maps/eSe7jX1gy1329CiZ8\nAl-Shatea Women: https://maps.app.goo.gl/fsqpsLZbsdY213uDA\n\nJeddah Branches:\nAlsafa Men: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlsafa Women: https://maps.app.goo.gl/4ALVTeDC8APoK6kw9?g_st=iw\nAlzahrah Women: https://maps.app.goo.gl/GoWDJ8t2EvVq6tTk7",
     "source": "v3-update",
-    "sortOrder": 60
+    "sortOrder": 60,
+    "active": true
   },
   {
     "key": "links-ksa-virtual-ar",
@@ -1205,7 +1875,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 Virtual Tour links - KSA:\n\nKhobar Branches:\nGolden Belt Men: https://my.matterport.com/show/?m=ft4ft5vD6sx\nAl-Rakah Women: https://my.matterport.com/show/?m=gzePUKqJeWs\n\nRiyadh Branches:\nAl-Mansourah Men: https://my.matterport.com/show/?m=V6tR4bmLB6n\nAl-Yasmin Men: https://my.matterport.com/show/?m=U9KB5yJnw94\nAl-Hamra Men: https://my.matterport.com/show/?m=Wmk94DhwSZ8\nAl-Hamra Women: https://my.matterport.com/show/?m=zLktpNYqcUJ\nAs Sahafa Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Aziziyah Women: https://my.matterport.com/show/?m=7fc8KE68DdE\nAl-Munsiyah Men: https://my.matterport.com/show/?m=9CVhboEe2kj\nAl-Munsiyah Women: https://my.matterport.com/show/?m=HrBZBTBQSry\nAl-Rabwah Men: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Nasim Men: https://my.matterport.com/show/?m=kGC3pviiKyr\nAl-Nasim Women: https://my.matterport.com/show/?m=5btVHXzr1ke\nAs Saadah Men: https://my.matterport.com/show/?m=TbToTDwfdMv\nAl-Rabwah Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\n\nDammam Branches:\nAl-Faisaliyah Men: https://my.matterport.com/show/?m=2sfg6Tv6A7e\nAl-Shatea Women: https://my.matterport.com/show/?m=g1chmo2JBw7\nAl-Qairawan Men: https://virtual.property360.tours/show/?m=n3n9yav3bMf\n\nJeddah Branches:\nAlsafa Women: https://www.youtube.com/watch?v=RrmZsaFwEOE\nAlsafa Men: https://www.youtube.com/watch?v=5QdIVddUqyA\nAlzahrah Women: https://www.youtube.com/watch?v=qS05iTvb2kY",
     "source": "v3-update",
-    "sortOrder": 70
+    "sortOrder": 70,
+    "active": true
   },
   {
     "key": "links-ksa-virtual-en",
@@ -1215,7 +1886,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Virtual Tour links - KSA:\n\nKhobar Branches:\nGolden Belt Men: https://my.matterport.com/show/?m=ft4ft5vD6sx\nAl-Rakah Women: https://my.matterport.com/show/?m=gzePUKqJeWs\n\nRiyadh Branches:\nAl-Mansourah Men: https://my.matterport.com/show/?m=V6tR4bmLB6n\nAl-Yasmin Men: https://my.matterport.com/show/?m=U9KB5yJnw94\nAl-Hamra Men: https://my.matterport.com/show/?m=Wmk94DhwSZ8\nAl-Hamra Women: https://my.matterport.com/show/?m=zLktpNYqcUJ\nAs Sahafa Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Aziziyah Women: https://my.matterport.com/show/?m=7fc8KE68DdE\nAl-Munsiyah Men: https://my.matterport.com/show/?m=9CVhboEe2kj\nAl-Munsiyah Women: https://my.matterport.com/show/?m=HrBZBTBQSry\nAl-Rabwah Men: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\nAl-Nasim Men: https://my.matterport.com/show/?m=kGC3pviiKyr\nAl-Nasim Women: https://my.matterport.com/show/?m=5btVHXzr1ke\nAs Saadah Men: https://my.matterport.com/show/?m=TbToTDwfdMv\nAl-Rabwah Women: https://virtual.property360.tours/show/?m=gCbuQMdhqVN\n\nDammam Branches:\nAl-Faisaliyah Men: https://my.matterport.com/show/?m=2sfg6Tv6A7e\nAl-Shatea Women: https://my.matterport.com/show/?m=g1chmo2JBw7\nAl-Qairawan Men: https://virtual.property360.tours/show/?m=n3n9yav3bMf\n\nJeddah Branches:\nAlsafa Women: https://www.youtube.com/watch?v=RrmZsaFwEOE\nAlsafa Men: https://www.youtube.com/watch?v=5QdIVddUqyA\nAlzahrah Women: https://www.youtube.com/watch?v=qS05iTvb2kY",
     "source": "v3-update",
-    "sortOrder": 80
+    "sortOrder": 80,
+    "active": true
   },
   {
     "key": "links-uae-location-ar",
@@ -1225,7 +1897,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 Location links - UAE:\n\nDubai Nad Al Sheba: https://maps.app.goo.gl/vj6Y7pVJpjqXPYse9\nDubai Al Barsha: https://maps.app.goo.gl/522EbHVZ5y8pBnkJ9",
     "source": "v3-update",
-    "sortOrder": 90
+    "sortOrder": 90,
+    "active": true
   },
   {
     "key": "links-uae-location-en",
@@ -1235,7 +1908,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Location links - UAE:\n\nDubai Nad Al Sheba: https://maps.app.goo.gl/vj6Y7pVJpjqXPYse9\nDubai Al Barsha: https://maps.app.goo.gl/522EbHVZ5y8pBnkJ9",
     "source": "v3-update",
-    "sortOrder": 100
+    "sortOrder": 100,
+    "active": true
   },
   {
     "key": "links-uae-virtual-ar",
@@ -1245,7 +1919,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 Virtual Tour links - UAE:\n\nDubai Branches:\nNad Al Sheba: https://my.matterport.com/show/?m=cpYJYiRJycw\nAl Barsha: https://my.matterport.com/show/?m=DrJ1JsW8as9",
     "source": "v3-update",
-    "sortOrder": 110
+    "sortOrder": 110,
+    "active": true
   },
   {
     "key": "links-uae-virtual-en",
@@ -1255,7 +1930,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Virtual Tour links - UAE:\n\nDubai Branches:\nNad Al Sheba: https://my.matterport.com/show/?m=cpYJYiRJycw\nAl Barsha: https://my.matterport.com/show/?m=DrJ1JsW8as9",
     "source": "v3-update",
-    "sortOrder": 120
+    "sortOrder": 120,
+    "active": true
   },
   {
     "key": "core-plus-difference-ksa-ar",
@@ -1265,7 +1941,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "🔹 باقة كور:\nتتمرن في فرعك الاساسي فقط، تحجز الكلاسات قبلها بـ 8 أيام، وتستخدم أكثر من 180 جهاز حديث!\nوتقدر تجمّد عضويتك مجانًا حتى 25٪ من مدتها ولو قسمت التجميد، جزء فقط بيكون مجاني، والباقي عليه رسوم رمزية (٣٩ ريال لكل٣٠ يوم).\n\n🔸 باقة بلس:\nمميزاتها أكثر! تدخل أكثر من فرع (اللي تساوي او تقل عن سعر عضويتك)، وتحجز الكلاسات قبلها بـ 14 يوم، وتستمتع بالمرافق المتوفرة.\nتقدر بعد تضيف صديق 4 مرات شهريًا مجانًا !👯‍♂️\nوتجمّد عضويتك مجانًا حسب الفترة المسموحة لها وتقدر تقسّمهم براحتك حسب الشروط والأحكام، بدون رسوم.\nوفيها خدمات إضافية مثل: تحليل الجسم بأجهزة Boditrax، ومياه Yanga الرياضية اللي تعطيك دفعة بالطاقة 💪\n\nكل باقة مصمّمة تناسب احتياجك، اختَر الأنسب وابدأ مشوارك الرياضي معنا! 🙌💚",
     "source": "clean-v2",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "core-plus-difference-ksa-en",
@@ -1275,7 +1952,30 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "🔹 Core Package:\nYou can work out at your home branch only, book classes up to 8 days in advance, and use more than 180 modern machines!\nYou can freeze your membership for free for up to 25% of its duration. If you split the freeze, only part of it will be free, and the rest will have a small fee (SAR 39 for every 30 days).\n\n🔸 Plus Package:\nMore benefits! You can access multiple branches (equal to or lower than your membership price), book classes up to 14 days in advance, and enjoy the available facilities.\nYou can also bring a friend 4 times per month for free! 👯‍♂️\nYou can freeze your membership for free based on the allowed period and split it as you prefer, according to the terms and conditions, with no fees.\nIt also includes extra services such as body composition analysis using Boditrax devices, and Yanga sports water to keep you energized 💪\n\nEach package is designed to fit your needs. Choose what suits you best and start your fitness journey with us! 🙌💚",
     "source": "clean-v2",
-    "sortOrder": 20
+    "sortOrder": 20,
+    "active": true
+  },
+  {
+    "key": "admin-membership-packages-إلغاء-العضويات-محددة-المدة-565d8817",
+    "title": "إلغاء العضويات محددة المدة",
+    "category": "Membership & Packages",
+    "country": "ALL",
+    "language": "AR",
+    "body": "عزيزي/عزيزتي، نود التوضيح أن عضويتك هي عضوية [نوع العضوية] لمدة [المدة]، وهي عضوية محددة المدة.\n\nلذلك، لا يمكن إلغاء هذه العضوية، حيث إنها تنتهي تلقائيًا بانتهاء مدة العضوية ولا يتم تجديدها تلقائيًا أو فرض أي رسوم إضافية بعد تاريخ الانتهاء.\nوتاريخ انتهاء عضويتك هو 00-00-0000",
+    "source": "admin",
+    "sortOrder": 20,
+    "active": true
+  },
+  {
+    "key": "admin-membership-packages-fixed-term-membership-cancellation-policy-c3298a32",
+    "title": "Fixed-Term Membership Cancellation Policy",
+    "category": "Membership & Packages",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Dear,\n\nWe would like to clarify that your membership is a [Membership Type] [Duration] Membership, which is a fixed-term membership.\n\nTherefore, it cannot be cancelled, as it will automatically end at the end of the membership term and does not renew automatically or incur any additional charges after the expiry date. \nand Your membership will expire on 00-00-0000. 🙏",
+    "source": "admin",
+    "sortOrder": 30,
+    "active": true
   },
   {
     "key": "core-plus-difference-uae-ar",
@@ -1285,7 +1985,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 الفرق بين باقة كور وباقة بلس:\n\n🔹 باقة كور:\nتمنحك إمكانية التمرين في فرعك الأساسي واستخدام أجهزة النادي والمرافق الأساسية، مع حجز الكلاسات حسب سياسة الحجز المتاحة.\n\n🔸 باقة بلس:\nتمنحك مرونة ومزايا أكثر حسب نوع العضوية، مثل إمكانية الدخول إلى فروع إضافية حسب الشروط، والاستفادة من مزايا إضافية متاحة في الفرع مثل Bring a Friend أو خدمات أخرى حسب توفرها.\n\nالأسعار والمزايا قد تختلف حسب الفرع ونوع العضوية، ويمكنك معرفة التفاصيل من صفحة الانضمام الرسمية.",
     "source": "clean-v2",
-    "sortOrder": 1730
+    "sortOrder": 1730,
+    "active": false
   },
   {
     "key": "core-plus-difference-uae-en",
@@ -1295,7 +1996,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Difference between Core and Plus:\n\n🔹 Core package:\nCore allows you to train at your home gym and use the gym equipment and standard facilities, with class booking based on the available booking policy.\n\n🔸 Plus package:\nPlus gives you more flexibility and extra benefits depending on your membership type, such as access to additional branches according to the terms, and selected extra benefits such as Bring a Friend or other services where available.\n\nPrices and benefits may vary by branch and membership type, and you can check the details through the official join page.",
     "source": "clean-v2",
-    "sortOrder": 1740
+    "sortOrder": 1740,
+    "active": false
   },
   {
     "key": "no-free-trial-ksa-ar",
@@ -1305,7 +2007,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 لا نقدم تجارب مجانية، لكن نرحب بك لزيارة النادي وتلقي جولة من فريقنا. وإذا رغبت بتجربة النادي قبل الاشتراك، يمكنك شراء دخول ليوم واحد من خلال رابط الانضمام الرسمي.",
     "source": "clean-v2",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "no-free-trial-ksa-en",
@@ -1315,7 +2018,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 We do not offer free trials, but you are welcome to visit the gym and get a tour from our team. If you would like to try the gym before joining, you can purchase a day pass through the official join link.",
     "source": "clean-v2",
-    "sortOrder": 20
+    "sortOrder": 20,
+    "active": true
   },
   {
     "key": "no-free-trial-uae-ar",
@@ -1325,7 +2029,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 لا نقدم تجارب مجانية، لكن نرحب بك لزيارة النادي وتلقي جولة من فريقنا. وإذا رغبت بتجربة النادي قبل الاشتراك، يمكنك شراء دخول ليوم واحد من خلال رابط الانضمام الرسمي.",
     "source": "clean-v2",
-    "sortOrder": 30
+    "sortOrder": 30,
+    "active": true
   },
   {
     "key": "no-free-trial-uae-en",
@@ -1335,7 +2040,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 We do not offer free trials, but you are welcome to visit the gym and get a tour from our team. If you would like to try the gym before joining, you can purchase a day pass through the official join link.",
     "source": "clean-v2",
-    "sortOrder": 40
+    "sortOrder": 40,
+    "active": true
   },
   {
     "key": "pt-pricing-ksa-ar",
@@ -1345,7 +2051,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 أسعار التدريب الشخصي:\nجلسة واحدة: 249.55 ريال | صالحة يومين\n5 جلسات: 1,148.85 ريال | صالحة 21 يوم\n10 جلسات: 2,276.42 ريال | صالحة 45 يوم\n20 جلسة: 4,183.70 ريال | صالحة 90 يوم\n30 جلسة: 5,906.40 ريال | صالحة 120 يوم\n48 جلسة: 8,921.12 ريال | صالحة 180 يوم\n\nالتقسيط متاح عن طريق تابي من باقة 10 جلسات وأكثر.",
     "source": "clean-v2",
-    "sortOrder": 50
+    "sortOrder": 50,
+    "active": true
   },
   {
     "key": "pt-pricing-ksa-en",
@@ -1355,7 +2062,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Personal training prices:\n1 Session: SAR 249.55 | Valid for 2 days\n5 Sessions: SAR 1,148.85 | Valid for 21 days\n10 Sessions: SAR 2,276.42 | Valid for 45 days\n20 Sessions: SAR 4,183.70 | Valid for 90 days\n30 Sessions: SAR 5,906.40 | Valid for 120 days\n48 Sessions: SAR 8,921.12 | Valid for 180 days\n\nTabby installments are available from the 10-session package and above.",
     "source": "clean-v2",
-    "sortOrder": 60
+    "sortOrder": 60,
+    "active": true
   },
   {
     "key": "pt-pricing-uae-ar",
@@ -1365,7 +2073,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 التدريب الشخصي في الإمارات يتم عن طريق مدربين فري لانس، لذلك كل مدرب يحدد أسعاره بنفسه.\n\nالسيشن الواحدة تبدأ تقريبًا من 200 درهم، وباقات 12 سيشن عادةً تتراوح بين 2,700 و3,500 درهم. يمكنك التواصل مع المدرب مباشرة في النادي لمعرفة الأسعار والأوقات.",
     "source": "clean-v2",
-    "sortOrder": 70
+    "sortOrder": 70,
+    "active": true
   },
   {
     "key": "pt-pricing-uae-en",
@@ -1375,7 +2084,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Personal training in the UAE is provided by freelance coaches, so each coach sets their own pricing.\n\nSingle sessions usually start from around AED 200, and 12-session packages usually range between AED 2,700 and AED 3,500. You can speak directly with a coach at the gym for pricing and availability.",
     "source": "clean-v2",
-    "sortOrder": 80
+    "sortOrder": 80,
+    "active": true
   },
   {
     "key": "current-offer-uae-first-month-ar",
@@ -1385,7 +2095,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 العرض الحالي في الإمارات:\nخصم 30% على أول شهر من عضوية Core وPlus الشهرية.\n\nكود الخصم: PGA30\n\nيمكنك تطبيق الكود أثناء الاشتراك من خلال صفحة الانضمام الرسمية.",
     "source": "v3-update",
-    "sortOrder": 90
+    "sortOrder": 90,
+    "active": false
   },
   {
     "key": "current-offer-uae-first-month-en",
@@ -1395,7 +2106,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Current UAE offer:\n30% off the first month on Core and Plus monthly memberships.\n\nPromo code: PGA30\n\nYou can apply the code during checkout through the official join page.",
     "source": "v3-update",
-    "sortOrder": 100
+    "sortOrder": 100,
+    "active": false
   },
   {
     "key": "membership-prices-ksa-ar",
@@ -1405,7 +2117,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 أسعار العضويات تختلف حسب نوع العضوية، مدة الاشتراك، والفرع المختار.\n\nبإمكانك الاطلاع على الأسعار الحالية واختيار الفرع والعضوية المناسبة من خلال رابط الانضمام:\nhttps://ksa.puregymarabia.com/join/",
     "source": "v3-update",
-    "sortOrder": 110
+    "sortOrder": 110,
+    "active": true
   },
   {
     "key": "membership-prices-ksa-en",
@@ -1415,7 +2128,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Membership prices vary depending on the membership type, subscription duration, and selected branch.\n\nYou can view the current prices and choose your preferred branch and membership through the join link:\nhttps://ksa.puregymarabia.com/en-gb/join/",
     "source": "v3-update",
-    "sortOrder": 120
+    "sortOrder": 120,
+    "active": true
   },
   {
     "key": "admin-offers-prices-pt-عروض-a4929590",
@@ -1423,9 +2137,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Offers, Prices & PT",
     "country": "KSA",
     "language": "AR",
-    "body": "لدينا حاليًا عروض العيد بخصم 30٪ 🔥\n\n✅ إذا كنت ترغب بالاشتراك الشهري، يمكنك الحصول على خصم 30٪ على أول شهر من عضويتي Core وPlus باستخدام الكود: PGM30\n\n✅ وإذا كنت تفضل العضويات محددة المدة، يمكنك الحصول على خصم 30٪ على عضوية Plus لمدة 3 أشهر باستخدام الكود: PG3M\n\nالعروض مناسبة جدًا للبدء بعضوية بسعر أقل والاستفادة من مميزاتها 💪",
+    "body": "عندنا عرض مميز على بعض فروعنا المختارة 💚\n\nخصم 30% على عضوية 3 أشهر محددة المدة (كور أو بلس) مع إعفاء كامل من رسوم التسجيل 🎉\n\nاستخدم كود الخصم: PG3M\n\nالفروع المشمولة بالعرض:\n📍 القيروان (رجالي)\n📍 النسيم (رجالي ونسائي)\n📍 الراكة (نسائي)\n📍 العزيزية (نسائي)\n📍 السعادة (رجالي)\n\nللاشتراك، ادخل على موقعنا الإلكتروني واختر الفرع والعضوية المناسبة ثم أضف كود الخصم في الخانة المخصصة 😊",
     "source": "admin",
-    "sortOrder": 130
+    "sortOrder": 130,
+    "active": true
   },
   {
     "key": "admin-offers-prices-pt-offers-33cac4d0",
@@ -1433,9 +2148,10 @@ export const seedScripts: SeedScript[] = [
     "category": "Offers, Prices & PT",
     "country": "KSA",
     "language": "EN",
-    "body": "We currently have Eid offers with 30% off 🔥\n\n✅ If you prefer a monthly membership, you can get 30% off your first month on Core and Plus memberships using the code: PGM30\n\n✅ If you prefer a fixed-term membership, you can get 30% off a 3-month Plus membership using the code: PG3M\n\nThese offers are a great opportunity to start your fitness journey at a lower price while enjoying all the membership benefits 💪",
+    "body": "We currently have a special offer available at selected branches 💚\n\nGet 30% off a 3-Month Fixed-Term Membership (Core or Plus) with full waiver of the joining fee 🎉\n\nUse promo code: PG3M\n\nBranches included in the offer:\n📍 Al Qairawan (Men)\n📍 Al Naseem (Men & Women)\n📍 Al Rakah (Women)\n📍 Al Aziziyah (Women)\n📍 Al Saadah (Men)\n\nTo subscribe, visit our website, choose your preferred branch and membership, then enter the promo code in the designated field during checkout 😊",
     "source": "admin",
-    "sortOrder": 140
+    "sortOrder": 140,
+    "active": true
   },
   {
     "key": "membership-prices-uae-ar",
@@ -1445,7 +2161,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 أسعار العضويات تختلف حسب نوع العضوية، مدة الاشتراك، والفرع المختار.\n\nبإمكانك الاطلاع على الأسعار الحالية واختيار الفرع والعضوية المناسبة من خلال رابط الانضمام:\nhttps://uae.puregymarabia.com/join/",
     "source": "v3-update",
-    "sortOrder": 150
+    "sortOrder": 150,
+    "active": true
   },
   {
     "key": "membership-prices-uae-en",
@@ -1455,7 +2172,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Membership prices vary depending on the membership type, subscription duration, and selected branch.\n\nYou can view the current prices and choose your preferred branch and membership through the join link:\nhttps://uae.puregymarabia.com/en-gb/join/",
     "source": "v3-update",
-    "sortOrder": 160
+    "sortOrder": 160,
+    "active": true
   },
   {
     "key": "current-offer-ksa-monthly-30-ar",
@@ -1465,7 +2183,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 العرض الحالي في السعودية:\nخصم 30% على أول شهر من عضوية Core وPlus الشهرية.\n\nكود الخصم: PGM30\n\nيمكنك تطبيق الكود أثناء الاشتراك من خلال صفحة الانضمام الرسمية.",
     "source": "v3-update",
-    "sortOrder": 1830
+    "sortOrder": 1830,
+    "active": false
   },
   {
     "key": "current-offer-ksa-monthly-30-en",
@@ -1475,7 +2194,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Current KSA offer:\n30% off the first month on Core and Plus monthly memberships.\n\nPromo code: PGM30\n\nYou can apply the code during checkout through the official join page.",
     "source": "v3-update",
-    "sortOrder": 1840
+    "sortOrder": 1840,
+    "active": false
   },
   {
     "key": "current-offer-ksa-plus-3m-ar",
@@ -1485,7 +2205,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 العرض الحالي في السعودية:\nخصم 20% على عضوية Plus محددة المدة 3 شهور فقط.\n\nكود الخصم: PG3M\n\nملاحظة: هذا العرض خاص بعضوية Plus لمدة 3 شهور وليس لكل العضويات.",
     "source": "v3-update",
-    "sortOrder": 1850
+    "sortOrder": 1850,
+    "active": false
   },
   {
     "key": "current-offer-ksa-plus-3m-en",
@@ -1495,7 +2216,74 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Current KSA offer:\n20% off the 3-Month Fixed Term Plus membership only.\n\nPromo code: PG3M\n\nNote: This offer applies to the 3-Month Plus membership only, not all memberships.",
     "source": "v3-update",
-    "sortOrder": 1860
+    "sortOrder": 1860,
+    "active": false
+  },
+  {
+    "key": "admin-offers-prices-pt-عروض-الفروع-المختارة-62dd1599",
+    "title": "عروض الفروع المختارة",
+    "category": "Offers, Prices & PT",
+    "country": "KSA",
+    "language": "AR",
+    "body": "عزيزي/عزيزتي، نود نوضح أن العروض الترويجية قد تختلف من فرع إلى آخر بحسب الحملة التسويقية المطبقة في كل فرع. لذلك قد تكون بعض العروض متاحة في فروع محددة فقط وغير متوفرة في فروع أخرى.\n\nنرجو متابعة موقعنا الإلكتروني وحساباتنا على مواقع التواصل الاجتماعي للاطلاع على أحدث العروض التي قد تشمل فرعك مستقبلًا.",
+    "source": "admin",
+    "sortOrder": 1860,
+    "active": true
+  },
+  {
+    "key": "admin-offers-prices-pt-selected-branch-offers-9ce41073",
+    "title": "Selected Branch Offers",
+    "category": "Offers, Prices & PT",
+    "country": "KSA",
+    "language": "EN",
+    "body": "Dear,\n\nPlease note that promotional offers may vary from one branch to another depending on the marketing campaign applied to each branch. Therefore, some offers may be available only at selected branches and may not apply to others.\n\nWe encourage you to follow our website and social media channels to stay updated on future promotions that may include your branch. 🙏",
+    "source": "admin",
+    "sortOrder": 1870,
+    "active": true
+  },
+  {
+    "key": "admin-payment-billing-update-payment-details-ff803bac",
+    "title": "Update Payment Details",
+    "category": "Payment & Billing",
+    "country": "ALL",
+    "language": "EN",
+    "body": "All you need to do is log in to your account using the following link:\n\nhttps://ksa.puregymarabia.com/login/\n\nOnce logged in, click on \"Manage\" under your gym card, then select Payment Method or Billing to update your card details.",
+    "source": "admin",
+    "sortOrder": 10,
+    "active": true
+  },
+  {
+    "key": "admin-payment-billing-تحديث-معلومات-الدفع-18f667c6",
+    "title": "تحديث معلومات الدفع",
+    "category": "Payment & Billing",
+    "country": "ALL",
+    "language": "AR",
+    "body": "كل ما عليك هو تسجيل الدخول إلى حسابك من خلال الرابط التالي:\n\nhttps://ksa.puregymarabia.com/login/\n\nبعد تسجيل الدخول، اضغط/اضغطي على \"يدير\" أسفل بطاقة الصالة الرياضية، ثم اختر/اختاري طريقة الدفع أو السداد لتحديث معلومات البطاقة الخاصة بك.",
+    "source": "admin",
+    "sortOrder": 10,
+    "active": true
+  },
+  {
+    "key": "admin-payment-billing-payment-troubleshooting-892add6b",
+    "title": "Payment Troubleshooting",
+    "category": "Payment & Billing",
+    "country": "ALL",
+    "language": "EN",
+    "body": "If you are experiencing a payment issue, please make sure of the following:\n\n• Sufficient funds are available on your card.\n• Your card supports online payments.\n• The card details have been entered correctly.\n• You have a stable internet connection.\n• You are not using a VPN during the payment process.\n• If you selected a monthly membership, Tabby will not appear, as it is only available for fixed-term memberships.\n\nIf the issue persists, please try again later or contact us for further assistance.",
+    "source": "admin",
+    "sortOrder": 20,
+    "active": true
+  },
+  {
+    "key": "admin-payment-billing-حل-مشاكل-الدفع-0839d9bb",
+    "title": "حل مشاكل الدفع",
+    "category": "Payment & Billing",
+    "country": "ALL",
+    "language": "AR",
+    "body": "في حال واجهت مشكلة في الدفع، يرجى التأكد من التالي:\n\n• توفر رصيد كافٍ في البطاقة.\n• أن البطاقة تدعم الدفع الإلكتروني.\n• إدخال بيانات البطاقة بشكل صحيح.\n• وجود اتصال إنترنت مستقر.\n• عدم استخدام VPN أثناء عملية الدفع.\n• في حال اختيار عضوية شهرية، لن يظهر خيار تابي لأنه متاح فقط للعضويات محددة المدة.\n\nفي حال استمرار المشكلة، يرجى المحاولة مرة أخرى لاحقًا أو التواصل معنا لمساعدتك.",
+    "source": "admin",
+    "sortOrder": 20,
+    "active": true
   },
   {
     "key": "payment-link-permission-ksa-ar",
@@ -1505,7 +2293,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 قبل إرسال رابط الدفع، هل توافق على استلام فاتورة إلكترونية لإتمام عملية الدفع؟ سيتم إرسالها إلى بريدك الإلكتروني من hyperbill@hyperpay.com.",
     "source": "clean-v2",
-    "sortOrder": 1230
+    "sortOrder": 1230,
+    "active": true
   },
   {
     "key": "payment-link-permission-ksa-en",
@@ -1515,7 +2304,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Before sending the payment link, do you agree to receive an electronic invoice to complete the payment? It will be sent to your email from hyperbill@hyperpay.com.",
     "source": "clean-v2",
-    "sortOrder": 1240
+    "sortOrder": 1240,
+    "active": true
   },
   {
     "key": "payment-link-permission-uae-ar",
@@ -1525,7 +2315,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 قبل إرسال رابط الدفع، هل توافق على استلام فاتورة إلكترونية لإتمام عملية الدفع؟ سيتم إرسالها إلى بريدك الإلكتروني من hyperbill@hyperpay.com.",
     "source": "clean-v2",
-    "sortOrder": 1250
+    "sortOrder": 1250,
+    "active": true
   },
   {
     "key": "payment-link-permission-uae-en",
@@ -1535,7 +2326,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Before sending the payment link, do you agree to receive an electronic invoice to complete the payment? It will be sent to your email from hyperbill@hyperpay.com.",
     "source": "clean-v2",
-    "sortOrder": 1260
+    "sortOrder": 1260,
+    "active": true
   },
   {
     "key": "payment-link-sent-ksa-ar",
@@ -1545,7 +2337,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 سيتم إرسال فاتورة إلكترونية من البريد التالي: hyperbill@hyperpay.com\nإلى بريدك الإلكتروني: \nوتتضمن الفاتورة رابطًا لإتمام عملية الدفع الخاصة بمبلغ [المبلغ].\n\nيرجى بعد الدفع التواصل معنا لإتمام طلبك.",
     "source": "clean-v2",
-    "sortOrder": 1270
+    "sortOrder": 1270,
+    "active": true
   },
   {
     "key": "payment-link-sent-ksa-en",
@@ -1555,7 +2348,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 An electronic invoice will be sent from: hyperbill@hyperpay.com\nTo your email: \nThe invoice will include a payment link to complete the payment for the amount of [Amount].\n\nAfter payment, please contact us so we can complete your request.",
     "source": "clean-v2",
-    "sortOrder": 1280
+    "sortOrder": 1280,
+    "active": true
   },
   {
     "key": "payment-link-sent-uae-ar",
@@ -1565,7 +2359,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 سيتم إرسال فاتورة إلكترونية من البريد التالي: hyperbill@hyperpay.com\nإلى بريدك الإلكتروني: \nوتتضمن الفاتورة رابطًا لإتمام عملية الدفع الخاصة بمبلغ [المبلغ].\n\nيرجى بعد الدفع التواصل معنا لإتمام طلبك.",
     "source": "clean-v2",
-    "sortOrder": 1290
+    "sortOrder": 1290,
+    "active": true
   },
   {
     "key": "payment-link-sent-uae-en",
@@ -1575,7 +2370,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 An electronic invoice will be sent from: hyperbill@hyperpay.com\nTo your email: \nThe invoice will include a payment link to complete the payment for the amount of [Amount].\n\nAfter payment, please contact us so we can complete your request.",
     "source": "clean-v2",
-    "sortOrder": 1300
+    "sortOrder": 1300,
+    "active": true
   },
   {
     "key": "paid-still-suspended-ksa-ar",
@@ -1585,7 +2381,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 نعتذر عن ذلك. يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبطين بالعضوية، مع صورة أو رقم العملية إن وجد، حتى نتمكن من رفع الطلب للفريق المختص.",
     "source": "clean-v2",
-    "sortOrder": 1310
+    "sortOrder": 1310,
+    "active": true
   },
   {
     "key": "paid-still-suspended-ksa-en",
@@ -1595,7 +2392,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 We apologize for that. Please provide the email address and mobile number linked to the membership, along with a payment screenshot or transaction ID if available, so we can escalate it to the concerned team.",
     "source": "clean-v2",
-    "sortOrder": 1320
+    "sortOrder": 1320,
+    "active": true
   },
   {
     "key": "paid-still-suspended-uae-ar",
@@ -1605,7 +2403,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 نعتذر عن ذلك. يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبطين بالعضوية، مع صورة أو رقم العملية إن وجد، حتى نتمكن من رفع الطلب للفريق المختص.",
     "source": "clean-v2",
-    "sortOrder": 1330
+    "sortOrder": 1330,
+    "active": true
   },
   {
     "key": "paid-still-suspended-uae-en",
@@ -1615,7 +2414,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 We apologize for that. Please provide the email address and mobile number linked to the membership, along with a payment screenshot or transaction ID if available, so we can escalate it to the concerned team.",
     "source": "clean-v2",
-    "sortOrder": 1340
+    "sortOrder": 1340,
+    "active": true
   },
   {
     "key": "tabby-info-ksa-ar",
@@ -1625,7 +2425,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 التقسيط عن طريق تابي متاح لبعض العضويات أو الباقات حسب الخيارات الظاهرة لك أثناء الدفع على الموقع.",
     "source": "clean-v2",
-    "sortOrder": 1350
+    "sortOrder": 1350,
+    "active": true
   },
   {
     "key": "tabby-info-ksa-en",
@@ -1635,7 +2436,30 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Tabby installments are available for selected memberships or packages depending on the options shown during checkout on the website.",
     "source": "clean-v2",
-    "sortOrder": 1360
+    "sortOrder": 1360,
+    "active": true
+  },
+  {
+    "key": "admin-payment-billing-تجديد-عضوية-محددة-المدة-1f8a1345",
+    "title": "تجديد عضوية محددة المدة",
+    "category": "Payment & Billing",
+    "country": "KSA",
+    "language": "AR",
+    "body": "يمكنك الاشتراك عن طريقنا بإضافة عضوية جديدة إلى عضويتك الحالية.\n\nسيتم إرسال بريد إلكتروني يحتوي على رابط دفع بقيمة العضوية الجديدة، وبعد إتمام الدفع سيتم إضافة العضوية الجديدة لتبدأ مباشرة بعد انتهاء عضويتك الحالية.\n\nيرجى ملاحظة أن رابط الدفع صالح لمدة 48 ساعة فقط.\n\nكما يلزم التواصل معنا بعد إتمام الدفع لاستكمال عملية إضافة العضوية.\n\nعلمًا بأنه لا يمكن الدفع عن طريق تابي لهذه العملية.\n\nفي حال كنت ترغب/ترغبين بتأكيد الطلب، يرجى إبلاغنا بذلك.",
+    "source": "admin",
+    "sortOrder": 1360,
+    "active": true
+  },
+  {
+    "key": "admin-payment-billing-fixed-term-membership-renewal-3af63c40",
+    "title": "Fixed-Term Membership Renewal",
+    "category": "Payment & Billing",
+    "country": "KSA",
+    "language": "EN",
+    "body": "You can renew your membership through us by adding a new membership to your current one.\n\nAn email containing a payment link for the new membership will be sent to you. Once payment is completed, the new membership will be added and will begin immediately after your current membership expires.\n\nPlease note that the payment link is valid for 48 hours only.\n\nYou will also need to contact us after completing the payment so we can finalize the addition of the new membership.\n\nPlease note that Tabby payment is not available for this process.\n\nWould you like to confirm the request?",
+    "source": "admin",
+    "sortOrder": 1370,
+    "active": true
   },
   {
     "key": "tabby-info-uae-ar",
@@ -1645,7 +2469,30 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 التقسيط عن طريق تابي متاح لبعض العضويات أو الباقات حسب الخيارات الظاهرة لك أثناء الدفع على الموقع.",
     "source": "clean-v2",
-    "sortOrder": 1370
+    "sortOrder": 1370,
+    "active": true
+  },
+  {
+    "key": "admin-payment-billing-تحويل-العضوية-الشهرية-إلى-عضوية-محددة-المد-e1b37f68",
+    "title": "تحويل العضوية الشهرية إلى عضوية محددة المدة",
+    "category": "Payment & Billing",
+    "country": "KSA",
+    "language": "AR",
+    "body": "في حال رغبتك بتحويل عضويتك من عضوية شهرية إلى عضوية محددة المدة ([نوع العضوية] لمدة [المدة])، فسيتم سحب فرق السعر بين العضويتين والبالغ تقريبًا ([المبلغ] ريال) فجر الغد.\n\nيرجى التأكد من توفر مبلغ يزيد قليلًا عن المبلغ المطلوب لضمان إتمام عملية السحب دون أي مشاكل.\n\nعلمًا بأن عضويتك الجديدة ستبدأ اعتبارًا من يوم غد، وسيتم خصم فرق السعر من نفس البطاقة المسجلة على عضويتك الشهرية الحالية.\n\nفي حال فشل تحصيل فرق السعر للمرة الأولى، سيتم إعادة محاولة السحب بعد 10 أيام. وإذا فشلت عملية السحب للمرة الثانية، فسيتم إلغاء العضوية الجديدة بشكل نهائي، ولن يكون بالإمكان استعادتها.\n\nهل نؤكد على العملية؟\n\nكما نود التنويه بأنه في حال تم تحويل عضويتك إلى عضوية محددة المدة وتم سحب المبلغ بنجاح، ثم وصلك لاحقًا إشعار أو رسالة نصية بخصوص قرب موعد دفعتك الشهرية وضرورة توفر رصيد كافٍ، فنرجو تجاهل الرسالة.\n\nحيث إن هذا التنبيه يكون مرتبطًا بعضويتك الشهرية السابقة ويتم إرساله تلقائيًا من النظام، ولن يتم سحب أي مبالغ إضافية بعد دفع فرق التحويل.",
+    "source": "admin",
+    "sortOrder": 1370,
+    "active": true
+  },
+  {
+    "key": "admin-payment-billing-converting-a-monthly-membership-to-a-fixed-11f4b029",
+    "title": "Converting a Monthly Membership to a Fixed-Term Membership",
+    "category": "Payment & Billing",
+    "country": "KSA",
+    "language": "EN",
+    "body": "If you would like to convert your monthly membership to a fixed-term membership ([Membership Type] - [Duration]), the price difference between the two memberships, approximately SAR [Amount], will be charged in the early hours of tomorrow.\n\nPlease ensure that a slightly higher amount than the required balance is available in your account to avoid any payment issues.\n\nPlease note that your new membership will start tomorrow, and the payment will be charged to the same card registered on your current monthly membership.\n\nIf the first payment attempt fails, a second attempt will be made after 10 days. If the second payment attempt also fails, the new membership will be permanently cancelled and cannot be reinstated.\n\nWould you like us to confirm the process?\n\nPlease also note that after the conversion is completed and the payment is successfully processed, you may still receive an automated notification or SMS regarding your previous monthly membership and the need to maintain sufficient funds for renewal.\n\nKindly disregard such notifications, as they are automatically generated by the system for your previous monthly membership, and no additional charges will be applied after the conversion payment has been collected.",
+    "source": "admin",
+    "sortOrder": 1380,
+    "active": true
   },
   {
     "key": "tabby-info-uae-en",
@@ -1655,7 +2502,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Tabby installments are available for selected memberships or packages depending on the options shown during checkout on the website.",
     "source": "clean-v2",
-    "sortOrder": 1380
+    "sortOrder": 1380,
+    "active": true
   },
   {
     "key": "quick-welcome-ksa-ar",
@@ -1665,7 +2513,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 أهلاً وسهلاً، معك {{employeeName}} من بيورجيم، كيف أقدر أساعدك؟",
     "source": "quick",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "active": true
   },
   {
     "key": "quick-welcome-ksa-en",
@@ -1675,7 +2524,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Hello, this is {{employeeName}} from PureGym. How can I assist you?",
     "source": "quick",
-    "sortOrder": 20
+    "sortOrder": 20,
+    "active": true
   },
   {
     "key": "quick-welcome-uae-ar",
@@ -1685,7 +2535,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 أهلاً وسهلاً، معك {{employeeName}} من بيورجيم، كيف أقدر أساعدك؟",
     "source": "quick",
-    "sortOrder": 30
+    "sortOrder": 30,
+    "active": true
   },
   {
     "key": "quick-welcome-uae-en",
@@ -1695,7 +2546,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Hello, this is {{employeeName}} from PureGym. How can I assist you?",
     "source": "quick",
-    "sortOrder": 40
+    "sortOrder": 40,
+    "active": true
   },
   {
     "key": "quick-salam-ksa-ar",
@@ -1705,7 +2557,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 وعليكم السلام ورحمة الله وبركاته، أهلاً وسهلاً.",
     "source": "quick",
-    "sortOrder": 50
+    "sortOrder": 50,
+    "active": true
   },
   {
     "key": "quick-salam-ksa-en",
@@ -1715,7 +2568,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Hello and welcome.",
     "source": "quick",
-    "sortOrder": 60
+    "sortOrder": 60,
+    "active": true
   },
   {
     "key": "quick-salam-uae-ar",
@@ -1725,7 +2579,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 وعليكم السلام ورحمة الله وبركاته، أهلاً وسهلاً.",
     "source": "quick",
-    "sortOrder": 70
+    "sortOrder": 70,
+    "active": true
   },
   {
     "key": "quick-salam-uae-en",
@@ -1735,7 +2590,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Hello and welcome.",
     "source": "quick",
-    "sortOrder": 80
+    "sortOrder": 80,
+    "active": true
   },
   {
     "key": "quick-wait-ksa-ar",
@@ -1745,7 +2601,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 ولا يهمك، لحظات من فضلك 🙏",
     "source": "quick",
-    "sortOrder": 90
+    "sortOrder": 90,
+    "active": true
   },
   {
     "key": "quick-wait-ksa-en",
@@ -1755,7 +2612,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 No worries, please allow me a moment 🙏",
     "source": "quick",
-    "sortOrder": 100
+    "sortOrder": 100,
+    "active": true
   },
   {
     "key": "quick-wait-uae-ar",
@@ -1765,7 +2623,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 ولا يهمك، لحظات من فضلك 🙏",
     "source": "quick",
-    "sortOrder": 110
+    "sortOrder": 110,
+    "active": true
   },
   {
     "key": "quick-wait-uae-en",
@@ -1775,7 +2634,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 No worries, please allow me a moment 🙏",
     "source": "quick",
-    "sortOrder": 120
+    "sortOrder": 120,
+    "active": true
   },
   {
     "key": "quick-membership-info-ksa-ar",
@@ -1785,7 +2645,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبطين بالعضوية لنتمكن من خدمتك بشكل أفضل 🙏",
     "source": "quick",
-    "sortOrder": 130
+    "sortOrder": 130,
+    "active": true
   },
   {
     "key": "quick-membership-info-ksa-en",
@@ -1795,7 +2656,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Kindly provide the email address and mobile number linked to the membership so we can assist you better 🙏",
     "source": "quick",
-    "sortOrder": 140
+    "sortOrder": 140,
+    "active": true
   },
   {
     "key": "quick-membership-info-uae-ar",
@@ -1805,7 +2667,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبطين بالعضوية لنتمكن من خدمتك بشكل أفضل 🙏",
     "source": "quick",
-    "sortOrder": 150
+    "sortOrder": 150,
+    "active": true
   },
   {
     "key": "quick-membership-info-uae-en",
@@ -1815,7 +2678,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Kindly provide the email address and mobile number linked to the membership so we can assist you better 🙏",
     "source": "quick",
-    "sortOrder": 160
+    "sortOrder": 160,
+    "active": true
   },
   {
     "key": "quick-cancel-info-ksa-ar",
@@ -1825,7 +2689,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 يرجى تزويدنا بالبريد الإلكتروني، رقم الجوال، رقم الهوية، والاسم المرتبط بعضويتك لنتمكن من مساعدتك في طلب الإلغاء 🙏",
     "source": "quick",
-    "sortOrder": 170
+    "sortOrder": 170,
+    "active": true
   },
   {
     "key": "quick-cancel-info-ksa-en",
@@ -1835,7 +2700,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Kindly provide the email address, mobile number, ID number, and name linked to the membership so we can assist you with the cancellation request 🙏",
     "source": "quick",
-    "sortOrder": 180
+    "sortOrder": 180,
+    "active": true
   },
   {
     "key": "quick-cancel-info-uae-ar",
@@ -1845,7 +2711,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 يرجى تزويدنا بالبريد الإلكتروني، رقم الجوال، رقم الهوية، والاسم المرتبط بعضويتك لنتمكن من مساعدتك في طلب الإلغاء 🙏",
     "source": "quick",
-    "sortOrder": 190
+    "sortOrder": 190,
+    "active": true
   },
   {
     "key": "quick-cancel-info-uae-en",
@@ -1855,7 +2722,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Kindly provide the email address, mobile number, ID number, and name linked to the membership so we can assist you with the cancellation request 🙏",
     "source": "quick",
-    "sortOrder": 200
+    "sortOrder": 200,
+    "active": true
   },
   {
     "key": "quick-anything-ksa-ar",
@@ -1865,7 +2733,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 هل يوجد أي خدمة أو استفسار آخر أقدر أساعدك فيه؟ 🙏",
     "source": "quick",
-    "sortOrder": 210
+    "sortOrder": 210,
+    "active": true
   },
   {
     "key": "quick-anything-ksa-en",
@@ -1875,7 +2744,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Is there anything else I can assist you with? 🙏",
     "source": "quick",
-    "sortOrder": 220
+    "sortOrder": 220,
+    "active": true
   },
   {
     "key": "quick-anything-uae-ar",
@@ -1885,7 +2755,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 هل يوجد أي خدمة أو استفسار آخر أقدر أساعدك فيه؟ 🙏",
     "source": "quick",
-    "sortOrder": 230
+    "sortOrder": 230,
+    "active": true
   },
   {
     "key": "quick-anything-uae-en",
@@ -1895,7 +2766,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Is there anything else I can assist you with? 🙏",
     "source": "quick",
-    "sortOrder": 240
+    "sortOrder": 240,
+    "active": true
   },
   {
     "key": "quick-still-ksa-ar",
@@ -1905,7 +2777,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 هل ما زلت معنا؟ أنا هنا لأي استفسار 🙏",
     "source": "quick",
-    "sortOrder": 250
+    "sortOrder": 250,
+    "active": true
   },
   {
     "key": "quick-still-ksa-en",
@@ -1915,7 +2788,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 Are you still with us? I’m here if you have any questions 🙏",
     "source": "quick",
-    "sortOrder": 260
+    "sortOrder": 260,
+    "active": true
   },
   {
     "key": "quick-still-uae-ar",
@@ -1925,7 +2799,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 هل ما زلت معنا؟ أنا هنا لأي استفسار 🙏",
     "source": "quick",
-    "sortOrder": 270
+    "sortOrder": 270,
+    "active": true
   },
   {
     "key": "quick-still-uae-en",
@@ -1935,7 +2810,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 Are you still with us? I’m here if you have any questions 🙏",
     "source": "quick",
-    "sortOrder": 280
+    "sortOrder": 280,
+    "active": true
   },
   {
     "key": "quick-busy-ksa-ar",
@@ -1945,7 +2821,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 يبدو أن الوقت غير مناسب حاليًا، سيتم إنهاء المحادثة الآن، ويمكنك الرجوع لنا بأي وقت 🙏",
     "source": "quick",
-    "sortOrder": 290
+    "sortOrder": 290,
+    "active": true
   },
   {
     "key": "quick-busy-ksa-en",
@@ -1955,7 +2832,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 It seems this may not be a convenient time. The chat will be closed for now, and you can reach out to us anytime 🙏",
     "source": "quick",
-    "sortOrder": 300
+    "sortOrder": 300,
+    "active": true
   },
   {
     "key": "quick-busy-uae-ar",
@@ -1965,7 +2843,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 يبدو أن الوقت غير مناسب حاليًا، سيتم إنهاء المحادثة الآن، ويمكنك الرجوع لنا بأي وقت 🙏",
     "source": "quick",
-    "sortOrder": 310
+    "sortOrder": 310,
+    "active": true
   },
   {
     "key": "quick-busy-uae-en",
@@ -1975,7 +2854,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 It seems this may not be a convenient time. The chat will be closed for now, and you can reach out to us anytime 🙏",
     "source": "quick",
-    "sortOrder": 320
+    "sortOrder": 320,
+    "active": true
   },
   {
     "key": "quick-close-no-reply-ksa-ar",
@@ -1985,7 +2865,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 سيتم إنهاء المحادثة بسبب عدم وجود رد، نشكرك على تواصلك معنا، ونسعد بتقييمك لتجربتك 🌸",
     "source": "quick",
-    "sortOrder": 330
+    "sortOrder": 330,
+    "active": true
   },
   {
     "key": "quick-close-no-reply-ksa-en",
@@ -1995,7 +2876,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 The chat will be closed due to no response.\nThank you for contacting us, and we’d appreciate your feedback 🌸",
     "source": "quick",
-    "sortOrder": 340
+    "sortOrder": 340,
+    "active": true
   },
   {
     "key": "quick-close-no-reply-uae-ar",
@@ -2005,7 +2887,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 سيتم إنهاء المحادثة بسبب عدم وجود رد، نشكرك على تواصلك معنا، ونسعد بتقييمك لتجربتك 🌸",
     "source": "quick",
-    "sortOrder": 350
+    "sortOrder": 350,
+    "active": true
   },
   {
     "key": "quick-close-no-reply-uae-en",
@@ -2015,7 +2898,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 The chat will be closed due to no response.\nThank you for contacting us, and we’d appreciate your feedback 🌸",
     "source": "quick",
-    "sortOrder": 360
+    "sortOrder": 360,
+    "active": true
   },
   {
     "key": "quick-end-ksa-ar",
@@ -2025,7 +2909,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏\nراح أترك لك رابط التقييم، ونسعد بمشاركتك لتجربتك 🌸",
     "source": "quick",
-    "sortOrder": 370
+    "sortOrder": 370,
+    "active": true
   },
   {
     "key": "quick-end-ksa-en",
@@ -2035,7 +2920,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 It was a pleasure assisting you 🙏\nWe appreciate your feedback and would be happy to hear about your experience 🌸",
     "source": "quick",
-    "sortOrder": 380
+    "sortOrder": 380,
+    "active": true
   },
   {
     "key": "admin-quick-scripts-عدم-الرد-c1bb962d",
@@ -2045,7 +2931,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 إذا ما جانا رد، سيتم إنهاء المحادثة ويمكن التواصل معنا مرة أخرى في أي وقت 🙏",
     "source": "admin",
-    "sortOrder": 380
+    "sortOrder": 380,
+    "active": true
   },
   {
     "key": "admin-quick-scripts-no-response-3a44cc95",
@@ -2055,7 +2942,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 If we don’t hear back from you, the chat will be closed. You can contact us again anytime 🙏",
     "source": "admin",
-    "sortOrder": 390
+    "sortOrder": 390,
+    "active": true
   },
   {
     "key": "quick-end-uae-ar",
@@ -2065,7 +2953,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏\nراح أترك لك رابط التقييم، ونسعد بمشاركتك لتجربتك 🌸",
     "source": "quick",
-    "sortOrder": 390
+    "sortOrder": 390,
+    "active": true
   },
   {
     "key": "quick-end-uae-en",
@@ -2075,7 +2964,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 It was a pleasure assisting you 🙏\nWe appreciate your feedback and would be happy to hear about your experience 🌸",
     "source": "quick",
-    "sortOrder": 400
+    "sortOrder": 400,
+    "active": true
   },
   {
     "key": "admin-quick-scripts-عدم-الرد-c1fafae9",
@@ -2085,7 +2975,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 إذا ما جانا رد، سيتم إنهاء المحادثة ويمكن التواصل معنا مرة أخرى في أي وقت 🙏",
     "source": "admin",
-    "sortOrder": 400
+    "sortOrder": 400,
+    "active": true
   },
   {
     "key": "admin-quick-scripts-no-response-316a0dc9",
@@ -2095,7 +2986,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 If we don’t hear back from you, the chat will be closed. You can contact us again anytime 🙏",
     "source": "admin",
-    "sortOrder": 410
+    "sortOrder": 410,
+    "active": true
   },
   {
     "key": "ticket-inactive-transaction-ksa-ar",
@@ -2105,7 +2997,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 العضو دفع للاشتراك لكن العضوية ما زالت غير فعالة، يرجى التحقق واتخاذ اللازم من طرفكم.\n\nالتفاصيل المطلوبة:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 SAR\nTransaction ID: AD-2ede12ed-9eaf-412b-97cb-5d5c1cc6bb5e\n\nشاكرين تعاونكم.",
     "source": "tickets",
-    "sortOrder": 1390
+    "sortOrder": 1390,
+    "active": true
   },
   {
     "key": "ticket-inactive-transaction-ksa-en",
@@ -2115,7 +3008,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 The member paid to join but the membership is still inactive. Please check and do the needed from your side.\n\nNeeded details:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 SAR\nTransaction ID: AD-2ede12ed-9eaf-412b-97cb-5d5c1cc6bb5e\n\nThanks in advance.",
     "source": "tickets",
-    "sortOrder": 1400
+    "sortOrder": 1400,
+    "active": true
   },
   {
     "key": "ticket-inactive-card-ksa-ar",
@@ -2125,7 +3019,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💚 العضو دفع للاشتراك لكن العضوية ما زالت غير فعالة، يرجى التحقق واتخاذ اللازم من طرفكم.\n\nالتفاصيل المطلوبة:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 SAR\nFirst 6 digits: 123456\nLast 4 digits: 1234\nCard Holder Name: [Card Holder Name]\n\nمرفق تقرير الدفع، يرجى التحقق من المشكلة واتخاذ اللازم. شاكرين تعاونكم.",
     "source": "tickets",
-    "sortOrder": 1410
+    "sortOrder": 1410,
+    "active": true
   },
   {
     "key": "ticket-inactive-card-ksa-en",
@@ -2135,7 +3030,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💚 The member paid to join but the membership is still inactive. Please check and do the needed from your side.\n\nNeeded details:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 SAR\nFirst 6 digits: 123456\nLast 4 digits: 1234\nCard Holder Name: [Card Holder Name]\n\nAttached is the payment report. Please check the issue and do the needful from your side. Thanks in advance.",
     "source": "tickets",
-    "sortOrder": 1420
+    "sortOrder": 1420,
+    "active": true
   },
   {
     "key": "ticket-inactive-transaction-uae-ar",
@@ -2145,7 +3041,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 العضو دفع للاشتراك لكن العضوية ما زالت غير فعالة، يرجى التحقق واتخاذ اللازم من طرفكم.\n\nالتفاصيل المطلوبة:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 AED\nTransaction ID: AD-2ede12ed-9eaf-412b-97cb-5d5c1cc6bb5e\n\nشاكرين تعاونكم.",
     "source": "tickets",
-    "sortOrder": 1430
+    "sortOrder": 1430,
+    "active": true
   },
   {
     "key": "ticket-inactive-transaction-uae-en",
@@ -2155,7 +3052,8 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 The member paid to join but the membership is still inactive. Please check and do the needed from your side.\n\nNeeded details:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 AED\nTransaction ID: AD-2ede12ed-9eaf-412b-97cb-5d5c1cc6bb5e\n\nThanks in advance.",
     "source": "tickets",
-    "sortOrder": 1440
+    "sortOrder": 1440,
+    "active": true
   },
   {
     "key": "ticket-inactive-card-uae-ar",
@@ -2165,7 +3063,8 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "💙 العضو دفع للاشتراك لكن العضوية ما زالت غير فعالة، يرجى التحقق واتخاذ اللازم من طرفكم.\n\nالتفاصيل المطلوبة:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 AED\nFirst 6 digits: 123456\nLast 4 digits: 1234\nCard Holder Name: [Card Holder Name]\n\nمرفق تقرير الدفع، يرجى التحقق من المشكلة واتخاذ اللازم. شاكرين تعاونكم.",
     "source": "tickets",
-    "sortOrder": 1450
+    "sortOrder": 1450,
+    "active": true
   },
   {
     "key": "ticket-inactive-card-uae-en",
@@ -2175,6 +3074,7 @@ export const seedScripts: SeedScript[] = [
     "language": "EN",
     "body": "💙 The member paid to join but the membership is still inactive. Please check and do the needed from your side.\n\nNeeded details:\nMembership type: Monthly Core / 3-Month Plus / Monthly Plus\nPaid amount: 278 AED\nFirst 6 digits: 123456\nLast 4 digits: 1234\nCard Holder Name: [Card Holder Name]\n\nAttached is the payment report. Please check the issue and do the needful from your side. Thanks in advance.",
     "source": "tickets",
-    "sortOrder": 1460
+    "sortOrder": 1460,
+    "active": true
   }
 ];

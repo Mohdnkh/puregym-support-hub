@@ -462,7 +462,7 @@ async function main() {
           language: script.language,
           body: script.body,
           source: script.source || "seed",
-          active: true,
+          active: script.active ?? true,
           sortOrder: script.sortOrder || 0,
         },
         create: {
@@ -473,7 +473,7 @@ async function main() {
           language: script.language,
           body: script.body,
           source: script.source || "seed",
-          active: true,
+          active: script.active ?? true,
           sortOrder: script.sortOrder || 0,
         },
       });
