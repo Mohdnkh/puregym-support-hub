@@ -1,29 +1,32 @@
 :root {
-  --bg: #f4f7fb;
+  --bg: #f1f5fb;
   --card: #ffffff;
-  --text: #101828;
-  --muted: #667085;
-  --border: #d7dee9;
-  --soft: #f8fafc;
-  --soft-2: #eef4ff;
+  --text: #0e1726;
+  --muted: #64748b;
+  --border: #dbe3ef;
+  --soft: #f6f9fd;
+  --soft-2: #eaf3fb;
   --green: #00a651;
-  --blue: #0876d8;
-  --dark: #111827;
-  --danger: #b91c1c;
+  --teal: #0bb4b0;
+  --blue: #0b84cf;
+  --dark: #0f1b2d;
+  --danger: #dc2626;
   --warning: #f59e0b;
-  --shadow: 0 18px 45px rgba(15, 23, 42, 0.09);
+  --shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.06);
 }
 
 [data-theme="dark"] {
-  --bg: #08111f;
-  --card: #0f1a2b;
-  --text: #eaf0f8;
-  --muted: #9aa8bb;
-  --border: #23334a;
-  --soft: #111d30;
-  --soft-2: #10213a;
-  --dark: #eaf0f8;
-  --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+  --bg: #070e1a;
+  --card: #0f1b2d;
+  --text: #e9f0f9;
+  --muted: #93a3b8;
+  --border: #243a52;
+  --soft: #0f1d31;
+  --soft-2: #102339;
+  --dark: #e9f0f9;
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.28);
 }
 
 * { box-sizing: border-box; }
@@ -59,7 +62,7 @@ button { cursor: pointer; }
 }
 [data-theme="dark"] .auth-card { background: rgba(15, 26, 43, .92); }
 .auth-logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
-.auth-logo { width: 54px; height: 54px; border-radius: 18px; display: grid; place-items: center; color: white; font-weight: 950; background: linear-gradient(135deg, var(--green), var(--blue)); box-shadow: 0 12px 30px rgba(8,118,216,.22); }
+.auth-logo { width: 54px; height: 54px; border-radius: 18px; display: grid; place-items: center; color: white; font-weight: 950; background: linear-gradient(135deg, var(--green), var(--teal), var(--blue)); box-shadow: 0 12px 30px rgba(8,118,216,.22); }
 .auth-card h1 { margin: 0; font-size: 32px; letter-spacing: -.04em; }
 .auth-card p { color: var(--muted); }
 .auth-actions { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
@@ -86,7 +89,7 @@ button { cursor: pointer; }
 .app-shell { min-height: 100vh; display: grid; grid-template-columns: 286px 1fr; }
 .sidebar { background: #0f172a; color: white; padding: 22px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
 .brand-block { display: flex; gap: 12px; align-items: center; margin-bottom: 26px; }
-.brand-mark { width: 46px; height: 46px; border-radius: 16px; background: linear-gradient(135deg, var(--green), var(--blue)); display: grid; place-items: center; font-weight: 950; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
+.brand-mark { width: 46px; height: 46px; border-radius: 16px; background: linear-gradient(135deg, var(--green), var(--teal), var(--blue)); display: grid; place-items: center; font-weight: 950; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
 .brand { font-weight: 950; font-size: 22px; line-height: 1.1; }
 .subbrand { color: #cbd5e1; font-size: 13px; margin-top: 3px; }
 .nav-button { width: 100%; text-align: start; color: #e5e7eb; background: transparent; border: 1px solid transparent; border-radius: 14px; padding: 12px 13px; margin-bottom: 8px; font-weight: 850; }
@@ -316,7 +319,7 @@ button { cursor: pointer; }
   display: grid;
   place-items: center;
   object-fit: cover;
-  background: linear-gradient(135deg, var(--green), var(--blue));
+  background: linear-gradient(135deg, var(--green), var(--teal), var(--blue));
   color: white;
   font-weight: 950;
 }
@@ -374,7 +377,7 @@ button { cursor: pointer; }
   height: 138px;
   border-radius: 38px;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--green), var(--blue));
+  background: linear-gradient(135deg, var(--green), var(--teal), var(--blue));
   display: grid;
   place-items: center;
   color: white;
@@ -739,7 +742,7 @@ button { cursor: pointer; }
 }
 
 .ai-chat-layout .send-button {
-  background: linear-gradient(135deg, var(--green), var(--blue));
+  background: linear-gradient(135deg, var(--green), var(--teal), var(--blue));
   color: white;
 }
 
