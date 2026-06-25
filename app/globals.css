@@ -1229,18 +1229,21 @@ body {
 }
 
 .script-editor {
-  min-height: calc(100dvh - 400px) !important;
+  min-height: calc(100dvh - 575px) !important;
   font-size: 15px;
   line-height: 1.75;
 }
 
 .library-layout {
-  grid-template-columns: 220px minmax(0, 1.2fr) minmax(450px, 1fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(440px, 1fr);
   align-items: start;
 }
-.library-layout .category-panel,
-.library-layout .script-results { max-height: calc(100dvh - 350px); overflow: auto; }
+.library-layout .script-results { max-height: calc(100dvh - 495px); overflow: auto; }
 .library-layout .script-card-grid { max-height: none; }
+/* Compact the search card so the script area gets more vertical room */
+.script-search-card { padding: 12px 16px !important; }
+.script-search-card .script-search-copy p { display: none; }
+.script-search-card h2 { font-size: 15px !important; margin-bottom: 8px; }
 /* Script Box: tall, reaches near the bottom, never scrolls itself */
 .library-layout .script-box { max-height: none; overflow: visible; }
 
@@ -1769,6 +1772,35 @@ body {
 /* Active / Inactive filter shown on categories that have expired items */
 .offer-filter { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
 .offer-filter .toggle { min-width: 0; padding: 6px 12px; font-size: 13px; }
+
+/* Categories as a horizontal bar above the scripts (frees a column, less scrolling) */
+.category-bar { padding: 12px 14px; margin-bottom: 14px; }
+.category-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.category-row .category-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  min-height: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+.category-row .category-card b { font-size: 13px; font-weight: 800; }
+.category-row .category-card span {
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--soft-2);
+  color: var(--muted);
+  border: 0;
+}
+.category-row .category-card.active {
+  background: linear-gradient(135deg, #00a651, #00999d) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+.category-row .category-card.active b { color: #fff; }
+.category-row .category-card.active span { background: rgba(255, 255, 255, 0.22); color: #fff; }
 .toggle.ksa.active { background: linear-gradient(135deg, #049f58, #03b3a5) !important; }
 .toggle.uae.active { background: linear-gradient(135deg, #0876d8, #05b9c8) !important; }
 .input,
@@ -2153,7 +2185,7 @@ body {
 .favorites-strip .section-head h2 { font-size: 15px; }
 .favorites-strip .section-head p { display: none; }
 .favorites-strip,
-.favorites-strip .card { max-height: 170px; }
+.favorites-strip .card { max-height: 118px; }
 .favorite-card-grid { grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 8px; }
 .favorite-card-grid .mini-script-card { min-height: 0; padding: 9px 12px; }
 .favorite-card-grid .mini-script-card b { font-size: 13px; }

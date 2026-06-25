@@ -925,27 +925,26 @@ export default function DashboardPage() {
                 </p>
               )}
             </div>
-            <div className="library-layout">
-              <div className="category-panel">
-                <div className="category-grid">
-                  {categories.map((item) => {
-                    const count = visibleScripts.filter(
-                      (script) => script.category === item,
-                    ).length;
-                    return (
-                      <button
-                        key={item}
-                        className={`category-card ${category === item ? "active" : ""}`}
-                        onClick={() => setCategory(item)}
-                      >
-                        <b>{item}</b>
-                        <span>{count} scripts</span>
-                      </button>
-                    );
-                  })}
-                </div>
+            <div className="category-bar card">
+              <div className="category-row">
+                {categories.map((item) => {
+                  const count = visibleScripts.filter(
+                    (script) => script.category === item,
+                  ).length;
+                  return (
+                    <button
+                      key={item}
+                      className={`category-card ${category === item ? "active" : ""}`}
+                      onClick={() => setCategory(item)}
+                    >
+                      <b>{item}</b>
+                      <span>{count}</span>
+                    </button>
+                  );
+                })}
               </div>
-
+            </div>
+            <div className="library-layout">
               <div className="script-results">
                 <div className="section-head">
                   <div>
