@@ -470,13 +470,28 @@ export default function DashboardPage() {
     [visibleScripts, favoriteIds],
   );
 
-  const selected = useMemo(
-    () =>
-      filteredScripts.find((script) => script.id === selectedId) ||
-      filteredScripts[0] ||
-      null,
-    [filteredScripts, selectedId],
-  );
+  const selected = useMemo(() => {
+    const byId = filteredScripts.find((script) => script.id === selectedId);
+    if (byId) return byId;
+
+    // When only the language changed, keep the user on the same script by
+    // matching its counterpart in the other language (same key base or title)
+    // instead of jumping back to the first script.
+    const prev = scripts.find((script) => script.id === selectedId);
+    if (prev) {
+      const base = prev.key.replace(/[-_](ar|en)$/i, "");
+      const sibling =
+        filteredScripts.find(
+          (script) => script.key.replace(/[-_](ar|en)$/i, "") === base,
+        ) ||
+        filteredScripts.find(
+          (script) => script.title.trim() === prev.title.trim(),
+        );
+      if (sibling) return sibling;
+    }
+
+    return filteredScripts[0] || null;
+  }, [filteredScripts, selectedId, scripts]);
 
   useEffect(() => {
     if (!categories.includes(category) && categories[0])
@@ -2287,6 +2302,33 @@ function Admin({
     await onScriptsChanged();
   }
 
+  async function deleteCategory() {
+    const name = adminCategory;
+    if (!name) return setStatus("Select a category first.");
+
+    const count = scripts.filter((script) => script.category === name).length;
+    if (
+      !confirm(
+        `Delete the category "${name}" and its ${count} script(s) permanently for everyone? This cannot be undone.`,
+      )
+    )
+      return;
+
+    const res = await fetch("/api/scripts/categories", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Category delete failed");
+
+    setScripts(scripts.filter((script) => script.category !== name));
+    setCustomCategories((current) => current.filter((cat) => cat !== name));
+    setStatus(`Category deleted. Removed ${data.count || 0} scripts.`);
+    await onScriptsChanged();
+  }
+
   async function saveSelected() {
     if (!selected) return;
     const res = await fetch(`/api/scripts/${selected.id}`, {
@@ -2654,6 +2696,34 @@ function Admin({
                   onClick={renameCategory}
                 >
                   Rename
+                </button>
+              </div>
+            </div>
+
+            <div className="category-tool-box">
+              <h3>Delete category</h3>
+              <p>
+                Permanently removes the selected category and all of its
+                scripts for everyone.
+              </p>
+              <div className="inline-action-row rename-row">
+                <select
+                  className="select"
+                  value={adminCategory}
+                  onChange={(e) => setAdminCategory(e.target.value)}
+                >
+                  {categoryOptions.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="btn small danger"
+                  type="button"
+                  onClick={deleteCategory}
+                >
+                  Delete category
                 </button>
               </div>
             </div>

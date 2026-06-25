@@ -1702,10 +1702,10 @@ body {
 
 .sidebar {
   background:
-    linear-gradient(180deg, rgba(6,16,29,.96), rgba(8,17,31,.94)),
-    radial-gradient(circle at 20% 0%, rgba(5,185,200,.18), transparent 34%) !important;
+    linear-gradient(180deg, #05393a 0%, #07564a 58%, #064f44 100%),
+    radial-gradient(circle at 20% 0%, rgba(11,180,176,.30), transparent 38%) !important;
   border-right: 1px solid rgba(255,255,255,.10);
-  box-shadow: 18px 0 50px rgba(5, 18, 32, .16);
+  box-shadow: 18px 0 50px rgba(4, 40, 38, .22);
 }
 .brand-block {
   background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04)) !important;
@@ -1752,11 +1752,12 @@ body {
   box-shadow: inset 3px 0 0 var(--premium-accent);
 }
 .toggle.active,
-.btn:not(.ghost):not(.secondary) {
-  background: linear-gradient(135deg, #07111f, #12233a) !important;
+.btn:not(.ghost):not(.secondary):not(.danger) {
+  background: linear-gradient(135deg, #00a651, #00999d) !important;
   color: white !important;
-  box-shadow: 0 12px 26px rgba(8,17,31,.18);
+  box-shadow: 0 12px 26px rgba(0,153,157,.26);
 }
+.btn.danger { background: var(--danger) !important; color: #fff !important; }
 .toggle.ksa.active { background: linear-gradient(135deg, #049f58, #03b3a5) !important; }
 .toggle.uae.active { background: linear-gradient(135deg, #0876d8, #05b9c8) !important; }
 .input,
@@ -2134,3 +2135,40 @@ body {
   .card { border-radius: 20px; padding: 16px; }
   .toast { left: 16px; right: 16px; text-align: center; }
 }
+
+/* ============================================================
+   Favorites: compact, titles-only, no scroll for normal counts
+   ============================================================ */
+.favorites-strip .section-head h2 { font-size: 15px; }
+.favorites-strip .section-head p { display: none; }
+.favorites-strip,
+.favorites-strip .card { max-height: 170px; }
+.favorite-card-grid { grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 8px; }
+.favorite-card-grid .mini-script-card { min-height: 0; padding: 9px 12px; }
+.favorite-card-grid .mini-script-card b { font-size: 13px; }
+/* Titles only — hide the category line and the preview text */
+.favorite-card-grid .mini-script-card span { display: none; }
+
+/* ============================================================
+   Bold PureGym (teal/green) x Extensya brand refresh
+   ============================================================ */
+.sidebar {
+  background: linear-gradient(168deg, #07343a 0%, #0a4a44 55%, #0c5b46 100%);
+}
+.nav-button.active,
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+/* Primary buttons become the brand gradient */
+.btn {
+  background: linear-gradient(135deg, var(--green), var(--teal));
+  color: #ffffff;
+}
+.btn.secondary { background: #e8edf5; color: #0e1726; }
+[data-theme="dark"] .btn.secondary { background: #1d2a3d; color: var(--text); }
+.btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn.danger { background: var(--danger); color: #ffffff; }
+/* Brand-tinted topbar title */
+.topbar h1 { color: var(--dark); }
+.section-head h2 { color: var(--dark); }

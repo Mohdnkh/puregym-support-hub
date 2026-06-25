@@ -26,3 +26,21 @@ export async function PATCH(req: Request) {
 
   return NextResponse.json({ ok: true, count: result.count });
 }
+
+const deleteSchema = z.object({
+  name: z.string().min(1)
+});
+
+export async function DELETE(req: Request) {
+  const user = await getCurrentUser();
+  if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")) return NextResponse.json({ error: "Admin only" }, { status: 403 });
+
+  const { name } = deleteSchema.parse(await req.json());
+  const clean = name.trim();
+  if (!clean) return NextResponse.json({ error: "Category name is required" }, { status: 400 });
+
+  // Deletes every script in the category. The admin confirms the count in the UI first.
+  const result = await prisma.script.deleteMany({ where: { category: clean } });
+
+  return NextResponse.json({ ok: true, count: result.count });
+}
