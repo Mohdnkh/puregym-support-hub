@@ -194,7 +194,7 @@ button { cursor: pointer; }
 }
 .add-script-form .field { margin: 0; }
 .add-script-card .admin-body { min-height: 220px; }
-.script-card-grid { grid-template-columns: repeat(auto-fill, minmax(172px, 1fr)); }
+.script-card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .link-preview a { font-weight: 850; }
 .chatgpt-shell .section-head { align-items: center; }
 .messages-panel { min-height: 520px; }
@@ -1235,7 +1235,7 @@ body {
 }
 
 .library-layout {
-  grid-template-columns: 230px minmax(0, 1.5fr) minmax(400px, 0.8fr);
+  grid-template-columns: 220px minmax(0, 1.2fr) minmax(450px, 1fr);
   align-items: start;
 }
 .library-layout .category-panel,
@@ -1758,6 +1758,12 @@ body {
   box-shadow: 0 12px 26px rgba(0,153,157,.26);
 }
 .btn.danger { background: var(--danger) !important; color: #fff !important; }
+
+/* Script Box header: keep the title and the Reset/Proofread/Copy buttons tidy on one row */
+.script-box .section-head { align-items: center; gap: 12px; flex-wrap: wrap; }
+.script-box .section-head > div:first-child { min-width: 0; }
+.script-box .toolbar { flex-wrap: nowrap; gap: 8px; justify-content: flex-end; flex-shrink: 0; }
+.script-box .toolbar .btn { white-space: nowrap; }
 .toggle.ksa.active { background: linear-gradient(135deg, #049f58, #03b3a5) !important; }
 .toggle.uae.active { background: linear-gradient(135deg, #0876d8, #05b9c8) !important; }
 .input,

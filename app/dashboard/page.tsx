@@ -954,7 +954,10 @@ export default function DashboardPage() {
                         <div
                           key={script.id}
                           className={`script-card ${selectedId === script.id ? "active" : ""}`}
-                          onClick={() => selectScript(script)}
+                          onClick={() => {
+                            selectScript(script);
+                            copyText(body);
+                          }}
                           role="button"
                           tabIndex={0}
                         >
@@ -1009,7 +1012,7 @@ export default function DashboardPage() {
                       onClick={spellcheck}
                       disabled={!editorText}
                     >
-                      تدقيق
+                      {language === "AR" ? "تدقيق" : "Proofread"}
                     </button>
                     <button
                       className="btn small"
