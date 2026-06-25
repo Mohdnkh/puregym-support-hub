@@ -3452,6 +3452,50 @@ export const seedScripts: SeedScript[] = [
     "active": false
   },
   {
+    "key": "live-offer-ksa-en",
+    "title": "🔥 Current Offer — KSA",
+    "category": "Offers, Prices & PT",
+    "country": "KSA",
+    "language": "EN",
+    "body": "Limited Time Offer! 50% Off on All memberships | Use Code : HALF | Join Now!\n\n— Auto-updated from the official site (2026-06-25)",
+    "source": "live-offer",
+    "sortOrder": 1,
+    "active": true
+  },
+  {
+    "key": "live-offer-uae-en",
+    "title": "🔥 Current Offer — UAE",
+    "category": "Offers, Prices & PT",
+    "country": "UAE",
+    "language": "EN",
+    "body": "LIMITED TIME OFFER! JOIN US WITH 30% OFF ON YOUR FIRST MONTH! USE CODE: PGA30\n\n— Auto-updated from the official site (2026-06-25)",
+    "source": "live-offer",
+    "sortOrder": 1,
+    "active": true
+  },
+  {
+    "key": "live-offer-ksa-ar",
+    "title": "🔥 العرض الحالي — KSA",
+    "category": "Offers, Prices & PT",
+    "country": "KSA",
+    "language": "AR",
+    "body": "عرض لفترة محدودة! خصم 50% على جميع العضويات | استخدم الكود: HALF | اشترك الآن!\n\n— محدّث تلقائياً من الموقع الرسمي (2026-06-25)",
+    "source": "live-offer",
+    "sortOrder": 1,
+    "active": true
+  },
+  {
+    "key": "live-offer-uae-ar",
+    "title": "🔥 العرض الحالي — UAE",
+    "category": "Offers, Prices & PT",
+    "country": "UAE",
+    "language": "AR",
+    "body": "عرض لفترة محدودة! اشتركوا معنا بخصم 30% على اول شهر! استخدموا كود: PGA30\n\n— محدّث تلقائياً من الموقع الرسمي (2026-06-25)",
+    "source": "live-offer",
+    "sortOrder": 1,
+    "active": true
+  },
+  {
     "key": "no-free-trial-ksa-ar",
     "title": "التجربة المجانية",
     "category": "Offers, Prices & PT",
