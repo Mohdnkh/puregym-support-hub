@@ -1005,7 +1005,7 @@ export default function DashboardPage() {
                       }
                       disabled={!selected}
                     >
-                      Reset
+                      {language === "AR" ? "إرجاع" : "Reset"}
                     </button>
                     <button
                       className="btn ghost small"
@@ -1019,7 +1019,7 @@ export default function DashboardPage() {
                       onClick={() => copyText(editorText)}
                       disabled={!editorText}
                     >
-                      Copy
+                      {language === "AR" ? "نسخ" : "Copy"}
                     </button>
                   </div>
                 </div>

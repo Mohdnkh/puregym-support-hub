@@ -124,7 +124,7 @@ button { cursor: pointer; }
 .category-grid { display: grid; gap: 10px; }
 .category-card.active, .script-card.active { border-color: #0876d8; box-shadow: 0 0 0 4px rgba(8,118,216,.11); }
 .script-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; max-height: calc(100dvh - 250px); min-height: 320px; overflow: auto; padding: 4px; }
-.script-card-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.script-card-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
 .script-card-top span { font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 3px 8px; }
 .script-box { position: sticky; top: 24px; max-height: calc(100dvh - 120px); overflow: auto; }
 .script-editor { min-height: 430px; }
@@ -1229,7 +1229,7 @@ body {
 }
 
 .script-editor {
-  min-height: 560px !important;
+  min-height: calc(100dvh - 400px) !important;
   font-size: 15px;
   line-height: 1.75;
 }
@@ -1239,9 +1239,10 @@ body {
   align-items: start;
 }
 .library-layout .category-panel,
-.library-layout .script-results,
-.library-layout .script-box { max-height: calc(100dvh - 350px); overflow: auto; }
+.library-layout .script-results { max-height: calc(100dvh - 350px); overflow: auto; }
 .library-layout .script-card-grid { max-height: none; }
+/* Script Box: tall, reaches near the bottom, never scrolls itself */
+.library-layout .script-box { max-height: none; overflow: visible; }
 
 /* Compact favorites section */
 .favorites-strip {
