@@ -123,10 +123,10 @@ button { cursor: pointer; }
 .library-layout { display: grid; grid-template-columns: 260px minmax(360px, 1fr) minmax(420px, 0.95fr); gap: 18px; align-items: start; }
 .category-grid { display: grid; gap: 10px; }
 .category-card.active, .script-card.active { border-color: #0876d8; box-shadow: 0 0 0 4px rgba(8,118,216,.11); }
-.script-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; max-height: 685px; overflow: auto; padding: 4px; }
+.script-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; max-height: calc(100dvh - 250px); min-height: 320px; overflow: auto; padding: 4px; }
 .script-card-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
 .script-card-top span { font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 3px 8px; }
-.script-box { position: sticky; top: 24px; }
+.script-box { position: sticky; top: 24px; max-height: calc(100dvh - 120px); overflow: auto; }
 .script-editor { min-height: 430px; }
 .link-preview { margin-top: 12px; border: 1px dashed var(--border); border-radius: 18px; padding: 14px; white-space: pre-wrap; line-height: 1.6; background: var(--soft); }
 
@@ -1245,7 +1245,7 @@ body {
 
 .favorites-strip .card,
 .favorites-strip {
-  max-height: 230px;
+  max-height: 138px;
   overflow: auto;
 }
 
