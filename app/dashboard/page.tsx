@@ -101,6 +101,7 @@ const CATEGORY_ORDER = [
   "App / Login / Password",
   "Friend / Bring a Friend",
   "Offers, Prices & PT",
+  "Corporate Offers",
   "Membership & Packages",
   "Branches & Hours",
   "Google Reviews",
@@ -649,7 +650,7 @@ export default function DashboardPage() {
         </div>
       </aside>
 
-      <main className="main" dir={language === "AR" ? "rtl" : "ltr"}>
+      <main className="main">
         <div className="topbar">
           <div>
             <h1>{title}</h1>

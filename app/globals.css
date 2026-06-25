@@ -2101,13 +2101,6 @@ body {
 }
 *::-webkit-scrollbar-thumb:hover { background: var(--muted); background-clip: padding-box; }
 
-/* Full RTL for Arabic content (sidebar stays put to keep the shell stable) */
-.main[dir="rtl"] .section-head,
-.main[dir="rtl"] .topbar,
-.main[dir="rtl"] .toolbar,
-.main[dir="rtl"] .inline-actions { text-align: start; }
-.main[dir="rtl"] .link-preview { text-align: start; }
-
 /* Mobile: turn the stacked sidebar into a compact wrapping top nav */
 @media (max-width: 900px) {
   .sidebar {

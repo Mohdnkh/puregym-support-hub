@@ -22,7 +22,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-password-d6574659",
     "title": "Password",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "ALL",
     "language": "EN",
     "body": "Would you allow me to reset your account password?\n\nYour password has been reset successfully.\nYou can now log in using the following details:\nEmail:\nPassword:",
@@ -31,9 +31,31 @@ export const seedScripts: SeedScript[] = [
     "active": true
   },
   {
+    "key": "admin-app-login-password-tabby-efd7ec95",
+    "title": "tabby",
+    "category": "App / Login / Password",
+    "country": "KSA",
+    "language": "EN",
+    "body": "Dear, Tabby is available only for fixed-term memberships. Please make sure that all details entered on our website or app match exactly with the details registered with Tabby, and that you are 18 years old or above.\n\nIf the issue persists after verifying the above, please try again in the coming hours. If the problem continues, we recommend contacting Tabby Support directly, as there are currently no technical issues on our side with the registration or payment system. 💚",
+    "source": "admin",
+    "sortOrder": 10,
+    "active": true
+  },
+  {
+    "key": "admin-app-login-password-تابي-1a926922",
+    "title": "تابي",
+    "category": "App / Login / Password",
+    "country": "KSA",
+    "language": "AR",
+    "body": "عزيزي، تابي متاح فقط على العضويات المحددة المدة. نرجو التأكد من أن جميع البيانات المدخلة في الموقع أو التطبيق مطابقة تمامًا للبيانات المسجلة في تابي، وأن العمر 18 سنة أو أكثر.\n\nفي حال استمرار المشكلة بعد التأكد من ذلك، نرجو المحاولة مرة أخرى خلال الساعات القادمة، وإذا استمرت المشكلة فننصح بالتواصل مباشرة مع فريق دعم تابي، حيث لا تظهر لدينا أي مشكلة تقنية في نظام التسجيل أو الدفع حاليًا. 💚",
+    "source": "admin",
+    "sortOrder": 10,
+    "active": true
+  },
+  {
     "key": "logout-login-ksa-ar",
     "title": "تسجيل خروج ودخول",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "ALL",
     "language": "AR",
     "body": "  نرجو منك فقط تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى، وسوف يتم تحديث البيانات تلقائيًا",
@@ -44,7 +66,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-كلمة-السر-10229385",
     "title": "كلمة السر ",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "ALL",
     "language": "AR",
     "body": "هل تسمح لي بإعادة تعيين كلمة المرور الخاصة بحسابك؟\n\nتم إعادة تعيين كلمة المرور الخاصة بك بنجاح.\nيمكنك الآن تسجيل الدخول باستخدام المعلومات التالية:\nالبريد الإلكتروني:\nكلمة المرور:",
@@ -55,7 +77,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "logout-login-ksa-en",
     "title": "Logout and login",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "ALL",
     "language": "EN",
     "body": "we only ask you to log out of the application and then log in again, and the information will be updated automatically.",
@@ -66,7 +88,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "logout-login-uae-ar",
     "title": "تسجيل خروج ودخول",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "UAE",
     "language": "AR",
     "body": "💙 يرجى تسجيل الخروج من التطبيق ثم تسجيل الدخول مرة أخرى بنفس بيانات الحساب. هذا الإجراء لا يؤثر على عضويتك.",
@@ -77,7 +99,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "logout-login-uae-en",
     "title": "Logout and login",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "UAE",
     "language": "EN",
     "body": "💙 Please log out of the app and log back in using the same account details. This will not affect your membership.",
@@ -88,7 +110,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "password-reset-ksa-ar",
     "title": "إعادة تعيين كلمة السر",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "KSA",
     "language": "AR",
     "body": "💚 هل تسمح لي بإعادة تعيين كلمة السر لحسابك؟",
@@ -99,7 +121,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "password-reset-ksa-en",
     "title": "Password reset permission",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "KSA",
     "language": "EN",
     "body": "💚 Do I have your permission to reset the password for your account?",
@@ -110,7 +132,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-التطبيق-الجديد-ec12711c",
     "title": "التطبيق الجديد ",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "KSA",
     "language": "AR",
     "body": "يسعدنا تعريفك بالتطبيق الجديد لبيور جيم، المصمم ليمنحك تجربة أسرع وأسهل لإدارة عضويتك وجميع خدماتك في مكان واحد. من خلال التطبيق يمكنك الوصول إلى رمز الـ QR للدخول للنادي، حجز الكلاسات وإدارة الحجوزات، متابعة تفاصيل عضويتك ودفعاتك القادمة، الاطلاع على سجل زياراتك، الاستفادة من خيارات التدريب الشخصي، ودعوة أصدقائك بكل سهولة.💚\n\nكما يتيح لك التطبيق استقبال الإشعارات والتنبيهات المهمة المتعلقة بعضويتك وحجوزاتك، مع دعم اللغتين العربية والإنجليزية. وقد تم تطويره ليقدم أداءً أفضل وتجربة أكثر أمانًا وسلاسة مع نقل جميع بياناتك وتفاصيل حسابك تلقائيًا. بعد اكتمال الانتقال للتطبيق الجديد، سيكون استخدامه ضروريًا للوصول إلى رمز الـ QR والاستفادة من خدمات الدخول للنادي. 🙏",
@@ -121,7 +143,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-new-app-15cbc577",
     "title": "New app",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "KSA",
     "language": "EN",
     "body": "We’re excited to introduce the new PureGym app, designed to give you a faster, smoother, and more convenient experience. The app allows you to access your gym entry QR code, book and manage classes, view membership details, check payment information, track your gym visits, explore personal training options, and refer friends—all in one place.💚\n\nThe new app also provides important notifications and updates related to your membership and bookings, supports both English and Arabic, and offers improved security and performance. All your account information will transfer automatically, and once the transition is complete, the new app will be required to access your QR code and gym entry features. 🙏",
@@ -132,7 +154,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "password-reset-uae-ar",
     "title": "إعادة تعيين كلمة السر",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "UAE",
     "language": "AR",
     "body": "💙 هل تسمح لي بإعادة تعيين كلمة السر لحسابك؟",
@@ -143,7 +165,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-مشكلة-اثناء-التسجيل-d4633f37",
     "title": "مشكلة اثناء التسجيل ",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "KSA",
     "language": "AR",
     "body": "عزيزي، نعتذر عن الإزعاج الذي تواجهه أثناء التسجيل.\n\nفي حال ظهور رسالة خطأ عند التسجيل باستخدام رقم الهوية، نرجو منك اختيار \"جواز السفر\" كنوع الهوية وإدخال رقم الهوية الوطنية في خانة رقم الجواز. أما بالنسبة للدولة، يرجى اختيار السعودية، وفي حال لم تكن متاحة يمكنك اختيار أي دولة أخرى لإتمام عملية التسجيل.",
@@ -154,7 +176,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "password-reset-uae-en",
     "title": "Password reset permission",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "UAE",
     "language": "EN",
     "body": "💙 Do I have your permission to reset the password for your account?",
@@ -165,7 +187,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-registration-issue-7ce57bae",
     "title": "Registration Issue",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "KSA",
     "language": "EN",
     "body": "Dear,\n\nWe apologize for the inconvenience you are experiencing during the registration process.\n\nIf you receive an error message when registering using your National ID, please select \"Passport\" as the ID type and enter your National ID number in the passport number field. For the country selection, please choose Saudi Arabia. If it is not available, you may select any other country to complete the registration process.",
@@ -176,7 +198,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-التطبيق-الجديد-5b5c8ee5",
     "title": "التطبيق الجديد",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "UAE",
     "language": "AR",
     "body": "يسعدنا تقديم التطبيق الجديد لبيور جيم، والذي تم تطويره ليجمع جميع خدمات العضوية في مكان واحد بطريقة أسهل وأسرع. من خلال التطبيق تقدر تعرض رمز الـ QR للدخول للنادي، تحجز الكلاسات وتدير حجوزاتك، تتابع عضويتك ومدفوعاتك، تشوف سجل زياراتك، تستفيد من خدمات التدريب الشخصي، وترسل دعوات لأصدقائك بكل سهولة.💙\n\nالتطبيق يوفر تجربة أكثر سرعة وأمانًا، مع إشعارات مهمة تخص العضوية والحجوزات، ودعم للغتين العربية والإنجليزية. كما سيتم نقل جميع بياناتك تلقائيًا إلى التطبيق الجديد، والذي سيصبح الوسيلة الأساسية للوصول إلى رمز الدخول والاستفادة من خدمات النادي مستقبلاً. 🙏",
@@ -187,7 +209,7 @@ export const seedScripts: SeedScript[] = [
   {
     "key": "admin-app-login-password-new-app-b7f67fb7",
     "title": "New app",
-    "category": "App / Login / Password / Registration Issue",
+    "category": "App / Login / Password",
     "country": "UAE",
     "language": "EN",
     "body": "We’re pleased to introduce the new PureGym app, built to make managing your membership easier than ever. Through the app, you can access your QR code for gym entry, book and manage classes, review membership and payment details, track your visits, explore personal training services, and invite friends directly from your account.💙\n\nThe app delivers a more secure, reliable, and user-friendly experience, with support for both English and Arabic and automatic transfer of your account information. Following the transition, the new app will be the primary way to access your QR code and gym entry services. 🙏",
@@ -3342,6 +3364,17 @@ export const seedScripts: SeedScript[] = [
     "active": true
   },
   {
+    "key": "admin-membership-packages-free-trails-80b45fac",
+    "title": "Free trails",
+    "category": "Membership & Packages",
+    "country": "KSA",
+    "language": "EN",
+    "body": "Dear Member,\n\nUnfortunately, we do not currently offer free trials. However, we would be delighted to welcome you to visit the club and explore our facilities.\n\nSimply visit the club, and our team members will be happy to give you a tour.\n\nIf you would like to try the club before becoming a member, you can purchase a day pass through the following link:\nhttps://ksa.puregymarabia.com/join/",
+    "source": "admin",
+    "sortOrder": 10,
+    "active": true
+  },
+  {
     "key": "core-plus-difference-ksa-ar",
     "title": "الفرق بين كور وبلس",
     "category": "Membership & Packages",
@@ -3349,6 +3382,17 @@ export const seedScripts: SeedScript[] = [
     "language": "AR",
     "body": "🔹 باقة كور:\nتتمرن في فرعك الاساسي فقط، تحجز الكلاسات قبلها بـ 8 أيام، وتستخدم أكثر من 180 جهاز حديث!\nوتقدر تجمّد عضويتك مجانًا حتى 25٪ من مدتها ولو قسمت التجميد، جزء فقط بيكون مجاني، والباقي عليه رسوم رمزية (٣٩ ريال لكل٣٠ يوم).\n\n🔸 باقة بلس:\nمميزاتها أكثر! تدخل أكثر من فرع (اللي تساوي او تقل عن سعر عضويتك)، وتحجز الكلاسات قبلها بـ 14 يوم، وتستمتع بالمرافق المتوفرة.\nتقدر بعد تضيف صديق 4 مرات شهريًا مجانًا !👯‍♂️\nوتجمّد عضويتك مجانًا حسب الفترة المسموحة لها وتقدر تقسّمهم براحتك حسب الشروط والأحكام، بدون رسوم.\nوفيها خدمات إضافية مثل: تحليل الجسم بأجهزة Boditrax، ومياه Yanga الرياضية اللي تعطيك دفعة بالطاقة 💪\n\nكل باقة مصمّمة تناسب احتياجك، اختَر الأنسب وابدأ مشوارك الرياضي معنا! 🙌💚",
     "source": "clean-v2",
+    "sortOrder": 10,
+    "active": true
+  },
+  {
+    "key": "admin-membership-packages-تجربة-مجانية-94358920",
+    "title": "تجربة مجانية ",
+    "category": "Membership & Packages",
+    "country": "KSA",
+    "language": "AR",
+    "body": "عزيزي/عزيزتي،\n\nللأسف لا نقدم تجارب مجانية حاليًا، ولكن يسعدنا الترحيب بك لزيارة النادي والتعرف على مرافقه وخدماته.\n\nما عليك سوى زيارة النادي، وسيكون أعضاء فريقنا سعداء بتقديم جولة تعريفية لك.\n\nوفي حال رغبت بتجربة النادي قبل الاشتراك معنا، يمكنك شراء دخول ليوم واحد من خلال الرابط:\nhttps://ksa.puregymarabia.com/join/",
+    "source": "admin",
     "sortOrder": 10,
     "active": true
   },
@@ -3545,7 +3589,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Offers, Prices & PT",
     "country": "KSA",
     "language": "AR",
-    "body": "عندنا عرض مميز على بعض فروعنا المختارة 💚\n\nخصم 30% على عضوية 3 أشهر محددة المدة (كور أو بلس) مع إعفاء كامل من رسوم التسجيل 🎉\n\nاستخدم كود الخصم: PG3M\n\nالفروع المشمولة بالعرض:\n📍 القيروان (رجالي)\n📍 النسيم (رجالي ونسائي)\n📍 الراكة (نسائي)\n📍 العزيزية (نسائي)\n📍 السعادة (رجالي)\n\nللاشتراك، ادخل على موقعنا الإلكتروني واختر الفرع والعضوية المناسبة ثم أضف كود الخصم في الخانة المخصصة 😊",
+    "body": "عندنا عرض حاليًا على العضويات الشهرية 💚🔥\n\nخصم 20% على رسوم كل شهر من عضوية كور وبلس الشهرية، ولمدى الحياة (ما لم يتم إلغاء العضوية).\n\n🎟️ كود الخصم: LT20\n\nيرجى ملاحظة أنه سيتم إضافة رسوم الانضمام على الشهر الأول عند إنشاء عضوية جديدة.\n\nبإمكانك التسجيل والاستفادة من العرض عبر الرابط التالي:\nhttps://ksa.puregymarabia.com/join/ 💚\n\n🔥 عرض لفترة محدودة! 🔥\n\nاحصل على خصم 50% على جميع العضويات باستخدام كود الخصم:\n\n🎟️ HALF\n\n✅ صالح على جميع العضويات\n✅ إمكانية الدفع عبر تابي\n✅ العرض لفترة محدودة\n\nسارع بالاشتراك والاستفادة من العرض قبل انتهائه! 💚",
     "source": "admin",
     "sortOrder": 130,
     "active": true
@@ -3556,7 +3600,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Offers, Prices & PT",
     "country": "KSA",
     "language": "EN",
-    "body": "We currently have a special offer available at selected branches 💚\n\nGet 30% off a 3-Month Fixed-Term Membership (Core or Plus) with full waiver of the joining fee 🎉\n\nUse promo code: PG3M\n\nBranches included in the offer:\n📍 Al Qairawan (Men)\n📍 Al Naseem (Men & Women)\n📍 Al Rakah (Women)\n📍 Al Aziziyah (Women)\n📍 Al Saadah (Men)\n\nTo subscribe, visit our website, choose your preferred branch and membership, then enter the promo code in the designated field during checkout 😊",
+    "body": "We currently have a special offer on monthly memberships 💚🔥\n\nGet 20% off your monthly membership fees on both Core and Plus memberships for life (unless the membership is cancelled).\n\n🎟️ Promo Code: LT20\n\nPlease note that a joining fee will be added to the first month when creating a new membership.\n\nYou can register and take advantage of this offer through the following link:\nhttps://ksa.puregymarabia.com/join/ 💚\n\n🔥 Limited-Time Offer! 🔥\n\nGet 50% OFF on all memberships with the promo code:\n\n🎟️ HALF\n\n✅ Valid on all memberships\n✅ Tabby payment available\n✅ Offer available for a limited time only\n\nJoin now and take advantage of this amazing offer before it ends! 💚",
     "source": "admin",
     "sortOrder": 140,
     "active": true
