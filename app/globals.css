@@ -1765,6 +1765,10 @@ body {
 .script-box .section-head > div:first-child { min-width: 0; }
 .script-box .toolbar { flex-wrap: nowrap; gap: 8px; justify-content: flex-end; flex-shrink: 0; }
 .script-box .toolbar .btn { white-space: nowrap; }
+
+/* Active / Inactive filter shown on categories that have expired items */
+.offer-filter { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+.offer-filter .toggle { min-width: 0; padding: 6px 12px; font-size: 13px; }
 .toggle.ksa.active { background: linear-gradient(135deg, #049f58, #03b3a5) !important; }
 .toggle.uae.active { background: linear-gradient(135deg, #0876d8, #05b9c8) !important; }
 .input,

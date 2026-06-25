@@ -283,6 +283,7 @@ export default function DashboardPage() {
   const [message, setMessage] = useState("");
   const [darkMode, setDarkMode] = useState(false);
   const [scriptSearch, setScriptSearch] = useState("");
+  const [offerFilter, setOfferFilter] = useState<"active" | "inactive" | "all">("active");
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
 
   async function loadScripts() {
@@ -431,6 +432,27 @@ export default function DashboardPage() {
     [visibleScripts, category],
   );
 
+  // Inactive (expired) scripts in the current category, for the Active/Inactive filter.
+  const inactiveForCategory = useMemo(
+    () =>
+      scripts
+        .filter(
+          (script) =>
+            !script.active &&
+            script.category === category &&
+            (script.country === country || script.country === "ALL") &&
+            script.language === language,
+        )
+        .sort(
+          (a, b) =>
+            (a.sortOrder || 0) - (b.sortOrder || 0) ||
+            a.title.localeCompare(b.title),
+        ),
+    [scripts, category, country, language],
+  );
+
+  const categoryHasInactive = inactiveForCategory.length > 0;
+
   const scriptSearchValue = scriptSearch.trim();
 
   const searchedScripts = useMemo(() => {
@@ -458,7 +480,11 @@ export default function DashboardPage() {
 
   const displayedScripts = scriptSearchValue
     ? searchedScripts
-    : filteredScripts;
+    : offerFilter === "inactive"
+      ? inactiveForCategory
+      : offerFilter === "all"
+        ? [...filteredScripts, ...inactiveForCategory]
+        : filteredScripts;
 
   const favoriteScripts = useMemo(
     () =>
@@ -471,7 +497,9 @@ export default function DashboardPage() {
   );
 
   const selected = useMemo(() => {
-    const byId = filteredScripts.find((script) => script.id === selectedId);
+    const byId =
+      filteredScripts.find((script) => script.id === selectedId) ||
+      inactiveForCategory.find((script) => script.id === selectedId);
     if (byId) return byId;
 
     // When only the language changed, keep the user on the same script by
@@ -491,12 +519,17 @@ export default function DashboardPage() {
     }
 
     return filteredScripts[0] || null;
-  }, [filteredScripts, selectedId, scripts]);
+  }, [filteredScripts, inactiveForCategory, selectedId, scripts]);
 
   useEffect(() => {
     if (!categories.includes(category) && categories[0])
       setCategory(categories[0]);
   }, [categories, category]);
+
+  // Reset the Active/Inactive filter back to Active whenever the category changes.
+  useEffect(() => {
+    setOfferFilter("active");
+  }, [category]);
 
   useEffect(() => {
     setQuickNoteText(quickStickyText);
@@ -926,9 +959,31 @@ export default function DashboardPage() {
                     <p>
                       {scriptSearchValue
                         ? `${displayedScripts.length} ${language === "AR" ? "نتيجة مطابقة" : "matching results"}`
-                        : `${filteredScripts.length} ${language === "AR" ? "سكربت متاح" : "scripts available"}`}
+                        : `${displayedScripts.length} ${language === "AR" ? "سكربت متاح" : "scripts available"}`}
                     </p>
                   </div>
+                  {!scriptSearchValue && categoryHasInactive && (
+                    <div className="offer-filter">
+                      <button
+                        className={`toggle ${offerFilter === "active" ? "active" : ""}`}
+                        onClick={() => setOfferFilter("active")}
+                      >
+                        {language === "AR" ? "الفعّالة" : "Active"}
+                      </button>
+                      <button
+                        className={`toggle ${offerFilter === "inactive" ? "active" : ""}`}
+                        onClick={() => setOfferFilter("inactive")}
+                      >
+                        {language === "AR" ? "المنتهية" : "Inactive"}
+                      </button>
+                      <button
+                        className={`toggle ${offerFilter === "all" ? "active" : ""}`}
+                        onClick={() => setOfferFilter("all")}
+                      >
+                        {language === "AR" ? "الكل" : "All"}
+                      </button>
+                    </div>
+                  )}
                 </div>
                 {scriptSearchValue && displayedScripts.length === 0 ? (
                   <div className="empty-search-state">

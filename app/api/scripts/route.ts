@@ -28,8 +28,10 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Return inactive scripts too so the UI can offer an Active/Inactive filter.
+  // The dashboard still shows only active scripts by default (visibleScripts
+  // filters on `active`), so inactive ones stay hidden unless explicitly filtered.
   const scripts = await prisma.script.findMany({
-    where: { active: true },
     orderBy: [{ category: "asc" }, { sortOrder: "asc" }, { title: "asc" }]
   });
 
