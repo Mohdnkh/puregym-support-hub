@@ -194,12 +194,32 @@ button { cursor: pointer; }
 }
 .add-script-form .field { margin: 0; }
 .add-script-card .admin-body { min-height: 220px; }
-.script-card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.script-card-grid { grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); }
 .link-preview a { font-weight: 850; }
 .chatgpt-shell .section-head { align-items: center; }
 .messages-panel { min-height: 520px; }
 .category-card b { overflow-wrap: anywhere; }
-.script-card p { white-space: pre-wrap; }
+/* Keep card text inside the card: wrap long URLs and clamp the preview */
+.script-card { overflow: hidden; }
+.script-card-top b {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.script-card p {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 @media (max-width: 1180px) {
   .add-script-form { grid-template-columns: 1fr 1fr; }
 }

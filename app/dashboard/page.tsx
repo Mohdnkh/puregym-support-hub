@@ -745,10 +745,16 @@ export default function DashboardPage() {
             <div className="quick-note card">
               <div className="section-head compact">
                 <div>
-                  <h2>Personal Quick Scripts</h2>
-                  <p>Private quick scripts. Click any card to copy it instantly.</p>
+                  <h2>{language === "AR" ? "السكربتات السريعة" : "Personal Quick Scripts"}</h2>
+                  <p>
+                    {language === "AR"
+                      ? "سكربتاتك الخاصة. اكبس على أي بطاقة لنسخها فوراً."
+                      : "Private quick scripts. Click any card to copy it instantly."}
+                  </p>
                 </div>
-                <button className="btn small" onClick={addPersonalQuickScript}>Add Quick Script</button>
+                <button className="btn small" onClick={addPersonalQuickScript}>
+                  {language === "AR" ? "➕ إضافة سكربت سريع" : "➕ Add Quick Script"}
+                </button>
               </div>
               <textarea
                 className="textarea quick-note-textarea"
