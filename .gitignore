@@ -20,3 +20,7 @@ Thumbs.db
 # build artifacts
 tsconfig.tsbuildinfo
 next-env.d.ts
+
+# generated deliverables (overview/cost PDF + presentation)
+*.pptx
+PureGym-Support-Hub-Overview-and-Cost.pdf
