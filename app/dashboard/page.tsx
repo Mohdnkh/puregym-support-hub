@@ -161,6 +161,11 @@ function hasGenderMarkers(text: string) {
   return /\{[^{}|]*\|[^{}]*\}/.test(String(text || ""));
 }
 
+// UAE uses a blue heart, KSA (and default) a green heart.
+function applyCountryHeart(text: string, country: Country) {
+  return country === "UAE" ? String(text || "").replaceAll("💚", "💙") : String(text || "");
+}
+
 function preview(text: string) {
   const clean = text.replace(/\s+/g, " ").trim();
   return clean.length > 120 ? clean.slice(0, 120) + "..." : clean;
@@ -349,6 +354,38 @@ export default function DashboardPage() {
     await loadPersonalQuickScripts();
   }
 
+  // Reorder quick scripts (admin/super admin) by swapping sortOrder with the neighbor.
+  async function moveQuickScript(script: UserQuickScript, dir: "up" | "down") {
+    const list = quickScripts;
+    const idx = list.findIndex((s) => s.id === script.id);
+    const swapIdx = dir === "up" ? idx - 1 : idx + 1;
+    if (idx < 0 || swapIdx < 0 || swapIdx >= list.length) return;
+
+    const other = list[swapIdx];
+    const a = script.sortOrder ?? 0;
+    const b = other.sortOrder ?? 0;
+
+    setPersonalQuickScripts((cur) =>
+      cur.map((s) =>
+        s.id === script.id ? { ...s, sortOrder: b } : s.id === other.id ? { ...s, sortOrder: a } : s,
+      ),
+    );
+
+    await Promise.all([
+      fetch(`/api/quick-scripts/${script.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sortOrder: b }),
+      }),
+      fetch(`/api/quick-scripts/${other.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sortOrder: a }),
+      }),
+    ]);
+    await loadPersonalQuickScripts();
+  }
+
   async function deletePersonalQuickScript(id: string) {
     if (!confirm("Delete this quick script?")) return;
     const res = await fetch(`/api/quick-scripts/${id}`, { method: "DELETE" });
@@ -435,10 +472,10 @@ export default function DashboardPage() {
     return quickScripts
       .map(
         (script) =>
-          `${script.title}\n${applyGender(applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user), "M")}`,
+          `${script.title}\n${applyCountryHeart(applyGender(applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user), "M"), country)}`,
       )
       .join("\n\n━━━━━━━━━━━━━━━━━━━━\n\n");
-  }, [quickScripts, user]);
+  }, [quickScripts, user, country]);
 
   const filteredScripts = useMemo(
     () => visibleScripts.filter((script) => script.category === category),
@@ -795,9 +832,12 @@ export default function DashboardPage() {
             <div className="quick-cards">
               {quickScripts.map((script) => {
                 const gender = quickGender[script.id] || "M";
-                const body = applyGender(
-                  applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
-                  gender,
+                const body = applyCountryHeart(
+                  applyGender(
+                    applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
+                    gender,
+                  ),
+                  country,
                 );
                 const showGender = hasGenderMarkers(script.body);
                 const isEditing = editingQuickId === script.id;
@@ -845,20 +885,8 @@ export default function DashboardPage() {
                       </>
                     ) : (
                       <>
-                        {isAdminRole(user?.role) && (
-                          <button
-                            className="quick-edit-chip"
-                            type="button"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              setEditingQuickId(script.id);
-                            }}
-                          >
-                            Edit
-                          </button>
-                        )}
                         <div className="quick-script-topline">
-                          <div className="quick-script-emoji">{emojiFor(script.country)}</div>
+                          <div className="quick-script-emoji">{emojiFor(country)}</div>
                           <b>{script.title}</b>
                         </div>
                         {showGender && (
@@ -889,6 +917,45 @@ export default function DashboardPage() {
                           </div>
                         )}
                         <p>{preview(body)}</p>
+                        {isAdminRole(user?.role) && (
+                          <div
+                            className="quick-admin-controls"
+                            onClick={(event) => event.stopPropagation()}
+                          >
+                            <button
+                              type="button"
+                              className="quick-edit-chip"
+                              title="Move up"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                moveQuickScript(script, "up");
+                              }}
+                            >
+                              ↑
+                            </button>
+                            <button
+                              type="button"
+                              className="quick-edit-chip"
+                              title="Move down"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                moveQuickScript(script, "down");
+                              }}
+                            >
+                              ↓
+                            </button>
+                            <button
+                              type="button"
+                              className="quick-edit-chip"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setEditingQuickId(script.id);
+                              }}
+                            >
+                              {language === "AR" ? "تعديل" : "Edit"}
+                            </button>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>

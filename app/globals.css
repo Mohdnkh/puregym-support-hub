@@ -1793,6 +1793,10 @@ body {
 .offer-filter { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
 .offer-filter .toggle { min-width: 0; padding: 6px 12px; font-size: 13px; }
 
+/* Admin reorder + edit controls at the bottom of a quick card */
+.quick-admin-controls { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.quick-admin-controls .quick-edit-chip { position: static; top: auto; right: auto; }
+
 /* Male/Female toggle on quick script cards */
 .gender-toggle { display: flex; gap: 6px; margin: 8px 0 4px; }
 .gender-toggle button {

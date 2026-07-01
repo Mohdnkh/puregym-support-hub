@@ -9,6 +9,7 @@ const updateSchema = z.object({
   language: z.enum(["AR", "EN"]).optional(),
   body: z.string().trim().min(1).optional(),
   active: z.boolean().optional(),
+  sortOrder: z.number().int().optional(),
 });
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
