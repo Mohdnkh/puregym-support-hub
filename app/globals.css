@@ -1793,6 +1793,23 @@ body {
 .offer-filter { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
 .offer-filter .toggle { min-width: 0; padding: 6px 12px; font-size: 13px; }
 
+/* Male/Female toggle on quick script cards */
+.gender-toggle { display: flex; gap: 6px; margin: 8px 0 4px; }
+.gender-toggle button {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.gender-toggle button.active {
+  background: linear-gradient(135deg, #00a651, #00999d);
+  border-color: transparent;
+  color: #fff;
+}
+
 /* Categories as a horizontal bar above the scripts (frees a column, less scrolling) */
 .category-bar { padding: 12px 14px; margin-bottom: 14px; }
 .category-row { display: flex; flex-wrap: wrap; gap: 8px; }

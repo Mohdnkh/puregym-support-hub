@@ -149,6 +149,18 @@ function applyUserName(text: string, language: Lang, user: User | null) {
     .replaceAll("__/__/____", "00-00-2020");
 }
 
+// Resolve {masculine|feminine} markers based on the selected gender.
+function applyGender(text: string, gender: "M" | "F") {
+  return String(text || "").replace(
+    /\{([^{}|]*)\|([^{}]*)\}/g,
+    (_m, masc, fem) => (gender === "F" ? fem : masc),
+  );
+}
+
+function hasGenderMarkers(text: string) {
+  return /\{[^{}|]*\|[^{}]*\}/.test(String(text || ""));
+}
+
 function preview(text: string) {
   const clean = text.replace(/\s+/g, " ").trim();
   return clean.length > 120 ? clean.slice(0, 120) + "..." : clean;
@@ -284,6 +296,7 @@ export default function DashboardPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [scriptSearch, setScriptSearch] = useState("");
   const [offerFilter, setOfferFilter] = useState<"active" | "inactive" | "all">("active");
+  const [quickGender, setQuickGender] = useState<Record<string, "M" | "F">>({});
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
 
   async function loadScripts() {
@@ -422,7 +435,7 @@ export default function DashboardPage() {
     return quickScripts
       .map(
         (script) =>
-          `${script.title}\n${applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user)}`,
+          `${script.title}\n${applyGender(applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user), "M")}`,
       )
       .join("\n\n━━━━━━━━━━━━━━━━━━━━\n\n");
   }, [quickScripts, user]);
@@ -781,7 +794,12 @@ export default function DashboardPage() {
             </div>
             <div className="quick-cards">
               {quickScripts.map((script) => {
-                const body = applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user);
+                const gender = quickGender[script.id] || "M";
+                const body = applyGender(
+                  applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
+                  gender,
+                );
+                const showGender = hasGenderMarkers(script.body);
                 const isEditing = editingQuickId === script.id;
                 return (
                   <div
@@ -843,6 +861,33 @@ export default function DashboardPage() {
                           <div className="quick-script-emoji">{emojiFor(script.country)}</div>
                           <b>{script.title}</b>
                         </div>
+                        {showGender && (
+                          <div
+                            className="gender-toggle"
+                            onClick={(event) => event.stopPropagation()}
+                          >
+                            <button
+                              type="button"
+                              className={gender === "M" ? "active" : ""}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setQuickGender((g) => ({ ...g, [script.id]: "M" }));
+                              }}
+                            >
+                              {language === "AR" ? "👨 ذكر" : "👨 Male"}
+                            </button>
+                            <button
+                              type="button"
+                              className={gender === "F" ? "active" : ""}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setQuickGender((g) => ({ ...g, [script.id]: "F" }));
+                              }}
+                            >
+                              {language === "AR" ? "👩 أنثى" : "👩 Female"}
+                            </button>
+                          </div>
+                        )}
                         <p>{preview(body)}</p>
                       </>
                     )}
