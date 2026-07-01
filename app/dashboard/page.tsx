@@ -758,7 +758,7 @@ export default function DashboardPage() {
                 : `${country} • ${language === "AR" ? "Arabic" : "English"}`}
             </p>
           </div>
-          {section !== "chatbot" && (
+          {section !== "chatbot" && section !== "calculator" && section !== "admin" && (
             <div className="toolbar">
               <button
                 className={`toggle ksa ${country === "KSA" ? "active" : ""}`}
@@ -2010,6 +2010,14 @@ function HijriMonths() {
     return hijriToGregorian(Number(day), Number(month), Number(year));
   }, [day, month, year]);
 
+  // Gregorian -> Hijri direction.
+  const [gregInput, setGregInput] = useState(() => todayUtc.toISOString().slice(0, 10));
+  const gregToHijri = useMemo(() => {
+    const d = new Date(gregInput + "T12:00:00Z");
+    if (isNaN(d.getTime())) return null;
+    return gregorianToHijri(d);
+  }, [gregInput]);
+
   return (
     <div className="hijri-card">
       <div className="section-head compact">
@@ -2088,6 +2096,36 @@ function HijriMonths() {
           The result uses the Umm Al-Qura / Islamic calendar available in the
           browser and may differ by one day depending on the official calendar.
         </p>
+      </div>
+
+      <div className="section-head compact" style={{ marginTop: 18 }}>
+        <div>
+          <h3>Gregorian → Hijri</h3>
+          <p>Pick a Gregorian date to get its Hijri date.</p>
+        </div>
+      </div>
+      <div className="hijri-converter-grid">
+        <div className="field">
+          <label>Gregorian date</label>
+          <input
+            type="date"
+            className="input"
+            value={gregInput}
+            onChange={(e) => setGregInput(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="calc-result">
+        <h3>Hijri result</h3>
+        {gregToHijri ? (
+          <p>
+            <b>
+              {gregToHijri.day} {hijriMonthName(gregToHijri.month)} {gregToHijri.year} هـ
+            </b>
+          </p>
+        ) : (
+          <p>Pick a valid date.</p>
+        )}
       </div>
 
       <div className="hijri-grid">
@@ -3229,52 +3267,20 @@ function Admin({
                   }
                 />
               </div>
-              <div className="admin-fields">
-                <div className="field">
-                  <label>Country</label>
-                  <select
-                    className="select"
-                    value={trainerForm.country}
-                    onChange={(e) =>
-                      setTrainerForm({
-                        ...trainerForm,
-                        country: e.target.value as TrainerItem["country"],
-                      })
-                    }
-                  >
-                    <option value="ALL">ALL</option>
-                    <option value="KSA">KSA</option>
-                    <option value="UAE">UAE</option>
-                  </select>
-                </div>
-                <div className="field">
-                  <label>Language</label>
-                  <select
-                    className="select"
-                    value={trainerForm.language}
-                    onChange={(e) =>
-                      setTrainerForm({
-                        ...trainerForm,
-                        language: e.target.value as TrainerItem["language"],
-                      })
-                    }
-                  >
-                    <option value="BOTH">BOTH</option>
-                    <option value="AR">AR</option>
-                    <option value="EN">EN</option>
-                  </select>
-                </div>
-                <div className="field">
-                  <label>Kind</label>
-                  <input
-                    className="input"
-                    value={trainerForm.kind}
-                    onChange={(e) =>
-                      setTrainerForm({ ...trainerForm, kind: e.target.value })
-                    }
-                    placeholder="Policy / FAQ / Internal Note"
-                  />
-                </div>
+              <p className="trainer-scope-note">
+                📌 أي معرفة تضيفها تُحفظ تلقائياً للسعودية والإمارات وباللغتين — ما
+                تحتاج تحدد دولة أو لغة. (Auto-applied to KSA &amp; UAE, both languages.)
+              </p>
+              <div className="field">
+                <label>Kind (optional)</label>
+                <input
+                  className="input"
+                  value={trainerForm.kind}
+                  onChange={(e) =>
+                    setTrainerForm({ ...trainerForm, kind: e.target.value })
+                  }
+                  placeholder="Policy / FAQ / Internal Note / Link"
+                />
               </div>
               <div className="field">
                 <label>Source URL or file name</label>
