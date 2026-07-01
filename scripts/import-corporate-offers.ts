@@ -152,33 +152,47 @@ function slug(code: string, taken: Set<string>) {
 }
 
 async function main() {
+  // Recreate cleanly: separate Arabic-only and English-only versions of each offer
+  // (Arabic view shows Arabic, English view shows English — no mixed text).
+  await prisma.script.deleteMany({ where: { source: "corporate-offers" } });
+
   const taken = new Set<string>();
   let sortOrder = 100;
   let count = 0;
 
   for (const [arabicName, englishName, code, price, description, active, start, end] of rows) {
-    const key = slug(code, taken);
-    const title = `${arabicName} — ${code}`;
-    // Bilingual body + language "BOTH" so the offers show in both AR and EN views.
-    const body =
-      `الشركة / Company: ${arabicName} (${englishName})\n` +
-      `كود الخصم / Promo code: ${code}\n` +
-      `السعر بعد الخصم / Price: ${price}\n` +
-      `التفاصيل / Details: ${description}\n` +
-      `الحالة / Status: ${active ? "فعّال / Active" : "منتهي / Inactive"}\n` +
-      `الصلاحية / Valid: ${start} → ${end}`;
+    const arBody =
+      `الشركة: ${arabicName}\n` +
+      `كود الخصم: ${code}\n` +
+      `السعر بعد الخصم: ${price}\n` +
+      `التفاصيل: ${description}\n` +
+      `الحالة: ${active ? "فعّال" : "منتهي"}\n` +
+      `الصلاحية: من ${start} إلى ${end}`;
 
-    await prisma.script.upsert({
-      where: { key },
-      update: { title, category: "Corporate Offers", country: "KSA", language: "BOTH", body, source: "corporate-offers", active, sortOrder },
-      create: { key, title, category: "Corporate Offers", country: "KSA", language: "BOTH", body, source: "corporate-offers", active, sortOrder },
+    const enBody =
+      `Company: ${englishName}\n` +
+      `Promo code: ${code}\n` +
+      `Price after discount: ${price}\n` +
+      `Details: ${description}\n` +
+      `Status: ${active ? "Active" : "Inactive"}\n` +
+      `Valid: ${start} → ${end}`;
+
+    const arKey = slug(`${code}-ar`, taken);
+    await prisma.script.create({
+      data: { key: arKey, title: `${arabicName} — ${code}`, category: "Corporate Offers", country: "KSA", language: "AR", body: arBody, source: "corporate-offers", active, sortOrder },
     });
+
+    const enKey = slug(`${code}-en`, taken);
+    await prisma.script.create({
+      data: { key: enKey, title: `${englishName} — ${code}`, category: "Corporate Offers", country: "KSA", language: "EN", body: enBody, source: "corporate-offers", active, sortOrder },
+    });
+
     sortOrder += 10;
-    count += 1;
+    count += 2;
   }
 
   const total = await prisma.script.count({ where: { category: "Corporate Offers" } });
-  console.log(`Imported/updated ${count} rows. Category 'Corporate Offers' now has ${total} scripts.`);
+  console.log(`Created ${count} scripts (AR + EN). Category 'Corporate Offers' now has ${total} scripts.`);
 }
 
 main()
