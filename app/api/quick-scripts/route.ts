@@ -50,6 +50,8 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")
+    return NextResponse.json({ error: "Only admins can manage quick scripts." }, { status: 403 });
 
   const data = createSchema.parse(await req.json());
   const lastQuick = await prisma.userQuickScript.findFirst({

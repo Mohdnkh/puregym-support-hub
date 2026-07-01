@@ -752,9 +752,11 @@ export default function DashboardPage() {
                       : "Private quick scripts. Click any card to copy it instantly."}
                   </p>
                 </div>
-                <button className="btn small" onClick={addPersonalQuickScript}>
-                  {language === "AR" ? "➕ إضافة سكربت سريع" : "➕ Add Quick Script"}
-                </button>
+                {isAdminRole(user?.role) && (
+                  <button className="btn small" onClick={addPersonalQuickScript}>
+                    {language === "AR" ? "➕ إضافة سكربت سريع" : "➕ Add Quick Script"}
+                  </button>
+                )}
               </div>
               <textarea
                 className="textarea quick-note-textarea"
@@ -825,16 +827,18 @@ export default function DashboardPage() {
                       </>
                     ) : (
                       <>
-                        <button
-                          className="quick-edit-chip"
-                          type="button"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            setEditingQuickId(script.id);
-                          }}
-                        >
-                          Edit
-                        </button>
+                        {isAdminRole(user?.role) && (
+                          <button
+                            className="quick-edit-chip"
+                            type="button"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              setEditingQuickId(script.id);
+                            }}
+                          >
+                            Edit
+                          </button>
+                        )}
                         <div className="quick-script-topline">
                           <div className="quick-script-emoji">{emojiFor(script.country)}</div>
                           <b>{script.title}</b>
@@ -2555,7 +2559,10 @@ function Admin({
     { id: "edit" as const, label: "Edit Script", hint: "Update" },
     { id: "order" as const, label: "Script Order", hint: "Drag" },
     { id: "categories" as const, label: "Categories", hint: "Add / Rename" },
-    { id: "users" as const, label: "Users", hint: "Roles" },
+    // User management is Super Admin only.
+    ...(isSuperAdmin(currentUser?.role)
+      ? [{ id: "users" as const, label: "Users", hint: "Roles" }]
+      : []),
     { id: "ai" as const, label: "AI Trainer", hint: "Knowledge" },
   ];
 
@@ -3001,7 +3008,7 @@ function Admin({
         </div>
       )}
 
-      {adminTab === "users" && (
+      {adminTab === "users" && isSuperAdmin(currentUser?.role) && (
         <div className="card admin-panel users-panel">
           <div className="section-head compact">
             <div>

@@ -14,6 +14,8 @@ const updateSchema = z.object({
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")
+    return NextResponse.json({ error: "Only admins can manage quick scripts." }, { status: 403 });
 
   const data = updateSchema.parse(await req.json());
   const quickScript = await prisma.userQuickScript.updateMany({
@@ -28,6 +30,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN")
+    return NextResponse.json({ error: "Only admins can manage quick scripts." }, { status: 403 });
 
   await prisma.userQuickScript.deleteMany({ where: { id: params.id, userId: user.id } });
   return NextResponse.json({ ok: true });
