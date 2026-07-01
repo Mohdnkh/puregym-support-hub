@@ -323,78 +323,62 @@ export default function DashboardPage() {
     setPersonalQuickScripts(data.quickScripts || []);
   }
 
-  async function savePersonalQuickScript(item: UserQuickScript) {
-    const res = await fetch(`/api/quick-scripts/${item.id}`, {
+  // Quick scripts are shared (Script "Quick Scripts" category), so admin edits,
+  // reordering and deletes apply to every agent.
+  async function savePersonalQuickScript(item: Script) {
+    const res = await fetch(`/api/scripts/${item.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: item.title,
-        country: item.country,
-        language: item.language === "EN" ? "EN" : "AR",
-        body: item.body,
-      }),
+      body: JSON.stringify({ title: item.title, language: item.language, body: item.body }),
     });
     if (!res.ok) return alert("Quick script save failed.");
     setEditingQuickId(null);
-    await loadPersonalQuickScripts();
+    await loadScripts();
   }
 
   async function addPersonalQuickScript() {
-    const res = await fetch("/api/quick-scripts", {
+    const res = await fetch("/api/scripts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title: "New Quick Script",
-        country,
+        title: language === "AR" ? "سكربت سريع جديد" : "New Quick Script",
+        category: "Quick Scripts",
+        country: "ALL",
         language,
         body: language === "AR" ? "اكتب السكربت هنا" : "Write the script here",
       }),
     });
     if (!res.ok) return alert("Quick script create failed.");
-    await loadPersonalQuickScripts();
+    await loadScripts();
   }
 
-  // Reorder quick scripts (admin/super admin) by swapping sortOrder with the neighbor.
-  async function moveQuickScript(script: UserQuickScript, dir: "up" | "down") {
+  // Reorder the shared quick scripts for the current language (applies to everyone).
+  async function moveQuickScript(script: Script, dir: "up" | "down") {
     const list = quickScripts;
     const idx = list.findIndex((s) => s.id === script.id);
     const swapIdx = dir === "up" ? idx - 1 : idx + 1;
     if (idx < 0 || swapIdx < 0 || swapIdx >= list.length) return;
 
-    const other = list[swapIdx];
-    const a = script.sortOrder ?? 0;
-    const b = other.sortOrder ?? 0;
+    const ids = list.map((s) => s.id);
+    [ids[idx], ids[swapIdx]] = [ids[swapIdx], ids[idx]];
 
-    setPersonalQuickScripts((cur) =>
-      cur.map((s) =>
-        s.id === script.id ? { ...s, sortOrder: b } : s.id === other.id ? { ...s, sortOrder: a } : s,
-      ),
-    );
-
-    await Promise.all([
-      fetch(`/api/quick-scripts/${script.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sortOrder: b }),
-      }),
-      fetch(`/api/quick-scripts/${other.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sortOrder: a }),
-      }),
-    ]);
-    await loadPersonalQuickScripts();
+    await fetch("/api/scripts/reorder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    });
+    await loadScripts();
   }
 
   async function deletePersonalQuickScript(id: string) {
-    if (!confirm("Delete this quick script?")) return;
-    const res = await fetch(`/api/quick-scripts/${id}`, { method: "DELETE" });
+    if (!confirm("Delete this quick script for everyone?")) return;
+    const res = await fetch(`/api/scripts/${id}`, { method: "DELETE" });
     if (!res.ok) return alert("Quick script delete failed.");
-    await loadPersonalQuickScripts();
+    await loadScripts();
   }
 
-  function updatePersonalQuickScript(id: string, patch: Partial<UserQuickScript>) {
-    setPersonalQuickScripts((current) =>
+  function updatePersonalQuickScript(id: string, patch: Partial<Script>) {
+    setScripts((current) =>
       current.map((item) => (item.id === id ? { ...item, ...patch } : item)),
     );
   }
@@ -451,21 +435,28 @@ export default function DashboardPage() {
     );
   }, [visibleScripts]);
 
+  // Shared quick scripts (Script "Quick Scripts" category) — same for all agents.
   const quickScripts = useMemo(
     () =>
-      personalQuickScripts
+      scripts
         .filter(
           (script) =>
+            script.category === "Quick Scripts" &&
             script.active &&
             (script.country === country || script.country === "ALL") &&
-            script.language === language,
+            (script.language === language || (script.language as string) === "BOTH"),
         )
         .sort(
           (a, b) =>
             (a.sortOrder || 0) - (b.sortOrder || 0) ||
             a.title.localeCompare(b.title),
         ),
-    [personalQuickScripts, country, language],
+    [scripts, country, language],
+  );
+
+  const favoriteQuickScripts = useMemo(
+    () => quickScripts.filter((script) => favoriteIds.includes(script.id)),
+    [quickScripts, favoriteIds],
   );
 
   const quickStickyText = useMemo(() => {
@@ -791,15 +782,46 @@ export default function DashboardPage() {
         {message && <div className="toast">{message}</div>}
 
         {section === "quick" && (
-          <div className="quick-layout">
+          <>
+            {favoriteQuickScripts.length > 0 && (
+              <div className="favorites-strip card">
+                <div className="section-head compact">
+                  <div>
+                    <h2>⭐ {language === "AR" ? "المفضّلة" : "Favorites"}</h2>
+                  </div>
+                </div>
+                <div className="favorite-card-grid">
+                  {favoriteQuickScripts.map((script) => {
+                    const g = quickGender[script.id] || "M";
+                    const favBody = applyCountryHeart(
+                      applyGender(
+                        applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
+                        g,
+                      ),
+                      country,
+                    );
+                    return (
+                      <button
+                        key={script.id}
+                        className="mini-script-card"
+                        onClick={() => copyText(favBody)}
+                      >
+                        <b>{script.title}</b>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            <div className="quick-layout">
             <div className="quick-note card">
               <div className="section-head compact">
                 <div>
-                  <h2>{language === "AR" ? "السكربتات السريعة" : "Personal Quick Scripts"}</h2>
+                  <h2>{language === "AR" ? "السكربتات السريعة" : "Quick Scripts"}</h2>
                   <p>
                     {language === "AR"
-                      ? "سكربتاتك الخاصة. اكبس على أي بطاقة لنسخها فوراً."
-                      : "Private quick scripts. Click any card to copy it instantly."}
+                      ? "سكربتات جاهزة للكل. اكبس أي بطاقة لنسخها، والنجمة تحفظها بمفضّلتك."
+                      : "Shared quick scripts. Click a card to copy; the star saves it to your favorites."}
                   </p>
                 </div>
                 {isAdminRole(user?.role) && (
@@ -866,7 +888,7 @@ export default function DashboardPage() {
                           <select
                             className="select"
                             value={script.language === "EN" ? "EN" : "AR"}
-                            onChange={(event) => updatePersonalQuickScript(script.id, { language: event.target.value as UserQuickScript["language"] })}
+                            onChange={(event) => updatePersonalQuickScript(script.id, { language: event.target.value as Script["language"] })}
                           >
                             <option value="AR">AR</option>
                             <option value="EN">EN</option>
@@ -888,6 +910,16 @@ export default function DashboardPage() {
                         <div className="quick-script-topline">
                           <div className="quick-script-emoji">{emojiFor(country)}</div>
                           <b>{script.title}</b>
+                          <button
+                            className={`star-button ${favoriteIds.includes(script.id) ? "active" : ""}`}
+                            title="Favorite"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              toggleFavorite(script.id);
+                            }}
+                          >
+                            {favoriteIds.includes(script.id) ? "★" : "☆"}
+                          </button>
                         </div>
                         {showGender && (
                           <div
@@ -968,7 +1000,8 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
-          </div>
+            </div>
+          </>
         )}
 
         {section === "scripts" && (

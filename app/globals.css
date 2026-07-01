@@ -1803,6 +1803,11 @@ body {
   margin: 0 0 12px;
 }
 
+/* Star (favorite) on quick script cards */
+.quick-script-topline { display: flex; align-items: flex-start; gap: 8px; }
+.quick-script-topline b { flex: 1; min-width: 0; }
+.quick-script-topline .star-button { margin-inline-start: auto; flex-shrink: 0; }
+
 /* Admin reorder + edit controls at the bottom of a quick card */
 .quick-admin-controls { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
 .quick-admin-controls .quick-edit-chip { position: static; top: auto; right: auto; }
