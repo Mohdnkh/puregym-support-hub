@@ -159,18 +159,19 @@ async function main() {
   for (const [arabicName, englishName, code, price, description, active, start, end] of rows) {
     const key = slug(code, taken);
     const title = `${arabicName} — ${code}`;
+    // Bilingual body + language "BOTH" so the offers show in both AR and EN views.
     const body =
-      `الشركة: ${arabicName} (${englishName})\n` +
-      `كود الخصم: ${code}\n` +
-      `السعر بعد الخصم: ${price}\n` +
-      `التفاصيل: ${description}\n` +
-      `الحالة: ${active ? "فعّال" : "غير فعّال / منتهي"}\n` +
-      `الصلاحية: من ${start} إلى ${end}`;
+      `الشركة / Company: ${arabicName} (${englishName})\n` +
+      `كود الخصم / Promo code: ${code}\n` +
+      `السعر بعد الخصم / Price: ${price}\n` +
+      `التفاصيل / Details: ${description}\n` +
+      `الحالة / Status: ${active ? "فعّال / Active" : "منتهي / Inactive"}\n` +
+      `الصلاحية / Valid: ${start} → ${end}`;
 
     await prisma.script.upsert({
       where: { key },
-      update: { title, category: "Corporate Offers", country: "KSA", language: "AR", body, source: "corporate-offers", active, sortOrder },
-      create: { key, title, category: "Corporate Offers", country: "KSA", language: "AR", body, source: "corporate-offers", active, sortOrder },
+      update: { title, category: "Corporate Offers", country: "KSA", language: "BOTH", body, source: "corporate-offers", active, sortOrder },
+      create: { key, title, category: "Corporate Offers", country: "KSA", language: "BOTH", body, source: "corporate-offers", active, sortOrder },
     });
     sortOrder += 10;
     count += 1;

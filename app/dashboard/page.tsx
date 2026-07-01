@@ -380,7 +380,7 @@ export default function DashboardPage() {
         (script) =>
           script.active &&
           (script.country === country || script.country === "ALL") &&
-          script.language === language,
+          (script.language === language || (script.language as string) === "BOTH"),
       )
       .sort(
         (a, b) =>
@@ -441,7 +441,7 @@ export default function DashboardPage() {
             !script.active &&
             script.category === category &&
             (script.country === country || script.country === "ALL") &&
-            script.language === language,
+            (script.language === language || (script.language as string) === "BOTH"),
         )
         .sort(
           (a, b) =>

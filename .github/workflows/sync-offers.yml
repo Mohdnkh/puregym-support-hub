@@ -1,0 +1,20 @@
+name: Sync live offers
+
+# Reliable daily trigger for the live-offer scraper. Vercel Hobby cron jobs are
+# unreliable, so GitHub Actions calls the production endpoint instead.
+on:
+  schedule:
+    - cron: "0 6 * * *" # every day at 06:00 UTC
+  workflow_dispatch: {} # allow manual run from the Actions tab
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger offer sync
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl -fsS -m 90 \
+            ${CRON_SECRET:+-H "Authorization: Bearer $CRON_SECRET"} \
+            "https://puregym-support-hub.vercel.app/api/cron/sync-offers"
