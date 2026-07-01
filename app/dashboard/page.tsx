@@ -800,14 +800,50 @@ export default function DashboardPage() {
                       ),
                       country,
                     );
+                    const favShowGender = hasGenderMarkers(script.body);
                     return (
-                      <button
+                      <div
                         key={script.id}
-                        className="mini-script-card"
+                        className="mini-script-card clickable"
+                        role="button"
+                        tabIndex={0}
                         onClick={() => copyText(favBody)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            copyText(favBody);
+                          }
+                        }}
                       >
                         <b>{script.title}</b>
-                      </button>
+                        {favShowGender && (
+                          <div
+                            className="gender-toggle"
+                            onClick={(event) => event.stopPropagation()}
+                          >
+                            <button
+                              type="button"
+                              className={g === "M" ? "active" : ""}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setQuickGender((x) => ({ ...x, [script.id]: "M" }));
+                              }}
+                            >
+                              {language === "AR" ? "👨 ذكر" : "👨 Male"}
+                            </button>
+                            <button
+                              type="button"
+                              className={g === "F" ? "active" : ""}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setQuickGender((x) => ({ ...x, [script.id]: "F" }));
+                              }}
+                            >
+                              {language === "AR" ? "👩 أنثى" : "👩 Female"}
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     );
                   })}
                 </div>

@@ -1803,6 +1803,8 @@ body {
   margin: 0 0 12px;
 }
 
+.mini-script-card.clickable { cursor: pointer; }
+
 /* Star (favorite) on quick script cards */
 .quick-script-topline { display: flex; align-items: flex-start; gap: 8px; }
 .quick-script-topline b { flex: 1; min-width: 0; }
