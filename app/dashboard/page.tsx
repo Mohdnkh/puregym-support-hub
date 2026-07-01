@@ -2655,6 +2655,43 @@ function Admin({
     setSelectedId("");
   }
 
+  // Activate / deactivate a single script for everyone.
+  async function toggleScriptActive() {
+    if (!selected) return;
+    const nextActive = !selected.active;
+    const res = await fetch(`/api/scripts/${selected.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ active: nextActive }),
+    });
+    if (!res.ok) return setStatus("Update failed");
+    setStatus(nextActive ? "Script activated for everyone." : "Script deactivated (hidden for everyone).");
+    await onScriptsChanged();
+  }
+
+  // Activate / deactivate a whole category for everyone.
+  async function setCategoryActive(active: boolean) {
+    const name = adminCategory;
+    if (!name) return setStatus("Select a category first.");
+    const count = scripts.filter((script) => script.category === name).length;
+    if (
+      !confirm(
+        `${active ? "Activate" : "Deactivate"} the category "${name}" and its ${count} script(s) for everyone?`,
+      )
+    )
+      return;
+
+    const res = await fetch("/api/scripts/categories/active", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, active }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Category update failed");
+    setStatus(`Category ${active ? "activated" : "deactivated"}. Updated ${data.count || 0} scripts.`);
+    await onScriptsChanged();
+  }
+
   function reorderLocal(targetId: string) {
     if (!draggedId || draggedId === targetId) return;
     const list = adminScripts.map((script) => script.id);
@@ -3006,6 +3043,41 @@ function Admin({
                 </button>
               </div>
             </div>
+
+            <div className="category-tool-box">
+              <h3>Activate / Deactivate category</h3>
+              <p>
+                Hide or show the selected category and all its scripts for
+                everyone — without deleting anything.
+              </p>
+              <div className="inline-action-row rename-row">
+                <select
+                  className="select"
+                  value={adminCategory}
+                  onChange={(e) => setAdminCategory(e.target.value)}
+                >
+                  {categoryOptions.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="btn ghost small"
+                  type="button"
+                  onClick={() => setCategoryActive(false)}
+                >
+                  🚫 Deactivate
+                </button>
+                <button
+                  className="btn small"
+                  type="button"
+                  onClick={() => setCategoryActive(true)}
+                >
+                  ✅ Activate
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -3085,12 +3157,13 @@ function Admin({
               {adminScripts.map((script) => (
                 <button
                   key={script.id}
-                  className={`script-card ${selected?.id === script.id ? "active" : ""}`}
+                  className={`script-card ${selected?.id === script.id ? "active" : ""} ${!script.active ? "is-inactive" : ""}`}
                   onClick={() => setSelectedId(script.id)}
                 >
                   <b>{script.title}</b>
                   <p>
                     {script.country} • {script.language}
+                    {!script.active && " • ⚠️ Inactive"}
                   </p>
                 </button>
               ))}
@@ -3107,6 +3180,13 @@ function Admin({
                 <p>Changes apply to all users.</p>
               </div>
               <div className="toolbar">
+                <button
+                  className="btn ghost small"
+                  onClick={toggleScriptActive}
+                  disabled={!selected}
+                >
+                  {selected?.active ? "🚫 Deactivate" : "✅ Activate"}
+                </button>
                 <button
                   className="btn ghost small danger-btn"
                   onClick={() => selected && deleteScript(selected.id)}

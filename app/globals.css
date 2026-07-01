@@ -2076,6 +2076,10 @@ body {
 .admin-order-tab .select {
   max-width: 520px;
 }
+.compact-select-list .script-card.is-inactive,
+.order-list-modern .script-card.is-inactive { opacity: 0.5; }
+.compact-select-list .script-card.is-inactive p,
+.order-list-modern .script-card.is-inactive p { color: var(--danger); }
 
 @media (max-width: 1180px) {
   .admin-tab-buttons { grid-template-columns: repeat(3, minmax(130px, 1fr)); }
