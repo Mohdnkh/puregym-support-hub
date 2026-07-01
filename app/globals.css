@@ -1811,8 +1811,12 @@ body {
 .quick-script-topline .star-button { margin-inline-start: auto; flex-shrink: 0; }
 
 /* Admin reorder + edit controls at the bottom of a quick card */
-.quick-admin-controls { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.quick-admin-controls { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
 .quick-admin-controls .quick-edit-chip { position: static; top: auto; right: auto; }
+.quick-admin-controls .drag-hint { font-size: 11px; font-weight: 700; color: var(--muted); margin-inline-end: auto; }
+.quick-script-card.draggable { cursor: grab; }
+.quick-script-card.draggable:active { cursor: grabbing; }
+.quick-script-card.dragging { opacity: 0.45; }
 
 /* Male/Female toggle on quick script cards */
 .gender-toggle { display: flex; gap: 6px; margin: 8px 0 4px; }
@@ -2023,7 +2027,8 @@ body {
   gap: 18px;
   align-items: start;
 }
-.compact-select-list {
+.compact-select-list,
+.order-list-modern {
   max-height: calc(100vh - 340px);
   overflow: auto;
   padding-right: 4px;
@@ -2032,28 +2037,41 @@ body {
   flex-direction: column;
   gap: 8px;
 }
-.compact-select-list .script-card {
-  padding: 10px 14px;
+/* Each row is a button whose children must stack cleanly and not be clipped */
+.compact-select-list .script-card,
+.order-list-modern .script-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 11px 14px;
   border-radius: 14px;
-  display: block;
+  overflow: visible;
+  min-height: 0;
+  height: auto;
+  white-space: normal;
+  flex: none;
 }
-.compact-select-list .script-card b {
+.compact-select-list .script-card b,
+.order-list-modern .script-card b {
   display: block;
+  width: 100%;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.5;
   overflow-wrap: anywhere;
+  white-space: normal;
 }
-.compact-select-list .script-card p {
-  margin: 4px 0 0;
+.compact-select-list .script-card p,
+.order-list-modern .script-card p {
+  margin: 0;
   font-size: 11px;
+  line-height: 1.4;
   color: var(--muted);
   border: 0;
   padding: 0;
-}
-.order-list-modern {
-  max-height: calc(100vh - 330px);
-  overflow: auto;
-  margin-top: 14px;
+  overflow: visible;
+  display: block;
+  -webkit-line-clamp: none;
 }
 .admin-order-tab .select {
   max-width: 520px;

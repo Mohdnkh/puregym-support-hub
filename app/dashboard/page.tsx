@@ -302,6 +302,7 @@ export default function DashboardPage() {
   const [scriptSearch, setScriptSearch] = useState("");
   const [offerFilter, setOfferFilter] = useState<"active" | "inactive" | "all">("active");
   const [quickGender, setQuickGender] = useState<Record<string, "M" | "F">>({});
+  const [draggedQuickId, setDraggedQuickId] = useState<string | null>(null);
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
 
   async function loadScripts() {
@@ -352,16 +353,19 @@ export default function DashboardPage() {
     await loadScripts();
   }
 
-  // Reorder the shared quick scripts for the current language (applies to everyone).
-  async function moveQuickScript(script: Script, dir: "up" | "down") {
-    const list = quickScripts;
-    const idx = list.findIndex((s) => s.id === script.id);
-    const swapIdx = dir === "up" ? idx - 1 : idx + 1;
-    if (idx < 0 || swapIdx < 0 || swapIdx >= list.length) return;
+  // Drag-and-drop reorder of the shared quick scripts (applies to everyone).
+  async function reorderQuickByDrag(targetId: string) {
+    if (!draggedQuickId || draggedQuickId === targetId) {
+      setDraggedQuickId(null);
+      return;
+    }
+    const ids = quickScripts.map((s) => s.id);
+    const from = ids.indexOf(draggedQuickId);
+    const to = ids.indexOf(targetId);
+    setDraggedQuickId(null);
+    if (from < 0 || to < 0) return;
 
-    const ids = list.map((s) => s.id);
-    [ids[idx], ids[swapIdx]] = [ids[swapIdx], ids[idx]];
-
+    ids.splice(to, 0, ids.splice(from, 1)[0]);
     await fetch("/api/scripts/reorder", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -899,12 +903,17 @@ export default function DashboardPage() {
                 );
                 const showGender = hasGenderMarkers(script.body);
                 const isEditing = editingQuickId === script.id;
+                const canReorder = isAdminRole(user?.role) && !isEditing;
                 return (
                   <div
-                    className={`mini-script-card quick-script-card ${isEditing ? "editing" : "clickable"}`}
+                    className={`mini-script-card quick-script-card ${isEditing ? "editing" : "clickable"} ${canReorder ? "draggable" : ""} ${draggedQuickId === script.id ? "dragging" : ""}`}
                     key={script.id}
                     role={isEditing ? undefined : "button"}
                     tabIndex={isEditing ? undefined : 0}
+                    draggable={canReorder}
+                    onDragStart={canReorder ? () => setDraggedQuickId(script.id) : undefined}
+                    onDragOver={canReorder ? (event) => event.preventDefault() : undefined}
+                    onDrop={canReorder ? () => reorderQuickByDrag(script.id) : undefined}
                     onClick={() => !isEditing && copyText(body)}
                     onKeyDown={(event) => {
                       if (!isEditing && (event.key === "Enter" || event.key === " ")) {
@@ -990,28 +999,9 @@ export default function DashboardPage() {
                             className="quick-admin-controls"
                             onClick={(event) => event.stopPropagation()}
                           >
-                            <button
-                              type="button"
-                              className="quick-edit-chip"
-                              title="Move up"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                moveQuickScript(script, "up");
-                              }}
-                            >
-                              ↑
-                            </button>
-                            <button
-                              type="button"
-                              className="quick-edit-chip"
-                              title="Move down"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                moveQuickScript(script, "down");
-                              }}
-                            >
-                              ↓
-                            </button>
+                            <span className="drag-hint" title="Drag to reorder">
+                              ⠿ {language === "AR" ? "اسحب للترتيب" : "Drag to reorder"}
+                            </span>
                             <button
                               type="button"
                               className="quick-edit-chip"
