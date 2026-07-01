@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     if (!valid) return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
 
     if (!user.emailVerifiedAt) {
-      return NextResponse.json({ error: "Please verify your email before logging in." }, { status: 403 });
+      return NextResponse.json({ error: "Your account is pending admin approval." }, { status: 403 });
     }
 
     const rememberMe = Boolean(body.rememberMe);

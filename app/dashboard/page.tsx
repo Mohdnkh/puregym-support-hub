@@ -2730,6 +2730,20 @@ function Admin({
     await loadUsers();
   }
 
+  // Approve a pending request and/or generate a password to share with the user.
+  async function generateUserPassword(id: string, isPending: boolean) {
+    if (!confirm(isPending ? "Approve this account and generate a password?" : "Generate a new password for this user?")) return;
+    const res = await fetch(`/api/admin/users/${id}/password`, { method: "POST" });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return setStatus(data.error || "Failed to generate password");
+    await loadUsers();
+    window.prompt(
+      `Login details for ${data.email} — copy and send to the user:`,
+      `Email: ${data.email}\nPassword: ${data.password}`,
+    );
+    setStatus(`Password generated for ${data.email}.`);
+  }
+
   async function changeUserRole(id: string, role: "USER" | "ADMIN" | "SUPER_ADMIN") {
     const res = await fetch(`/api/admin/users/${id}`, {
       method: "PATCH",
@@ -2805,10 +2819,8 @@ function Admin({
     { id: "edit" as const, label: "Edit Script", hint: "Update" },
     { id: "order" as const, label: "Script Order", hint: "Drag" },
     { id: "categories" as const, label: "Categories", hint: "Add / Rename" },
-    // User management is Super Admin only.
-    ...(isSuperAdmin(currentUser?.role)
-      ? [{ id: "users" as const, label: "Users", hint: "Roles" }]
-      : []),
+    // Admins see requests + can generate passwords; role changes stay Super Admin only.
+    { id: "users" as const, label: "Users", hint: "Requests" },
     { id: "ai" as const, label: "AI Trainer", hint: "Knowledge" },
   ];
 
@@ -3297,7 +3309,7 @@ function Admin({
         </div>
       )}
 
-      {adminTab === "users" && isSuperAdmin(currentUser?.role) && (
+      {adminTab === "users" && isAdminRole(currentUser?.role) && (
         <div className="card admin-panel users-panel">
           <div className="section-head compact">
             <div>
@@ -3316,7 +3328,7 @@ function Admin({
                   </b>
                   <span>
                     {member.email} • {member.role} •{" "}
-                    {member.emailVerifiedAt ? "Verified" : "Not verified"}
+                    {member.emailVerifiedAt ? "Active" : "⏳ Pending approval"}
                   </span>
                 </div>
                 <div className="user-actions">
@@ -3360,12 +3372,20 @@ function Admin({
                     <span className="muted-text">Role changes require Super Admin.</span>
                   )}
                   <button
-                    className="btn ghost small danger-btn"
-                    onClick={() => deleteUser(member.id)}
-                    disabled={member.id === currentUser.id}
+                    className={member.emailVerifiedAt ? "btn ghost small" : "btn small"}
+                    onClick={() => generateUserPassword(member.id, !member.emailVerifiedAt)}
                   >
-                    Delete user
+                    {member.emailVerifiedAt ? "🔑 New password" : "✅ Approve & set password"}
                   </button>
+                  {isSuperAdmin(currentUser.role) && (
+                    <button
+                      className="btn ghost small danger-btn"
+                      onClick={() => deleteUser(member.id)}
+                      disabled={member.id === currentUser.id}
+                    >
+                      Delete user
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

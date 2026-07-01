@@ -1,28 +1,24 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { randomBytes } from "crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { hashToken } from "@/lib/crypto";
-import { sendVerificationCode } from "@/lib/mail";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
+// New flow: no password, no code. The user requests an account with just their
+// email + first name. It stays pending (emailVerifiedAt = null) until an admin
+// approves it and generates a password.
 const schema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
-  nameAr: z.string().min(2),
-  nameEn: z.string().min(2)
+  name: z.string().trim().min(2).max(80)
 });
 
-function makeCode() {
-  return String(Math.floor(100000 + Math.random() * 900000));
-}
-
 export async function POST(req: Request) {
-  // Limit signups + verification emails: 5 per IP per 10 minutes.
+  // Limit account requests: 5 per IP per 10 minutes.
   const limit = rateLimit(`signup:${getClientIp(req)}`, 5, 10 * 60_000);
   if (!limit.ok) {
     return NextResponse.json(
-      { error: "Too many sign-up attempts. Please wait a few minutes and try again." },
+      { error: "Too many requests. Please wait a few minutes and try again." },
       { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
     );
   }
@@ -32,36 +28,31 @@ export async function POST(req: Request) {
     const email = body.email.toLowerCase();
 
     const existing = await prisma.user.findUnique({ where: { email } });
-
     if (existing?.emailVerifiedAt) {
-      return NextResponse.json({ error: "Email already exists" }, { status: 409 });
+      return NextResponse.json({ error: "An account with this email already exists." }, { status: 409 });
     }
-
     if (existing && !existing.emailVerifiedAt) {
-      await prisma.user.delete({ where: { id: existing.id } });
+      return NextResponse.json({ ok: true, message: "Your account request is already pending admin approval." });
     }
 
-    const passwordHash = await bcrypt.hash(body.password, 12);
-    const user = await prisma.user.create({
+    // Placeholder unusable password until an admin generates a real one on approval.
+    const placeholder = await bcrypt.hash(randomBytes(24).toString("hex"), 12);
+
+    await prisma.user.create({
       data: {
         email,
-        passwordHash,
-        nameAr: body.nameAr,
-        nameEn: body.nameEn
+        passwordHash: placeholder,
+        nameAr: body.name,
+        nameEn: body.name,
+        role: "USER",
+        emailVerifiedAt: null
       }
     });
 
-    const code = makeCode();
-    const tokenHash = hashToken(`${email}:${code}`);
-    const expiresAt = new Date(Date.now() + Number(process.env.VERIFY_EMAIL_TOKEN_EXPIRES_MINUTES || 30) * 60 * 1000);
-
-    await prisma.verificationToken.create({
-      data: { tokenHash, userId: user.id, expiresAt }
+    return NextResponse.json({
+      ok: true,
+      message: "Account request submitted. An admin will approve it and send you your login details."
     });
-
-    await sendVerificationCode(user.email, code);
-
-    return NextResponse.json({ ok: true, email: user.email, message: "Account created. Verification code sent to your email." });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Invalid request";
     return NextResponse.json({ error: message }, { status: 400 });

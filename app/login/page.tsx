@@ -140,13 +140,9 @@ export default function LoginPage() {
                 />{" "}
                 <span>Remember me</span>
               </label>
-              <button
-                className="link-button"
-                type="button"
-                onClick={() => switchMode("forgot")}
-              >
-                Forgot password?
-              </button>
+              <span className="muted-text" style={{ fontSize: 12 }}>
+                Forgot your password? Ask an admin to reset it.
+              </span>
             </div>
           </>
         )}
