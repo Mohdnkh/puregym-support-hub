@@ -1,6 +1,6 @@
 "use client";
 
-import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
+import { KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type User = {
@@ -193,6 +193,17 @@ function writeCache(key: string, value: unknown) {
   } catch {
     // storage full/blocked — caching is best-effort only
   }
+}
+
+function isEditableTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false;
+  const tagName = target.tagName.toLowerCase();
+  return (
+    tagName === "input" ||
+    tagName === "textarea" ||
+    tagName === "select" ||
+    target.isContentEditable
+  );
 }
 
 function preview(text: string) {
@@ -594,6 +605,19 @@ export default function DashboardPage() {
     [visibleScripts, favoriteIds],
   );
 
+  const mostUsedScripts = useMemo(
+    () =>
+      visibleScripts
+        .filter(
+          (script) =>
+            script.category !== "Quick Scripts" &&
+            (usageCounts[script.id] || 0) > 0,
+        )
+        .sort((a, b) => (usageCounts[b.id] || 0) - (usageCounts[a.id] || 0))
+        .slice(0, 10),
+    [visibleScripts, usageCounts],
+  );
+
   const selected = useMemo(() => {
     const byId =
       filteredScripts.find((script) => script.id === selectedId) ||
@@ -641,12 +665,12 @@ export default function DashboardPage() {
       setSelectedId("");
       setEditorText("");
     }
-  }, [selected?.id, user]);
+  }, [selected, user]);
 
-  function flash(text: string) {
+  const flash = useCallback((text: string) => {
     setMessage(text);
     setTimeout(() => setMessage(""), 1400);
-  }
+  }, []);
 
   function selectScript(script: Script) {
     setSelectedId(script.id);
@@ -673,20 +697,20 @@ export default function DashboardPage() {
     }
   }
 
-  async function copyText(text: string) {
+  const copyText = useCallback(async (text: string) => {
     await navigator.clipboard.writeText(text);
     flash("Copied");
-  }
+  }, [flash]);
 
-  function trackUsage(id: string) {
+  const trackUsage = useCallback((id: string) => {
     setUsageCounts((cur) => {
       const next = { ...cur, [id]: (cur[id] || 0) + 1 };
       writeCache("pg_usage_counts", next);
       return next;
     });
-  }
+  }, []);
 
-  function resolveScriptBody(script: Script) {
+  const resolveScriptBody = useCallback((script: Script) => {
     return applyCountryHeart(
       applyGender(
         applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
@@ -694,11 +718,11 @@ export default function DashboardPage() {
       ),
       country,
     );
-  }
+  }, [country, quickGender, user]);
 
   // One copy pipeline everywhere: applies name/gender/heart, tracks usage,
   // and opens the fill dialog when the script has [variables] to complete.
-  async function smartCopy(script: Script) {
+  const smartCopy = useCallback(async (script: Script) => {
     const body = resolveScriptBody(script);
     trackUsage(script.id);
     const tokens = extractVarTokens(body);
@@ -707,9 +731,9 @@ export default function DashboardPage() {
       return;
     }
     await copyText(body);
-  }
+  }, [copyText, resolveScriptBody, trackUsage]);
 
-  async function confirmVarFill() {
+  const confirmVarFill = useCallback(async () => {
     if (!varFill) return;
     let out = varFill.text;
     for (const token of varFill.tokens) {
@@ -718,9 +742,9 @@ export default function DashboardPage() {
     }
     setVarFill(null);
     await copyText(out);
-  }
+  }, [copyText, varFill]);
 
-  // Ctrl+K opens the palette from anywhere; Esc closes overlays.
+  // Ctrl+K opens the palette from anywhere; Alt+1..6 moves between sections.
   useEffect(() => {
     function onKey(event: globalThis.KeyboardEvent) {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
@@ -728,14 +752,43 @@ export default function DashboardPage() {
         setPaletteOpen((open) => !open);
         setPaletteQuery("");
         setPaletteIndex(0);
-      } else if (event.key === "Escape") {
+        return;
+      }
+
+      if (event.key === "Escape") {
         setPaletteOpen(false);
         setVarFill(null);
+        return;
+      }
+
+      if (paletteOpen || varFill || isEditableTarget(event.target)) return;
+
+      if (event.altKey && !event.ctrlKey && !event.metaKey) {
+        const isAdmin = isAdminRole(user?.role);
+        const shortcuts: Record<string, Section> = {
+          "1": "quick",
+          "2": "scripts",
+          "3": "chatbot",
+          "4": "calculator",
+          "5": isAdmin ? "admin" : "profile",
+          "6": "profile",
+        };
+        const next = shortcuts[event.key];
+        if (next && (next !== "admin" || isAdmin)) {
+          event.preventDefault();
+          setSection(next);
+        }
+        return;
+      }
+
+      if (event.key === "Enter" && section === "scripts" && selected) {
+        event.preventDefault();
+        smartCopy(selected);
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [paletteOpen, section, selected, smartCopy, user?.role, varFill]);
 
   // Palette results: most-used first when empty, instant search otherwise.
   const paletteResults = useMemo(() => {
@@ -811,32 +864,37 @@ export default function DashboardPage() {
           className={`nav-button ${section === "quick" ? "active" : ""}`}
           onClick={() => setSection("quick")}
         >
-          Quick Scripts
+          <span>Quick Scripts</span>
+          <kbd>Alt+1</kbd>
         </button>
         <button
           className={`nav-button ${section === "scripts" ? "active" : ""}`}
           onClick={() => setSection("scripts")}
         >
-          Script Library
+          <span>Script Library</span>
+          <kbd>Alt+2</kbd>
         </button>
         <button
           className={`nav-button ${section === "chatbot" ? "active" : ""}`}
           onClick={() => setSection("chatbot")}
         >
-          AI Chatbot
+          <span>AI Chatbot</span>
+          <kbd>Alt+3</kbd>
         </button>
         <button
           className={`nav-button ${section === "calculator" ? "active" : ""}`}
           onClick={() => setSection("calculator")}
         >
-          Calculation Tool
+          <span>Calculation Tool</span>
+          <kbd>Alt+4</kbd>
         </button>
         {isAdminRole(user?.role) && (
           <button
             className={`nav-button ${section === "admin" ? "active" : ""}`}
             onClick={() => setSection("admin")}
           >
-            Admin Editor
+            <span>Admin Editor</span>
+            <kbd>Alt+5</kbd>
           </button>
         )}
 
@@ -859,7 +917,7 @@ export default function DashboardPage() {
             className="btn secondary small full"
             onClick={() => setSection("profile")}
           >
-            Profile
+            Profile {isAdminRole(user?.role) ? "(Alt+6)" : "(Alt+5)"}
           </button>
           <button
             className="btn secondary small full"
@@ -1328,6 +1386,41 @@ export default function DashboardPage() {
                 )}
               </div>
             </div>
+
+            {mostUsedScripts.length > 0 && (
+              <div className="most-used-strip card">
+                <div className="most-used-head">
+                  <div>
+                    <h2>{language === "AR" ? "الأكثر استخداماً" : "Most Used"}</h2>
+                    <p>
+                      {language === "AR"
+                        ? "أسرع سكربتاتك حسب نسخك أنت فقط."
+                        : "Your fastest scripts, based only on your own copies."}
+                    </p>
+                  </div>
+                  <kbd>Enter</kbd>
+                </div>
+                <div className="most-used-grid">
+                  {mostUsedScripts.map((script) => (
+                    <button
+                      key={script.id}
+                      className="most-used-chip"
+                      onClick={() => {
+                        setCategory(script.category);
+                        selectScript(script);
+                        smartCopy(script);
+                      }}
+                      title={script.title}
+                    >
+                      <b>{script.title}</b>
+                      <span>
+                        {script.category} • {usageCounts[script.id] || 0}x
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="favorites-strip card">
               <div className="section-head compact">
