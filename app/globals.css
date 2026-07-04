@@ -142,6 +142,118 @@ button { cursor: pointer; }
 .script-editor { min-height: 430px; }
 .link-preview { margin-top: 12px; border: 1px dashed var(--border); border-radius: 18px; padding: 14px; white-space: pre-wrap; line-height: 1.6; background: var(--soft); }
 
+.branch-search-card { margin-bottom: 14px; }
+.branch-summary-row {
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) minmax(220px, 300px);
+  gap: 14px;
+  align-items: stretch;
+  margin-bottom: 14px;
+}
+.branch-hours-card,
+.branch-stats-card {
+  min-height: 150px;
+}
+.branch-hours-text {
+  color: var(--muted);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  font-size: 13px;
+}
+.branch-stats-card {
+  display: grid;
+  align-content: center;
+  gap: 7px;
+}
+.branch-stats-card span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.branch-stats-card b {
+  font-size: 42px;
+  line-height: 1;
+}
+.branch-stats-card p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-weight: 800;
+}
+.branch-directory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 12px;
+}
+.branch-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+}
+.branch-card-main {
+  min-width: 0;
+}
+.branch-city {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 7px;
+  border-radius: 999px;
+  background: var(--soft-2);
+  color: var(--muted);
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 900;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.branch-card h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.branch-gender {
+  display: inline-flex;
+  margin-top: 8px;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 950;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.branch-gender.men {
+  color: #0562b7;
+  background: rgba(8,118,216,.10);
+  border-color: rgba(8,118,216,.20);
+}
+.branch-gender.women {
+  color: #087f5b;
+  background: rgba(0,166,81,.10);
+  border-color: rgba(0,166,81,.20);
+}
+.branch-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .branch-summary-row,
+  .branch-card {
+    grid-template-columns: 1fr;
+  }
+  .branch-card-actions {
+    justify-content: flex-start;
+  }
+}
+
 .chatgpt-shell { display: grid; grid-template-rows: auto minmax(460px, 65vh) auto; gap: 14px; max-width: 980px; margin: 0 auto; }
 .messages-panel { background: var(--soft); border: 1px solid var(--border); border-radius: 24px; padding: 20px; overflow: auto; display: flex; flex-direction: column; gap: 14px; }
 .message-row { display: flex; }

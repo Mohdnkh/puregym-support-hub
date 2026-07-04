@@ -66,9 +66,17 @@ type Section =
   | "quick"
   | "scripts"
   | "chatbot"
+  | "branches"
   | "calculator"
   | "profile"
   | "admin";
+type BranchDirectoryItem = {
+  id: string;
+  name: string;
+  city: string;
+  gender: "MEN" | "WOMEN" | "ALL";
+  url: string;
+};
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
@@ -311,6 +319,84 @@ function linkifyParts(text: string) {
   });
 }
 
+function branchGender(name: string): BranchDirectoryItem["gender"] {
+  if (/women|ladies|female|نسائ|سيدات/i.test(name)) return "WOMEN";
+  if (/\bmen\b|\bmale\b|رجال/i.test(name)) return "MEN";
+  return "ALL";
+}
+
+function branchGenderLabel(gender: BranchDirectoryItem["gender"], language: Lang) {
+  if (gender === "WOMEN") return language === "AR" ? "نساء" : "Women";
+  if (gender === "MEN") return language === "AR" ? "رجال" : "Men";
+  return language === "AR" ? "عام" : "All";
+}
+
+function parseBranchDirectory(scripts: Script[], country: Country, language: Lang) {
+  const locationScripts = scripts.filter(
+    (script) =>
+      script.active &&
+      script.category === "Links" &&
+      script.country === country &&
+      (script.language === language || (script.language as string) === "BOTH") &&
+      /location|map|موقع|خرائط/i.test(`${script.key} ${script.title} ${script.body}`),
+  );
+
+  const sources = locationScripts.length
+    ? locationScripts
+    : scripts.filter(
+        (script) =>
+          script.active &&
+          script.category === "Links" &&
+          script.country === country &&
+          /location|map|موقع|خرائط/i.test(`${script.key} ${script.title} ${script.body}`),
+      );
+
+  const branches: BranchDirectoryItem[] = [];
+  const seen = new Set<string>();
+
+  for (const script of sources) {
+    let city = country === "KSA" ? "Saudi Arabia" : "UAE";
+    for (const rawLine of script.body.split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line) continue;
+
+      const cityMatch = line.match(/^(.+?)\s+Branches\s*:?\s*$/i);
+      if (cityMatch) {
+        city = cityMatch[1].trim();
+        continue;
+      }
+
+      const urlMatch = line.match(/https?:\/\/\S+/);
+      if (!urlMatch) continue;
+
+      const url = urlMatch[0].replace(/[),.;]+$/, "");
+      const name = line
+        .slice(0, urlMatch.index)
+        .replace(/[:\-–—]+$/g, "")
+        .trim();
+      if (!name || /location links|virtual tour/i.test(name)) continue;
+
+      const detectedCity =
+        country === "UAE" && /^Dubai\b/i.test(name) ? "Dubai" : city;
+      const id = `${country}:${name.toLowerCase()}:${url.toLowerCase()}`;
+      if (seen.has(id)) continue;
+      seen.add(id);
+
+      branches.push({
+        id,
+        name,
+        city: detectedCity,
+        gender: branchGender(name),
+        url,
+      });
+    }
+  }
+
+  return branches.sort(
+    (a, b) => a.city.localeCompare(b.city) || a.name.localeCompare(b.name),
+  );
+}
+
 function normalizeSearchText(value: string) {
   return value
     .toLowerCase()
@@ -340,6 +426,7 @@ export default function DashboardPage() {
   const [message, setMessage] = useState("");
   const [darkMode, setDarkMode] = useState(false);
   const [scriptSearch, setScriptSearch] = useState("");
+  const [branchSearch, setBranchSearch] = useState("");
   const [offerFilter, setOfferFilter] = useState<"active" | "inactive" | "all">("active");
   const [quickGender, setQuickGender] = useState<Record<string, "M" | "F">>({});
   const [draggedQuickId, setDraggedQuickId] = useState<string | null>(null);
@@ -618,6 +705,67 @@ export default function DashboardPage() {
     [visibleScripts, usageCounts],
   );
 
+  const branchDirectory = useMemo(
+    () => parseBranchDirectory(scripts, country, language),
+    [scripts, country, language],
+  );
+
+  const branchSearchValue = branchSearch.trim();
+
+  const filteredBranches = useMemo(() => {
+    const query = normalizeSearchText(branchSearchValue);
+    if (!query) return branchDirectory;
+    const words = query.split(/\s+/).filter(Boolean);
+    return branchDirectory.filter((branch) => {
+      const haystack = normalizeSearchText(
+        [
+          branch.name,
+          branch.city,
+          branchGenderLabel(branch.gender, "EN"),
+          branchGenderLabel(branch.gender, "AR"),
+          branch.url,
+        ].join(" "),
+      );
+      return words.every((word) => haystack.includes(word));
+    });
+  }, [branchDirectory, branchSearchValue]);
+
+  const branchHoursScript = useMemo(() => {
+    const matches = scripts.filter(
+      (script) =>
+        script.active &&
+        script.category === "Branches & Hours" &&
+        script.country === country &&
+        (script.language === language || (script.language as string) === "BOTH"),
+    );
+    return (
+      matches.find((script) =>
+        /working-hours|working hours|ساعات|أوقات|اوقات/i.test(
+          `${script.key} ${script.title}`,
+        ),
+      ) ||
+      matches.find((script) => !/eid|عيد/i.test(`${script.key} ${script.title}`)) ||
+      matches[0] ||
+      null
+    );
+  }, [scripts, country, language]);
+
+  const branchHoursText = branchHoursScript
+    ? applyCountryHeart(
+        applyUserName(
+          branchHoursScript.body,
+          branchHoursScript.language === "EN" ? "EN" : "AR",
+          user,
+        ),
+        country,
+      )
+    : "";
+
+  const branchJoinUrl =
+    country === "KSA"
+      ? "https://ksa.puregymarabia.com/en-gb/join/"
+      : "https://uae.puregymarabia.com/en-gb/join/";
+
   const selected = useMemo(() => {
     const byId =
       filteredScripts.find((script) => script.id === selectedId) ||
@@ -769,9 +917,10 @@ export default function DashboardPage() {
           "1": "quick",
           "2": "scripts",
           "3": "chatbot",
-          "4": "calculator",
-          "5": isAdmin ? "admin" : "profile",
-          "6": "profile",
+          "4": "branches",
+          "5": "calculator",
+          "6": isAdmin ? "admin" : "profile",
+          "7": "profile",
         };
         const next = shortcuts[event.key];
         if (next && (next !== "admin" || isAdmin)) {
@@ -841,11 +990,13 @@ export default function DashboardPage() {
         ? "Script Library"
         : section === "chatbot"
           ? "AI Chatbot"
-          : section === "calculator"
-            ? "Calculation Tool"
-            : section === "profile"
-              ? "Profile"
-              : "Admin Editor";
+          : section === "branches"
+            ? "Branch Directory"
+            : section === "calculator"
+              ? "Calculation Tool"
+              : section === "profile"
+                ? "Profile"
+                : "Admin Editor";
 
   return (
     <div className="app-shell">
@@ -882,11 +1033,18 @@ export default function DashboardPage() {
           <kbd>Alt+3</kbd>
         </button>
         <button
+          className={`nav-button ${section === "branches" ? "active" : ""}`}
+          onClick={() => setSection("branches")}
+        >
+          <span>Branch Directory</span>
+          <kbd>Alt+4</kbd>
+        </button>
+        <button
           className={`nav-button ${section === "calculator" ? "active" : ""}`}
           onClick={() => setSection("calculator")}
         >
           <span>Calculation Tool</span>
-          <kbd>Alt+4</kbd>
+          <kbd>Alt+5</kbd>
         </button>
         {isAdminRole(user?.role) && (
           <button
@@ -894,7 +1052,7 @@ export default function DashboardPage() {
             onClick={() => setSection("admin")}
           >
             <span>Admin Editor</span>
-            <kbd>Alt+5</kbd>
+            <kbd>Alt+6</kbd>
           </button>
         )}
 
@@ -917,7 +1075,7 @@ export default function DashboardPage() {
             className="btn secondary small full"
             onClick={() => setSection("profile")}
           >
-            Profile {isAdminRole(user?.role) ? "(Alt+6)" : "(Alt+5)"}
+            Profile {isAdminRole(user?.role) ? "(Alt+7)" : "(Alt+6)"}
           </button>
           <button
             className="btn secondary small full"
@@ -1627,6 +1785,123 @@ export default function DashboardPage() {
                 )}
               </div>
             </div>
+          </>
+        )}
+
+        {section === "branches" && (
+          <>
+            <div className="script-search-card card branch-search-card">
+              <div className="script-search-copy">
+                <h2>{language === "AR" ? "دليل الفروع" : "Branch Directory"}</h2>
+                <p>
+                  {language === "AR"
+                    ? "ابحث باسم الفرع أو المدينة أو نوع الفرع، وافتح رابط الخرائط مباشرة."
+                    : "Search by branch, city, or branch type, then open maps instantly."}
+                </p>
+              </div>
+              <div className="script-search-box">
+                <input
+                  className="input"
+                  value={branchSearch}
+                  onChange={(event) => setBranchSearch(event.target.value)}
+                  placeholder={
+                    language === "AR"
+                      ? "مثال: Riyadh, Hamra, Women..."
+                      : "Example: Riyadh, Hamra, Women..."
+                  }
+                  dir="auto"
+                />
+                {branchSearchValue && (
+                  <button
+                    className="btn ghost small"
+                    onClick={() => setBranchSearch("")}
+                  >
+                    {language === "AR" ? "مسح" : "Clear"}
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="branch-summary-row">
+              <div className="branch-hours-card card">
+                <div className="section-head compact">
+                  <div>
+                    <h2>{language === "AR" ? "ساعات العمل" : "Working Hours"}</h2>
+                    <p>
+                      {branchHoursScript?.title ||
+                        (language === "AR" ? "لا يوجد سكربت ساعات عمل" : "No working-hours script found")}
+                    </p>
+                  </div>
+                  <button
+                    className="btn small"
+                    onClick={() => branchHoursText && copyText(branchHoursText)}
+                    disabled={!branchHoursText}
+                  >
+                    {language === "AR" ? "نسخ" : "Copy"}
+                  </button>
+                </div>
+                {branchHoursText ? (
+                  <div className="branch-hours-text">
+                    {linkifyParts(preview(branchHoursText))}
+                  </div>
+                ) : (
+                  <p className="muted-text">
+                    {language === "AR"
+                      ? "أضف سكربت Working hours داخل Branches & Hours ليظهر هنا."
+                      : "Add a Working hours script under Branches & Hours to show it here."}
+                  </p>
+                )}
+              </div>
+
+              <div className="branch-stats-card card">
+                <span>{language === "AR" ? "النتائج" : "Results"}</span>
+                <b>{filteredBranches.length}</b>
+                <p>
+                  {language === "AR"
+                    ? `من أصل ${branchDirectory.length} فرع في ${country}`
+                    : `of ${branchDirectory.length} branches in ${country}`}
+                </p>
+                <a className="btn ghost small" href={branchJoinUrl} target="_blank" rel="noreferrer">
+                  {language === "AR" ? "صفحة التسجيل" : "Join page"}
+                </a>
+              </div>
+            </div>
+
+            {filteredBranches.length ? (
+              <div className="branch-directory-grid">
+                {filteredBranches.map((branch) => (
+                  <div className="branch-card card" key={branch.id}>
+                    <div className="branch-card-main">
+                      <span className="branch-city">{branch.city}</span>
+                      <h3>{branch.name}</h3>
+                      <span className={`branch-gender ${branch.gender.toLowerCase()}`}>
+                        {branchGenderLabel(branch.gender, language)}
+                      </span>
+                    </div>
+                    <div className="branch-card-actions">
+                      <a className="btn small" href={branch.url} target="_blank" rel="noreferrer">
+                        {language === "AR" ? "خرائط" : "Maps"}
+                      </a>
+                      <button
+                        className="btn ghost small"
+                        onClick={() => copyText(`${branch.name}\n${branch.url}`)}
+                      >
+                        {language === "AR" ? "نسخ" : "Copy"}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-search-state">
+                <b>{language === "AR" ? "لا توجد فروع مطابقة" : "No matching branches"}</b>
+                <span>
+                  {language === "AR"
+                    ? "جرّب كلمة ثانية أو تأكد من وجود سكربت Location links داخل قسم Links."
+                    : "Try another keyword or make sure Location links exists under Links."}
+                </span>
+              </div>
+            )}
           </>
         )}
 
