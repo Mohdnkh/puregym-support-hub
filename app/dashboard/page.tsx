@@ -1983,6 +1983,12 @@ function Calculator({ country }: { country: Country }) {
         >
           Hijri Months
         </button>
+        <button
+          className={`toggle ${tool === "policies" ? "active" : ""}`}
+          onClick={() => setTool("policies")}
+        >
+          📋 Policies KSA/UAE
+        </button>
       </div>
       {tool === "monthly-to-pif" && (
         <MonthlyToPif values={values} set={set} country={country} />
@@ -2019,6 +2025,7 @@ function Calculator({ country }: { country: Country }) {
         <Discount values={values} set={set} country={country} />
       )}
       {tool === "hijri" && <HijriMonths />}
+      {tool === "policies" && <PolicyCompare />}
     </div>
   );
 }
@@ -2315,6 +2322,59 @@ function ResultBox({
     </div>
   );
 }
+// Side-by-side KSA vs UAE policy summary (from the official T&C notes in the
+// repo) so agents answer policy questions at a glance without asking the AI.
+function PolicyCompare() {
+  const rows: Array<[string, string, string]> = [
+    [
+      "Monthly cancellation",
+      "Contact Member Services at least 2 days before the next deduction date. Membership stays active until the day before the next payment date.",
+      "Contact Member Services at least 2 days before the next deduction date. Membership stays active until the day before the next payment date.",
+    ],
+    [
+      "Fixed-term / PIF",
+      "Cannot be cancelled or refunded — can only be frozen according to freeze rules.",
+      "Not refundable and cannot be cancelled.",
+    ],
+    [
+      "Failed monthly payment",
+      "Membership temporarily suspended → retry after 10 days → if the 2nd attempt fails, membership is cancelled automatically.",
+      "Membership temporarily suspended → retry after 10 days → if the 2nd attempt fails, membership is cancelled automatically.",
+    ],
+    [
+      "Freeze",
+      "Allowed per freeze rules (fixed-term memberships can be frozen instead of cancelled).",
+      "39 AED fee. Non-PLUS: max 3 months, then auto-unfreezes back to the monthly rate. Must be actioned ≥ 2 working days before the payment date; starts from the payment date.",
+    ],
+    [
+      "Payment links",
+      "Hyper Bill links for one-off services, upgrades/freezes, failed payments and ad-hoc requests (email from hyperbill@hyperpay.com).",
+      "Member Services shares the official payment link when needed.",
+    ],
+  ];
+
+  return (
+    <div className="policy-compare">
+      <div className="policy-grid policy-head">
+        <div className="policy-topic">Topic</div>
+        <div className="policy-col ksa">💚 KSA</div>
+        <div className="policy-col uae">💙 UAE</div>
+      </div>
+      {rows.map(([topic, ksa, uae]) => (
+        <div className="policy-grid card" key={topic}>
+          <div className="policy-topic">{topic}</div>
+          <div className="policy-cell">{ksa}</div>
+          <div className="policy-cell">{uae}</div>
+        </div>
+      ))}
+      <p className="small-note">
+        Summary of the official Terms &amp; Conditions — for exact wording always rely on the
+        official pages / internal system.
+      </p>
+    </div>
+  );
+}
+
 function HijriMonths() {
   const [today, setToday] = useState(new Date());
   const todayUtc = new Date(
