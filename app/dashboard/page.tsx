@@ -166,6 +166,16 @@ function applyCountryHeart(text: string, country: Country) {
   return country === "UAE" ? String(text || "").replaceAll("💚", "💙") : String(text || "");
 }
 
+// Variables an agent fills right before copying (TextBlaze-style):
+// [Anything in square brackets] plus the common customer-name tokens.
+function extractVarTokens(text: string) {
+  const tokens = new Set<string>();
+  for (const match of text.matchAll(/\[([^\[\]\n]{1,40})\]/g)) tokens.add(match[0]);
+  if (text.includes("(اسم العميل)")) tokens.add("(اسم العميل)");
+  if (text.includes("(Member Name)")) tokens.add("(Member Name)");
+  return Array.from(tokens);
+}
+
 // Tiny localStorage cache so the dashboard paints instantly with the last
 // known data, then refreshes from the API in the background.
 function readCache<T>(key: string): T | null {
@@ -323,6 +333,17 @@ export default function DashboardPage() {
   const [quickGender, setQuickGender] = useState<Record<string, "M" | "F">>({});
   const [draggedQuickId, setDraggedQuickId] = useState<string | null>(null);
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
+  // Ctrl+K palette + per-agent usage tracking + fill-before-copy variables.
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [paletteQuery, setPaletteQuery] = useState("");
+  const [paletteIndex, setPaletteIndex] = useState(0);
+  const [usageCounts, setUsageCounts] = useState<Record<string, number>>({});
+  const [varFill, setVarFill] = useState<{
+    title: string;
+    text: string;
+    tokens: string[];
+    values: Record<string, string>;
+  } | null>(null);
 
   async function loadScripts() {
     const data = await fetch("/api/scripts").then((res) => res.json());
@@ -414,6 +435,7 @@ export default function DashboardPage() {
     if (cachedScripts?.length) setScripts(cachedScripts);
     const cachedFavorites = readCache<string[]>("pg_cache_favorites");
     if (cachedFavorites?.length) setFavoriteIds(cachedFavorites);
+    setUsageCounts(readCache<Record<string, number>>("pg_usage_counts") || {});
 
     async function load() {
       const me = await fetch("/api/auth/me").then((res) => res.json());
@@ -656,6 +678,83 @@ export default function DashboardPage() {
     flash("Copied");
   }
 
+  function trackUsage(id: string) {
+    setUsageCounts((cur) => {
+      const next = { ...cur, [id]: (cur[id] || 0) + 1 };
+      writeCache("pg_usage_counts", next);
+      return next;
+    });
+  }
+
+  function resolveScriptBody(script: Script) {
+    return applyCountryHeart(
+      applyGender(
+        applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
+        quickGender[script.id] || "M",
+      ),
+      country,
+    );
+  }
+
+  // One copy pipeline everywhere: applies name/gender/heart, tracks usage,
+  // and opens the fill dialog when the script has [variables] to complete.
+  async function smartCopy(script: Script) {
+    const body = resolveScriptBody(script);
+    trackUsage(script.id);
+    const tokens = extractVarTokens(body);
+    if (tokens.length) {
+      setVarFill({ title: script.title, text: body, tokens, values: {} });
+      return;
+    }
+    await copyText(body);
+  }
+
+  async function confirmVarFill() {
+    if (!varFill) return;
+    let out = varFill.text;
+    for (const token of varFill.tokens) {
+      const value = (varFill.values[token] || "").trim();
+      if (value) out = out.split(token).join(value);
+    }
+    setVarFill(null);
+    await copyText(out);
+  }
+
+  // Ctrl+K opens the palette from anywhere; Esc closes overlays.
+  useEffect(() => {
+    function onKey(event: globalThis.KeyboardEvent) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setPaletteOpen((open) => !open);
+        setPaletteQuery("");
+        setPaletteIndex(0);
+      } else if (event.key === "Escape") {
+        setPaletteOpen(false);
+        setVarFill(null);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Palette results: most-used first when empty, instant search otherwise.
+  const paletteResults = useMemo(() => {
+    const query = normalizeSearchText(paletteQuery.trim());
+    if (!query) {
+      return [...visibleScripts]
+        .filter((script) => (usageCounts[script.id] || 0) > 0)
+        .sort((a, b) => (usageCounts[b.id] || 0) - (usageCounts[a.id] || 0))
+        .slice(0, 10);
+    }
+    const words = query.split(/\s+/).filter(Boolean);
+    return visibleScripts
+      .filter((script) => {
+        const haystack = searchIndex.get(script.id) || "";
+        return words.every((word) => haystack.includes(word));
+      })
+      .slice(0, 20);
+  }, [paletteQuery, visibleScripts, usageCounts, searchIndex]);
+
   async function spellcheck() {
     try {
       const res = await fetch("/api/ai/spellcheck", {
@@ -784,6 +883,16 @@ export default function DashboardPage() {
                 : `${country} • ${language === "AR" ? "Arabic" : "English"}`}
             </p>
           </div>
+          <button
+            className="palette-launch"
+            onClick={() => {
+              setPaletteOpen(true);
+              setPaletteQuery("");
+              setPaletteIndex(0);
+            }}
+          >
+            🔍 {language === "AR" ? "بحث سريع" : "Quick search"} <kbd>Ctrl+K</kbd>
+          </button>
           {section !== "chatbot" && section !== "calculator" && section !== "admin" && (
             <div className="toolbar">
               <button
@@ -816,6 +925,131 @@ export default function DashboardPage() {
 
         {message && <div className="toast">{message}</div>}
 
+        {paletteOpen && (
+          <div className="palette-overlay" onClick={() => setPaletteOpen(false)}>
+            <div className="palette-box" onClick={(event) => event.stopPropagation()}>
+              <input
+                autoFocus
+                className="palette-input"
+                dir="auto"
+                placeholder={
+                  language === "AR"
+                    ? "اكتب أي كلمة… Enter للنسخ الفوري"
+                    : "Type anything… Enter copies instantly"
+                }
+                value={paletteQuery}
+                onChange={(event) => {
+                  setPaletteQuery(event.target.value);
+                  setPaletteIndex(0);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "ArrowDown") {
+                    event.preventDefault();
+                    setPaletteIndex((i) => Math.min(i + 1, paletteResults.length - 1));
+                  } else if (event.key === "ArrowUp") {
+                    event.preventDefault();
+                    setPaletteIndex((i) => Math.max(i - 1, 0));
+                  } else if (event.key === "Enter") {
+                    event.preventDefault();
+                    const hit = paletteResults[paletteIndex];
+                    if (hit) {
+                      setPaletteOpen(false);
+                      smartCopy(hit);
+                    }
+                  }
+                }}
+              />
+              {!paletteQuery && paletteResults.length > 0 && (
+                <div className="palette-hint">
+                  ⭐ {language === "AR" ? "الأكثر استخداماً عندك" : "Your most used"}
+                </div>
+              )}
+              <div className="palette-list">
+                {paletteResults.map((script, i) => (
+                  <button
+                    key={script.id}
+                    className={`palette-item ${i === paletteIndex ? "active" : ""}`}
+                    onMouseEnter={() => setPaletteIndex(i)}
+                    onClick={() => {
+                      setPaletteOpen(false);
+                      smartCopy(script);
+                    }}
+                  >
+                    <b>{script.title}</b>
+                    <span>
+                      {script.category} • {script.country} • {script.language}
+                    </span>
+                  </button>
+                ))}
+                {!paletteResults.length && (
+                  <p className="muted-text palette-empty">
+                    {paletteQuery
+                      ? language === "AR"
+                        ? "لا نتائج — جرّب كلمة ثانية"
+                        : "No results — try another word"
+                      : language === "AR"
+                        ? "انسخ سكربتات وبتظهر هون الأكثر استخداماً"
+                        : "Copy scripts and your most used will appear here"}
+                  </p>
+                )}
+              </div>
+              <div className="palette-footer">
+                ↑↓ &nbsp;•&nbsp; Enter = {language === "AR" ? "نسخ" : "Copy"} &nbsp;•&nbsp; Esc
+              </div>
+            </div>
+          </div>
+        )}
+
+        {varFill && (
+          <div className="palette-overlay" onClick={() => setVarFill(null)}>
+            <div className="palette-box varfill-box" onClick={(event) => event.stopPropagation()}>
+              <h3 className="varfill-title">{varFill.title}</h3>
+              <p className="varfill-sub">
+                {language === "AR"
+                  ? "عبّي الحقول وبننسخلك السكربت جاهز:"
+                  : "Fill the fields and we'll copy the final script:"}
+              </p>
+              {varFill.tokens.map((token, idx) => (
+                <div className="field" key={token}>
+                  <label>{token.replace(/^[\[(]/, "").replace(/[\])]$/, "")}</label>
+                  <input
+                    autoFocus={idx === 0}
+                    className="input"
+                    dir="auto"
+                    value={varFill.values[token] || ""}
+                    onChange={(event) =>
+                      setVarFill((cur) =>
+                        cur ? { ...cur, values: { ...cur.values, [token]: event.target.value } } : cur,
+                      )
+                    }
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        confirmVarFill();
+                      }
+                    }}
+                  />
+                </div>
+              ))}
+              <div className="inline-actions">
+                <button
+                  className="btn ghost small"
+                  onClick={async () => {
+                    const raw = varFill.text;
+                    setVarFill(null);
+                    await copyText(raw);
+                  }}
+                >
+                  {language === "AR" ? "نسخ بدون تعبئة" : "Copy as-is"}
+                </button>
+                <button className="btn small" onClick={confirmVarFill}>
+                  {language === "AR" ? "نسخ جاهز ✅" : "Copy filled ✅"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {section === "quick" && (
           <>
             {favoriteQuickScripts.length > 0 && (
@@ -842,11 +1076,11 @@ export default function DashboardPage() {
                         className="mini-script-card clickable"
                         role="button"
                         tabIndex={0}
-                        onClick={() => copyText(favBody)}
+                        onClick={() => smartCopy(script)}
                         onKeyDown={(event) => {
                           if (event.key === "Enter" || event.key === " ") {
                             event.preventDefault();
-                            copyText(favBody);
+                            smartCopy(script);
                           }
                         }}
                       >
@@ -945,11 +1179,11 @@ export default function DashboardPage() {
                     onDragStart={canReorder ? () => setDraggedQuickId(script.id) : undefined}
                     onDragOver={canReorder ? (event) => event.preventDefault() : undefined}
                     onDrop={canReorder ? () => reorderQuickByDrag(script.id) : undefined}
-                    onClick={() => !isEditing && copyText(body)}
+                    onClick={() => !isEditing && smartCopy(script)}
                     onKeyDown={(event) => {
                       if (!isEditing && (event.key === "Enter" || event.key === " ")) {
                         event.preventDefault();
-                        copyText(body);
+                        smartCopy(script);
                       }
                     }}
                   >
@@ -1222,7 +1456,7 @@ export default function DashboardPage() {
                           className={`script-card ${selectedId === script.id ? "active" : ""}`}
                           onClick={() => {
                             selectScript(script);
-                            copyText(body);
+                            smartCopy(script);
                           }}
                           role="button"
                           tabIndex={0}
