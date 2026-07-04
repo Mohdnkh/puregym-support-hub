@@ -25,6 +25,7 @@ LINE = "#D7DEE8"
 
 UPDATED = "July 4, 2026"
 MADE_BY = "Made by Mohammed Alkhandagji"
+OFFICIAL_COST_SOURCES = "Official cost references: Vercel plan pages, Neon plans, Groq model cost page, and Gemini API cost page."
 
 def ensure_docs_dir() -> None:
     DOCS.mkdir(parents=True, exist_ok=True)
@@ -199,7 +200,7 @@ def generate_pdf() -> None:
         c,
         [
             "Admin can manage operational scripts, categories, Quick Scripts, activation status, and shared support content.",
-            "User account creation, removal, and role changes are left to the development team rather than handled in this presentation scope.",
+            "User account creation, removal, and role changes are left to the technical team rather than handled in this presentation scope.",
             "Regular users can use scripts, quick replies, favorites, calculations, and AI without changing shared content.",
             "Category and script deactivation hides content globally without deleting historical data.",
             "Legacy quick-script data is audited before cleanup, and cleanup only runs when rows are confirmed duplicates.",
@@ -271,6 +272,67 @@ def generate_pdf() -> None:
             "Legacy UserQuickScript audit refuses cleanup if any unique user content is detected.",
             "Smoke tests cover public pages, route protection, health checks, and authenticated flows when credentials are provided.",
             "Health checks expose database, AI configuration, and system readiness for external monitors.",
+        ],
+        54,
+        y,
+        w - 108,
+    )
+    draw_footer(c)
+    c.showPage()
+
+    # Page 4
+    draw_header(c, "Operating Cost", 4)
+    y = h - 80
+    y = section_title(c, "Monthly Cost Model", 42, y)
+    y = draw_wrapped(
+        c,
+        "The hub is designed for low operating cost because the main workload is an internal Next.js dashboard, "
+        "a small PostgreSQL database, and AI calls that run only when agents use the assistant or helper actions. "
+        "The numbers below are planning estimates for about 25 application users, not final invoices.",
+        42,
+        y,
+        w - 84,
+        size=10.5,
+        leading=15,
+    )
+    y -= 14
+    y = section_title(c, "Cost Details", 42, y)
+    y = bullet_list(
+        c,
+        [
+            "Vercel hosting: $0/mo on Hobby for light internal use, or $20/mo on Pro with 1 deploying team seat and $20 monthly usage credit. This pays for the Next.js app, API routes, CDN, builds, deployments, and production controls.",
+            "Neon PostgreSQL: $0/mo can work for a small database; Launch is a typical $15/mo for intermittent load and 1 GB. This pays for persistent scripts, categories, favorites, account requests, AI references, and memory summaries.",
+            "Groq AI: llama-3.1-8b-instant is $0.05 per 1M input tokens and $0.08 per 1M output tokens. AI cost appears only when chat, spellcheck, trainer extraction, or summary actions are used.",
+            "Gemini optional fallback: selected Gemini API models include a free tier, so it can be used as a no-cost path for light AI usage within rate limits.",
+            "Email, domain, and basic monitoring: $0/mo when existing SMTP, the Vercel domain, and built-in checks are enough. Custom domains, paid email, or external monitoring depend on the provider selected.",
+        ],
+        54,
+        y,
+        w - 108,
+    )
+
+    y -= 8
+    y = section_title(c, "Practical Budget", 42, y)
+    y = bullet_list(
+        c,
+        [
+            "Lean internal setup: about $0-$10/mo if Vercel Hobby, Neon Free, and low AI volume stay within plan limits.",
+            "Recommended production baseline: about $35-$45/mo using Vercel Pro at $20/mo, Neon Launch around $15/mo, and a small AI buffer.",
+            "25-user AI example: 25 users x 20 AI messages/day x 30 days = 15,000 AI calls/month. At 1,500 input tokens and 700 output tokens per call on Groq, the AI token cost is about $2/mo.",
+            "A heavier AI workload can be budgeted at $5-$10/mo first, then adjusted after real usage appears in provider dashboards.",
+        ],
+        54,
+        y,
+        w - 108,
+    )
+    y -= 6
+    y = section_title(c, "Cost Notes", 42, y)
+    y = bullet_list(
+        c,
+        [
+            "The 25 support users are application users; they are not Vercel paid team seats.",
+            "Only people who deploy or manage the Vercel project need paid Vercel team access on Pro.",
+            OFFICIAL_COST_SOURCES,
         ],
         54,
         y,
@@ -381,7 +443,7 @@ def slide_xml(title: str, subtitle: str, bullets: list[str], index: int, accent:
     shape_id = 2
     shapes = [
         shape_xml(shape_id, "top-accent-green", 0, 0, 7.2, 0.16, GREEN),
-        shape_xml(shape_id + 1, "top-accent-blue", 7.2, 0, 6.2, 0.16, BLUE),
+        shape_xml(shape_id + 1, "top-accent-blue", 7.2, 0, 6.13, 0.16, BLUE),
         text_xml(shape_id + 2, "eyebrow", 0.58, 0.36, 5.4, 0.3, ["PUREGYM SUPPORT HUB"], 10, MUTED, True),
         text_xml(shape_id + 3, "title", 0.58, 0.86, 8.3, 1.1, [title], 35, DARK, True),
         text_xml(shape_id + 4, "subtitle", 0.6, 1.9, 9.4, 0.55, [subtitle], 17, MUTED),
@@ -422,7 +484,7 @@ def slide_xml(title: str, subtitle: str, bullets: list[str], index: int, accent:
 def title_slide_xml() -> str:
     shapes = [
         shape_xml(2, "green-field", 0, 0, 7.4, 7.5, GREEN),
-        shape_xml(3, "blue-field", 7.4, 0, 5.95, 7.5, BLUE),
+        shape_xml(3, "blue-field", 7.4, 0, 5.93, 7.5, BLUE),
         text_xml(4, "title", 0.72, 1.1, 7.4, 1.45, ["PureGym Support Hub"], 46, "#FFFFFF", True),
         text_xml(5, "subtitle", 0.76, 2.72, 7.0, 0.86, ["Internal support workspace for KSA and UAE agents"], 22, "#FFFFFF"),
         text_xml(6, "date", 0.78, 5.88, 5.1, 0.3, [f"Updated {UPDATED}"], 12, "#FFFFFF"),
@@ -502,13 +564,13 @@ SLIDES = [
         "Role boundaries make it clear who can change operational content.",
         [
             "Admin can manage scripts, categories, Quick Scripts, activation status, and shared support content.",
-            "User creation, removal, and role changes are left to the development team.",
+            "User creation, removal, and role changes are left to the technical team.",
             "Deactivation hides scripts or categories globally without deleting the record.",
             "Shared content changes apply to all users after saving.",
         ],
         6,
         GREEN,
-        [("Admin", "Content authority"), ("Developers", "User accounts"), ("User", "Daily operation")],
+        [("Admin", "Content authority"), ("Technical team", "User accounts"), ("User", "Daily operation")],
     ),
     slide_xml(
         "Support tools cover common daily tasks",
@@ -536,6 +598,20 @@ SLIDES = [
         8,
         GREEN,
         [("Build", "Production compile"), ("Smoke", "Route protection"), ("Health", "Monitor-ready")],
+    ),
+    slide_xml(
+        "Operating cost stays small for 25 users",
+        "The main monthly cost is hosting, database capacity, and AI usage.",
+        [
+            "Hosting: Vercel can be $0/mo for light internal use, or $20/mo on Pro for production control.",
+            "Database: Neon can start at $0/mo; Launch is typically about $15/mo for intermittent load and 1 GB.",
+            "AI: Groq Llama 3.1 8B is $0.05 per 1M input tokens and $0.08 per 1M output tokens.",
+            "25-user example: 15,000 AI calls/month at moderate token size is about $2/mo on Groq.",
+            "Practical budget: $0-$10/mo lean, or about $35-$45/mo for a safer production baseline.",
+        ],
+        9,
+        BLUE,
+        [("Vercel", "$0 or $20/mo"), ("Neon", "$0 or ~$15/mo"), ("AI", "~$2-$10/mo")],
     ),
 ]
 
