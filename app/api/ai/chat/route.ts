@@ -51,7 +51,7 @@ export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Unauthorized. Please log in again." }, { status: 401 });
 
-  // Protect OpenAI spend: cap each user to 20 chat requests per minute.
+  // Protect AI quota/spend: cap each user to 20 chat requests per minute.
   const limit = rateLimit(`ai-chat:${user.id}`, 20, 60_000);
   if (!limit.ok) {
     return NextResponse.json(

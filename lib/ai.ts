@@ -17,6 +17,22 @@ type OpenAIMultimodalOptions = OpenAITextOptions & {
 
 export type AiLanguage = "AR" | "EN" | "BOTH";
 export type AiCountry = "ALL" | "KSA" | "UAE";
+type AiProvider = "groq" | "gemini" | "openai" | "custom";
+
+const AI_PROVIDER_PRESETS: Record<Exclude<AiProvider, "custom">, { baseUrl: string; model: string }> = {
+  groq: {
+    baseUrl: "https://api.groq.com/openai/v1",
+    model: "llama-3.1-8b-instant"
+  },
+  gemini: {
+    baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai",
+    model: "gemini-2.0-flash"
+  },
+  openai: {
+    baseUrl: "https://api.openai.com/v1",
+    model: "gpt-4o-mini"
+  }
+};
 
 const OFFICIAL_SOURCE_NOTES = [
   {
@@ -49,20 +65,38 @@ const OFFICIAL_SOURCE_NOTES = [
 ] as const;
 
 // Provider-agnostic config. Works with any OpenAI-compatible chat/completions
-// endpoint — OpenAI (default), Groq (https://api.groq.com/openai/v1) or
-// Google Gemini (https://generativelanguage.googleapis.com/v1beta/openai).
+// endpoint. Groq is the default free-tier option; Gemini and OpenAI remain
+// optional through their OpenAI-compatible APIs.
 // Set AI_BASE_URL + AI_API_KEY + AI_MODEL to switch provider with zero code changes.
 export function getOpenAIConfig() {
-  const baseUrl = (process.env.AI_BASE_URL?.trim() || "https://api.openai.com/v1").replace(/\/+$/, "");
-  const apiKey = process.env.AI_API_KEY?.trim() || process.env.OPENAI_API_KEY?.trim();
-  const model = process.env.AI_MODEL?.trim() || process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+  const explicitBaseUrl = process.env.AI_BASE_URL?.trim();
+  const requestedProvider = process.env.AI_PROVIDER?.trim().toLowerCase() as AiProvider | undefined;
+  const provider: AiProvider = explicitBaseUrl
+    ? "custom"
+    : requestedProvider && requestedProvider in AI_PROVIDER_PRESETS
+      ? requestedProvider
+      : "groq";
+  const preset = provider === "custom" ? AI_PROVIDER_PRESETS.groq : AI_PROVIDER_PRESETS[provider];
+  const baseUrl = (explicitBaseUrl || preset.baseUrl).replace(/\/+$/, "");
+  const apiKey =
+    process.env.AI_API_KEY?.trim() ||
+    (provider === "gemini" ? process.env.GEMINI_API_KEY?.trim() : undefined) ||
+    (provider === "openai" ? process.env.OPENAI_API_KEY?.trim() : undefined) ||
+    process.env.GROQ_API_KEY?.trim() ||
+    process.env.GEMINI_API_KEY?.trim() ||
+    process.env.OPENAI_API_KEY?.trim();
+  const model =
+    process.env.AI_MODEL?.trim() ||
+    (provider === "openai" ? process.env.OPENAI_MODEL?.trim() : undefined) ||
+    preset.model;
 
   return {
+    provider,
     baseUrl,
     apiKey,
     model,
-    temperature: Number(process.env.OPENAI_TEMPERATURE || 0.25),
-    maxOutputTokens: Number(process.env.OPENAI_MAX_OUTPUT_TOKENS || 1400)
+    temperature: Number(process.env.AI_TEMPERATURE || process.env.OPENAI_TEMPERATURE || 0.25),
+    maxOutputTokens: Number(process.env.AI_MAX_OUTPUT_TOKENS || process.env.OPENAI_MAX_OUTPUT_TOKENS || 1400)
   };
 }
 
@@ -86,7 +120,7 @@ function extractResponseText(data: any) {
 
 function assertOpenAIKey(apiKey?: string) {
   if (!apiKey) {
-    throw new Error("AI_API_KEY / OPENAI_API_KEY is missing. Add it to .env / Vercel Variables, then restart or redeploy.");
+    throw new Error("AI API key is missing. Add GROQ_API_KEY (recommended free tier) or AI_API_KEY / GEMINI_API_KEY / OPENAI_API_KEY to .env or Vercel Variables, then restart or redeploy.");
   }
 }
 

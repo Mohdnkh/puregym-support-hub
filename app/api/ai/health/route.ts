@@ -22,10 +22,12 @@ export async function GET() {
 
   return NextResponse.json({
     ok: Boolean(config.apiKey),
-    openaiKeyConfigured: Boolean(config.apiKey),
+    aiKeyConfigured: Boolean(config.apiKey),
+    provider: config.provider,
+    baseUrl: config.baseUrl,
     model: config.model,
     dbOk,
     scriptsCount,
-    note: config.apiKey ? "AI configuration looks ready." : "OPENAI_API_KEY is missing in .env."
+    note: config.apiKey ? "AI configuration looks ready." : "Add GROQ_API_KEY or AI_API_KEY in .env / Vercel."
   });
 }

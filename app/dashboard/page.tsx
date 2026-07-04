@@ -56,6 +56,14 @@ type BranchDirectoryItem = {
   gender: "MEN" | "WOMEN" | "ALL";
   url: string;
 };
+type VarField = {
+  key: string;
+  label: string;
+  token?: string;
+  marker?: string;
+  inputMode?: "text" | "decimal";
+  placeholder?: string;
+};
 
 function isAdminRole(role?: User["role"] | AdminUser["role"] | null) {
   return role === "ADMIN" || role === "SUPER_ADMIN";
@@ -139,14 +147,62 @@ function applyCountryHeart(text: string, country: Country) {
   return country === "UAE" ? String(text || "").replaceAll("💚", "💙") : String(text || "");
 }
 
-// Variables an agent fills right before copying (TextBlaze-style):
-// [Anything in square brackets] plus the common customer-name tokens.
-function extractVarTokens(text: string) {
-  const tokens = new Set<string>();
-  for (const match of text.matchAll(/\[([^\[\]\n]{1,40})\]/g)) tokens.add(match[0]);
-  if (text.includes("(اسم العميل)")) tokens.add("(اسم العميل)");
-  if (text.includes("(Member Name)")) tokens.add("(Member Name)");
-  return Array.from(tokens);
+function variableLabel(token: string) {
+  const clean = token.replace(/^[\[(]+|[\])]+$/g, "").trim();
+  if (/membership type|type|plan|package|نوع|عضوية|الباقة/i.test(clean)) return "Membership type / نوع العضوية";
+  if (/duration|period|مدة|الفترة/i.test(clean)) return "Duration / المدة";
+  if (/amount|price|fee|مبلغ|السعر|رسوم/i.test(clean)) return "Amount / المبلغ";
+  if (/date|تاريخ/i.test(clean)) return "Date / التاريخ";
+  if (/member name|customer|client|اسم|العميل|العضو/i.test(clean)) return "Member name / اسم العضو";
+  return clean || token;
+}
+
+function prepareVarFill(text: string) {
+  const fields: VarField[] = [];
+  const seen = new Set<string>();
+
+  for (const match of text.matchAll(/\[([^\[\]\n]{1,40})\]/g)) {
+    const token = match[0];
+    if (seen.has(token)) continue;
+    seen.add(token);
+    fields.push({
+      key: token,
+      token,
+      label: variableLabel(token),
+      inputMode: /amount|price|fee|مبلغ|السعر|رسوم/i.test(token) ? "decimal" : "text",
+      placeholder: token,
+    });
+  }
+
+  for (const token of ["(اسم العميل)", "(اسم العضو)", "(Member Name)", "(Customer Name)"]) {
+    if (!text.includes(token) || seen.has(token)) continue;
+    seen.add(token);
+    fields.push({
+      key: token,
+      token,
+      label: variableLabel(token),
+      placeholder: token,
+    });
+  }
+
+  let preparedText = text;
+  let dateIndex = 0;
+  preparedText = preparedText.replace(
+    /\b(?:00[-/]00[-/](?:0000|2020)|__[-/]__[-/]____)\b/g,
+    (token) => {
+      const marker = `__PG_VAR_DATE_${dateIndex}__`;
+      fields.push({
+        key: marker,
+        marker,
+        label: `Date ${dateIndex + 1} / التاريخ ${dateIndex + 1}`,
+        placeholder: token.includes("/") ? "dd/mm/yyyy" : "dd-mm-yyyy",
+      });
+      dateIndex += 1;
+      return marker;
+    },
+  );
+
+  return { text: preparedText, fields };
 }
 
 // Tiny localStorage cache so the dashboard paints instantly with the last
@@ -432,7 +488,8 @@ export default function DashboardPage() {
   const [varFill, setVarFill] = useState<{
     title: string;
     text: string;
-    tokens: string[];
+    rawText: string;
+    fields: VarField[];
     values: Record<string, string>;
   } | null>(null);
 
@@ -859,9 +916,15 @@ export default function DashboardPage() {
   const smartCopy = useCallback(async (script: Script) => {
     const body = resolveScriptBody(script);
     trackUsage(script.id);
-    const tokens = extractVarTokens(body);
-    if (tokens.length) {
-      setVarFill({ title: script.title, text: body, tokens, values: {} });
+    const prepared = prepareVarFill(body);
+    if (prepared.fields.length) {
+      setVarFill({
+        title: script.title,
+        text: prepared.text,
+        rawText: body,
+        fields: prepared.fields,
+        values: {},
+      });
       return;
     }
     await copyText(body);
@@ -870,9 +933,11 @@ export default function DashboardPage() {
   const confirmVarFill = useCallback(async () => {
     if (!varFill) return;
     let out = varFill.text;
-    for (const token of varFill.tokens) {
-      const value = (varFill.values[token] || "").trim();
-      if (value) out = out.split(token).join(value);
+    for (const field of varFill.fields) {
+      const value = (varFill.values[field.key] || "").trim();
+      if (!value) continue;
+      if (field.marker) out = out.split(field.marker).join(value);
+      if (field.token) out = out.split(field.token).join(value);
     }
     setVarFill(null);
     await copyText(out);
@@ -881,8 +946,13 @@ export default function DashboardPage() {
   // Ctrl+K opens the palette from anywhere; Alt+1..6 moves between sections.
   useEffect(() => {
     function onKey(event: globalThis.KeyboardEvent) {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+      const key = event.key.toLowerCase();
+      const isPaletteShortcut = (event.ctrlKey || event.metaKey) && (key === "k" || event.code === "KeyK");
+
+      if (isPaletteShortcut) {
         event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation?.();
         setPaletteOpen((open) => !open);
         setPaletteQuery("");
         setPaletteIndex(0);
@@ -921,8 +991,12 @@ export default function DashboardPage() {
         smartCopy(selected);
       }
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey, true);
+    document.addEventListener("keydown", onKey, true);
+    return () => {
+      window.removeEventListener("keydown", onKey, true);
+      document.removeEventListener("keydown", onKey, true);
+    };
   }, [paletteOpen, section, selected, smartCopy, user?.role, varFill]);
 
   // Palette results: most-used first when empty, instant search otherwise.
@@ -1211,17 +1285,19 @@ export default function DashboardPage() {
                   ? "عبّي الحقول وبننسخلك السكربت جاهز:"
                   : "Fill the fields and we'll copy the final script:"}
               </p>
-              {varFill.tokens.map((token, idx) => (
-                <div className="field" key={token}>
-                  <label>{token.replace(/^[\[(]/, "").replace(/[\])]$/, "")}</label>
+              {varFill.fields.map((field, idx) => (
+                <div className="field" key={`${field.key}-${idx}`}>
+                  <label>{field.label}</label>
                   <input
                     autoFocus={idx === 0}
                     className="input"
                     dir="auto"
-                    value={varFill.values[token] || ""}
+                    inputMode={field.inputMode || "text"}
+                    placeholder={field.placeholder || field.label}
+                    value={varFill.values[field.key] || ""}
                     onChange={(event) =>
                       setVarFill((cur) =>
-                        cur ? { ...cur, values: { ...cur.values, [token]: event.target.value } } : cur,
+                        cur ? { ...cur, values: { ...cur.values, [field.key]: event.target.value } } : cur,
                       )
                     }
                     onKeyDown={(event) => {
@@ -1237,7 +1313,7 @@ export default function DashboardPage() {
                 <button
                   className="btn ghost small"
                   onClick={async () => {
-                    const raw = varFill.text;
+                    const raw = varFill.rawText;
                     setVarFill(null);
                     await copyText(raw);
                   }}

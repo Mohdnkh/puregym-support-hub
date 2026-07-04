@@ -2,7 +2,7 @@
 
 Internal support website for PureGym KSA/UAE agents.
 
-> **Stack:** Next.js 14 (App Router) · TypeScript · Prisma · PostgreSQL (Neon) · OpenAI · Gmail SMTP
+> **Stack:** Next.js 14 (App Router) · TypeScript · Prisma · PostgreSQL (Neon) · Groq/Gemini-compatible AI · Gmail SMTP
 > **Hosting:** Vercel · **Database:** Neon
 
 ## Features
@@ -30,9 +30,10 @@ Internal support website for PureGym KSA/UAE agents.
 ```bash
 npm install
 cp .env.example .env        # Windows PowerShell: Copy-Item .env.example .env
-# Fill DATABASE_URL, AUTH_SECRET, JWT_SECRET, SMTP, OpenAI, and admin values.
+# Fill DATABASE_URL, AUTH_SECRET, JWT_SECRET, SMTP, AI, and admin values.
 npm run db:push             # create tables in your Neon database
 npm run db:seed             # seed scripts + initial admin
+npm run smoke               # smoke-check pages and API protections
 npm run dev
 ```
 
@@ -84,13 +85,42 @@ ADMIN_NAME_EN=
 
 The account whose email matches `SUPER_ADMIN_EMAIL` (or `ADMIN_EMAIL`) is always treated as `SUPER_ADMIN`.
 
+## AI Provider
+
+The app defaults to **Groq** instead of OpenAI to keep AI cost near zero on the free tier:
+
+```env
+AI_PROVIDER=groq
+GROQ_API_KEY=
+AI_MODEL=llama-3.1-8b-instant
+```
+
+Gemini is also supported through its OpenAI-compatible endpoint:
+
+```env
+AI_PROVIDER=gemini
+GEMINI_API_KEY=
+AI_MODEL=gemini-2.0-flash
+```
+
+OpenAI remains available only as an optional fallback by setting `AI_PROVIDER=openai`.
+
 ## Security notes
 
 - Auth uses signed JWT cookies (`httpOnly`, `secure` in production).
-- Rate limiting protects `login`, `signup`, `request-password-reset`, and `ai/chat` against brute-force and runaway OpenAI spend (`lib/rate-limit.ts`).
+- Rate limiting protects `login`, `signup`, `request-password-reset`, and `ai/chat` against brute-force and runaway AI quota/spend (`lib/rate-limit.ts`).
 - AI memory summarization runs after the response via `waitUntil` so it completes on Vercel serverless (`lib/after.ts`).
+- `/api/health` reports database, AI config, live-offer freshness, and cron configuration. Set `HEALTH_SECRET` or `CRON_SECRET` to protect it for external monitors.
 - Security headers are set in `next.config.mjs`.
 
 ## Notes
 
 The project ships with seeded scripts so the site works immediately after database setup. Admins can update scripts later from the Admin Editor without code changes.
+
+Useful maintenance commands:
+
+```bash
+npm run docs:generate
+npm run db:audit-legacy-quick-scripts
+npm run db:cleanup-legacy-quick-scripts
+```
