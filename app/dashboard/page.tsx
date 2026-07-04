@@ -901,6 +901,14 @@ export default function DashboardPage() {
     });
   }, []);
 
+  const resetPaletteList = useCallback(() => {
+    writeCache("pg_usage_counts", {});
+    setUsageCounts({});
+    setPaletteQuery("");
+    setPaletteIndex(0);
+    flash(language === "AR" ? "تم تصفير قائمة البحث السريع" : "Quick search list reset");
+  }, [flash, language]);
+
   const resolveScriptBody = useCallback((script: Script) => {
     return applyCountryHeart(
       applyGender(
@@ -943,7 +951,7 @@ export default function DashboardPage() {
     await copyText(out);
   }, [copyText, varFill]);
 
-  // Ctrl+K opens the palette from anywhere; Alt+1..6 moves between sections.
+  // Ctrl+K opens the palette from anywhere; Shift+1..7 moves between sections.
   useEffect(() => {
     function onKey(event: globalThis.KeyboardEvent) {
       const key = event.key.toLowerCase();
@@ -967,18 +975,18 @@ export default function DashboardPage() {
 
       if (paletteOpen || varFill || isEditableTarget(event.target)) return;
 
-      if (event.altKey && !event.ctrlKey && !event.metaKey) {
+      if (event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey) {
         const isAdmin = isAdminRole(user?.role);
         const shortcuts: Record<string, Section> = {
-          "1": "quick",
-          "2": "scripts",
-          "3": "chatbot",
-          "4": "branches",
-          "5": "calculator",
-          "6": isAdmin ? "admin" : "profile",
-          "7": "profile",
+          Digit1: "quick",
+          Digit2: "scripts",
+          Digit3: "chatbot",
+          Digit4: "branches",
+          Digit5: "calculator",
+          Digit6: isAdmin ? "admin" : "profile",
+          Digit7: "profile",
         };
-        const next = shortcuts[event.key];
+        const next = shortcuts[event.code];
         if (next && (next !== "admin" || isAdmin)) {
           event.preventDefault();
           setSection(next);
@@ -1076,35 +1084,35 @@ export default function DashboardPage() {
           onClick={() => setSection("quick")}
         >
           <span>Quick Scripts</span>
-          <kbd>Alt+1</kbd>
+          <kbd>Shift+1</kbd>
         </button>
         <button
           className={`nav-button ${section === "scripts" ? "active" : ""}`}
           onClick={() => setSection("scripts")}
         >
           <span>Script Library</span>
-          <kbd>Alt+2</kbd>
+          <kbd>Shift+2</kbd>
         </button>
         <button
           className={`nav-button ${section === "chatbot" ? "active" : ""}`}
           onClick={() => setSection("chatbot")}
         >
           <span>AI Chatbot</span>
-          <kbd>Alt+3</kbd>
+          <kbd>Shift+3</kbd>
         </button>
         <button
           className={`nav-button ${section === "branches" ? "active" : ""}`}
           onClick={() => setSection("branches")}
         >
           <span>Branch Directory</span>
-          <kbd>Alt+4</kbd>
+          <kbd>Shift+4</kbd>
         </button>
         <button
           className={`nav-button ${section === "calculator" ? "active" : ""}`}
           onClick={() => setSection("calculator")}
         >
           <span>Calculation Tool</span>
-          <kbd>Alt+5</kbd>
+          <kbd>Shift+5</kbd>
         </button>
         {isAdminRole(user?.role) && (
           <button
@@ -1112,7 +1120,7 @@ export default function DashboardPage() {
             onClick={() => setSection("admin")}
           >
             <span>Admin Editor</span>
-            <kbd>Alt+6</kbd>
+            <kbd>Shift+6</kbd>
           </button>
         )}
 
@@ -1135,7 +1143,7 @@ export default function DashboardPage() {
             className="btn secondary small full"
             onClick={() => setSection("profile")}
           >
-            Profile {isAdminRole(user?.role) ? "(Alt+7)" : "(Alt+6)"}
+            Profile {isAdminRole(user?.role) ? "(Shift+7)" : "(Shift+6)"}
           </button>
           <button
             className="btn secondary small full"
@@ -1204,6 +1212,7 @@ export default function DashboardPage() {
         {paletteOpen && (
           <div className="palette-overlay" onClick={() => setPaletteOpen(false)}>
             <div className="palette-box" onClick={(event) => event.stopPropagation()}>
+              <div className="palette-search-row">
               <input
                 autoFocus
                 className="palette-input"
@@ -1235,6 +1244,15 @@ export default function DashboardPage() {
                   }
                 }}
               />
+                <button
+                  type="button"
+                  className="palette-reset"
+                  onClick={resetPaletteList}
+                  title={language === "AR" ? "تصفير قائمة البحث السريع" : "Reset quick search list"}
+                >
+                  Reset
+                </button>
+              </div>
               {!paletteQuery && paletteResults.length > 0 && (
                 <div className="palette-hint">
                   ⭐ {language === "AR" ? "الأكثر استخداماً عندك" : "Your most used"}
