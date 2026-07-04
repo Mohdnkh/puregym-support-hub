@@ -166,6 +166,25 @@ function applyCountryHeart(text: string, country: Country) {
   return country === "UAE" ? String(text || "").replaceAll("💚", "💙") : String(text || "");
 }
 
+// Tiny localStorage cache so the dashboard paints instantly with the last
+// known data, then refreshes from the API in the background.
+function readCache<T>(key: string): T | null {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCache(key: string, value: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // storage full/blocked — caching is best-effort only
+  }
+}
+
 function preview(text: string) {
   const clean = text.replace(/\s+/g, " ").trim();
   return clean.length > 120 ? clean.slice(0, 120) + "..." : clean;
@@ -308,6 +327,7 @@ export default function DashboardPage() {
   async function loadScripts() {
     const data = await fetch("/api/scripts").then((res) => res.json());
     setScripts(data.scripts || []);
+    writeCache("pg_cache_scripts", data.scripts || []);
   }
 
   async function loadFavorites() {
@@ -315,6 +335,7 @@ export default function DashboardPage() {
       .then((res) => res.json())
       .catch(() => ({ scriptIds: [] }));
     setFavoriteIds(data.scriptIds || []);
+    writeCache("pg_cache_favorites", data.scriptIds || []);
   }
 
   async function loadPersonalQuickScripts() {
@@ -388,6 +409,12 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
+    // Paint instantly from the local cache, then refresh from the API.
+    const cachedScripts = readCache<Script[]>("pg_cache_scripts");
+    if (cachedScripts?.length) setScripts(cachedScripts);
+    const cachedFavorites = readCache<string[]>("pg_cache_favorites");
+    if (cachedFavorites?.length) setFavoriteIds(cachedFavorites);
+
     async function load() {
       const me = await fetch("/api/auth/me").then((res) => res.json());
       if (!me.user) {
@@ -395,9 +422,8 @@ export default function DashboardPage() {
         return;
       }
       setUser(me.user);
-      await loadScripts();
-      await loadFavorites();
-      await loadPersonalQuickScripts();
+      // Fetch fresh data in parallel (cache already painted above).
+      await Promise.all([loadScripts(), loadFavorites(), loadPersonalQuickScripts()]);
     }
     load();
   }, [router]);
@@ -500,6 +526,22 @@ export default function DashboardPage() {
 
   const scriptSearchValue = scriptSearch.trim();
 
+  // Precompute the normalized haystack once per data change (not per keystroke)
+  // so typing in search stays instant even with hundreds of scripts.
+  const searchIndex = useMemo(() => {
+    const index = new Map<string, string>();
+    for (const script of visibleScripts) {
+      const body = applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user);
+      index.set(
+        script.id,
+        normalizeSearchText(
+          [script.title, script.category, script.country, script.language, script.key, body].join(" "),
+        ),
+      );
+    }
+    return index;
+  }, [visibleScripts, user]);
+
   const searchedScripts = useMemo(() => {
     const query = normalizeSearchText(scriptSearchValue);
     if (!query) return [];
@@ -507,21 +549,10 @@ export default function DashboardPage() {
     const words = query.split(/\s+/).filter(Boolean);
 
     return visibleScripts.filter((script) => {
-      const body = applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user);
-      const haystack = normalizeSearchText(
-        [
-          script.title,
-          script.category,
-          script.country,
-          script.language,
-          script.key,
-          body,
-        ].join(" "),
-      );
-
+      const haystack = searchIndex.get(script.id) || "";
       return words.every((word) => haystack.includes(word));
     });
-  }, [visibleScripts, scriptSearchValue, user]);
+  }, [visibleScripts, searchIndex, scriptSearchValue]);
 
   const displayedScripts = scriptSearchValue
     ? searchedScripts
