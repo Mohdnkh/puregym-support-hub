@@ -13,7 +13,7 @@ from reportlab.pdfgen import canvas
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-PDF_PATH = DOCS / "PureGym-Support-Hub-Overview-and-Cost.pdf"
+PDF_PATH = DOCS / "PureGym-Support-Hub-Overview.pdf"
 PPTX_PATH = DOCS / "PureGym-Support-Hub-Presentation.pptx"
 
 GREEN = "#00A651"
@@ -25,14 +25,6 @@ LINE = "#D7DEE8"
 
 UPDATED = "July 4, 2026"
 MADE_BY = "Made by Mohammed Alkhandagji"
-
-SOURCES = [
-    "Vercel pricing: https://vercel.com/pricing",
-    "Neon pricing: https://neon.com/pricing",
-    "Groq pricing: https://groq.com/pricing",
-    "Gemini API pricing: https://ai.google.dev/gemini-api/docs/pricing",
-]
-
 
 def ensure_docs_dir() -> None:
     DOCS.mkdir(parents=True, exist_ok=True)
@@ -124,7 +116,7 @@ def generate_pdf() -> None:
     c.setFont("Helvetica-Bold", 26)
     c.drawString(42, h - 58, "PureGym Support Hub")
     c.setFont("Helvetica", 11)
-    c.drawString(42, h - 78, "Project overview, operating model, and cost estimate")
+    c.drawString(42, h - 78, "Project overview, operating model, and feature coverage")
     c.setFillColor(hex_color(MUTED))
     c.setFont("Helvetica", 9)
     c.drawRightString(w - 42, h - 112, f"Updated {UPDATED}")
@@ -147,11 +139,11 @@ def generate_pdf() -> None:
     y = bullet_list(
         c,
         [
-            "AI provider is no longer tied to OpenAI. Groq is the default low-cost provider, with Gemini and OpenAI kept as optional fallbacks.",
+            "AI provider is no longer tied to OpenAI. Groq is the default provider, with Gemini and OpenAI kept as optional fallbacks.",
             "Ctrl+K now opens the in-app command palette when the page has focus, making script search faster than navigating categories.",
             "Fill-before-copy variables now work across scripts that contain dates, duration, membership type, amount, or member name placeholders.",
             "Smoke tests were added for the dashboard shell, admin protection, script APIs, and quick-script access rules.",
-            "Documentation and cost assumptions now match the current Vercel, Neon, Groq, and Gemini setup.",
+            "Documentation now matches the current Vercel, Neon, Groq, and Gemini setup.",
         ],
         54,
         y,
@@ -162,7 +154,7 @@ def generate_pdf() -> None:
     y = section_title(c, "Primary Capabilities", 42, y)
     cols = [
         ("Agent Workspace", ["Script Library", "Quick Scripts", "Favorites", "Branch Directory"]),
-        ("Admin Control", ["Script/category activation", "Quick-script management", "User approval", "Role separation"]),
+        ("Admin Control", ["Script/category activation", "Quick-script management", "Shared content controls", "Content status management"]),
         ("AI Assistance", ["Support chatbot", "Spellcheck helper", "AI Trainer references", "Memory summaries"]),
     ]
     col_w = (w - 100) / 3
@@ -191,8 +183,8 @@ def generate_pdf() -> None:
         c,
         [
             "Frontend and API routes run on Next.js 14 App Router deployed to Vercel.",
-            "Persistent application data lives in Neon PostgreSQL through Prisma.",
-            "Scripts edited in the admin dashboard are stored in Neon, so deployment does not overwrite live admin additions.",
+            "Persistent application data is stored in Neon PostgreSQL through Prisma.",
+            "Scripts edited in the admin dashboard are stored in Neon, so deployment does not overwrite current admin additions.",
             "Rate limiting protects login, signup, password reset, and AI chat endpoints.",
             "Security headers and httpOnly signed session cookies are enabled for production use.",
         ],
@@ -206,8 +198,8 @@ def generate_pdf() -> None:
     y = bullet_list(
         c,
         [
-            "Super Admin controls user role changes and account removal.",
-            "Admin can manage operational scripts and approve/generate passwords for new users.",
+            "Admin can manage operational scripts, categories, Quick Scripts, activation status, and shared support content.",
+            "User account creation, removal, and role changes are left to the development team rather than handled in this presentation scope.",
             "Regular users can use scripts, quick replies, favorites, calculations, and AI without changing shared content.",
             "Category and script deactivation hides content globally without deleting historical data.",
             "Legacy quick-script data is audited before cleanup, and cleanup only runs when rows are confirmed duplicates.",
@@ -226,7 +218,7 @@ def generate_pdf() -> None:
             "npm run smoke validates public page rendering and anonymous API protections by default.",
             "Authenticated smoke checks can be enabled with SMOKE_EMAIL and SMOKE_PASSWORD.",
             "Authenticated smoke checks can verify shared quick scripts without creating legacy per-user copies.",
-            "/api/health supports external monitoring and can be protected with HEALTH_SECRET or CRON_SECRET.",
+            "/api/health supports external monitoring for database, AI configuration, and system readiness.",
         ],
         54,
         y,
@@ -237,59 +229,53 @@ def generate_pdf() -> None:
     c.showPage()
 
     # Page 3
-    draw_header(c, "Cost Estimate", 3)
+    draw_header(c, "Feature Coverage", 3)
     y = h - 80
-    y = section_title(c, "Expected Monthly Cost for 25 Daily Users", 42, y)
-    y = draw_wrapped(
-        c,
-        "The estimate below assumes 25 support users, daily script usage, moderate AI chat usage, and one developer/admin seat managing deployment. "
-        "Support agents are application users, not Vercel developer seats.",
-        42,
-        y,
-        w - 84,
-        size=10.5,
-        leading=15,
-    )
-    y -= 18
-    rows = [
-        ("Vercel hosting", "$0 on Hobby for light use; $20/mo Pro recommended for production ownership and higher limits."),
-        ("Neon PostgreSQL", "$0 Free can work for small data; Launch typical spend is about $15/mo if Free limits are exceeded."),
-        ("AI provider", "Groq Llama 3.1 8B is very low cost at $0.05/M input and $0.08/M output tokens; Gemini API also has free usage through Google AI Studio."),
-        ("Email SMTP", "Usually $0 if using an existing Gmail/SMTP account within provider limits."),
-        ("Practical range", "$0-$10/mo for light internal use, or roughly $35-$45/mo for a safer production setup with Vercel Pro + Neon Launch + AI buffer."),
-    ]
-    table_x = 42
-    table_w = w - 84
-    row_h = 54
-    for i, (name, detail) in enumerate(rows):
-        top = y - i * row_h
-        c.setFillColor(hex_color("#FFFFFF" if i % 2 == 0 else LIGHT))
-        c.rect(table_x, top - row_h + 8, table_w, row_h, stroke=0, fill=1)
-        c.setStrokeColor(hex_color(LINE))
-        c.rect(table_x, top - row_h + 8, table_w, row_h, stroke=1, fill=0)
-        c.setFillColor(hex_color(DARK))
-        c.setFont("Helvetica-Bold", 10)
-        c.drawString(table_x + 10, top - 14, name)
-        draw_wrapped(c, detail, table_x + 145, top - 14, table_w - 160, size=9, leading=12, color=MUTED)
-    y = y - len(rows) * row_h - 4
-
-    y = section_title(c, "Development Roadmap", 42, y)
+    y = section_title(c, "Workspace Features", 42, y)
     y = bullet_list(
         c,
         [
-            "Browser extension connected to the hub, replacing TextBlaze-style snippets with centrally managed shortcuts.",
-            "Health endpoint monitors AI configuration, database access, cron configuration, and offer-sync freshness.",
-            "Legacy database audit/cleanup command removes UserQuickScript rows only when they are confirmed duplicates.",
+            "Script Library with category filters, active/inactive visibility for admins, favorites, and one-click copy behavior.",
+            "Quick Scripts with shared admin-managed content, drag-and-drop ordering, personal favorites, and male/female wording toggles.",
+            "Ctrl+K command palette for fast script lookup and keyboard-first copying.",
+            "Fill-before-copy prompts for dates, duration, membership type, amount, and member names.",
+            "Branch Directory with searchable KSA/UAE branch references.",
         ],
         54,
         y,
         w - 108,
     )
 
-    y -= 14
-    y = section_title(c, "Sources", 42, y)
-    for source in SOURCES:
-        y = draw_wrapped(c, source, 54, y, w - 108, size=8.5, leading=12, color=MUTED)
+    y -= 8
+    y = section_title(c, "Assistant and Admin Features", 42, y)
+    y = bullet_list(
+        c,
+        [
+            "AI chatbot uses official knowledge, scripts, trainer notes, conversation memory, and country/language signals.",
+            "AI Trainer accepts text, links, and image-based references without forcing agents to tag every item manually.",
+            "Spellcheck helper improves selected scripts while keeping the agent in control.",
+            "Admin Editor manages scripts, categories, activation status, account approvals, and generated passwords.",
+            "Calculation Tool includes membership calculations and Hijri/Gregorian conversion in both directions.",
+        ],
+        54,
+        y,
+        w - 108,
+    )
+
+    y -= 8
+    y = section_title(c, "Reliability Features", 42, y)
+    y = bullet_list(
+        c,
+        [
+            "Shared Quick Scripts now read from the master Script table, preventing old per-user copies from returning.",
+            "Legacy UserQuickScript audit refuses cleanup if any unique user content is detected.",
+            "Smoke tests cover public pages, route protection, health checks, and authenticated flows when credentials are provided.",
+            "Health checks expose database, AI configuration, and system readiness for external monitors.",
+        ],
+        54,
+        y,
+        w - 108,
+    )
     draw_footer(c)
     c.showPage()
     c.save()
@@ -460,95 +446,96 @@ def title_slide_xml() -> str:
 SLIDES = [
     title_slide_xml(),
     slide_xml(
-        "The hub removes daily support friction",
-        "Agents should not jump between scattered notes, admin changes, and AI tools during a live conversation.",
+        "Agents get one focused workspace",
+        "The dashboard keeps daily support work inside one organized screen.",
         [
             "Approved scripts are centralized and searchable.",
             "Country and language context stays visible.",
             "Favorites and most-used scripts reduce repeated searching.",
-            "Admin changes live in Neon, not old project files.",
+            "Admin changes are stored in Neon, not old project files.",
         ],
         2,
         GREEN,
-        [("Audience", "KSA and UAE support agents"), ("Goal", "Faster accurate responses"), ("Data", "Neon-backed live content")],
+        [("Audience", "KSA and UAE support agents"), ("Goal", "Faster accurate responses"), ("Data", "Neon-backed content")],
     ),
     slide_xml(
-        "The latest batch makes scripts faster to reach",
-        "Ctrl+K and variable prompts turn the script library into a keyboard-first tool.",
+        "Script Library and Quick Scripts stay controlled",
+        "Shared content is easier to manage and safer to use.",
         [
-            "Ctrl+K opens the in-app command palette when the page has focus.",
-            "Copying a script can prompt for date, duration, amount, membership type, or member name.",
-            "The same copy pipeline applies name, gender, country heart, variables, and usage tracking.",
-            "Most-used scripts are tracked per agent locally.",
+            "Script Library supports category filtering, favorites, activation, and one-click copy.",
+            "Quick Scripts are shared from the master Script table so admin edits apply to everyone.",
+            "Admins can drag cards to reorder Quick Scripts instead of clicking arrows repeatedly.",
+            "Male/Female wording toggles work from regular and favorite Quick Script cards.",
         ],
         3,
         BLUE,
-        [("Shortcut", "Ctrl+K command palette"), ("Fill", "Dates and script variables"), ("Copy", "Ready-to-send output")],
+        [("Library", "Search and copy"), ("Quick", "Shared and ordered"), ("Favorite", "Personal per user")],
     ),
     slide_xml(
-        "AI now runs on a low-cost provider by default",
-        "The app is no longer locked to OpenAI billing.",
+        "Search and copy flows are built for speed",
+        "Agents can reach the right wording without moving through long lists.",
         [
-            "Groq is the default provider using llama-3.1-8b-instant.",
-            "Gemini can be enabled with GEMINI_API_KEY and AI_PROVIDER=gemini.",
-            "OpenAI stays available only as an intentional fallback.",
-            "The AI health route now reports provider, model, database status, and configuration readiness.",
+            "Ctrl+K opens the in-app command palette when the page has focus.",
+            "Most-used scripts are tracked per agent locally.",
+            "Copying a script can prompt for date, duration, amount, membership type, or member name.",
+            "The copy pipeline applies employee name, gender, country heart, variables, and usage tracking.",
         ],
         4,
         GREEN,
-        [("Default", "Groq"), ("Alternative", "Gemini"), ("Fallback", "OpenAI only if selected")],
+        [("Shortcut", "Ctrl+K"), ("Fill", "Smart prompts"), ("Copy", "Ready output")],
     ),
     slide_xml(
-        "Admin governance protects shared content",
-        "The model separates daily usage from global content control.",
+        "AI helps agents answer with context",
+        "The assistant uses the hub's own knowledge instead of generic answers.",
         [
-            "Super Admin owns role changes and user removal.",
-            "Admin and Super Admin can manage scripts and quick scripts.",
-            "Deactivation hides scripts or categories globally without deleting the record.",
-            "Account requests can be approved with generated passwords.",
+            "Groq is the default provider using llama-3.1-8b-instant.",
+            "Gemini and OpenAI remain optional providers through environment variables.",
+            "AI Trainer accepts text, links, and image references as reusable knowledge.",
+            "The chatbot uses scripts, official knowledge, memory, and country/language signals.",
         ],
         5,
         BLUE,
-        [("Super Admin", "User authority"), ("Admin", "Content authority"), ("User", "Daily operation")],
+        [("Chatbot", "Support context"), ("Trainer", "Reusable knowledge"), ("Spellcheck", "Agent-controlled")],
     ),
     slide_xml(
-        "QA now has a repeatable smoke path",
-        "The project has a simple command for catching broken routes before deployment.",
+        "Admin controls keep shared data clean",
+        "Role boundaries make it clear who can change operational content.",
+        [
+            "Admin can manage scripts, categories, Quick Scripts, activation status, and shared support content.",
+            "User creation, removal, and role changes are left to the development team.",
+            "Deactivation hides scripts or categories globally without deleting the record.",
+            "Shared content changes apply to all users after saving.",
+        ],
+        6,
+        GREEN,
+        [("Admin", "Content authority"), ("Developers", "User accounts"), ("User", "Daily operation")],
+    ),
+    slide_xml(
+        "Support tools cover common daily tasks",
+        "The hub includes utilities agents need during real support work.",
+        [
+            "Branch Directory gives searchable KSA and UAE branch references.",
+            "Calculation Tool supports membership-related calculations.",
+            "Hijri Month supports Hijri to Gregorian and Gregorian to Hijri conversion.",
+            "Profile settings keep agent names available for script personalization.",
+        ],
+        7,
+        BLUE,
+        [("Branches", "Searchable"), ("Calendar", "Two-way conversion"), ("Profile", "Agent names")],
+    ),
+    slide_xml(
+        "QA and health checks make releases safer",
+        "The project now has repeatable checks before deployment.",
         [
             "npm run build verifies Prisma, Next.js, type checking, and static generation.",
             "npm run smoke verifies page rendering and anonymous API protection.",
             "Authenticated smoke can run with SMOKE_EMAIL and SMOKE_PASSWORD.",
-            "Quick-script authenticated checks are gated to avoid unintended database writes.",
-        ],
-        6,
-        GREEN,
-        [("Build", "Production compile"), ("Smoke", "Route protection"), ("Safe", "No DB writes by default")],
-    ),
-    slide_xml(
-        "The cost profile stays small for 25 users",
-        "Support agents are app users, not infrastructure seats.",
-        [
-            "Vercel Hobby can run light use; Pro is safer for production ownership.",
-            "Neon Free may be enough for small data; Launch is the practical growth step.",
-            "Groq token pricing keeps moderate AI usage in a low monthly range.",
-            "Gemini API free usage is another option when rate limits fit the workflow.",
-        ],
-        7,
-        BLUE,
-        [("Light use", "$0-$10/mo"), ("Safer setup", "$35-$45/mo"), ("OpenAI", "Not required")],
-    ),
-    slide_xml(
-        "The next development track is operational maturity",
-        "The roadmap focuses on reliability and agent speed, not extra manual admin work.",
-        [
-            "Browser extension connected to the hub can replace TextBlaze-style local snippets.",
-            "Health checks monitor AI configuration, cron setup, and offer-sync freshness.",
+            "/api/health reports database, AI configuration, and system readiness.",
             "Legacy UserQuickScript cleanup runs only after Neon audit confirms no unique user data is needed.",
-            "Documentation should keep matching the deployed behavior after each batch.",
         ],
         8,
         GREEN,
-        [("Extension", "Central shortcuts"), ("Monitoring", "AI, cron, offers"), ("Cleanup", "Audit before delete")],
+        [("Build", "Production compile"), ("Smoke", "Route protection"), ("Health", "Monitor-ready")],
     ),
 ]
 

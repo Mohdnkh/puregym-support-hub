@@ -19,4 +19,5 @@ Thumbs.db
 
 # build artifacts
 tsconfig.tsbuildinfo
+docs/PureGym-Support-Hub-Overview-and-Cost.pdf
 next-env.d.ts
