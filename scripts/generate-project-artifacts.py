@@ -613,6 +613,19 @@ SLIDES = [
         BLUE,
         [("Vercel", "$0 or $20/mo"), ("Neon", "$0 or ~$15/mo"), ("AI", "~$2-$10/mo")],
     ),
+    slide_xml(
+        "The hub is ready for daily support work",
+        "The final result is a cleaner, faster workspace for agents and admins.",
+        [
+            "Agents can search, fill, copy, calculate, and use AI from one focused dashboard.",
+            "Admins can keep scripts, categories, quick replies, and shared references clean.",
+            "Neon keeps current content live, so deployments do not replace admin updates.",
+            "The operating model stays simple, controlled, and low-cost for a 25-user team.",
+        ],
+        10,
+        GREEN,
+        [("Outcome", "Faster support"), ("Control", "Cleaner content"), ("Cost", "Predictable baseline")],
+    ),
 ]
 
 
