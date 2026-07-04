@@ -48,11 +48,17 @@ const OFFICIAL_SOURCE_NOTES = [
   }
 ] as const;
 
+// Provider-agnostic config. Works with any OpenAI-compatible chat/completions
+// endpoint — OpenAI (default), Groq (https://api.groq.com/openai/v1) or
+// Google Gemini (https://generativelanguage.googleapis.com/v1beta/openai).
+// Set AI_BASE_URL + AI_API_KEY + AI_MODEL to switch provider with zero code changes.
 export function getOpenAIConfig() {
-  const apiKey = process.env.OPENAI_API_KEY?.trim();
-  const model = process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
+  const baseUrl = (process.env.AI_BASE_URL?.trim() || "https://api.openai.com/v1").replace(/\/+$/, "");
+  const apiKey = process.env.AI_API_KEY?.trim() || process.env.OPENAI_API_KEY?.trim();
+  const model = process.env.AI_MODEL?.trim() || process.env.OPENAI_MODEL?.trim() || "gpt-4o-mini";
 
   return {
+    baseUrl,
     apiKey,
     model,
     temperature: Number(process.env.OPENAI_TEMPERATURE || 0.25),
@@ -80,7 +86,7 @@ function extractResponseText(data: any) {
 
 function assertOpenAIKey(apiKey?: string) {
   if (!apiKey) {
-    throw new Error("OPENAI_API_KEY is missing. Add it to .env / Vercel Variables, then restart or redeploy.");
+    throw new Error("AI_API_KEY / OPENAI_API_KEY is missing. Add it to .env / Vercel Variables, then restart or redeploy.");
   }
 }
 
@@ -92,6 +98,8 @@ function buildTextInput(options: OpenAITextOptions) {
   ];
 }
 
+// chat/completions multimodal format — supported by OpenAI, Groq and Gemini's
+// OpenAI-compatible endpoint alike.
 function buildMultimodalInput(options: OpenAIMultimodalOptions) {
   const previous = (options.messages || []).slice(-12).map((msg) => ({ role: msg.role, content: msg.content }));
 
@@ -105,18 +113,18 @@ function buildMultimodalInput(options: OpenAIMultimodalOptions) {
     {
       role: "user",
       content: [
-        { type: "input_text", text: options.user || "Please analyze the attached image." },
-        { type: "input_image", image_url: options.imageDataUrl }
+        { type: "text", text: options.user || "Please analyze the attached image." },
+        { type: "image_url", image_url: { url: options.imageDataUrl } }
       ]
     }
   ];
 }
 
-export async function callOpenAIText(options: OpenAITextOptions) {
+async function callChatCompletions(messages: unknown[], options: OpenAITextOptions) {
   const config = getOpenAIConfig();
   assertOpenAIKey(config.apiKey);
 
-  const response = await fetch("https://api.openai.com/v1/responses", {
+  const response = await fetch(`${config.baseUrl}/chat/completions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -124,54 +132,31 @@ export async function callOpenAIText(options: OpenAITextOptions) {
     },
     body: JSON.stringify({
       model: config.model,
-      input: buildTextInput(options),
+      messages,
       temperature: options.temperature ?? config.temperature,
-      max_output_tokens: options.maxOutputTokens ?? config.maxOutputTokens
+      max_tokens: options.maxOutputTokens ?? config.maxOutputTokens
     })
   });
 
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    const message = data?.error?.message || data?.message || `OpenAI request failed with status ${response.status}`;
+    const message = data?.error?.message || data?.message || `AI request failed with status ${response.status}`;
     throw new Error(message);
   }
 
   const text = extractResponseText(data);
-  if (!text) throw new Error("OpenAI returned an empty response.");
+  if (!text) throw new Error("The AI returned an empty response.");
 
   return text;
 }
 
+export async function callOpenAIText(options: OpenAITextOptions) {
+  return callChatCompletions(buildTextInput(options), options);
+}
+
 export async function callOpenAIMultimodal(options: OpenAIMultimodalOptions) {
-  const config = getOpenAIConfig();
-  assertOpenAIKey(config.apiKey);
-
-  const response = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${config.apiKey}`
-    },
-    body: JSON.stringify({
-      model: config.model,
-      input: buildMultimodalInput(options),
-      temperature: options.temperature ?? config.temperature,
-      max_output_tokens: options.maxOutputTokens ?? config.maxOutputTokens
-    })
-  });
-
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    const message = data?.error?.message || data?.message || `OpenAI request failed with status ${response.status}`;
-    throw new Error(message);
-  }
-
-  const text = extractResponseText(data);
-  if (!text) throw new Error("OpenAI returned an empty response.");
-
-  return text;
+  return callChatCompletions(buildMultimodalInput(options), options);
 }
 
 export function detectAiSignals(message: string): { language: AiLanguage; country: AiCountry | null } {
