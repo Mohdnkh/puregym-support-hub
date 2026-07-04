@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -37,7 +38,9 @@ export default function VerifyClient() {
   return (
     <div className="auth-card">
       <div className="auth-logo-row">
-        <div className="auth-logo"><img src="/pg-hub-mark.svg" alt="PureGym Hub" /></div>
+        <div className="auth-logo">
+          <img src="/pg-hub-mark.svg" alt="PureGym Hub" />
+        </div>
         <div>
           <h1>Email verification</h1>
           <p>Enter the verification code sent to your email.</p>

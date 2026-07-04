@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 
@@ -37,7 +38,9 @@ export default function SignupPage() {
     <main className="auth-page">
       <div className="auth-card">
         <div className="auth-logo-row">
-          <div className="auth-logo"><img src="/pg-hub-mark.svg" alt="PureGym Hub" /></div>
+          <div className="auth-logo">
+            <img src="/pg-hub-mark.svg" alt="PureGym Hub" />
+          </div>
           <div>
             <h1>Request access</h1>
             <p>Enter your email and first name. An admin will approve your account and send you your login details — no password needed here.</p>

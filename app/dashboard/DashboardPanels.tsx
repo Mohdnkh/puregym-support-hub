@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 
 type User = {
