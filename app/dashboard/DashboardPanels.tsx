@@ -37,16 +37,6 @@ type TrainerItem = {
 };
 
 
-type UserQuickScript = {
-  id: string;
-  title: string;
-  country: "ALL" | "KSA" | "UAE";
-  language: "AR" | "EN" | string;
-  body: string;
-  active: boolean;
-  sortOrder?: number;
-};
-
 type Script = {
   id: string;
   key: string;
@@ -62,21 +52,6 @@ type Script = {
 
 type Country = "KSA" | "UAE";
 type Lang = "AR" | "EN";
-type Section =
-  | "quick"
-  | "scripts"
-  | "chatbot"
-  | "branches"
-  | "calculator"
-  | "profile"
-  | "admin";
-type BranchDirectoryItem = {
-  id: string;
-  name: string;
-  city: string;
-  gender: "MEN" | "WOMEN" | "ALL";
-  url: string;
-};
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
@@ -134,73 +109,6 @@ const HIJRI_MONTHS = [
 function categoryRank(category: string) {
   const index = CATEGORY_ORDER.indexOf(category);
   return index === -1 ? 999 : index;
-}
-
-function emojiFor(country: Country | "ALL") {
-  if (country === "UAE") return "💙";
-  return "💚";
-}
-
-function applyUserName(text: string, language: Lang, user: User | null) {
-  const name =
-    language === "AR" ? user?.nameAr || "الفريق" : user?.nameEn || "Team";
-
-  return String(text || "")
-    .replaceAll("{{employeeName}}", name)
-    .replaceAll("(اسم الموظف)", name)
-    .replaceAll("(Agent Name)", name)
-    .replaceAll("[Agent Name]", name)
-    .replaceAll("example@email.com", "")
-    .replaceAll("example@gmail.com", "")
-    .replaceAll("0000000000", "")
-    .replaceAll("00/00/0000", "00-00-2020")
-    .replaceAll("__/__/____", "00-00-2020");
-}
-
-// Resolve {masculine|feminine} markers based on the selected gender.
-function applyGender(text: string, gender: "M" | "F") {
-  return String(text || "").replace(
-    /\{([^{}|]*)\|([^{}]*)\}/g,
-    (_m, masc, fem) => (gender === "F" ? fem : masc),
-  );
-}
-
-function hasGenderMarkers(text: string) {
-  return /\{[^{}|]*\|[^{}]*\}/.test(String(text || ""));
-}
-
-// UAE uses a blue heart, KSA (and default) a green heart.
-function applyCountryHeart(text: string, country: Country) {
-  return country === "UAE" ? String(text || "").replaceAll("💚", "💙") : String(text || "");
-}
-
-// Variables an agent fills right before copying (TextBlaze-style):
-// [Anything in square brackets] plus the common customer-name tokens.
-function extractVarTokens(text: string) {
-  const tokens = new Set<string>();
-  for (const match of text.matchAll(/\[([^\[\]\n]{1,40})\]/g)) tokens.add(match[0]);
-  if (text.includes("(اسم العميل)")) tokens.add("(اسم العميل)");
-  if (text.includes("(Member Name)")) tokens.add("(Member Name)");
-  return Array.from(tokens);
-}
-
-// Tiny localStorage cache so the dashboard paints instantly with the last
-// known data, then refreshes from the API in the background.
-function readCache<T>(key: string): T | null {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : null;
-  } catch {
-    return null;
-  }
-}
-
-function writeCache(key: string, value: unknown) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    // storage full/blocked — caching is best-effort only
-  }
 }
 
 function preview(text: string) {

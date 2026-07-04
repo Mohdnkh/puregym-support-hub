@@ -26,16 +26,6 @@ type AdminUser = {
   createdAt: string;
 };
 
-type UserQuickScript = {
-  id: string;
-  title: string;
-  country: "ALL" | "KSA" | "UAE";
-  language: "AR" | "EN" | string;
-  body: string;
-  active: boolean;
-  sortOrder?: number;
-};
-
 type Script = {
   id: string;
   key: string;
@@ -418,7 +408,6 @@ export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [scripts, setScripts] = useState<Script[]>([]);
-  const [personalQuickScripts, setPersonalQuickScripts] = useState<UserQuickScript[]>([]);
   const [editingQuickId, setEditingQuickId] = useState<string | null>(null);
   const [country, setCountry] = useState<Country>("KSA");
   const [language, setLanguage] = useState<Lang>("AR");
@@ -461,16 +450,9 @@ export default function DashboardPage() {
     writeCache("pg_cache_favorites", data.scriptIds || []);
   }
 
-  async function loadPersonalQuickScripts() {
-    const data = await fetch("/api/quick-scripts")
-      .then((res) => res.json())
-      .catch(() => ({ quickScripts: [] }));
-    setPersonalQuickScripts(data.quickScripts || []);
-  }
-
   // Quick scripts are shared (Script "Quick Scripts" category), so admin edits,
   // reordering and deletes apply to every agent.
-  async function savePersonalQuickScript(item: Script) {
+  async function saveSharedQuickScript(item: Script) {
     const res = await fetch(`/api/scripts/${item.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -481,7 +463,7 @@ export default function DashboardPage() {
     await loadScripts();
   }
 
-  async function addPersonalQuickScript() {
+  async function addSharedQuickScript() {
     const res = await fetch("/api/scripts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -518,14 +500,14 @@ export default function DashboardPage() {
     await loadScripts();
   }
 
-  async function deletePersonalQuickScript(id: string) {
+  async function deleteSharedQuickScript(id: string) {
     if (!confirm("Delete this quick script for everyone?")) return;
     const res = await fetch(`/api/scripts/${id}`, { method: "DELETE" });
     if (!res.ok) return alert("Quick script delete failed.");
     await loadScripts();
   }
 
-  function updatePersonalQuickScript(id: string, patch: Partial<Script>) {
+  function updateSharedQuickScript(id: string, patch: Partial<Script>) {
     setScripts((current) =>
       current.map((item) => (item.id === id ? { ...item, ...patch } : item)),
     );
@@ -547,7 +529,7 @@ export default function DashboardPage() {
       }
       setUser(me.user);
       // Fetch fresh data in parallel (cache already painted above).
-      await Promise.all([loadScripts(), loadFavorites(), loadPersonalQuickScripts()]);
+      await Promise.all([loadScripts(), loadFavorites()]);
     }
     load();
   }, [router]);
@@ -1350,7 +1332,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 {isAdminRole(user?.role) && (
-                  <button className="btn small" onClick={addPersonalQuickScript}>
+                  <button className="btn small" onClick={addSharedQuickScript}>
                     {language === "AR" ? "➕ إضافة سكربت سريع" : "➕ Add Quick Script"}
                   </button>
                 )}
@@ -1413,12 +1395,12 @@ export default function DashboardPage() {
                           <input
                             className="input"
                             value={script.title}
-                            onChange={(event) => updatePersonalQuickScript(script.id, { title: event.target.value })}
+                            onChange={(event) => updateSharedQuickScript(script.id, { title: event.target.value })}
                           />
                           <select
                             className="select"
                             value={script.language === "EN" ? "EN" : "AR"}
-                            onChange={(event) => updatePersonalQuickScript(script.id, { language: event.target.value as Script["language"] })}
+                            onChange={(event) => updateSharedQuickScript(script.id, { language: event.target.value as Script["language"] })}
                           >
                             <option value="AR">AR</option>
                             <option value="EN">EN</option>
@@ -1427,12 +1409,12 @@ export default function DashboardPage() {
                         <textarea
                           className="textarea"
                           value={script.body}
-                          onChange={(event) => updatePersonalQuickScript(script.id, { body: event.target.value })}
+                          onChange={(event) => updateSharedQuickScript(script.id, { body: event.target.value })}
                         />
                         <div className="inline-actions quick-card-actions">
-                          <button className="btn small" onClick={() => savePersonalQuickScript(script)}>Save</button>
+                          <button className="btn small" onClick={() => saveSharedQuickScript(script)}>Save</button>
                           <button className="btn ghost small" onClick={() => setEditingQuickId(null)}>Cancel</button>
-                          <button className="btn ghost small danger-text" onClick={() => deletePersonalQuickScript(script.id)}>Delete</button>
+                          <button className="btn ghost small danger-text" onClick={() => deleteSharedQuickScript(script.id)}>Delete</button>
                         </div>
                       </>
                     ) : (
