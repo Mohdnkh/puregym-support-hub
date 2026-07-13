@@ -933,6 +933,19 @@ button { cursor: pointer; }
   background: var(--card);
 }
 
+.ai-chat-layout .message-row.error .message-bubble {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  color: #7c2d12;
+  box-shadow: 0 12px 30px rgba(124, 45, 18, .08);
+}
+
+[data-theme="dark"] .ai-chat-layout .message-row.error .message-bubble {
+  background: rgba(124, 45, 18, .2);
+  border-color: rgba(251, 146, 60, .45);
+  color: #fed7aa;
+}
+
 .ai-chat-layout .message-row.user .message-bubble {
   background: linear-gradient(135deg, var(--dark), #263247);
 }

@@ -57,6 +57,7 @@ type ChatMessage = {
   content: string;
   imageData?: string | null;
   imageName?: string | null;
+  tone?: "error";
 };
 type ChatSessionSummary = {
   id: string;
@@ -371,6 +372,7 @@ export function ChatbotPanel() {
         {
           role: "assistant",
           content: res.ok ? data.answer : data.error || "AI failed",
+          tone: res.ok ? undefined : "error",
         },
       ]);
       await loadSessions();
@@ -380,6 +382,7 @@ export function ChatbotPanel() {
         {
           role: "assistant",
           content: error instanceof Error ? error.message : "AI failed",
+          tone: "error",
         },
       ]);
     } finally {
@@ -466,7 +469,7 @@ export function ChatbotPanel() {
           dir={uiLanguage === "AR" ? "rtl" : "ltr"}
         >
           {messages.map((msg, index) => (
-            <div key={index} className={`message-row ${msg.role}`}>
+            <div key={index} className={`message-row ${msg.role} ${msg.tone === "error" ? "error" : ""}`}>
               <div className="message-bubble">
                 {msg.imageData && (
                   <img

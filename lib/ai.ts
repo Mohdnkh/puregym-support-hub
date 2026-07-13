@@ -18,6 +18,12 @@ type OpenAIMultimodalOptions = OpenAITextOptions & {
 export type AiLanguage = "AR" | "EN" | "BOTH";
 export type AiCountry = "ALL" | "KSA" | "UAE";
 type AiProvider = "groq" | "gemini" | "openai" | "custom";
+type KnowledgeScript = { title: string; category: string; country: string; language: string; body: string };
+type KnowledgeItem = { kind: string; country: string; language: string; title: string; sourceUrl: string | null; content: string };
+
+const KNOWLEDGE_CHAR_BUDGET = Number(process.env.AI_KNOWLEDGE_CHAR_BUDGET || 9500);
+const TRAINER_KNOWLEDGE_TAKE = Number(process.env.AI_TRAINER_ITEMS || 40);
+const SCRIPT_KNOWLEDGE_TAKE = Number(process.env.AI_SCRIPT_ITEMS || 90);
 
 const AI_PROVIDER_PRESETS: Record<Exclude<AiProvider, "custom">, { baseUrl: string; model: string }> = {
   groq: {
@@ -96,7 +102,7 @@ export function getOpenAIConfig() {
     apiKey,
     model,
     temperature: Number(process.env.AI_TEMPERATURE || process.env.OPENAI_TEMPERATURE || 0.25),
-    maxOutputTokens: Number(process.env.AI_MAX_OUTPUT_TOKENS || process.env.OPENAI_MAX_OUTPUT_TOKENS || 1400)
+    maxOutputTokens: Number(process.env.AI_MAX_OUTPUT_TOKENS || process.env.OPENAI_MAX_OUTPUT_TOKENS || 800)
   };
 }
 
@@ -209,7 +215,60 @@ export function detectAiSignals(message: string): { language: AiLanguage; countr
   return { language, country: null };
 }
 
-async function getTrainerKnowledge(country?: AiCountry | null, language?: AiLanguage | null) {
+function normalizeKnowledgeText(value: string) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function queryTerms(query?: string | null) {
+  return Array.from(
+    new Set(
+      normalizeKnowledgeText(query || "")
+        .split(" ")
+        .filter((word) => word.length >= 2)
+        .slice(0, 18),
+    ),
+  );
+}
+
+function scoreKnowledge(text: string, terms: string[]) {
+  if (!terms.length) return 0;
+  const haystack = normalizeKnowledgeText(text);
+  return terms.reduce((score, term) => score + (haystack.includes(term) ? 1 : 0), 0);
+}
+
+function clipText(text: string, maxChars: number) {
+  const clean = String(text || "").replace(/\s+/g, " ").trim();
+  if (clean.length <= maxChars) return clean;
+  return `${clean.slice(0, Math.max(0, maxChars - 1)).trim()}…`;
+}
+
+function packKnowledgeSections(sections: string[], budget = KNOWLEDGE_CHAR_BUDGET) {
+  const packed: string[] = [];
+  let used = 0;
+  for (const section of sections) {
+    const next = section.trim();
+    if (!next) continue;
+    const projected = used + next.length + 7;
+    if (projected > budget) break;
+    packed.push(next);
+    used = projected;
+  }
+  return packed.join("\n\n---\n\n");
+}
+
+function rankByQuery<T>(items: T[], query: string | null | undefined, textForItem: (item: T) => string) {
+  const terms = queryTerms(query);
+  return [...items]
+    .map((item, index) => ({ item, index, score: scoreKnowledge(textForItem(item), terms) }))
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .map(({ item }) => item);
+}
+
+async function getTrainerKnowledge(country?: AiCountry | null, language?: AiLanguage | null, query?: string | null) {
   try {
     const items = await prisma.aiKnowledgeItem.findMany({
       where: {
@@ -218,10 +277,14 @@ async function getTrainerKnowledge(country?: AiCountry | null, language?: AiLang
         ...(language ? { language: { in: [language, "BOTH"] } } : {})
       },
       orderBy: [{ kind: "asc" }, { updatedAt: "desc" }],
-      take: 120
+      take: TRAINER_KNOWLEDGE_TAKE
     });
 
-    return items.map((item: { kind: string; country: string; language: string; title: string; sourceUrl: string | null; content: string }) => `[AI Trainer | ${item.kind} | ${item.country} | ${item.language}] ${item.title}\nSource: ${item.sourceUrl || "internal"}\n${item.content}`);
+    return rankByQuery<KnowledgeItem>(
+      items,
+      query,
+      (item) => `${item.kind} ${item.title} ${item.sourceUrl || ""} ${item.content}`,
+    ).map((item) => `[AI Trainer | ${item.kind} | ${item.country} | ${item.language}] ${item.title}\nSource: ${item.sourceUrl || "internal"}\n${clipText(item.content, 900)}`);
   } catch {
     return [];
   }
@@ -236,8 +299,8 @@ export async function getAiGlobalMemoryText() {
   }
 }
 
-export async function getKnowledgeBaseText(country?: AiCountry | null, language?: AiLanguage | null) {
-  let scripts: Array<{ title: string; category: string; country: string; language: string; body: string }> = [];
+export async function getKnowledgeBaseText(country?: AiCountry | null, language?: AiLanguage | null, query?: string | null) {
+  let scripts: KnowledgeScript[] = [];
 
   try {
     scripts = await prisma.script.findMany({
@@ -248,7 +311,7 @@ export async function getKnowledgeBaseText(country?: AiCountry | null, language?
       },
       select: { title: true, category: true, country: true, language: true, body: true },
       orderBy: [{ category: "asc" }, { sortOrder: "asc" }, { title: "asc" }],
-      take: 320
+      take: 220
     });
   } catch {
     scripts = seedScripts.filter((script) => {
@@ -259,18 +322,26 @@ export async function getKnowledgeBaseText(country?: AiCountry | null, language?
     });
   }
 
-  const trainerKnowledge = await getTrainerKnowledge(country, language);
+  const trainerKnowledge = await getTrainerKnowledge(country, language, query);
   const officialKnowledge = OFFICIAL_SOURCE_NOTES.filter((item) => {
     const countryOk = !country || item.country === country || item.country === "ALL";
     const langOk = !language || String(item.language) === language || String(item.language) === "BOTH";
     return countryOk && langOk;
   }).map((item) => `[Official Knowledge | ${item.country} | ${item.language}] ${item.title}\nSource: ${item.sourceUrl}\n${item.content}`);
 
-  return [
+  const rankedScripts = rankByQuery(
+    scripts,
+    query,
+    (script) => `${script.category} ${script.title} ${script.country} ${script.language} ${script.body}`,
+  ).slice(0, SCRIPT_KNOWLEDGE_TAKE);
+
+  const sections = [
     ...officialKnowledge,
     ...trainerKnowledge,
-    ...scripts.map((script) => `[Script Library | ${script.category} | ${script.country} | ${script.language}] ${script.title}\n${script.body}`)
-  ].join("\n\n---\n\n");
+    ...rankedScripts.map((script) => `[Script Library | ${script.category} | ${script.country} | ${script.language}] ${script.title}\n${clipText(script.body, 700)}`)
+  ];
+
+  return packKnowledgeSections(sections);
 }
 
 export function styleInstruction(country?: AiCountry | null, language?: AiLanguage | null) {

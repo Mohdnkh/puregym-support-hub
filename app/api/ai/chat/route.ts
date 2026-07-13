@@ -28,6 +28,30 @@ function makeTitle(message: string) {
   return clean.length > 55 ? clean.slice(0, 55) + "..." : clean;
 }
 
+function friendlyAiError(error: unknown, language: "AR" | "EN") {
+  const raw = error instanceof Error ? error.message : String(error || "");
+  const isTooLarge =
+    /request too large|tokens per minute|TPM|please reduce your message size/i.test(raw);
+  const isMissingKey = /api key is missing/i.test(raw);
+  const isRateLimit = /rate limit|too many requests/i.test(raw);
+
+  if (language === "AR") {
+    if (isTooLarge) {
+      return "الطلب كان كبير على مزود الذكاء الحالي، فخففت حجم المعرفة المرسلة. جرّب ترسل سؤالك مرة ثانية، وإذا كان السؤال كبير قسمه لنقطتين.";
+    }
+    if (isMissingKey) return "إعدادات الذكاء الاصطناعي ناقصة. أضف مفتاح Groq/Gemini في Vercel أو ملف البيئة.";
+    if (isRateLimit) return "وصلنا للحد المؤقت للذكاء الاصطناعي. انتظر دقيقة وجرب مرة ثانية.";
+    return "صار خطأ مؤقت في الذكاء الاصطناعي. جرّب مرة ثانية بعد لحظات.";
+  }
+
+  if (isTooLarge) {
+    return "The request was too large for the current AI provider. I reduced the context sent to the model; please try again, or split the question into smaller parts.";
+  }
+  if (isMissingKey) return "AI configuration is missing. Add a Groq/Gemini key in Vercel or the environment file.";
+  if (isRateLimit) return "The AI provider hit a temporary rate limit. Please wait a minute and try again.";
+  return "The AI service hit a temporary error. Please try again shortly.";
+}
+
 async function getOrCreateSession(params: { userId: string; sessionId?: string | null; country: "KSA" | "UAE"; language: "AR" | "EN"; message: string }) {
   if (params.sessionId) {
     const existing = await prisma.chatSession.findFirst({ where: { id: params.sessionId, userId: params.userId } });
@@ -50,6 +74,7 @@ async function getOrCreateSession(params: { userId: string; sessionId?: string |
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Unauthorized. Please log in again." }, { status: 401 });
+  let responseLanguage: "AR" | "EN" = "AR";
 
   // Protect AI quota/spend: cap each user to 20 chat requests per minute.
   const limit = rateLimit(`ai-chat:${user.id}`, 20, 60_000);
@@ -71,6 +96,7 @@ export async function POST(req: Request) {
   } = schema.parse(await req.json());
 
   const signals = detectAiSignals(message);
+  responseLanguage = signals.language === "EN" ? "EN" : "AR";
 
   const previousSession = sessionId
     ? await prisma.chatSession.findFirst({
@@ -122,8 +148,8 @@ export async function POST(req: Request) {
 
     const storedHistory = await prisma.chatMessage.findMany({
       where: { sessionId: session.id },
-      orderBy: { createdAt: "asc" },
-      take: 16,
+      orderBy: { createdAt: "desc" },
+      take: 8,
       select: { role: true, content: true }
     });
 
@@ -132,13 +158,17 @@ export async function POST(req: Request) {
     });
 
     const globalMemory = await getAiGlobalMemoryText();
-    const knowledgeBase = await getKnowledgeBaseText(knowledgeCountry, detectedLanguage);
+    const knowledgeBase = await getKnowledgeBaseText(knowledgeCountry, detectedLanguage, message);
     const historyForAI = storedHistory
+      .reverse()
       .filter((entry: { role: string; content: string }) => entry.role === "user" || entry.role === "assistant")
       .slice(0, -1)
-      .map((entry: { role: string; content: string }) => ({ role: entry.role as "user" | "assistant", content: entry.content }));
+      .map((entry: { role: string; content: string }) => ({ role: entry.role as "user" | "assistant", content: entry.content.slice(0, 1200) }));
 
-    const fallbackHistory = (messages || []).slice(-8);
+    const fallbackHistory = (messages || []).slice(-4).map((entry) => ({
+      role: entry.role,
+      content: entry.content.slice(0, 1200)
+    }));
     const finalHistory = historyForAI.length ? historyForAI : fallbackHistory;
 
     const countryInstruction = countryIsExplicit
@@ -199,7 +229,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ answer, sessionId: session.id, inferred: { country: countryIsExplicit ? detectedCountry : null, language: detectedLanguage } });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "AI request failed";
-    return NextResponse.json({ error: message }, { status: 400 });
+    return NextResponse.json({ error: friendlyAiError(err, responseLanguage) }, { status: 400 });
   }
 }
