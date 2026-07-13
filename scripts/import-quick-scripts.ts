@@ -2,119 +2,418 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Standard conversation Quick Scripts (both languages, both countries via "ALL").
-// Arabic bodies use {masculine|feminine} markers resolved by the Male/Female
-// toggle in the UI (proofread including kasra-only differences). Employee name
-// uses (اسم الموظف) / (Agent Name) placeholders replaced with the agent's name.
-// Allowed emojis only; 🌟 replaced with 🌸.
-type QS = { ar: string; en: string; bodyAr: string; bodyEn: string };
+type Country = "KSA" | "UAE" | "ALL";
+type Lang = "AR" | "EN";
 
-const items: QS[] = [
-  { ar: "ترحيب عام", en: "General Welcome",
-    bodyAr: "أهلاً وسهلاً {فيك|فيكِ}، {معك|معكِ} (اسم الموظف) من بيورجيم، كيف أقدر {أساعدك|أساعدكِ} اليوم؟ 💚",
-    bodyEn: "Hello, this is (Agent Name) from PureGym. How can I help you today? 💚" },
-  { ar: "ترحيب - حياك الله", en: "Welcome (alt)",
-    bodyAr: "{حياك|حياكِ} الله، (اسم الموظف) من بيورجيم {معك|معكِ}، وش الخدمة اللي {تحتاجها|تحتاجينها}؟ 🌿",
-    bodyEn: "Welcome! This is (Agent Name) from PureGym. What can I do for you? 🌿" },
-  { ar: "الرجوع للمحادثة", en: "Back to the chat",
-    bodyAr: "{رجعت لك|رجعت لكِ}! {معك|معكِ} (اسم الموظف) من بيورجيم، كيف أقدر {أخدمك|أخدمكِ}؟ 😊",
-    bodyEn: "I'm back! This is (Agent Name) from PureGym. How can I help you? 😊" },
-  { ar: "ترحيب بالرجوع", en: "Welcome back",
-    bodyAr: "ياهلا {برجعتك|برجعتكِ}! {تبغى|تبغين} نكمل من آخر نقطة وقفنا فيها؟ 👋",
-    bodyEn: "Welcome back! Shall we continue from where we left off? 👋" },
-  { ar: "بعد حل المشكلة", en: "After resolving",
-    bodyAr: "إذا {احتجت|احتجتِ} أي شيء ثاني، أنا دايمًا بالخدمة 💚",
-    bodyEn: "If you need anything else, I'm always here to help 💚" },
-  { ar: "قبل الختام - شي ثاني؟", en: "Anything else before closing?",
-    bodyAr: "يسعدني إني قدرت {أساعدك|أساعدكِ}! فيه شيء ثاني {تبي|تبين} {أساعدك|أساعدكِ} فيه قبل ما نختم؟ 😊",
-    bodyEn: "I'm glad I could help! Is there anything else you'd like help with before we finish? 😊" },
-  { ar: "قبل إنهاء المحادثة", en: "Before ending the chat",
-    bodyAr: "إذا فيه أي شيء ثاني {تحتاجه|تحتاجينه} {علمني|علميني} 💚 أنا هنا {عشانك|عشانكِ}!",
-    bodyEn: "If there's anything else you need, let me know 💚 I'm here for you!" },
-  { ar: "إرسال المعلومات", en: "Information sent",
-    bodyAr: "{أرسلت لك|أرسلت لكِ} كل التفاصيل، وإذا فيه أي شيء ثاني {تحتاجه|تحتاجينه}، {علمني|علميني} 💚",
-    bodyEn: "I've sent you all the details. If there's anything else you need, just let me know 💚" },
-  { ar: "عدم الرد", en: "No response",
-    bodyAr: "{عزيزي|عزيزتي}، يبدو {إنك مشغول|إنكِ مشغولة}، فبنقفل المحادثة، وإذا {رجعت واحتجت|رجعتِ واحتجتِ} شيء لا {تتردد|تترددي} ترا حنا هنا دايمًا 💚",
-    bodyEn: "It seems you're busy, so we'll close the chat. If you come back and need anything, we're always here 💚" },
-  { ar: "التقييم قبل الإغلاق", en: "Rating before closing",
-    bodyAr: "سعدت {بخدمتك|بخدمتكِ} اليوم 🌸\nراح {أترك لك|أترك لكِ} رابط التقييم لهذه المحادثة، يهمنا نعرف كيف كانت {تجربتك|تجربتكِ} معنا 💚",
-    bodyEn: "It was a pleasure helping you today 🌸\nI'll share the rating link for this chat — we'd love to know about your experience 💚" },
-  { ar: "تنبيه أول (خمول)", en: "First idle reminder",
-    bodyAr: "هل ما {زلت موجود|زلتِ موجودة} {عزيزي|عزيزتي}؟ إذا {عندك|عندكِ} أي سؤال، أنا موجود 🧏‍♀️",
-    bodyEn: "Are you still there? If you have any question, I'm here 🧏‍♀️" },
-  { ar: "تنبيه ثاني (قبل الإغلاق)", en: "Second reminder (before closing)",
-    bodyAr: "إذا ما جانا رد، سيتم إنهاء المحادثة، و{تقدر ترجع|تقدرين ترجعين} لنا بأي وقت 💚",
-    bodyEn: "If we don't hear back, the chat will be closed. You can return to us anytime 💚" },
-  { ar: "أول انتظار", en: "First hold",
-    bodyAr: "شكرًا على {صبرك|صبركِ}! خليني أتأكد {لك|لكِ} من الموضوع، ممكن ياخذ من ٣ إلى ٥ دقايق ⏳ {وبرجع لك|وبرجع لكِ} بأقرب وقت 💚",
-    bodyEn: "Thanks for your patience! Let me check this for you — it may take 3 to 5 minutes ⏳ and I'll get back to you shortly 💚" },
-  { ar: "تأخير أطول من المتوقع", en: "Longer than expected",
-    bodyAr: "لسا أشتغل على الموضوع، ومقدّر {صبرك|صبركِ} 🙏 باقي شوي {وبرجع لك|وبرجع لكِ} بكل التفاصيل!",
-    bodyEn: "I'm still working on it and I appreciate your patience 🙏 Just a little more and I'll be back with all the details!" },
-  { ar: "رجعة سريعة بالمعلومات", en: "Back with info",
-    bodyAr: "{يعطيك|يعطيكِ} العافية على الانتظار! {جبت لك|جبت لكِ} المعلومات اللي {تحتاجها|تحتاجينها} ✅ خليني {أشرح لك|أشرح لكِ} الحين 👇",
-    bodyEn: "Thanks for waiting! I've got the information you need ✅ let me explain now 👇" },
-  { ar: "تأخير بسيط + اعتذار", en: "Slight delay + apology",
-    bodyAr: "أعتذر على التأخير وشكرًا على {صبرك|صبركِ} 🙏 هذي المعلومات اللي {حصلتها لك|حصلتها لكِ} 💚",
-    bodyEn: "Apologies for the delay and thank you for your patience 🙏 here's the information I found for you 💚" },
-  { ar: "أحتاج وقت إضافي", en: "Need more time",
-    bodyAr: "شكرًا على {صبرك|صبركِ}! باقي لي شوية {وأخلص لك|وأخلص لكِ} الموضوع ⏳ مقدّر {انتظارك|انتظاركِ} {وبرجع لك|وبرجع لكِ} قريب إن شاء الله!",
-    bodyEn: "Thanks for your patience! I need a little more time to finish this ⏳ I appreciate your wait and will be back soon!" },
-  { ar: "لسا نتابع مع الفريق", en: "Still checking with the team",
-    bodyAr: "لسا أتابع مع الفريق عشان أتأكد {نعطيك|نعطيكِ} المعلومات الصح، شكرًا {لصبرك|لصبركِ} مرة ثانية، ما راح نطول {عليك|عليكِ} 💚",
-    bodyEn: "I'm still following up with the team to make sure we give you the correct information. Thanks again for your patience — we won't be long 💚" },
-  { ar: "ينقصني معلومات", en: "Need more information",
-    bodyAr: "ممكن {تزودني|تزودينني} بمعلومات أكثر عشان أقدر {أساعدك|أساعدكِ} بشكل أفضل؟ مثل:\n- الفرع اللي {تسأل|تسألين} عنه\n- {إيميلك أو رقم جوالك|إيميلكِ أو رقم جوالكِ} المسجل\n- صورة للخطأ (إذا فيه)\nشكرًا {لك|لكِ} 💚",
-    bodyEn: "Could you share a bit more so I can help you better? For example:\n- The branch you're asking about\n- Your registered email or mobile number\n- A screenshot of the error (if any)\nThank you 💚" },
-  { ar: "تأكيد استفسار", en: "Confirm the request",
-    bodyAr: "بس عشان أتأكد، {تقصد|تقصدين} (الخيار الأول) ولا (الخيار الثاني)؟ كذا أقدر {أوجهك|أوجهكِ} بشكل أدق ✅",
-    bodyEn: "Just to confirm — do you mean (option one) or (option two)? That way I can guide you more accurately ✅" },
-  { ar: "طلب بيانات الإلغاء", en: "Request cancellation data",
-    bodyAr: "{يمديك|يمديكِ} {تزودني|تزودينني} بالإيميل ورقم الجوال ورقم الهوية المرتبط {باشتراكك|باشتراككِ} معنا، بالإضافة {لاسمك|لاسمكِ} المسجل على العضوية، عشان نقدر نشيك على {عضويتك|عضويتكِ} {ونساعدك|ونساعدكِ} بشكل أفضل 😊",
-    bodyEn: "Could you share the email, mobile number, and ID linked to your membership, along with the name registered on the membership, so we can check your account and assist you better? 😊" },
-  { ar: "طلب البيانات بشكل عام", en: "Request general data",
-    bodyAr: "{يمديك|يمديكِ} {تزودني|تزودينني} بالإيميل ورقم الجوال المسجلين على {عضويتك|عضويتكِ}، عشان نقدر {نساعدك|نساعدكِ} بشكل أفضل 😊",
-    bodyEn: "Could you share the email and mobile number registered on your membership, so we can assist you better? 😊" },
-  { ar: "تعاطف + اعتذار سريع", en: "Empathy + quick apology",
-    bodyAr: "أفهم تمامًا إن هالشيء ممكن يكون مزعج 😔 وإحنا هنا عشان نحلّه بأسرع وقت ممكن 💚",
-    bodyEn: "I completely understand this can be frustrating 😔 and we're here to solve it as quickly as possible 💚" },
-  { ar: "اعتذار كامل", en: "Full apology",
-    bodyAr: "أعتذر {لك|لكِ} عن الإزعاج اللي صار 🙏 دايمًا نحرص تكون {تجربتك|تجربتكِ} سهلة وسلسة، وشكرًا على {صبرك|صبركِ} وحنا نشتغل على الحل.",
-    bodyEn: "I sincerely apologize for the inconvenience 🙏 we always aim to make your experience smooth and easy. Thank you for your patience while we work on the solution." },
-  { ar: "نبرة تطمين", en: "Reassuring tone",
-    bodyAr: "{أسمعك|أسمعكِ} {وفاهم|وفاهمة} تمامًا {موقفك|موقفكِ} 💚 خلّنا نحلها {لك|لكِ} بالطريقة الصح.",
-    bodyEn: "I hear you and completely understand your situation 💚 let's solve this for you the right way." },
-  { ar: "استفسار عن العروض", en: "Offers inquiry",
-    bodyAr: "حاليًا عندنا عروض مميزة! أي فرع {يناسبك|يناسبكِ}، وهل {أنت عضو جديد|أنتِ عضوة جديدة} أو {راجع|راجعة} لنا؟ 💚",
-    bodyEn: "We currently have great offers! Which branch works for you, and are you a new member or returning to us? 💚" },
-  { ar: "عضو يسأل عن العروض", en: "Existing member — offers",
-    bodyAr: "إذا {أنت عضو|أنتِ عضوة} معنا، {تقدر تشوف|تقدرين تشوفين} العروض المتاحة من تطبيق بيورجيم تحت قسم «العروض» 💚",
-    bodyEn: "If you're already a member, you can see the available offers in the PureGym app under the \"Offers\" section 💚" },
-  { ar: "عضو جديد مهتم بالعروض", en: "New member — offers",
-    bodyAr: "إذا {جديد|جديدة} علينا، {تقدر تفعّل|تقدرين تفعّلين} العرض بالتسجيل عن طريق الرابط الترويجي أو من الفرع. {علمني|علميني} الفرع اللي {يناسبك|يناسبكِ} {وأدلك|وأدلكِ} خطوة بخطوة 💚",
-    bodyEn: "If you're new to us, you can activate the offer by registering through the promo link or at the branch. Tell me the branch that suits you and I'll guide you step by step 💚" },
+type QuickSeed = {
+  key: string;
+  title: string;
+  country: Country;
+  language: Lang;
+  body: string;
+  sortOrder: number;
+};
+
+const quickScripts: QuickSeed[] = [
+  {
+    key: "quick-welcome-ksa-ar",
+    title: "ترحيب عام",
+    country: "KSA",
+    language: "AR",
+    body: "💚 أهلاً وسهلاً، معك محمد من بيورجيم، كيف أقدر أساعدك؟",
+    sortOrder: 10,
+  },
+  {
+    key: "quick-welcome-uae-ar",
+    title: "ترحيب عام",
+    country: "UAE",
+    language: "AR",
+    body: "💙 أهلاً وسهلاً، معك محمد من بيورجيم، كيف أقدر أساعدك؟",
+    sortOrder: 20,
+  },
+  {
+    key: "quick-salam-ksa-ar",
+    title: "رد السلام",
+    country: "KSA",
+    language: "AR",
+    body: "💚 وعليكم السلام ورحمة الله وبركاته",
+    sortOrder: 30,
+  },
+  {
+    key: "quick-salam-uae-ar",
+    title: "رد السلام",
+    country: "UAE",
+    language: "AR",
+    body: "💙 وعليكم السلام ورحمة الله وبركاته",
+    sortOrder: 40,
+  },
+  {
+    key: "quick-welcome-ksa-en",
+    title: "General welcome",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Hello, this is Mohammed from PureGym. How can I assist you?",
+    sortOrder: 50,
+  },
+  {
+    key: "quick-welcome-uae-en",
+    title: "General welcome",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Hello, this is Mohammed from PureGym. How can I assist you?",
+    sortOrder: 60,
+  },
+  {
+    key: "quick-rating-ksa-ar",
+    title: "الخدمة والتقييم",
+    country: "KSA",
+    language: "AR",
+    body: "💚 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏 راح أترك لك رابط التقييم 🌸",
+    sortOrder: 70,
+  },
+  {
+    key: "quick-rating-uae-ar",
+    title: "الخدمة والتقييم",
+    country: "UAE",
+    language: "AR",
+    body: "💙 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏 راح أترك لك رابط التقييم 🌸",
+    sortOrder: 80,
+  },
+  {
+    key: "quick-rating-ksa-en",
+    title: "Service closing and feedback",
+    country: "KSA",
+    language: "EN",
+    body: "💚 It was a pleasure assisting you 🙏 We appreciate your feedback 🌸",
+    sortOrder: 90,
+  },
+  {
+    key: "quick-rating-uae-en",
+    title: "Service closing and feedback",
+    country: "UAE",
+    language: "EN",
+    body: "💙 It was a pleasure assisting you 🙏 We appreciate your feedback 🌸",
+    sortOrder: 100,
+  },
+  {
+    key: "quick-general-data-ksa-ar",
+    title: "طلب بيانات عامة",
+    country: "KSA",
+    language: "AR",
+    body: "💚 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
+    sortOrder: 110,
+  },
+  {
+    key: "quick-general-data-uae-ar",
+    title: "طلب بيانات عامة",
+    country: "UAE",
+    language: "AR",
+    body: "💙 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
+    sortOrder: 120,
+  },
+  {
+    key: "quick-cancellation-data-ksa-ar",
+    title: "طلب بيانات الإلغاء",
+    country: "KSA",
+    language: "AR",
+    body: "💚 ولا يهمك، يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال ورقم الهوية والاسم المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
+    sortOrder: 130,
+  },
+  {
+    key: "quick-cancellation-data-uae-ar",
+    title: "طلب بيانات الإلغاء",
+    country: "UAE",
+    language: "AR",
+    body: "💙 ولا يهمك، يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال ورقم الهوية والاسم المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
+    sortOrder: 140,
+  },
+  {
+    key: "quick-freeze-data-ar",
+    title: "طلب بيانات التجميد",
+    country: "ALL",
+    language: "AR",
+    body: "يرجى تزويدنا بفترة التجميد المطلوبة وتاريخ بدء التجميد.",
+    sortOrder: 150,
+  },
+  {
+    key: "quick-general-data-ksa-en",
+    title: "Request general membership data",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Kindly provide your email address and phone number linked to your membership so we can assist you better 🙏",
+    sortOrder: 160,
+  },
+  {
+    key: "quick-general-data-uae-en",
+    title: "Request general membership data",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Kindly provide your email address and phone number linked to your membership so we can assist you better 🙏",
+    sortOrder: 170,
+  },
+  {
+    key: "quick-cancellation-data-ksa-en",
+    title: "Request cancellation data",
+    country: "KSA",
+    language: "EN",
+    body: "💚 No worries, please provide us with the email address, phone number, ID number, and the name associated with your membership so we can assist you better 🙏",
+    sortOrder: 180,
+  },
+  {
+    key: "quick-cancellation-data-uae-en",
+    title: "Request cancellation data",
+    country: "UAE",
+    language: "EN",
+    body: "💙 No worries, please provide us with the email address, phone number, ID number, and the name associated with your membership so we can assist you better 🙏",
+    sortOrder: 190,
+  },
+  {
+    key: "quick-freeze-data-en",
+    title: "Request freeze details",
+    country: "ALL",
+    language: "EN",
+    body: "Please provide us with the requested freeze period and the freeze start date.",
+    sortOrder: 200,
+  },
+  {
+    key: "quick-moment-ksa-ar",
+    title: "لحظات من فضلك",
+    country: "KSA",
+    language: "AR",
+    body: "💚 ولا يهمك، لحظات من فضلك 🙏",
+    sortOrder: 210,
+  },
+  {
+    key: "quick-moment-uae-ar",
+    title: "لحظات من فضلك",
+    country: "UAE",
+    language: "AR",
+    body: "💙 ولا يهمك، لحظات من فضلك 🙏",
+    sortOrder: 220,
+  },
+  {
+    key: "quick-moment-ksa-en",
+    title: "Allow me a moment",
+    country: "KSA",
+    language: "EN",
+    body: "💚 No worries, please allow me a moment 🙏",
+    sortOrder: 230,
+  },
+  {
+    key: "quick-moment-uae-en",
+    title: "Allow me a moment",
+    country: "UAE",
+    language: "EN",
+    body: "💙 No worries, please allow me a moment 🙏",
+    sortOrder: 240,
+  },
+  {
+    key: "quick-anything-else-ksa-ar",
+    title: "استفسار آخر",
+    country: "KSA",
+    language: "AR",
+    body: "💚 هل يوجد أي خدمة أو استفسار آخر أقدر أساعدك فيه؟ 🙏",
+    sortOrder: 250,
+  },
+  {
+    key: "quick-anything-else-uae-ar",
+    title: "استفسار آخر",
+    country: "UAE",
+    language: "AR",
+    body: "💙 هل يوجد أي خدمة أو استفسار آخر أقدر أساعدك فيه؟ 🙏",
+    sortOrder: 260,
+  },
+  {
+    key: "quick-anything-else-ksa-en",
+    title: "Anything else",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Is there anything else I can assist you with? 🙏",
+    sortOrder: 270,
+  },
+  {
+    key: "quick-anything-else-uae-en",
+    title: "Anything else",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Is there anything else I can assist you with? 🙏",
+    sortOrder: 280,
+  },
+  {
+    key: "quick-still-there-ksa-ar",
+    title: "هل ما زلت موجود؟",
+    country: "KSA",
+    language: "AR",
+    body: "💚 هل ما زلت {موجود عزيزي|موجودة عزيزتي}؟ أنا هنا لأي استفسار 🙏",
+    sortOrder: 290,
+  },
+  {
+    key: "quick-still-there-uae-ar",
+    title: "هل ما زلت موجود؟",
+    country: "UAE",
+    language: "AR",
+    body: "💙 هل ما زلت {موجود عزيزي|موجودة عزيزتي}؟ أنا هنا لأي استفسار 🙏",
+    sortOrder: 300,
+  },
+  {
+    key: "quick-still-there-ksa-en",
+    title: "Are you still with us?",
+    country: "KSA",
+    language: "EN",
+    body: "💚 Are you still with us? I’m here for any questions 🙏",
+    sortOrder: 310,
+  },
+  {
+    key: "quick-still-there-uae-en",
+    title: "Are you still with us?",
+    country: "UAE",
+    language: "EN",
+    body: "💙 Are you still with us? I’m here for any questions 🙏",
+    sortOrder: 320,
+  },
+  {
+    key: "quick-busy-close-ksa-ar",
+    title: "إغلاق بسبب الانشغال",
+    country: "KSA",
+    language: "AR",
+    body: "💚 يبدو أنك {مشغول، سيتم إنهاء المحادثة حالياً وتقدر ترجع لنا|مشغولة، سيتم إنهاء المحادثة حالياً وتقدري ترجعي لنا} بأي وقت 🙏",
+    sortOrder: 330,
+  },
+  {
+    key: "quick-busy-close-uae-ar",
+    title: "إغلاق بسبب الانشغال",
+    country: "UAE",
+    language: "AR",
+    body: "💙 يبدو أنك {مشغول، سيتم إنهاء المحادثة حالياً وتقدر ترجع لنا|مشغولة، سيتم إنهاء المحادثة حالياً وتقدري ترجعي لنا} بأي وقت 🙏",
+    sortOrder: 340,
+  },
+  {
+    key: "quick-busy-close-ksa-en",
+    title: "Busy - close chat",
+    country: "KSA",
+    language: "EN",
+    body: "💚 It seems you’re busy, the chat will be closed for now and you can reach out to us anytime 🙏",
+    sortOrder: 350,
+  },
+  {
+    key: "quick-busy-close-uae-en",
+    title: "Busy - close chat",
+    country: "UAE",
+    language: "EN",
+    body: "💙 It seems you’re busy, the chat will be closed for now and you can reach out to us anytime 🙏",
+    sortOrder: 360,
+  },
+  {
+    key: "quick-no-reply-warning-ksa-ar",
+    title: "تنبيه قبل الإغلاق",
+    country: "KSA",
+    language: "AR",
+    body: "💚 إذا ما جانا رد، سيتم إنهاء المحادثة {وتقدر ترجع|وتقدري ترجعي} لنا بأي وقت 🙏",
+    sortOrder: 370,
+  },
+  {
+    key: "quick-no-reply-warning-uae-ar",
+    title: "تنبيه قبل الإغلاق",
+    country: "UAE",
+    language: "AR",
+    body: "💙 إذا ما جانا رد، سيتم إنهاء المحادثة {وتقدر ترجع|وتقدري ترجعي} لنا بأي وقت 🙏",
+    sortOrder: 380,
+  },
+  {
+    key: "quick-no-reply-warning-ksa-en",
+    title: "No reply warning",
+    country: "KSA",
+    language: "EN",
+    body: "💚 If we don’t hear back from you, the chat will be closed. You can reach out anytime 🙏",
+    sortOrder: 390,
+  },
+  {
+    key: "quick-no-reply-warning-uae-en",
+    title: "No reply warning",
+    country: "UAE",
+    language: "EN",
+    body: "💙 If we don’t hear back from you, the chat will be closed. You can reach out anytime 🙏",
+    sortOrder: 400,
+  },
+  {
+    key: "quick-final-no-response-ksa-ar",
+    title: "إنهاء بسبب عدم الرد",
+    country: "KSA",
+    language: "AR",
+    body: "💚 سيتم إنهاء المحادثة بسبب عدم وجود رد، نشكرك على تواصلك معنا، ونسعد بتقييمك لتجربتك 🌸",
+    sortOrder: 410,
+  },
+  {
+    key: "quick-final-no-response-uae-ar",
+    title: "إنهاء بسبب عدم الرد",
+    country: "UAE",
+    language: "AR",
+    body: "💙 سيتم إنهاء المحادثة بسبب عدم وجود رد، نشكرك على تواصلك معنا، ونسعد بتقييمك لتجربتك 🌸",
+    sortOrder: 420,
+  },
+  {
+    key: "quick-final-no-response-ksa-en",
+    title: "Final no-response closing",
+    country: "KSA",
+    language: "EN",
+    body: "💚 The chat will be closed due to no response.\nThank you for contacting us, we’d appreciate your feedback 🌸",
+    sortOrder: 430,
+  },
+  {
+    key: "quick-final-no-response-uae-en",
+    title: "Final no-response closing",
+    country: "UAE",
+    language: "EN",
+    body: "💙 The chat will be closed due to no response.\nThank you for contacting us, we’d appreciate your feedback 🌸",
+    sortOrder: 440,
+  },
 ];
 
-async function main() {
-  // Replace the master Quick Scripts set (seed source for every agent).
-  await prisma.script.deleteMany({ where: { category: "Quick Scripts" } });
+export async function syncStandardQuickScripts() {
+  await prisma.script.deleteMany({
+    where: { category: "Quick Scripts", source: "quick-standard" },
+  });
 
-  let sortOrder = 10;
-  let count = 0;
-  for (const it of items) {
-    await prisma.script.create({
-      data: { key: `quick-${count}-ar`, title: it.ar, category: "Quick Scripts", country: "ALL", language: "AR", body: it.bodyAr, source: "quick-standard", active: true, sortOrder },
+  for (const item of quickScripts) {
+    await prisma.script.upsert({
+      where: { key: item.key },
+      update: {
+        title: item.title,
+        category: "Quick Scripts",
+        country: item.country,
+        language: item.language,
+        body: item.body,
+        source: "quick-standard",
+        active: true,
+        sortOrder: item.sortOrder,
+      },
+      create: {
+        key: item.key,
+        title: item.title,
+        category: "Quick Scripts",
+        country: item.country,
+        language: item.language,
+        body: item.body,
+        source: "quick-standard",
+        active: true,
+        sortOrder: item.sortOrder,
+      },
     });
-    await prisma.script.create({
-      data: { key: `quick-${count}-en`, title: it.en, category: "Quick Scripts", country: "ALL", language: "EN", body: it.bodyEn, source: "quick-standard", active: true, sortOrder },
-    });
-    sortOrder += 10;
-    count += 1;
   }
 
-  const cleared = await prisma.userQuickScript.deleteMany({});
-  console.log(`Quick Scripts master: ${items.length} concepts (${items.length * 2} rows). Cleared ${cleared.count} personal copies for re-seed.`);
+  return quickScripts.length;
 }
 
-main().catch((e) => { console.error(e); process.exit(1); }).finally(async () => prisma.$disconnect());
+async function main() {
+  const count = await syncStandardQuickScripts();
+  console.log(`Synced ${count} standard quick scripts. Admin-created quick scripts were left untouched.`);
+}
+
+if (require.main === module) {
+  main()
+    .catch((error) => {
+      console.error(error);
+      process.exit(1);
+    })
+    .finally(async () => prisma.$disconnect());
+}

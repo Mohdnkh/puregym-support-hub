@@ -2668,7 +2668,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Inajz Contracting Injazco\nPromo code: ICI\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 6-Aug-25 → 6-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 960,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ici-ar",
@@ -2679,7 +2679,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة إنجاز للمقاولات\nكود الخصم: ICI\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 6-Aug-25 إلى 6-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 960,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-msh15-en",
@@ -2690,7 +2690,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Almisehal Group\nPromo code: MSH15\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 6-Aug-25 → 6-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 970,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-msh15-ar",
@@ -2701,7 +2701,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: مجموعة المسيهيل\nكود الخصم: MSH15\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 6-Aug-25 إلى 6-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 970,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-med-en",
@@ -2712,7 +2712,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Mediserv Company\nPromo code: MED\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 10-Aug-25 → 10-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 980,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-med-ar",
@@ -2723,7 +2723,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة ميديسرف\nكود الخصم: MED\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 10-Aug-25 إلى 10-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 980,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-chefz-en",
@@ -2734,7 +2734,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: The Chefz Company\nPromo code: CHEFZ\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 13-Aug-25 → 13-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 990,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-chefz-ar",
@@ -2745,7 +2745,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة ذا شيفز\nكود الخصم: CHEFZ\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 13-Aug-25 إلى 13-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 990,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ymma-en",
@@ -2756,7 +2756,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Al Yamamah Business Company\nPromo code: YMMA\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 13-Aug-25 → 13-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1000,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ymma-ar",
@@ -2767,7 +2767,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة اليمامة للأعمال\nكود الخصم: YMMA\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 13-Aug-25 إلى 13-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1000,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-kbss-en",
@@ -2778,7 +2778,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Kingdom Brokerage Company\nPromo code: KBSS\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 17-Aug-25 → 17-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1010,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-kbss-ar",
@@ -2789,7 +2789,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة المملكة للوساطة\nكود الخصم: KBSS\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 17-Aug-25 إلى 17-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1010,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-gkioc-en",
@@ -2800,7 +2800,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Gulf Chemicals & Industrial Oils Co\nPromo code: GKIOC\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 26-Aug-25 → 26-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1020,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-gkioc-ar",
@@ -2811,7 +2811,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة الخليج للكيماويات والزيوت الصناعية\nكود الخصم: GKIOC\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 26-Aug-25 إلى 26-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1020,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-first-en",
@@ -2822,7 +2822,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: FIRST SMILE Clinics\nPromo code: FIRST\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 26-Aug-25 → 26-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1030,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-first-ar",
@@ -2833,7 +2833,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: عيادات فيرست سمايل\nكود الخصم: FIRST\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 26-Aug-25 إلى 26-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1030,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-riyadhair-en",
@@ -2844,7 +2844,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Riyadh Air\nPromo code: RIYADHAIR\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 26-Aug-25 → 26-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1040,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-riyadhair-ar",
@@ -2855,7 +2855,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: طيران الرياض\nكود الخصم: RIYADHAIR\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 26-Aug-25 إلى 26-Sep-25",
     "source": "corporate-offers",
     "sortOrder": 1040,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-mbc-en",
@@ -2866,7 +2866,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: MBC Group\nPromo code: MBC\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 13-Jul-25 → 13-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1050,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-mbc-ar",
@@ -2877,7 +2877,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: مجموعة MBC\nكود الخصم: MBC\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 13-Jul-25 إلى 13-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1050,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-mhr-en",
@@ -2888,7 +2888,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Moein Human Resources Company\nPromo code: MHR\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 14-Jul-25 → 14-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1060,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-mhr-ar",
@@ -2899,7 +2899,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة معين للموارد البشرية\nكود الخصم: MHR\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 14-Jul-25 إلى 14-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1060,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-aldawaa-en",
@@ -2910,7 +2910,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: ALDAWAA PHARMACY\nPromo code: ALDAWAA\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 14-Jul-25 → 14-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1070,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-aldawaa-ar",
@@ -2921,7 +2921,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: صيدلية الدواء\nكود الخصم: ALDAWAA\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 14-Jul-25 إلى 14-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1070,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-hdc-en",
@@ -2932,7 +2932,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Human Development Company\nPromo code: HDC\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 16-Jul-25 → 16-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1080,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-hdc-ar",
@@ -2943,7 +2943,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة التنمية البشرية\nكود الخصم: HDC\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 16-Jul-25 إلى 16-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1080,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-bupa-en",
@@ -2954,7 +2954,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Bupa Insurance Company\nPromo code: BUPA\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 20-Jul-25 → 21-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1090,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-bupa-ar",
@@ -2965,7 +2965,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة بوبا للتأمين\nكود الخصم: BUPA\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 20-Jul-25 إلى 21-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1090,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ptj-en",
@@ -2976,7 +2976,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: petrojet company\nPromo code: PTJ\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 24-Jul-25 → 24-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1100,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ptj-ar",
@@ -2987,7 +2987,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة بتروجت\nكود الخصم: PTJ\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 24-Jul-25 إلى 24-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1100,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-skfh-en",
@@ -2998,7 +2998,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Saudi Kuwaiti Finance House Company\nPromo code: SKFH\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 24-Jul-25 → 24-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1110,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-skfh-ar",
@@ -3009,7 +3009,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: بيت التمويل السعودي الكويتي\nكود الخصم: SKFH\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 24-Jul-25 إلى 24-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1110,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ncg-en",
@@ -3020,7 +3020,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: National Center\nPromo code: NCG\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 24-Jul-25 → 24-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1120,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ncg-ar",
@@ -3031,7 +3031,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: المركز الوطني\nكود الخصم: NCG\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 24-Jul-25 إلى 24-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1120,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-tabuk-en",
@@ -3042,7 +3042,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Tabuk Pharmaceutical Industries Factory\nPromo code: TABUK\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 8-May-25 → 22-May-26",
     "source": "corporate-offers",
     "sortOrder": 1130,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-tabuk-ar",
@@ -3053,7 +3053,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: مصنع تبوك للصناعات الدوائية\nكود الخصم: TABUK\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 8-May-25 إلى 22-May-26",
     "source": "corporate-offers",
     "sortOrder": 1130,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-bayut-en",
@@ -3064,7 +3064,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Saudi Homes Company\nPromo code: BAYUT\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 23-Jul-25 → 23-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1140,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-bayut-ar",
@@ -3075,7 +3075,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة المساكن السعودية\nكود الخصم: BAYUT\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 23-Jul-25 إلى 23-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1140,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-flowpr-2025-en",
@@ -3086,7 +3086,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: OPERATION ALLIANCE OPS CO\nPromo code: FLOWPR-2025\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus Only\nStatus: Inactive\nValid: 21-May-25 → 15-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1150,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-flowpr-2025-ar",
@@ -3097,7 +3097,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة تحالف العمليات\nكود الخصم: FLOWPR-2025\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus Only\nالحالة: منتهي\nالصلاحية: من 21-May-25 إلى 15-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1150,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ihc-en",
@@ -3108,7 +3108,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Insurance House Company\nPromo code: IHC\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 28-May-25 → 30-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1160,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-ihc-ar",
@@ -3119,7 +3119,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة بيت التأمين\nكود الخصم: IHC\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 28-May-25 إلى 30-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1160,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-pgcc-en",
@@ -3130,7 +3130,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: The GCC Interconnection Authority\nPromo code: PGCC\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 28-May-25 → 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1170,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-pgcc-ar",
@@ -3141,7 +3141,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: هيئة الربط الخليجي\nكود الخصم: PGCC\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 28-May-25 إلى 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1170,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-midad-en",
@@ -3152,7 +3152,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Midad Holding\nPromo code: MIDAD\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 27-May-25 → 27-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1180,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-midad-ar",
@@ -3163,7 +3163,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة مداد القابضة\nكود الخصم: MIDAD\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 27-May-25 إلى 27-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1180,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-amlantit-en",
@@ -3174,7 +3174,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Amlantit company\nPromo code: AMLANTIT\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 8-May-25 → 1-Jun-25",
     "source": "corporate-offers",
     "sortOrder": 1190,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-amlantit-ar",
@@ -3185,7 +3185,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة أملنتت\nكود الخصم: AMLANTIT\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 8-May-25 إلى 1-Jun-25",
     "source": "corporate-offers",
     "sortOrder": 1190,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-almarai-en",
@@ -3196,7 +3196,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: AL MARAI COMPANY\nPromo code: ALMARAI\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 29-May-25 → 29-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1200,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-almarai-ar",
@@ -3207,7 +3207,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة المراعي\nكود الخصم: ALMARAI\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 29-May-25 إلى 29-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1200,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-pgmhr-en",
@@ -3218,7 +3218,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Maharah for Human Resources\nPromo code: PGMHR\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 28-May-25 → 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1210,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-pgmhr-ar",
@@ -3229,7 +3229,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة مهارة للموارد البشرية\nكود الخصم: PGMHR\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 28-May-25 إلى 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1210,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-pghhw-en",
@@ -3240,7 +3240,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Hospital Al Hayat Wattani\nPromo code: PGHHW\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 28-May-25 → 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1220,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-pghhw-ar",
@@ -3251,7 +3251,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: مستشفى الحياة الوطني\nكود الخصم: PGHHW\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 28-May-25 إلى 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1220,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-aujan-en",
@@ -3262,7 +3262,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Aujan company (Coca Cola)\nPromo code: AUJAN\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 26-May-25 → 26-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1230,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-aujan-ar",
@@ -3273,7 +3273,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة عجان (كوكا كولا)\nكود الخصم: AUJAN\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 26-May-25 إلى 26-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1230,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-aou-en",
@@ -3284,7 +3284,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Arab open university - saudi arabia\nPromo code: AOU\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 28-May-25 → 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1240,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-aou-ar",
@@ -3295,7 +3295,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: الجامعة العربية المفتوحة - السعودية\nكود الخصم: AOU\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 28-May-25 إلى 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1240,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-elseif-en",
@@ -3306,7 +3306,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: El Seif Engineering Contracting Co\nPromo code: ELSEIF\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 28-May-25 → 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1250,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-elseif-ar",
@@ -3317,7 +3317,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة السيف للمقاولات الهندسية\nكود الخصم: ELSEIF\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 28-May-25 إلى 28-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1250,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-dhl-en",
@@ -3328,7 +3328,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: DHL express\nPromo code: DHL\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 28-May-25 → 11-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1260,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-dhl-ar",
@@ -3339,7 +3339,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: دي اتش ال إكسبريس\nكود الخصم: DHL\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 28-May-25 إلى 11-Aug-25",
     "source": "corporate-offers",
     "sortOrder": 1260,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-rhc-en",
@@ -3350,7 +3350,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: REDA hazard control\nPromo code: RHC\nPrice after discount: 1200SR & 800SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 3-Jun-25 → 3-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1270,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-rhc-ar",
@@ -3361,7 +3361,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: ريدا للسيطرة على المخاطر\nكود الخصم: RHC\nالسعر بعد الخصم: 1200SR & 800SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 3-Jun-25 إلى 3-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1270,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-asfar-en",
@@ -3372,7 +3372,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Astar company\nPromo code: ASFAR\nPrice after discount: 1300SR\nDetails: 12M - Plus only\nStatus: Inactive\nValid: 3-Jun-25 → 3-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1280,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-asfar-ar",
@@ -3383,7 +3383,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة أسفار\nكود الخصم: ASFAR\nالسعر بعد الخصم: 1300SR\nالتفاصيل: 12M - Plus only\nالحالة: منتهي\nالصلاحية: من 3-Jun-25 إلى 3-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1280,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-sisco-en",
@@ -3394,7 +3394,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: SISCO Company\nPromo code: SISCO\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 3-Jun-25 → 3-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1290,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-sisco-ar",
@@ -3405,7 +3405,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة سيسكو\nكود الخصم: SISCO\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 3-Jun-25 إلى 3-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1290,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-gosi-en",
@@ -3416,7 +3416,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: social insurance\nPromo code: GOSI\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 18-Jun-25 → 18-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1300,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-gosi-ar",
@@ -3427,7 +3427,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: التأمينات الاجتماعية\nكود الخصم: GOSI\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 18-Jun-25 إلى 18-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1300,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-mcra-en",
@@ -3438,7 +3438,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Modern Consortium for Refueling Aircraft\nPromo code: MCRA\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 18-Jun-25 → 17-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1310,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-mcra-ar",
@@ -3449,7 +3449,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: الكونسورتيوم الحديث لتزويد الطائرات بالوقود\nكود الخصم: MCRA\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 18-Jun-25 إلى 17-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1310,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-tan-en",
@@ -3460,7 +3460,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: ALTANFEETHI\nPromo code: TAN\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 22-Jun-25 → 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1320,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-tan-ar",
@@ -3471,7 +3471,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: شركة التنفيذي\nكود الخصم: TAN\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 22-Jun-25 إلى 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1320,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-delta-en",
@@ -3482,7 +3482,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Delta Medical Laboratories\nPromo code: DELTA\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 22-Jun-25 → 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1330,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-delta-ar",
@@ -3493,7 +3493,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: مختبرات دلتا الطبية\nكود الخصم: DELTA\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 22-Jun-25 إلى 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1330,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-baj-en",
@@ -3504,7 +3504,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Bank AL Jazira\nPromo code: BAJ\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 22-Jun-25 → 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1340,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-baj-ar",
@@ -3515,7 +3515,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: بنك الجزيرة\nكود الخصم: BAJ\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 22-Jun-25 إلى 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1340,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-anb-anb-en",
@@ -3526,7 +3526,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Arab National Bank\nPromo code: ANB-ANB\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 22-Jun-25 → 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1350,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-anb-anb-ar",
@@ -3537,7 +3537,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: البنك العربي الوطني\nكود الخصم: ANB-ANB\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 22-Jun-25 إلى 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1350,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-asb-en",
@@ -3548,7 +3548,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: Saudi Awwal Bank\nPromo code: ASB\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 22-Jun-25 → 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1360,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-asb-ar",
@@ -3559,7 +3559,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: البنك السعودي الأول\nكود الخصم: ASB\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 22-Jun-25 إلى 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1360,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-sdc-en",
@@ -3570,7 +3570,7 @@ export const seedScripts: SeedScript[] = [
     "body": "Company: SDC App\nPromo code: SDC\nPrice after discount: 1300SR & 870SR\nDetails: 12M & 6M - Plus only\nStatus: Inactive\nValid: 22-Jun-25 → 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1370,
-    "active": false
+    "active": true
   },
   {
     "key": "corporate-offer-sdc-ar",
@@ -3581,7 +3581,7 @@ export const seedScripts: SeedScript[] = [
     "body": "الشركة: تطبيق SDC\nكود الخصم: SDC\nالسعر بعد الخصم: 1300SR & 870SR\nالتفاصيل: 12M & 6M - Plus only\nالحالة: منتهي\nالصلاحية: من 22-Jun-25 إلى 22-Jul-25",
     "source": "corporate-offers",
     "sortOrder": 1370,
-    "active": false
+    "active": true
   },
   {
     "key": "ksa-core-monthly-ar",
@@ -3974,7 +3974,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "KSA",
     "language": "EN",
-    "body": "💚 Your  membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-0000 to 00-00-0000. Your next billing date will be on 00-00-0000 with an amount of [ ].\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    "body": "💚 Your  membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-0000 to 00-00-0000. Your next billing date will be on 00-00-0000 with an amount of [Amount] SAR.\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
     "source": "clean-v2",
     "sortOrder": 1160,
     "active": true
@@ -3985,7 +3985,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 تم تجميد عضويتك  بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\n [ ] من 00-00-0000 إلى 00-00-0000، وموعد فاتورتك القادمة 00-00-0000 بقيمة .\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
+    "body": "💙 تم تجميد عضويتك  بنجاح.\n\nبيانات الحساب:\n• البريد الإلكتروني: \n• رقم الجوال: \n\nفترة التجميد:\n من 00-00-0000 إلى 00-00-0000، وموعد فاتورتك القادمة 00-00-0000 بقيمة [المبلغ] درهم.\n\nسيتم استئناف العضوية تلقائيًا بعد انتهاء فترة التجميد. يمكنك دائمًا متابعة تفاصيل عضويتك عبر التطبيق.",
     "source": "clean-v2",
     "sortOrder": 1170,
     "active": true
@@ -3996,7 +3996,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Freeze Policy",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 Your membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-0000 to 00-00-0000. Your next billing date will be on 00-00-0000 with an amount of [  ].\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
+    "body": "💙 Your membership has been successfully frozen.\n\nAccount details:\n• Email: \n• Mobile number: \n\nFreeze period:\nFrom 00-00-0000 to 00-00-0000. Your next billing date will be on 00-00-0000 with an amount of [Amount] AED.\n\nYour membership will automatically resume once the freeze period ends. You can always view your membership details through the app.",
     "source": "clean-v2",
     "sortOrder": 1180,
     "active": true
@@ -4645,8 +4645,8 @@ export const seedScripts: SeedScript[] = [
     "category": "Links",
     "country": "KSA",
     "language": "AR",
-    "body": "💚 روابط السعودية الرسمية:\n\nالانضمام:\nhttps://ksa.puregymarabia.com/join/\n\nصالات رياضية:\nhttps://ksa.puregymarabia.com/gyms/\n\nتطبيق بيورجيم:\nhttps://ksa.puregymarabia.com/puregym-app/\n\nتسجيل الدخول:\nhttps://ksa.puregymarabia.com/login/",
-    "source": "v3-update",
+    "body": "💚 روابط السعودية الرسمية:\n\nالانضمام:\nhttps://puregym-arabia.exerp.site/join/center?country=SA&lang=arabic\n\nتسجيل الدخول:\nhttps://puregym-arabia.exerp.site/login?lang=arabic\n\nالصالات الرياضية:\nhttps://ksa.puregymarabia.com/gyms\n\nخيارات العضوية:\nhttps://ksa.puregymarabia.com/membership-options\n\nتطبيق بيورجيم:\nhttps://ksa.puregymarabia.com/puregym-app\n\nالحصص التدريبية:\nhttps://ksa.puregymarabia.com/training-classes\n\nدليل التمارين:\nhttps://ksa.puregymarabia.com/workout-guide\n\nمركز المساعدة:\nhttps://ksa.puregymarabia.com/help-contact\n\nالشروط والأحكام:\nhttps://ksa.puregymarabia.com/terms-conditions\n\nApp landing page: https://get.myfitapp.de/a/BAPP?p=6?pv=1\nGoogle Play: https://play.google.com/store/apps/details?id=com.innovatise.puregymarabia\nApp Store: https://apps.apple.com/us/app/puregym-arabia/id6779495749",
+    "source": "official-links",
     "sortOrder": 10,
     "active": true
   },
@@ -4656,8 +4656,8 @@ export const seedScripts: SeedScript[] = [
     "category": "Links",
     "country": "KSA",
     "language": "EN",
-    "body": "💚 Official KSA links:\n\nJoin:\nhttps://ksa.puregymarabia.com/en-gb/join/\n\nGyms:\nhttps://ksa.puregymarabia.com/en-gb/gyms/\n\nPureGym App:\nhttps://ksa.puregymarabia.com/en-gb/puregym-app/\n\nLog in:\nhttps://ksa.puregymarabia.com/login/",
-    "source": "v3-update",
+    "body": "💚 Official KSA links:\n\nJoin:\nhttps://puregym-arabia.exerp.site/join/center?country=SA&lang=english\n\nLog in:\nhttps://puregym-arabia.exerp.site/login?lang=english\n\nFind a Gym:\nhttps://ksa.puregymarabia.com/en-gb/gyms\n\nMembership Options:\nhttps://ksa.puregymarabia.com/en-gb/membership-options\n\nPureGym App:\nhttps://ksa.puregymarabia.com/en-gb/puregym-app\n\nFitness Classes:\nhttps://ksa.puregymarabia.com/en-gb/fitness-classes\n\nWorkout Guide:\nhttps://ksa.puregymarabia.com/en-gb/workout-guide\n\nHelp & Contact:\nhttps://ksa.puregymarabia.com/en-gb/help-contact\n\nTerms & Conditions:\nhttps://ksa.puregymarabia.com/en-gb/terms-conditions\n\nApp landing page: https://get.myfitapp.de/a/BAPP?p=6?pv=1\nGoogle Play: https://play.google.com/store/apps/details?id=com.innovatise.puregymarabia\nApp Store: https://apps.apple.com/us/app/puregym-arabia/id6779495749",
+    "source": "official-links",
     "sortOrder": 20,
     "active": true
   },
@@ -4667,8 +4667,8 @@ export const seedScripts: SeedScript[] = [
     "category": "Links",
     "country": "UAE",
     "language": "AR",
-    "body": "💙 روابط الإمارات الرسمية:\n\nالانضمام:\nhttps://uae.puregymarabia.com/join/\n\nصالات رياضية:\nhttps://uae.puregymarabia.com/gyms/\n\nتطبيق بيورجيم:\nhttps://uae.puregymarabia.com/puregym-app/\n\nتسجيل الدخول:\nhttps://uae.puregymarabia.com/login/",
-    "source": "v3-update",
+    "body": "💙 روابط الإمارات الرسمية:\n\nالانضمام:\nhttps://puregym-arabia.exerp.site/join/center?country=AE&lang=arabic\n\nتسجيل الدخول:\nhttps://puregym-arabia.exerp.site/login?lang=arabic\n\nالصالات الرياضية:\nhttps://uae.puregymarabia.com/ar-ae/gyms\n\nخيارات العضوية:\nhttps://uae.puregymarabia.com/ar-ae/membership-options\n\nتطبيق بيورجيم:\nhttps://uae.puregymarabia.com/ar-ae/apply-pure-gym\n\nالحصص التدريبية:\nhttps://uae.puregymarabia.com/ar-ae/fitness-classes\n\nدليل التمارين:\nhttps://uae.puregymarabia.com/ar-ae/workout-builder\n\nالمساعدة والاتصال:\nhttps://uae.puregymarabia.com/ar-ae/help-contact\n\nالشروط والأحكام:\nhttps://uae.puregymarabia.com/ar-ae/terms-conditions\n\nApp landing page: https://get.myfitapp.de/a/BAPP?p=6?pv=1\nGoogle Play: https://play.google.com/store/apps/details?id=com.innovatise.puregymarabia\nApp Store: https://apps.apple.com/us/app/puregym-arabia/id6779495749",
+    "source": "official-links",
     "sortOrder": 30,
     "active": true
   },
@@ -4678,8 +4678,8 @@ export const seedScripts: SeedScript[] = [
     "category": "Links",
     "country": "UAE",
     "language": "EN",
-    "body": "💙 Official UAE links:\n\nJoin:\nhttps://uae.puregymarabia.com/en-gb/join/\n\nGyms:\nhttps://uae.puregymarabia.com/en-gb/gyms/\n\nPureGym App:\nhttps://uae.puregymarabia.com/en-gb/puregym-app/\n\nLog in:\nhttps://uae.puregymarabia.com/login/",
-    "source": "v3-update",
+    "body": "💙 Official UAE links:\n\nJoin:\nhttps://puregym-arabia.exerp.site/join/center?country=AE&lang=english\n\nLog in:\nhttps://puregym-arabia.exerp.site/login?lang=english\n\nFind a Gym:\nhttps://uae.puregymarabia.com/gyms\n\nMembership Options:\nhttps://uae.puregymarabia.com/membership-options\n\nPureGym App:\nhttps://uae.puregymarabia.com/puregym-app\n\nFitness Classes:\nhttps://uae.puregymarabia.com/fitness-classes\n\nWorkout Guide:\nhttps://uae.puregymarabia.com/workout-guide\n\nHelp & Contact:\nhttps://uae.puregymarabia.com/help-contact\n\nTerms & Conditions:\nhttps://uae.puregymarabia.com/terms-conditions\n\nApp landing page: https://get.myfitapp.de/a/BAPP?p=6?pv=1\nGoogle Play: https://play.google.com/store/apps/details?id=com.innovatise.puregymarabia\nApp Store: https://apps.apple.com/us/app/puregym-arabia/id6779495749",
+    "source": "official-links",
     "sortOrder": 40,
     "active": true
   },
@@ -4865,7 +4865,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Offers, Prices & PT",
     "country": "KSA",
     "language": "EN",
-    "body": "Limited Time Offer! Get 20% Off Every month for life on Monthly Memberships | Use code : LT20 | Join Now!\n\n— Auto-updated from the official site (2026-07-01)",
+    "body": "Enjoy members offers Take advantage of exclusive offers from our partners\n\nBuy now and pay later Pay in 4 interest - free payments. Buy a fixed term membership now and only pay 25% upfront. How monthly instalments work? Select your gym and a 3, 6 or 12 month fixed term membership Choose Tabby at checkout Enter your information and add your debit or credit card Your first payment is taken when checkout is complete You will receive a reminder when your next payment is due Join Now\n\n— Auto-updated from the official site (2026-07-13)",
     "source": "live-offer",
     "sortOrder": 1,
     "active": true
@@ -4876,7 +4876,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Offers, Prices & PT",
     "country": "UAE",
     "language": "EN",
-    "body": "LIMITED TIME OFFER! JOIN US WITH 30% OFF ON YOUR FIRST MONTH! USE CODE: PGA30\n\n— Auto-updated from the official site (2026-07-01)",
+    "body": "Join now Train with top equipment, expert coaches, and flexible plans — while enjoying group classes, digital ease, community spirit, and exclusive partner perks at the best value Join Way more flexibility At PureGym, there's no contract holding you back. Enjoy true freedom with 24/7 access to all our UAE locations. Experience a gym that’s open 24 hours in Dubai, giving you more time for yourself anytime, any day. Join now\n\nPureGym Plus: Your Ultimate Gym Membership in Dubai Choose the PureGym Plus membership: Unlimited access – Enjoy a 24-hour fitness membership with unrestricted access. Book your favorite fitness classes up to 14 days in advance. Bring a friend with you to the gym up to 4 times a month. Body composition technology – Gain healthy insights to track your progress. YANGA Water– Rehydrate with premium Sports Water. Get the most out of your unlimited gym membership and experience the best gym membership in Dubai. Join now\n\n— Auto-updated from the official site (2026-07-13)",
     "source": "live-offer",
     "sortOrder": 1,
     "active": true
@@ -4887,7 +4887,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Offers, Prices & PT",
     "country": "KSA",
     "language": "AR",
-    "body": "عرض لفترة محدودة! خصم 20% شهريًا مدى الحياة على العضويات الشهرية | استخدم الكود: LT20 | اشترك الآن!\n\n— محدّث تلقائياً من الموقع الرسمي (2026-07-01)",
+    "body": "استمتع بعروض الأعضاء استفد من العروض الحصرية من شركائنا\n\nاشترِ الآن وادفع لاحقًا ادفع في 4 دفعات بدون فوائد. اشترِ عضوية لفترة محددة الآن وادفع 25% فقط مقدمًا. كيف تعمل الأقساط الشهرية؟ اختر صالتك الرياضية وعضوية لفترة محددة 3 أو 6 أو 12 شهرًا اختر تابى عند الدفع أدخل معلوماتك وأضف بطاقة الخصم أو الائتمان الخاصة بك سيتم خصم أول دفعة عند إتمام عملية الدفع ستتلقى تذكيرًا عندما يحين موعد دفعتك التالية انضم الآن\n\n— محدث تلقائياً من الموقع الرسمي (2026-07-13)",
     "source": "live-offer",
     "sortOrder": 1,
     "active": true
@@ -4898,7 +4898,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Offers, Prices & PT",
     "country": "UAE",
     "language": "AR",
-    "body": "عرض لفترة محدودة! اشتركوا معنا بخصم 30% على اول شهر! استخدموا كود: PGA30\n\n— محدّث تلقائياً من الموقع الرسمي (2026-07-01)",
+    "body": "مرونة لا مثيل لها في بيورجيم، لا يوجد عقد يقيدك. استمتع بحرية الوصول التام على مدار الساعة طوال أيام الأسبوع إلى كافة أنديتنا في الإمارات. استثمر وقتك بشكل أفضل مع نادي يفتح أبوابه 24 ساعة في دبي، مما يمنحك وقتاً خاصاً لك في أي يوم وأي ساعة. انضم الآن\n\nبيورجيم بلس: عضويتك المثالية في صالة الألعاب الرياضية في دبي اختاروا عضوية بيورجيم بلس للارتقاء بلياقتكم البدني دخول غير محدود - استمتعوا بعضوية لياقة بدنية على مدار ٢٤ ساعة مع دخول غير مقيد. احجزوا حصص اللياقة البدنية المفضلة لديكم حتى ١٤ يومًا مقدمًا. اصطحبوا صديقًا معكم إلى الصالة الرياضية حتى ٤ مرات في الشهر. تقنية تكوين الجسم - احصلوا على رؤى صحية لتتبع تقدمكم. مياه يانجا - ارتوِ جسمكم بالمياه الرياضية الممتازة. احصلوا على أقصى استفادة من عضويتكم غير المحدودة في الصالة الرياضية واستمتعوا بأفضل عضوية في الصالة الرياضية في دبي انضم الآن\n\n— محدث تلقائياً من الموقع الرسمي (2026-07-13)",
     "source": "live-offer",
     "sortOrder": 1,
     "active": true
@@ -5239,7 +5239,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Payment & Billing",
     "country": "KSA",
     "language": "AR",
-    "body": "💚 سيتم إرسال فاتورة إلكترونية من البريد التالي: hyperbill@hyperpay.com\nإلى بريدك الإلكتروني: \nوتتضمن الفاتورة رابطًا لإتمام عملية الدفع الخاصة بمبلغ [المبلغ].\nومدة صلاحية الرابط 48 ساعة فقط \nيرجى بعد الدفع التواصل معنا لإتمام طلبك.",
+    "body": "💚 سيتم إرسال فاتورة إلكترونية من البريد التالي: hyperbill@hyperpay.com\nإلى بريدك الإلكتروني: \nوتتضمن الفاتورة رابطًا لإتمام عملية الدفع الخاصة بمبلغ [المبلغ] ريال.\nومدة صلاحية الرابط 48 ساعة فقط \nيرجى بعد الدفع التواصل معنا لإتمام طلبك.",
     "source": "clean-v2",
     "sortOrder": 1270,
     "active": true
@@ -5250,7 +5250,7 @@ export const seedScripts: SeedScript[] = [
     "category": "Payment & Billing",
     "country": "KSA",
     "language": "EN",
-    "body": "💚 An electronic invoice will be sent from: hyperbill@hyperpay.com\nTo your email: \nThe invoice will include a payment link to complete the payment for the amount of [Amount].\nPlease note that the payment link is valid for 48 hours only.\nAfter payment, please contact us so we can complete your request.",
+    "body": "💚 An electronic invoice will be sent from: hyperbill@hyperpay.com\nTo your email: \nThe invoice will include a payment link to complete the payment for the amount of [Amount] SAR.\nPlease note that the payment link is valid for 48 hours only.\nAfter payment, please contact us so we can complete your request.",
     "source": "clean-v2",
     "sortOrder": 1280,
     "active": true
@@ -5410,619 +5410,487 @@ export const seedScripts: SeedScript[] = [
     "active": true
   },
   {
-    "key": "quick-0-en",
-    "title": "General Welcome",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Hello, this is (Agent Name) from PureGym. How can I help you today? 💚",
-    "source": "quick-standard",
-    "sortOrder": 10,
-    "active": true
-  },
-  {
-    "key": "quick-0-ar",
+    "key": "quick-welcome-ksa-ar",
     "title": "ترحيب عام",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "AR",
-    "body": "أهلاً وسهلاً {فيك|فيكِ}، {معك|معكِ} (اسم الموظف) من بيورجيم، كيف أقدر {أساعدك|أساعدكِ} اليوم؟ 💚",
+    "body": "💚 أهلاً وسهلاً، معك محمد من بيورجيم، كيف أقدر أساعدك؟",
     "source": "quick-standard",
     "sortOrder": 10,
     "active": true
   },
   {
-    "key": "quick-1-en",
-    "title": "Welcome (alt)",
+    "key": "quick-welcome-uae-ar",
+    "title": "ترحيب عام",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Welcome! This is (Agent Name) from PureGym. What can I do for you? 🌿",
+    "country": "UAE",
+    "language": "AR",
+    "body": "💙 أهلاً وسهلاً، معك محمد من بيورجيم، كيف أقدر أساعدك؟",
     "source": "quick-standard",
     "sortOrder": 20,
     "active": true
   },
   {
-    "key": "quick-1-ar",
-    "title": "ترحيب - حياك الله",
+    "key": "quick-salam-ksa-ar",
+    "title": "رد السلام",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "AR",
-    "body": "{حياك|حياكِ} الله، (اسم الموظف) من بيورجيم {معك|معكِ}، وش الخدمة اللي {تحتاجها|تحتاجينها}؟ 🌿",
-    "source": "quick-standard",
-    "sortOrder": 20,
-    "active": true
-  },
-  {
-    "key": "quick-2-en",
-    "title": "Back to the chat",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "I'm back! This is (Agent Name) from PureGym. How can I help you? 😊",
+    "body": "💚 وعليكم السلام ورحمة الله وبركاته",
     "source": "quick-standard",
     "sortOrder": 30,
     "active": true
   },
   {
-    "key": "quick-2-ar",
-    "title": "الرجوع للمحادثة",
+    "key": "quick-salam-uae-ar",
+    "title": "رد السلام",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "UAE",
     "language": "AR",
-    "body": "{رجعت لك|رجعت لكِ}! {معك|معكِ} (اسم الموظف) من بيورجيم، كيف أقدر {أخدمك|أخدمكِ}؟ 😊",
-    "source": "quick-standard",
-    "sortOrder": 30,
-    "active": true
-  },
-  {
-    "key": "quick-3-en",
-    "title": "Welcome back",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Welcome back! Shall we continue from where we left off? 👋",
+    "body": "💙 وعليكم السلام ورحمة الله وبركاته",
     "source": "quick-standard",
     "sortOrder": 40,
     "active": true
   },
   {
-    "key": "quick-3-ar",
-    "title": "ترحيب بالرجوع",
+    "key": "quick-welcome-ksa-en",
+    "title": "General welcome",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "ياهلا {برجعتك|برجعتكِ}! {تبغى|تبغين} نكمل من آخر نقطة وقفنا فيها؟ 👋",
-    "source": "quick-standard",
-    "sortOrder": 40,
-    "active": true
-  },
-  {
-    "key": "quick-4-en",
-    "title": "After resolving",
-    "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "EN",
-    "body": "If you need anything else, I'm always here to help 💚",
+    "body": "💚 Hello, this is Mohammed from PureGym. How can I assist you?",
     "source": "quick-standard",
     "sortOrder": 50,
     "active": true
   },
   {
-    "key": "quick-4-ar",
-    "title": "بعد حل المشكلة",
+    "key": "quick-welcome-uae-en",
+    "title": "General welcome",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "إذا {احتجت|احتجتِ} أي شيء ثاني، أنا دايمًا بالخدمة 💚",
-    "source": "quick-standard",
-    "sortOrder": 50,
-    "active": true
-  },
-  {
-    "key": "quick-5-en",
-    "title": "Anything else before closing?",
-    "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "UAE",
     "language": "EN",
-    "body": "I'm glad I could help! Is there anything else you'd like help with before we finish? 😊",
+    "body": "💙 Hello, this is Mohammed from PureGym. How can I assist you?",
     "source": "quick-standard",
     "sortOrder": 60,
     "active": true
   },
   {
-    "key": "quick-5-ar",
-    "title": "قبل الختام - شي ثاني؟",
+    "key": "quick-rating-ksa-ar",
+    "title": "الخدمة والتقييم",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "AR",
-    "body": "يسعدني إني قدرت {أساعدك|أساعدكِ}! فيه شيء ثاني {تبي|تبين} {أساعدك|أساعدكِ} فيه قبل ما نختم؟ 😊",
-    "source": "quick-standard",
-    "sortOrder": 60,
-    "active": true
-  },
-  {
-    "key": "quick-6-en",
-    "title": "Before ending the chat",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "If there's anything else you need, let me know 💚 I'm here for you!",
+    "body": "💚 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏 راح أترك لك رابط التقييم 🌸",
     "source": "quick-standard",
     "sortOrder": 70,
     "active": true
   },
   {
-    "key": "quick-6-ar",
-    "title": "قبل إنهاء المحادثة",
+    "key": "quick-rating-uae-ar",
+    "title": "الخدمة والتقييم",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "UAE",
     "language": "AR",
-    "body": "إذا فيه أي شيء ثاني {تحتاجه|تحتاجينه} {علمني|علميني} 💚 أنا هنا {عشانك|عشانكِ}!",
-    "source": "quick-standard",
-    "sortOrder": 70,
-    "active": true
-  },
-  {
-    "key": "quick-7-en",
-    "title": "Information sent",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "I've sent you all the details. If there's anything else you need, just let me know 💚",
+    "body": "💙 سعدنا بخدمتك، شكرًا لتواصلك معنا 🙏 راح أترك لك رابط التقييم 🌸",
     "source": "quick-standard",
     "sortOrder": 80,
     "active": true
   },
   {
-    "key": "quick-7-ar",
-    "title": "إرسال المعلومات",
+    "key": "quick-rating-ksa-en",
+    "title": "Service closing and feedback",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "{أرسلت لك|أرسلت لكِ} كل التفاصيل، وإذا فيه أي شيء ثاني {تحتاجه|تحتاجينه}، {علمني|علميني} 💚",
-    "source": "quick-standard",
-    "sortOrder": 80,
-    "active": true
-  },
-  {
-    "key": "quick-8-en",
-    "title": "No response",
-    "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "EN",
-    "body": "It seems you're busy, so we'll close the chat. If you come back and need anything, we're always here 💚",
+    "body": "💚 It was a pleasure assisting you 🙏 We appreciate your feedback 🌸",
     "source": "quick-standard",
     "sortOrder": 90,
     "active": true
   },
   {
-    "key": "quick-8-ar",
-    "title": "عدم الرد",
+    "key": "quick-rating-uae-en",
+    "title": "Service closing and feedback",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "{عزيزي|عزيزتي}، يبدو {إنك مشغول|إنكِ مشغولة}، فبنقفل المحادثة، وإذا {رجعت واحتجت|رجعتِ واحتجتِ} شيء لا {تتردد|تترددي} ترا حنا هنا دايمًا 💚",
-    "source": "quick-standard",
-    "sortOrder": 90,
-    "active": true
-  },
-  {
-    "key": "quick-9-en",
-    "title": "Rating before closing",
-    "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "UAE",
     "language": "EN",
-    "body": "It was a pleasure helping you today 🌸\nI'll share the rating link for this chat — we'd love to know about your experience 💚",
+    "body": "💙 It was a pleasure assisting you 🙏 We appreciate your feedback 🌸",
     "source": "quick-standard",
     "sortOrder": 100,
     "active": true
   },
   {
-    "key": "quick-9-ar",
-    "title": "التقييم قبل الإغلاق",
+    "key": "quick-general-data-ksa-ar",
+    "title": "طلب بيانات عامة",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "AR",
-    "body": "سعدت {بخدمتك|بخدمتكِ} اليوم 🌸\nراح {أترك لك|أترك لكِ} رابط التقييم لهذه المحادثة، يهمنا نعرف كيف كانت {تجربتك|تجربتكِ} معنا 💚",
-    "source": "quick-standard",
-    "sortOrder": 100,
-    "active": true
-  },
-  {
-    "key": "quick-10-en",
-    "title": "First idle reminder",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Are you still there? If you have any question, I'm here 🧏‍♀️",
+    "body": "💚 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
     "source": "quick-standard",
     "sortOrder": 110,
     "active": true
   },
   {
-    "key": "quick-10-ar",
-    "title": "تنبيه أول (خمول)",
+    "key": "quick-general-data-uae-ar",
+    "title": "طلب بيانات عامة",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "UAE",
     "language": "AR",
-    "body": "هل ما {زلت موجود|زلتِ موجودة} {عزيزي|عزيزتي}؟ إذا {عندك|عندكِ} أي سؤال، أنا موجود 🧏‍♀️",
-    "source": "quick-standard",
-    "sortOrder": 110,
-    "active": true
-  },
-  {
-    "key": "quick-11-en",
-    "title": "Second reminder (before closing)",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "If we don't hear back, the chat will be closed. You can return to us anytime 💚",
+    "body": "💙 يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
     "source": "quick-standard",
     "sortOrder": 120,
     "active": true
   },
   {
-    "key": "quick-11-ar",
-    "title": "تنبيه ثاني (قبل الإغلاق)",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "إذا ما جانا رد، سيتم إنهاء المحادثة، و{تقدر ترجع|تقدرين ترجعين} لنا بأي وقت 💚",
-    "source": "quick-standard",
-    "sortOrder": 120,
-    "active": true
-  },
-  {
-    "key": "quick-12-en",
-    "title": "First hold",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Thanks for your patience! Let me check this for you — it may take 3 to 5 minutes ⏳ and I'll get back to you shortly 💚",
-    "source": "quick-standard",
-    "sortOrder": 130,
-    "active": true
-  },
-  {
-    "key": "quick-12-ar",
-    "title": "أول انتظار",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "شكرًا على {صبرك|صبركِ}! خليني أتأكد {لك|لكِ} من الموضوع، ممكن ياخذ من ٣ إلى ٥ دقايق ⏳ {وبرجع لك|وبرجع لكِ} بأقرب وقت 💚",
-    "source": "quick-standard",
-    "sortOrder": 130,
-    "active": true
-  },
-  {
-    "key": "quick-13-en",
-    "title": "Longer than expected",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "I'm still working on it and I appreciate your patience 🙏 Just a little more and I'll be back with all the details!",
-    "source": "quick-standard",
-    "sortOrder": 140,
-    "active": true
-  },
-  {
-    "key": "quick-13-ar",
-    "title": "تأخير أطول من المتوقع",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "لسا أشتغل على الموضوع، ومقدّر {صبرك|صبركِ} 🙏 باقي شوي {وبرجع لك|وبرجع لكِ} بكل التفاصيل!",
-    "source": "quick-standard",
-    "sortOrder": 140,
-    "active": true
-  },
-  {
-    "key": "quick-14-en",
-    "title": "Back with info",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Thanks for waiting! I've got the information you need ✅ let me explain now 👇",
-    "source": "quick-standard",
-    "sortOrder": 150,
-    "active": true
-  },
-  {
-    "key": "quick-14-ar",
-    "title": "رجعة سريعة بالمعلومات",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "{يعطيك|يعطيكِ} العافية على الانتظار! {جبت لك|جبت لكِ} المعلومات اللي {تحتاجها|تحتاجينها} ✅ خليني {أشرح لك|أشرح لكِ} الحين 👇",
-    "source": "quick-standard",
-    "sortOrder": 150,
-    "active": true
-  },
-  {
-    "key": "quick-15-en",
-    "title": "Slight delay + apology",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Apologies for the delay and thank you for your patience 🙏 here's the information I found for you 💚",
-    "source": "quick-standard",
-    "sortOrder": 160,
-    "active": true
-  },
-  {
-    "key": "quick-15-ar",
-    "title": "تأخير بسيط + اعتذار",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "أعتذر على التأخير وشكرًا على {صبرك|صبركِ} 🙏 هذي المعلومات اللي {حصلتها لك|حصلتها لكِ} 💚",
-    "source": "quick-standard",
-    "sortOrder": 160,
-    "active": true
-  },
-  {
-    "key": "quick-16-en",
-    "title": "Need more time",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Thanks for your patience! I need a little more time to finish this ⏳ I appreciate your wait and will be back soon!",
-    "source": "quick-standard",
-    "sortOrder": 170,
-    "active": true
-  },
-  {
-    "key": "quick-16-ar",
-    "title": "أحتاج وقت إضافي",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "شكرًا على {صبرك|صبركِ}! باقي لي شوية {وأخلص لك|وأخلص لكِ} الموضوع ⏳ مقدّر {انتظارك|انتظاركِ} {وبرجع لك|وبرجع لكِ} قريب إن شاء الله!",
-    "source": "quick-standard",
-    "sortOrder": 170,
-    "active": true
-  },
-  {
-    "key": "quick-17-en",
-    "title": "Still checking with the team",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "I'm still following up with the team to make sure we give you the correct information. Thanks again for your patience — we won't be long 💚",
-    "source": "quick-standard",
-    "sortOrder": 180,
-    "active": true
-  },
-  {
-    "key": "quick-17-ar",
-    "title": "لسا نتابع مع الفريق",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "لسا أتابع مع الفريق عشان أتأكد {نعطيك|نعطيكِ} المعلومات الصح، شكرًا {لصبرك|لصبركِ} مرة ثانية، ما راح نطول {عليك|عليكِ} 💚",
-    "source": "quick-standard",
-    "sortOrder": 180,
-    "active": true
-  },
-  {
-    "key": "quick-18-en",
-    "title": "Need more information",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Could you share a bit more so I can help you better? For example:\n- The branch you're asking about\n- Your registered email or mobile number\n- A screenshot of the error (if any)\nThank you 💚",
-    "source": "quick-standard",
-    "sortOrder": 190,
-    "active": true
-  },
-  {
-    "key": "quick-18-ar",
-    "title": "ينقصني معلومات",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "ممكن {تزودني|تزودينني} بمعلومات أكثر عشان أقدر {أساعدك|أساعدكِ} بشكل أفضل؟ مثل:\n- الفرع اللي {تسأل|تسألين} عنه\n- {إيميلك أو رقم جوالك|إيميلكِ أو رقم جوالكِ} المسجل\n- صورة للخطأ (إذا فيه)\nشكرًا {لك|لكِ} 💚",
-    "source": "quick-standard",
-    "sortOrder": 190,
-    "active": true
-  },
-  {
-    "key": "quick-19-en",
-    "title": "Confirm the request",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Just to confirm — do you mean (option one) or (option two)? That way I can guide you more accurately ✅",
-    "source": "quick-standard",
-    "sortOrder": 200,
-    "active": true
-  },
-  {
-    "key": "quick-19-ar",
-    "title": "تأكيد استفسار",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "بس عشان أتأكد، {تقصد|تقصدين} (الخيار الأول) ولا (الخيار الثاني)؟ كذا أقدر {أوجهك|أوجهكِ} بشكل أدق ✅",
-    "source": "quick-standard",
-    "sortOrder": 200,
-    "active": true
-  },
-  {
-    "key": "quick-20-en",
-    "title": "Request cancellation data",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Could you share the email, mobile number, and ID linked to your membership, along with the name registered on the membership, so we can check your account and assist you better? 😊",
-    "source": "quick-standard",
-    "sortOrder": 210,
-    "active": true
-  },
-  {
-    "key": "quick-20-ar",
+    "key": "quick-cancellation-data-ksa-ar",
     "title": "طلب بيانات الإلغاء",
     "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "AR",
+    "body": "💚 ولا يهمك، يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال ورقم الهوية والاسم المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
+    "source": "quick-standard",
+    "sortOrder": 130,
+    "active": true
+  },
+  {
+    "key": "quick-cancellation-data-uae-ar",
+    "title": "طلب بيانات الإلغاء",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "AR",
+    "body": "💙 ولا يهمك، يرجى تزويدنا بالبريد الإلكتروني ورقم الجوال ورقم الهوية والاسم المرتبط بعضويتك لنتمكن من خدمتك بشكل أفضل 🙏",
+    "source": "quick-standard",
+    "sortOrder": 140,
+    "active": true
+  },
+  {
+    "key": "quick-freeze-data-ar",
+    "title": "طلب بيانات التجميد",
+    "category": "Quick Scripts",
     "country": "ALL",
     "language": "AR",
-    "body": "{يمديك|يمديكِ} {تزودني|تزودينني} بالإيميل ورقم الجوال ورقم الهوية المرتبط {باشتراكك|باشتراككِ} معنا، بالإضافة {لاسمك|لاسمكِ} المسجل على العضوية، عشان نقدر نشيك على {عضويتك|عضويتكِ} {ونساعدك|ونساعدكِ} بشكل أفضل 😊",
+    "body": "يرجى تزويدنا بفترة التجميد المطلوبة وتاريخ بدء التجميد.",
+    "source": "quick-standard",
+    "sortOrder": 150,
+    "active": true
+  },
+  {
+    "key": "quick-general-data-ksa-en",
+    "title": "Request general membership data",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "EN",
+    "body": "💚 Kindly provide your email address and phone number linked to your membership so we can assist you better 🙏",
+    "source": "quick-standard",
+    "sortOrder": 160,
+    "active": true
+  },
+  {
+    "key": "quick-general-data-uae-en",
+    "title": "Request general membership data",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "EN",
+    "body": "💙 Kindly provide your email address and phone number linked to your membership so we can assist you better 🙏",
+    "source": "quick-standard",
+    "sortOrder": 170,
+    "active": true
+  },
+  {
+    "key": "quick-cancellation-data-ksa-en",
+    "title": "Request cancellation data",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "EN",
+    "body": "💚 No worries, please provide us with the email address, phone number, ID number, and the name associated with your membership so we can assist you better 🙏",
+    "source": "quick-standard",
+    "sortOrder": 180,
+    "active": true
+  },
+  {
+    "key": "quick-cancellation-data-uae-en",
+    "title": "Request cancellation data",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "EN",
+    "body": "💙 No worries, please provide us with the email address, phone number, ID number, and the name associated with your membership so we can assist you better 🙏",
+    "source": "quick-standard",
+    "sortOrder": 190,
+    "active": true
+  },
+  {
+    "key": "quick-freeze-data-en",
+    "title": "Request freeze details",
+    "category": "Quick Scripts",
+    "country": "ALL",
+    "language": "EN",
+    "body": "Please provide us with the requested freeze period and the freeze start date.",
+    "source": "quick-standard",
+    "sortOrder": 200,
+    "active": true
+  },
+  {
+    "key": "quick-moment-ksa-ar",
+    "title": "لحظات من فضلك",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "AR",
+    "body": "💚 ولا يهمك، لحظات من فضلك 🙏",
     "source": "quick-standard",
     "sortOrder": 210,
     "active": true
   },
   {
-    "key": "quick-21-en",
-    "title": "Request general data",
+    "key": "quick-moment-uae-ar",
+    "title": "لحظات من فضلك",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "Could you share the email and mobile number registered on your membership, so we can assist you better? 😊",
+    "country": "UAE",
+    "language": "AR",
+    "body": "💙 ولا يهمك، لحظات من فضلك 🙏",
     "source": "quick-standard",
     "sortOrder": 220,
     "active": true
   },
   {
-    "key": "quick-21-ar",
-    "title": "طلب البيانات بشكل عام",
+    "key": "quick-moment-ksa-en",
+    "title": "Allow me a moment",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "{يمديك|يمديكِ} {تزودني|تزودينني} بالإيميل ورقم الجوال المسجلين على {عضويتك|عضويتكِ}، عشان نقدر {نساعدك|نساعدكِ} بشكل أفضل 😊",
-    "source": "quick-standard",
-    "sortOrder": 220,
-    "active": true
-  },
-  {
-    "key": "quick-22-en",
-    "title": "Empathy + quick apology",
-    "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "EN",
-    "body": "I completely understand this can be frustrating 😔 and we're here to solve it as quickly as possible 💚",
+    "body": "💚 No worries, please allow me a moment 🙏",
     "source": "quick-standard",
     "sortOrder": 230,
     "active": true
   },
   {
-    "key": "quick-22-ar",
-    "title": "تعاطف + اعتذار سريع",
+    "key": "quick-moment-uae-en",
+    "title": "Allow me a moment",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "أفهم تمامًا إن هالشيء ممكن يكون مزعج 😔 وإحنا هنا عشان نحلّه بأسرع وقت ممكن 💚",
-    "source": "quick-standard",
-    "sortOrder": 230,
-    "active": true
-  },
-  {
-    "key": "quick-23-en",
-    "title": "Full apology",
-    "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "UAE",
     "language": "EN",
-    "body": "I sincerely apologize for the inconvenience 🙏 we always aim to make your experience smooth and easy. Thank you for your patience while we work on the solution.",
+    "body": "💙 No worries, please allow me a moment 🙏",
     "source": "quick-standard",
     "sortOrder": 240,
     "active": true
   },
   {
-    "key": "quick-23-ar",
-    "title": "اعتذار كامل",
+    "key": "quick-anything-else-ksa-ar",
+    "title": "استفسار آخر",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "AR",
-    "body": "أعتذر {لك|لكِ} عن الإزعاج اللي صار 🙏 دايمًا نحرص تكون {تجربتك|تجربتكِ} سهلة وسلسة، وشكرًا على {صبرك|صبركِ} وحنا نشتغل على الحل.",
-    "source": "quick-standard",
-    "sortOrder": 240,
-    "active": true
-  },
-  {
-    "key": "quick-24-en",
-    "title": "Reassuring tone",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "I hear you and completely understand your situation 💚 let's solve this for you the right way.",
+    "body": "💚 هل يوجد أي خدمة أو استفسار آخر أقدر أساعدك فيه؟ 🙏",
     "source": "quick-standard",
     "sortOrder": 250,
     "active": true
   },
   {
-    "key": "quick-24-ar",
-    "title": "نبرة تطمين",
+    "key": "quick-anything-else-uae-ar",
+    "title": "استفسار آخر",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "UAE",
     "language": "AR",
-    "body": "{أسمعك|أسمعكِ} {وفاهم|وفاهمة} تمامًا {موقفك|موقفكِ} 💚 خلّنا نحلها {لك|لكِ} بالطريقة الصح.",
-    "source": "quick-standard",
-    "sortOrder": 250,
-    "active": true
-  },
-  {
-    "key": "quick-25-en",
-    "title": "Offers inquiry",
-    "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "EN",
-    "body": "We currently have great offers! Which branch works for you, and are you a new member or returning to us? 💚",
+    "body": "💙 هل يوجد أي خدمة أو استفسار آخر أقدر أساعدك فيه؟ 🙏",
     "source": "quick-standard",
     "sortOrder": 260,
     "active": true
   },
   {
-    "key": "quick-25-ar",
-    "title": "استفسار عن العروض",
+    "key": "quick-anything-else-ksa-en",
+    "title": "Anything else",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "حاليًا عندنا عروض مميزة! أي فرع {يناسبك|يناسبكِ}، وهل {أنت عضو جديد|أنتِ عضوة جديدة} أو {راجع|راجعة} لنا؟ 💚",
-    "source": "quick-standard",
-    "sortOrder": 260,
-    "active": true
-  },
-  {
-    "key": "quick-26-en",
-    "title": "Existing member — offers",
-    "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "EN",
-    "body": "If you're already a member, you can see the available offers in the PureGym app under the \"Offers\" section 💚",
+    "body": "💚 Is there anything else I can assist you with? 🙏",
     "source": "quick-standard",
     "sortOrder": 270,
     "active": true
   },
   {
-    "key": "quick-26-ar",
-    "title": "عضو يسأل عن العروض",
+    "key": "quick-anything-else-uae-en",
+    "title": "Anything else",
     "category": "Quick Scripts",
-    "country": "ALL",
-    "language": "AR",
-    "body": "إذا {أنت عضو|أنتِ عضوة} معنا، {تقدر تشوف|تقدرين تشوفين} العروض المتاحة من تطبيق بيورجيم تحت قسم «العروض» 💚",
-    "source": "quick-standard",
-    "sortOrder": 270,
-    "active": true
-  },
-  {
-    "key": "quick-27-en",
-    "title": "New member — offers",
-    "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "UAE",
     "language": "EN",
-    "body": "If you're new to us, you can activate the offer by registering through the promo link or at the branch. Tell me the branch that suits you and I'll guide you step by step 💚",
+    "body": "💙 Is there anything else I can assist you with? 🙏",
     "source": "quick-standard",
     "sortOrder": 280,
     "active": true
   },
   {
-    "key": "quick-27-ar",
-    "title": "عضو جديد مهتم بالعروض",
+    "key": "quick-still-there-ksa-ar",
+    "title": "هل ما زلت موجود؟",
     "category": "Quick Scripts",
-    "country": "ALL",
+    "country": "KSA",
     "language": "AR",
-    "body": "إذا {جديد|جديدة} علينا، {تقدر تفعّل|تقدرين تفعّلين} العرض بالتسجيل عن طريق الرابط الترويجي أو من الفرع. {علمني|علميني} الفرع اللي {يناسبك|يناسبكِ} {وأدلك|وأدلكِ} خطوة بخطوة 💚",
+    "body": "💚 هل ما زلت {موجود عزيزي|موجودة عزيزتي}؟ أنا هنا لأي استفسار 🙏",
     "source": "quick-standard",
-    "sortOrder": 280,
+    "sortOrder": 290,
+    "active": true
+  },
+  {
+    "key": "quick-still-there-uae-ar",
+    "title": "هل ما زلت موجود؟",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "AR",
+    "body": "💙 هل ما زلت {موجود عزيزي|موجودة عزيزتي}؟ أنا هنا لأي استفسار 🙏",
+    "source": "quick-standard",
+    "sortOrder": 300,
+    "active": true
+  },
+  {
+    "key": "quick-still-there-ksa-en",
+    "title": "Are you still with us?",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "EN",
+    "body": "💚 Are you still with us? I’m here for any questions 🙏",
+    "source": "quick-standard",
+    "sortOrder": 310,
+    "active": true
+  },
+  {
+    "key": "quick-still-there-uae-en",
+    "title": "Are you still with us?",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "EN",
+    "body": "💙 Are you still with us? I’m here for any questions 🙏",
+    "source": "quick-standard",
+    "sortOrder": 320,
+    "active": true
+  },
+  {
+    "key": "quick-busy-close-ksa-ar",
+    "title": "إغلاق بسبب الانشغال",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "AR",
+    "body": "💚 يبدو أنك {مشغول، سيتم إنهاء المحادثة حالياً وتقدر ترجع لنا|مشغولة، سيتم إنهاء المحادثة حالياً وتقدري ترجعي لنا} بأي وقت 🙏",
+    "source": "quick-standard",
+    "sortOrder": 330,
+    "active": true
+  },
+  {
+    "key": "quick-busy-close-uae-ar",
+    "title": "إغلاق بسبب الانشغال",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "AR",
+    "body": "💙 يبدو أنك {مشغول، سيتم إنهاء المحادثة حالياً وتقدر ترجع لنا|مشغولة، سيتم إنهاء المحادثة حالياً وتقدري ترجعي لنا} بأي وقت 🙏",
+    "source": "quick-standard",
+    "sortOrder": 340,
+    "active": true
+  },
+  {
+    "key": "quick-busy-close-ksa-en",
+    "title": "Busy - close chat",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "EN",
+    "body": "💚 It seems you’re busy, the chat will be closed for now and you can reach out to us anytime 🙏",
+    "source": "quick-standard",
+    "sortOrder": 350,
+    "active": true
+  },
+  {
+    "key": "quick-busy-close-uae-en",
+    "title": "Busy - close chat",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "EN",
+    "body": "💙 It seems you’re busy, the chat will be closed for now and you can reach out to us anytime 🙏",
+    "source": "quick-standard",
+    "sortOrder": 360,
+    "active": true
+  },
+  {
+    "key": "quick-no-reply-warning-ksa-ar",
+    "title": "تنبيه قبل الإغلاق",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "AR",
+    "body": "💚 إذا ما جانا رد، سيتم إنهاء المحادثة {وتقدر ترجع|وتقدري ترجعي} لنا بأي وقت 🙏",
+    "source": "quick-standard",
+    "sortOrder": 370,
+    "active": true
+  },
+  {
+    "key": "quick-no-reply-warning-uae-ar",
+    "title": "تنبيه قبل الإغلاق",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "AR",
+    "body": "💙 إذا ما جانا رد، سيتم إنهاء المحادثة {وتقدر ترجع|وتقدري ترجعي} لنا بأي وقت 🙏",
+    "source": "quick-standard",
+    "sortOrder": 380,
+    "active": true
+  },
+  {
+    "key": "quick-no-reply-warning-ksa-en",
+    "title": "No reply warning",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "EN",
+    "body": "💚 If we don’t hear back from you, the chat will be closed. You can reach out anytime 🙏",
+    "source": "quick-standard",
+    "sortOrder": 390,
+    "active": true
+  },
+  {
+    "key": "quick-no-reply-warning-uae-en",
+    "title": "No reply warning",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "EN",
+    "body": "💙 If we don’t hear back from you, the chat will be closed. You can reach out anytime 🙏",
+    "source": "quick-standard",
+    "sortOrder": 400,
+    "active": true
+  },
+  {
+    "key": "quick-final-no-response-ksa-ar",
+    "title": "إنهاء بسبب عدم الرد",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "AR",
+    "body": "💚 سيتم إنهاء المحادثة بسبب عدم وجود رد، نشكرك على تواصلك معنا، ونسعد بتقييمك لتجربتك 🌸",
+    "source": "quick-standard",
+    "sortOrder": 410,
+    "active": true
+  },
+  {
+    "key": "quick-final-no-response-uae-ar",
+    "title": "إنهاء بسبب عدم الرد",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "AR",
+    "body": "💙 سيتم إنهاء المحادثة بسبب عدم وجود رد، نشكرك على تواصلك معنا، ونسعد بتقييمك لتجربتك 🌸",
+    "source": "quick-standard",
+    "sortOrder": 420,
+    "active": true
+  },
+  {
+    "key": "quick-final-no-response-ksa-en",
+    "title": "Final no-response closing",
+    "category": "Quick Scripts",
+    "country": "KSA",
+    "language": "EN",
+    "body": "💚 The chat will be closed due to no response.\nThank you for contacting us, we’d appreciate your feedback 🌸",
+    "source": "quick-standard",
+    "sortOrder": 430,
+    "active": true
+  },
+  {
+    "key": "quick-final-no-response-uae-en",
+    "title": "Final no-response closing",
+    "category": "Quick Scripts",
+    "country": "UAE",
+    "language": "EN",
+    "body": "💙 The chat will be closed due to no response.\nThank you for contacting us, we’d appreciate your feedback 🌸",
+    "source": "quick-standard",
+    "sortOrder": 440,
     "active": true
   },
   {

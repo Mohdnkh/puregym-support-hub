@@ -806,8 +806,8 @@ export default function DashboardPage() {
 
   const branchJoinUrl =
     country === "KSA"
-      ? "https://ksa.puregymarabia.com/en-gb/join/"
-      : "https://uae.puregymarabia.com/en-gb/join/";
+      ? "https://puregym-arabia.exerp.site/join/center?country=SA&lang=english"
+      : "https://puregym-arabia.exerp.site/join/center?country=AE&lang=english";
 
   const selected = useMemo(() => {
     const byId =
@@ -919,22 +919,10 @@ export default function DashboardPage() {
     );
   }, [country, quickGender, user]);
 
-  // One copy pipeline everywhere: applies name/gender/heart, tracks usage,
-  // and opens the fill dialog when the script has [variables] to complete.
+  // One copy pipeline everywhere: applies name/gender/heart and tracks usage.
   const smartCopy = useCallback(async (script: Script) => {
     const body = resolveScriptBody(script);
     trackUsage(script.id);
-    const prepared = prepareVarFill(body);
-    if (prepared.fields.length) {
-      setVarFill({
-        title: script.title,
-        text: prepared.text,
-        rawText: body,
-        fields: prepared.fields,
-        values: {},
-      });
-      return;
-    }
     await copyText(body);
   }, [copyText, resolveScriptBody, trackUsage]);
 
