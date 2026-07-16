@@ -231,8 +231,7 @@ export function formatOfferForCustomer(
   const heart = src.country === "UAE" ? "💙" : "💚";
 
   if (src.language === "AR") {
-    const countryName = src.country === "UAE" ? "الإمارات" : "السعودية";
-    const lines = [`${heart} حالياً عندنا عرض متاح في بيورجيم ${countryName}.`];
+    const lines = [`${heart} حالياً عندنا عرض متاح في بيورجيم.`];
 
     if (customerDiscount && offerScope) {
       lines.push(`العرض يعطيك خصم ${customerDiscount} ${offerScope}.`);
@@ -246,12 +245,12 @@ export function formatOfferForCustomer(
     if (hasTabby) lines.push("وقد يظهر لك خيار الدفع على دفعات أثناء إتمام عملية التسجيل إذا كان متاحاً.");
 
     lines.push("للاستفادة من العرض، اختر الفرع والعضوية المناسبة ثم طبّق كود العرض قبل إتمام الدفع.");
-    lines.push("ملاحظة: العروض قد تختلف حسب الدولة أو الفرع أو نوع العضوية، لذلك يُفضّل التأكد من التفاصيل النهائية في صفحة التسجيل قبل الدفع. 🙏");
+    lines.push("ملاحظة: العروض قد تختلف حسب الفرع أو نوع العضوية، لذلك يُفضّل التأكد من التفاصيل النهائية في صفحة التسجيل قبل الدفع. 🙏");
 
     return lines.join("\n\n");
   }
 
-  const lines = [`${heart} There is currently a PureGym ${src.country} offer available.`];
+  const lines = [`${heart} There is currently a PureGym offer available.`];
 
   if (customerDiscount && offerScope) {
     lines.push(`The offer gives ${customerDiscount} ${offerScope}.`);
@@ -265,7 +264,7 @@ export function formatOfferForCustomer(
   if (hasTabby) lines.push("Pay-later instalments may also appear at checkout if available.");
 
   lines.push("To use the offer, select the gym and membership, then apply the promo code before completing payment.");
-  lines.push("Please note that offers may vary by country, gym, or membership type, so the final details should be checked on the join page before payment. 🙏");
+  lines.push("Please note that offers may vary by gym or membership type, so the final details should be checked on the join page before payment. 🙏");
 
   return lines.join("\n\n");
 }
