@@ -172,7 +172,14 @@ function extractDiscount(text: string) {
   return match?.[0]?.replace(/\s+/g, " ").trim() || null;
 }
 
-function formatOfferForCustomer(
+export function stripAutoUpdateFooter(body: string) {
+  return body
+    .replace(/\n\n[—-]\s*Auto-updated from the official site\s*\([^)]+\)\s*$/i, "")
+    .replace(/\n\n[—-]\s*محدث تلقائياً من الموقع الرسمي\s*\([^)]+\)\s*$/i, "")
+    .trim();
+}
+
+export function formatOfferForCustomer(
   offer: string,
   src: Pick<OfferSource, "country" | "language">,
 ) {
@@ -243,12 +250,28 @@ export async function syncLiveOffers(): Promise<OfferSyncResult[]> {
   const stamp = new Date().toISOString().slice(0, 10);
 
   for (const src of SOURCES) {
+    const fallbackKey = `${SOURCE_TAG}-${src.country.toLowerCase()}-${src.language.toLowerCase()}`;
+    {
+    const title = src.language === "AR" ? `🔥 العرض الحالي — ${src.country}` : `🔥 Current Offer — ${src.country}`;
+    const footer =
+      src.language === "AR"
+        ? `\n\n— محدث تلقائياً من الموقع الرسمي (${stamp})`
+        : `\n\n— Auto-updated from the official site (${stamp})`;
+    }
     const html = await fetchHtml(src.url);
-    const offer = html ? extractOffer(html, src.language) : null;
+    let offer = html ? extractOffer(html, src.language) : null;
 
     if (!offer) {
-      results.push({ country: src.country, language: src.language, status: "skipped" });
-      continue;
+      const existing = await prisma.script.findUnique({
+        where: { key: fallbackKey },
+        select: { body: true },
+      });
+      offer = existing?.body ? stripAutoUpdateFooter(existing.body) : null;
+
+      if (!offer) {
+        results.push({ country: src.country, language: src.language, status: "skipped" });
+        continue;
+      }
     }
 
     const key = `${SOURCE_TAG}-${src.country.toLowerCase()}-${src.language.toLowerCase()}`;
