@@ -132,6 +132,92 @@ export function extractOffer(html: string, language: "AR" | "EN" = "EN"): string
   return highlights || null;
 }
 
+function cleanupOfferText(offer: string) {
+  return offer
+    .replace(/\bJoin Now\b/gi, " ")
+    .replace(/\bLearn More\b/gi, " ")
+    .replace(/\bHow monthly instalments work\??\b/gi, " ")
+    .replace(/\s+/g, " ")
+    .replace(/\s+([,.!?،؛:])/g, "$1")
+    .trim();
+}
+
+function extractPromoCode(text: string) {
+  const markerMatch = text.match(
+    /(?:promo\s*code|use\s*code|code|كود|الرمز|رمز)\s*[:：]?\s*([A-Z0-9][A-Z0-9-]{2,15})/i,
+  );
+  if (markerMatch?.[1]) return markerMatch[1].toUpperCase();
+
+  const candidates = text.match(/\b[A-Z0-9][A-Z0-9-]{2,15}\b/g) || [];
+  const ignored = new Set([
+    "CORE",
+    "PLUS",
+    "PUREGYM",
+    "TABBY",
+    "KSA",
+    "UAE",
+    "SAR",
+    "AED",
+    "MONTH",
+    "MONTHS",
+  ]);
+  return candidates.find((code) => !ignored.has(code.toUpperCase()))?.toUpperCase() || null;
+}
+
+function extractDiscount(text: string) {
+  const match =
+    text.match(/\b\d{1,3}\s*%\s*(?:off|discount)?/i) ||
+    text.match(/(?:خصم|discount|off)\s*\d{1,3}\s*%/i) ||
+    text.match(/\b\d{1,3}\s*percent\s*(?:off|discount)?/i);
+  return match?.[0]?.replace(/\s+/g, " ").trim() || null;
+}
+
+function formatOfferForCustomer(
+  offer: string,
+  src: Pick<OfferSource, "country" | "language">,
+) {
+  const clean = cleanupOfferText(offer);
+  const code = extractPromoCode(clean);
+  const discount = extractDiscount(clean);
+  const hasTabby = /tabby|pay\s*in\s*4|pay\s*later|instalments?|installments?/i.test(clean);
+  const heart = src.country === "UAE" ? "💙" : "💚";
+
+  if (src.language === "AR") {
+    const countryName = src.country === "UAE" ? "الإمارات" : "السعودية";
+    const lines = [`${heart} حالياً عندنا عرض متاح في بيورجيم ${countryName}.`];
+
+    if (discount) {
+      lines.push(`العرض يشمل ${discount} حسب الشروط الظاهرة في صفحة التسجيل الرسمية.`);
+    } else {
+      lines.push("تقدر تستفيد من العرض الحالي من خلال صفحة التسجيل الرسمية حسب الفرع والعضوية المختارة.");
+    }
+
+    if (code) lines.push(`كود العرض: ${code}`);
+    if (hasTabby) lines.push("وقد يظهر لك خيار الدفع على دفعات أثناء إتمام عملية التسجيل إذا كان متاحاً.");
+
+    lines.push("للاستفادة من العرض، اختر الفرع والعضوية المناسبة ثم طبّق كود العرض قبل إتمام الدفع.");
+    lines.push("ملاحظة: العروض قد تختلف حسب الدولة أو الفرع أو نوع العضوية، لذلك يُفضّل التأكد من التفاصيل النهائية في صفحة التسجيل قبل الدفع. 🙏");
+
+    return lines.join("\n\n");
+  }
+
+  const lines = [`${heart} There is currently a PureGym ${src.country} offer available.`];
+
+  if (discount) {
+    lines.push(`The offer includes ${discount}, subject to the terms shown on the official join page.`);
+  } else {
+    lines.push("The current offer can be applied through the official join page, depending on the selected gym and membership.");
+  }
+
+  if (code) lines.push(`Promo code: ${code}`);
+  if (hasTabby) lines.push("Pay-later instalments may also appear at checkout if available.");
+
+  lines.push("To use the offer, select the gym and membership, then apply the promo code before completing payment.");
+  lines.push("Please note that offers may vary by country, gym, or membership type, so the final details should be checked on the join page before payment. 🙏");
+
+  return lines.join("\n\n");
+}
+
 async function fetchHtml(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, {
@@ -171,7 +257,7 @@ export async function syncLiveOffers(): Promise<OfferSyncResult[]> {
       src.language === "AR"
         ? `\n\n— محدث تلقائياً من الموقع الرسمي (${stamp})`
         : `\n\n— Auto-updated from the official site (${stamp})`;
-    const body = `${offer}${footer}`;
+    const body = `${formatOfferForCustomer(offer, src)}${footer}`;
 
     await prisma.script.upsert({
       where: { key },
