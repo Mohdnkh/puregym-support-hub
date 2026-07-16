@@ -172,6 +172,45 @@ function extractDiscount(text: string) {
   return match?.[0]?.replace(/\s+/g, " ").trim() || null;
 }
 
+function formatDiscount(discount: string | null, language: "AR" | "EN") {
+  if (!discount) return null;
+  const percent = discount.match(/\d{1,3}\s*%/)?.[0]?.replace(/\s+/g, "") || discount;
+  return language === "AR" ? percent : `${percent} off`;
+}
+
+function extractOfferScope(text: string, language: "AR" | "EN") {
+  const firstTwoMonths =
+    /first\s*(?:2|two)\s*months?/i.test(text) ||
+    /أول\s*شهرين|اول\s*شهرين/.test(text);
+  const monthlyMembership =
+    /monthly\s+memberships?/i.test(text) ||
+    /الاشتراك\s+الشهري|العضوية\s+الشهرية/.test(text);
+  const firstMonth =
+    /first\s*month/i.test(text) ||
+    /أول\s*شهر|اول\s*شهر/.test(text);
+  const fixedTerm = /fixed\s*term|3\s*month|6\s*month|12\s*month|محددة\s+المدة/i.test(text);
+
+  if (firstTwoMonths && monthlyMembership) {
+    return language === "AR"
+      ? "على أول شهرين من الاشتراك الشهري"
+      : "on the first 2 months of monthly memberships";
+  }
+
+  if (firstMonth && monthlyMembership) {
+    return language === "AR"
+      ? "على أول شهر من الاشتراك الشهري"
+      : "on the first month of monthly memberships";
+  }
+
+  if (fixedTerm) {
+    return language === "AR"
+      ? "على العضويات محددة المدة حسب نوع العرض"
+      : "on fixed-term memberships depending on the offer";
+  }
+
+  return null;
+}
+
 export function stripAutoUpdateFooter(body: string) {
   return body
     .replace(/\n\n[—-]\s*Auto-updated from the official site\s*\([^)]+\)\s*$/i, "")
@@ -186,6 +225,8 @@ export function formatOfferForCustomer(
   const clean = cleanupOfferText(offer);
   const code = extractPromoCode(clean);
   const discount = extractDiscount(clean);
+  const customerDiscount = formatDiscount(discount, src.language);
+  const offerScope = extractOfferScope(clean, src.language);
   const hasTabby = /tabby|pay\s*in\s*4|pay\s*later|instalments?|installments?/i.test(clean);
   const heart = src.country === "UAE" ? "💙" : "💚";
 
@@ -193,8 +234,10 @@ export function formatOfferForCustomer(
     const countryName = src.country === "UAE" ? "الإمارات" : "السعودية";
     const lines = [`${heart} حالياً عندنا عرض متاح في بيورجيم ${countryName}.`];
 
-    if (discount) {
-      lines.push(`العرض يشمل ${discount} حسب الشروط الظاهرة في صفحة التسجيل الرسمية.`);
+    if (customerDiscount && offerScope) {
+      lines.push(`العرض يعطيك خصم ${customerDiscount} ${offerScope}.`);
+    } else if (customerDiscount) {
+      lines.push(`العرض يشمل خصم ${customerDiscount} حسب التفاصيل الظاهرة في صفحة التسجيل الرسمية.`);
     } else {
       lines.push("تقدر تستفيد من العرض الحالي من خلال صفحة التسجيل الرسمية حسب الفرع والعضوية المختارة.");
     }
@@ -210,8 +253,10 @@ export function formatOfferForCustomer(
 
   const lines = [`${heart} There is currently a PureGym ${src.country} offer available.`];
 
-  if (discount) {
-    lines.push(`The offer includes ${discount}, subject to the terms shown on the official join page.`);
+  if (customerDiscount && offerScope) {
+    lines.push(`The offer gives ${customerDiscount} ${offerScope}.`);
+  } else if (customerDiscount) {
+    lines.push(`The offer includes ${customerDiscount}, subject to the details shown on the official join page.`);
   } else {
     lines.push("The current offer can be applied through the official join page, depending on the selected gym and membership.");
   }
