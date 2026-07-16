@@ -2743,3 +2743,71 @@ body {
     transition: none !important;
   }
 }
+
+/* Second safe performance pass:
+   defer painting off-screen dashboard lists/cards and reduce expensive shadows. */
+.main,
+.quick-layout,
+.library-layout,
+.ai-chat-layout,
+.admin-workspace,
+.profile-layout,
+.calculator-grid,
+.branch-directory-grid,
+.trainer-grid {
+  contain: layout paint;
+}
+
+.quick-script-card,
+.mini-script-card,
+.script-card,
+.category-card,
+.branch-card,
+.chat-session-card,
+.policy-grid,
+.admin-tab-button,
+.user-row,
+.hijri-item {
+  content-visibility: auto;
+  contain-intrinsic-size: 110px;
+}
+
+.quick-note,
+.script-box,
+.chatgpt-shell,
+.chat-history-panel,
+.admin-tabs-card,
+.admin-editor,
+.card {
+  content-visibility: auto;
+  contain-intrinsic-size: 460px;
+}
+
+.card,
+.toast,
+.quick-script-emoji,
+.mini-script-card,
+.script-card,
+.category-card,
+.chatgpt-shell,
+.chat-history-panel,
+.palette-modal {
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .055) !important;
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .chatgpt-shell,
+[data-theme="dark"] .chat-history-panel,
+[data-theme="dark"] .palette-modal {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .18) !important;
+}
+
+.app-shell::before,
+.app-shell::after,
+.auth-page::before,
+.auth-page::after,
+.main::before,
+.main::after {
+  filter: none !important;
+  opacity: .35;
+}
