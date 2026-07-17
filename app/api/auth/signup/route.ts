@@ -10,7 +10,8 @@ import { getClientIp, rateLimit } from "@/lib/rate-limit";
 // approves it and generates a password.
 const schema = z.object({
   email: z.string().email(),
-  name: z.string().trim().min(2).max(80)
+  nameAr: z.string().trim().min(2).max(40),
+  nameEn: z.string().trim().min(2).max(40)
 });
 
 export async function POST(req: Request) {
@@ -42,8 +43,8 @@ export async function POST(req: Request) {
       data: {
         email,
         passwordHash: placeholder,
-        nameAr: body.name,
-        nameEn: body.name,
+        nameAr: body.nameAr,
+        nameEn: body.nameEn,
         role: "USER",
         emailVerifiedAt: null
       }

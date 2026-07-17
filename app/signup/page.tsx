@@ -5,7 +5,7 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 
 export default function SignupPage() {
-  const [form, setForm] = useState({ email: "", name: "" });
+  const [form, setForm] = useState({ email: "", nameAr: "", nameEn: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ export default function SignupPage() {
       data.message ||
         "Account request submitted. An admin will approve it and send you your login details."
     );
-    setForm({ email: "", name: "" });
+    setForm({ email: "", nameAr: "", nameEn: "" });
   }
 
   return (
@@ -49,8 +49,25 @@ export default function SignupPage() {
 
         <form onSubmit={submit}>
           <div className="field">
-            <label>First name</label>
-            <input className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+            <label>First name in Arabic only</label>
+            <input
+              className="input"
+              value={form.nameAr}
+              onChange={(e) => setForm({ ...form, nameAr: e.target.value })}
+              placeholder="مثال: محمد"
+              dir="rtl"
+              autoComplete="given-name"
+            />
+          </div>
+          <div className="field">
+            <label>First name in English only</label>
+            <input
+              className="input"
+              value={form.nameEn}
+              onChange={(e) => setForm({ ...form, nameEn: e.target.value })}
+              placeholder="Example: Mohammed"
+              autoComplete="given-name"
+            />
           </div>
           <div className="field">
             <label>Email</label>
@@ -58,7 +75,7 @@ export default function SignupPage() {
           </div>
           {error && <p className="error">{error}</p>}
           {success && <p className="success">{success}</p>}
-          <button className="btn full" type="submit" disabled={loading || !form.email || !form.name}>
+          <button className="btn full" type="submit" disabled={loading || !form.email || !form.nameAr || !form.nameEn}>
             {loading ? "Submitting..." : "Request account"}
           </button>
           <div className="auth-actions"><span>Already have an account?</span><Link href="/login">Login</Link></div>
