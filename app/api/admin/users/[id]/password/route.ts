@@ -5,16 +5,9 @@ import { getCurrentUser } from "@/lib/auth";
 
 const DEFAULT_PENDING_PASSWORD = "Aa@123456789";
 
-// Admin + Super Admin: approve a pending account and/or (re)generate a password.
+// Admin + Super Admin: approve a pending account and/or set a password.
 // Returns the new plaintext password once so the admin can share it with the user.
-function generatePassword() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
-  const bytes = new Uint8Array(12);
-  (globalThis.crypto || require("crypto").webcrypto).getRandomValues(bytes);
-  return Array.from(bytes, (b) => chars[b % chars.length]).join("");
-}
-
-export async function POST(_req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, { params }: { params: { id: string } }) {
   const user = await getCurrentUser();
   if (!user || (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN"))
     return NextResponse.json({ error: "Admin only" }, { status: 403 });
@@ -22,9 +15,19 @@ export async function POST(_req: Request, { params }: { params: { id: string } }
   const target = await prisma.user.findUnique({ where: { id: params.id } });
   if (!target) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-  // Pending account approval should be easy to communicate the first time.
-  // Existing active users still get a generated password if an admin resets it.
-  const password = target.emailVerifiedAt ? generatePassword() : DEFAULT_PENDING_PASSWORD;
+  const body = await req.json().catch(() => ({}));
+  const password =
+    typeof body.password === "string" && body.password.trim()
+      ? body.password.trim()
+      : DEFAULT_PENDING_PASSWORD;
+
+  if (password.length < 8 || password.length > 72) {
+    return NextResponse.json(
+      { error: "Password must be between 8 and 72 characters." },
+      { status: 400 },
+    );
+  }
+
   const passwordHash = await bcrypt.hash(password, 12);
 
   await prisma.user.update({

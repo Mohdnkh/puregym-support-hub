@@ -67,6 +67,12 @@ type ChatSessionSummary = {
   updatedAt: string;
   _count?: { messages: number };
 };
+type PasswordDialog = {
+  member: AdminUser;
+  isPending: boolean;
+  password: string;
+  result?: { email: string; password: string };
+};
 
 function isAdminRole(role?: User["role"] | AdminUser["role"] | null) {
   return role === "ADMIN" || role === "SUPER_ADMIN";
@@ -91,6 +97,7 @@ const CATEGORY_ORDER = [
   "Google Reviews",
   "Links",
 ];
+const DEFAULT_ADMIN_SET_PASSWORD = "Aa@123456789";
 
 const HIJRI_MONTHS = [
   [1, "محرم", "Muharram"],
@@ -1382,6 +1389,7 @@ export function AdminPanel({
   );
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
+  const [passwordDialog, setPasswordDialog] = useState<PasswordDialog | null>(null);
   const [trainerItems, setTrainerItems] = useState<TrainerItem[]>([]);
   const [trainerForm, setTrainerForm] = useState({
     id: "",
@@ -1700,22 +1708,46 @@ export function AdminPanel({
     await loadUsers();
   }
 
-  // Approve a pending request and/or generate a password to share with the user.
-  async function generateUserPassword(id: string, isPending: boolean) {
-    if (!confirm(isPending ? "Approve this account and generate a password?" : "Generate a new password for this user?")) return;
-    const res = await fetch(`/api/admin/users/${id}/password`, { method: "POST" });
+  function openPasswordDialog(member: AdminUser) {
+    setPasswordDialog({
+      member,
+      isPending: !member.emailVerifiedAt,
+      password: DEFAULT_ADMIN_SET_PASSWORD,
+    });
+  }
+
+  // Approve a pending request and/or set a password chosen by the admin.
+  async function submitUserPassword() {
+    if (!passwordDialog) return;
+    const password = passwordDialog.password.trim();
+    if (password.length < 8) {
+      setStatus("Password must be at least 8 characters.");
+      return;
+    }
+
+    const res = await fetch(`/api/admin/users/${passwordDialog.member.id}/password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return setStatus(data.error || "Failed to generate password");
+    if (!res.ok) return setStatus(data.error || "Failed to set password");
     await loadUsers();
-    window.prompt(
-      `Login details for ${data.email} — copy and send to the user:`,
-      `Email: ${data.email}\nPassword: ${data.password}`,
-    );
+    const result = { email: data.email, password: data.password };
+    setPasswordDialog((current) => current ? { ...current, result } : current);
     setStatus(
-      isPending
+      passwordDialog.isPending
         ? `Account approved for ${data.email}. Default password: ${data.password}`
-        : `New generated password for ${data.email}.`,
+        : `Password updated for ${data.email}.`,
     );
+  }
+
+  async function copyPasswordDetails() {
+    if (!passwordDialog?.result) return;
+    await navigator.clipboard.writeText(
+      `Email: ${passwordDialog.result.email}\nPassword: ${passwordDialog.result.password}`,
+    );
+    setStatus(`Login details copied for ${passwordDialog.result.email}.`);
   }
 
   async function changeUserRole(id: string, role: "USER" | "ADMIN" | "SUPER_ADMIN") {
@@ -2347,9 +2379,9 @@ export function AdminPanel({
                   )}
                   <button
                     className={member.emailVerifiedAt ? "btn ghost small" : "btn small"}
-                    onClick={() => generateUserPassword(member.id, !member.emailVerifiedAt)}
+                    onClick={() => openPasswordDialog(member)}
                   >
-                    {member.emailVerifiedAt ? "🔑 New password" : "✅ Approve & set password"}
+                    {member.emailVerifiedAt ? "🔑 Set password" : "✅ Approve & set password"}
                   </button>
                   {isSuperAdmin(currentUser.role) && (
                     <button
@@ -2363,6 +2395,71 @@ export function AdminPanel({
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {passwordDialog && (
+        <div className="modal-backdrop" onClick={() => setPasswordDialog(null)}>
+          <div className="password-modal card" onClick={(event) => event.stopPropagation()}>
+            <div className="section-head compact">
+              <div>
+                <h2>
+                  {passwordDialog.isPending
+                    ? "Approve account"
+                    : "Set user password"}
+                </h2>
+                <p>{passwordDialog.member.email}</p>
+              </div>
+            </div>
+
+            {!passwordDialog.result ? (
+              <>
+                <div className="field">
+                  <label>Password to send to the user</label>
+                  <input
+                    className="input"
+                    value={passwordDialog.password}
+                    onChange={(event) =>
+                      setPasswordDialog({
+                        ...passwordDialog,
+                        password: event.target.value,
+                      })
+                    }
+                    autoFocus
+                  />
+                </div>
+                <p className="muted-text">
+                  This exact password will be saved for the user. Current users
+                  are not changed until you click Set password.
+                </p>
+                <div className="inline-actions">
+                  <button className="btn ghost small" onClick={() => setPasswordDialog(null)}>
+                    Cancel
+                  </button>
+                  <button className="btn small" onClick={submitUserPassword}>
+                    {passwordDialog.isPending ? "Approve & set" : "Set password"}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="credential-box">
+                  <span>Email</span>
+                  <b>{passwordDialog.result.email}</b>
+                  <span>Password</span>
+                  <b>{passwordDialog.result.password}</b>
+                </div>
+                <div className="inline-actions">
+                  <button className="btn ghost small" onClick={() => setPasswordDialog(null)}>
+                    Close
+                  </button>
+                  <button className="btn small" onClick={copyPasswordDetails}>
+                    Copy login details
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

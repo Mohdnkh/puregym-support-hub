@@ -2861,3 +2861,47 @@ body {
 .main:has(.library-layout) .script-box {
   min-height: calc(100dvh - 340px);
 }
+
+/* Themed admin password dialog, replacing native browser prompt boxes. */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, .42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.password-modal {
+  width: min(520px, 100%);
+  padding: 22px !important;
+  border-radius: 22px !important;
+}
+
+.password-modal .field {
+  margin: 12px 0;
+}
+
+.credential-box {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--soft), var(--card));
+}
+
+.credential-box span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.credential-box b {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
