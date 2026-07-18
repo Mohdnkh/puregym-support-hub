@@ -165,7 +165,7 @@ function moveLeadingEmojiToEnd(text: string) {
   EMOJI_RE.lastIndex = 0;
   const emojis = Array.from(match[1].matchAll(EMOJI_RE), (item) => item[0]).join(" ");
   const body = value.slice(match[0].length).trim();
-  return body && emojis ? `${body}\n\n${emojis}` : value;
+  return body && emojis ? `${body} ${emojis}` : value;
 }
 
 function removeDearTerms(text: string) {
@@ -233,18 +233,24 @@ function appendMissingContextLink(script: Script, text: string, country: Country
 
   const language = script.language === "EN" ? "EN" : "AR";
   const haystack = `${script.title} ${script.category} ${text}`.toLowerCase();
-  const titleCategory = `${script.title} ${script.category}`.toLowerCase();
   const label = language === "AR" ? "الرابط الرسمي:" : "Official link:";
   let url = "";
+  const explicitlyAsksForLink =
+    /من خلال الرابط|عبر الرابط|عن طريق الرابط|الرابط التالي|اضغط الرابط|افتح الرابط|استخدم الرابط|رابط التسجيل|صفحة التسجيل|اللينك|link below|through the link|via the link|using the link|open the link|click the link|registration page/i.test(
+      haystack,
+    );
+
+  if (!explicitlyAsksForLink) return text;
 
   if (
-    /join|register|signup|انضم|الاشتراك/.test(titleCategory) ||
-    /join link|registration page|رابط التسجيل|صفحة التسجيل/.test(haystack)
+    /join|register|signup|membership|انضم|التسجيل|الاشتراك|العضوية|registration page|رابط التسجيل|صفحة التسجيل/i.test(
+      haystack,
+    )
   ) {
     url = officialUrl("join", country, language);
-  } else if (/app|application|تطبيق/.test(haystack)) {
+  } else if (/app|application|تطبيق/i.test(haystack)) {
     url = officialUrl("app", country, language);
-  } else if (/terms|conditions|الشروط|الأحكام|الاحكام/.test(haystack)) {
+  } else if (/terms|conditions|الشروط|الأحكام|الاحكام/i.test(haystack)) {
     url = officialUrl("terms", country, language);
   }
 
