@@ -38,6 +38,9 @@ https://ksa.puregymarabia.com/gyms
 خيارات العضوية:
 https://ksa.puregymarabia.com/membership-options
 
+التدريب الشخصي:
+https://ksa.puregymarabia.com/personal-training
+
 تطبيق بيورجيم:
 https://ksa.puregymarabia.com/puregym-app
 
@@ -46,6 +49,9 @@ https://ksa.puregymarabia.com/training-classes
 
 دليل التمارين:
 https://ksa.puregymarabia.com/workout-guide
+
+الشراكات:
+https://ksa.puregymarabia.com/corporate
 
 مركز المساعدة:
 https://ksa.puregymarabia.com/help-contact
@@ -75,6 +81,9 @@ https://ksa.puregymarabia.com/en-gb/gyms
 Membership Options:
 https://ksa.puregymarabia.com/en-gb/membership-options
 
+Personal Trainers:
+https://ksa.puregymarabia.com/en-gb/personal-training
+
 PureGym App:
 https://ksa.puregymarabia.com/en-gb/puregym-app
 
@@ -83,6 +92,9 @@ https://ksa.puregymarabia.com/en-gb/fitness-classes
 
 Workout Guide:
 https://ksa.puregymarabia.com/en-gb/workout-guide
+
+Corporate Partnerships:
+https://ksa.puregymarabia.com/en-gb/corporate
 
 Help & Contact:
 https://ksa.puregymarabia.com/en-gb/help-contact

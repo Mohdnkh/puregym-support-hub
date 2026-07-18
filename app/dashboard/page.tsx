@@ -150,6 +150,130 @@ function applyCountryHeart(text: string, country: Country) {
   return country === "UAE" ? String(text || "").replaceAll("💚", "💙") : String(text || "");
 }
 
+const EMOJI_RE = /[\p{Extended_Pictographic}](?:\uFE0F|\u200D[\p{Extended_Pictographic}\uFE0F]+)*/gu;
+const LEADING_EMOJI_RE = /^((?:[\p{Extended_Pictographic}]\uFE0F?|\s|\u200D)+)/u;
+const URL_RE = /https?:\/\/\S+/i;
+
+function moveLeadingEmojiToEnd(text: string) {
+  const value = String(text || "").trim();
+  const match = value.match(LEADING_EMOJI_RE);
+  if (!match?.[1] || !EMOJI_RE.test(match[1])) {
+    EMOJI_RE.lastIndex = 0;
+    return value;
+  }
+
+  EMOJI_RE.lastIndex = 0;
+  const emojis = Array.from(match[1].matchAll(EMOJI_RE), (item) => item[0]).join(" ");
+  const body = value.slice(match[0].length).trim();
+  return body && emojis ? `${body}\n\n${emojis}` : value;
+}
+
+function removeDearTerms(text: string) {
+  return String(text || "")
+    .replace(/\bعزيزي\s*\/\s*عزيزتي\b/g, "")
+    .replace(/\bعزيزتي\s*\/\s*عزيزي\b/g, "")
+    .replace(/\bعزيزي\b/g, "")
+    .replace(/\bعزيزتي\b/g, "")
+    .replace(/\s+([،,.!?؛:])/g, "$1")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function limitEmojiCount(text: string, max = 2) {
+  let count = 0;
+  return String(text || "")
+    .replace(EMOJI_RE, (emoji) => {
+      count += 1;
+      return count <= max ? emoji : "";
+    })
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+}
+
+function officialUrl(type: "join" | "app" | "terms", country: Country, language: Lang) {
+  if (type === "join") {
+    const countryCode = country === "KSA" ? "SA" : "AE";
+    const lang = language === "AR" ? "arabic" : "english";
+    return `https://puregym-arabia.exerp.site/join/center?country=${countryCode}&lang=${lang}`;
+  }
+
+  if (type === "app") {
+    if (country === "KSA") {
+      return language === "AR"
+        ? "https://ksa.puregymarabia.com/puregym-app"
+        : "https://ksa.puregymarabia.com/en-gb/puregym-app";
+    }
+    return language === "AR"
+      ? "https://uae.puregymarabia.com/ar-ae/apply-pure-gym"
+      : "https://uae.puregymarabia.com/puregym-app";
+  }
+
+  if (country === "KSA") {
+    return language === "AR"
+      ? "https://ksa.puregymarabia.com/terms-conditions"
+      : "https://ksa.puregymarabia.com/en-gb/terms-conditions";
+  }
+
+  return language === "AR"
+    ? "https://uae.puregymarabia.com/ar-ae/terms-conditions"
+    : "https://uae.puregymarabia.com/terms-conditions";
+}
+
+function refreshKnownOfficialLinks(text: string) {
+  return String(text || "")
+    .replaceAll("https://uae.puregymarabia.com/ar-ae/puregym-app", "https://uae.puregymarabia.com/ar-ae/apply-pure-gym")
+    .replaceAll("https://ksa.puregymarabia.com/fitness-classes", "https://ksa.puregymarabia.com/training-classes")
+    .replaceAll("https://ksa.puregymarabia.com/en-gb/training-classes", "https://ksa.puregymarabia.com/en-gb/fitness-classes")
+    .replaceAll("https://uae.puregymarabia.com/ar-ae/workout-guide", "https://uae.puregymarabia.com/ar-ae/workout-builder");
+}
+
+function appendMissingContextLink(script: Script, text: string, country: Country) {
+  if (URL_RE.test(text)) return text;
+
+  const language = script.language === "EN" ? "EN" : "AR";
+  const haystack = `${script.title} ${script.category} ${text}`.toLowerCase();
+  const titleCategory = `${script.title} ${script.category}`.toLowerCase();
+  const label = language === "AR" ? "الرابط الرسمي:" : "Official link:";
+  let url = "";
+
+  if (
+    /join|register|signup|انضم|الاشتراك/.test(titleCategory) ||
+    /join link|registration page|رابط التسجيل|صفحة التسجيل/.test(haystack)
+  ) {
+    url = officialUrl("join", country, language);
+  } else if (/app|application|تطبيق/.test(haystack)) {
+    url = officialUrl("app", country, language);
+  } else if (/terms|conditions|الشروط|الأحكام|الاحكام/.test(haystack)) {
+    url = officialUrl("terms", country, language);
+  }
+
+  return url ? `${text.trim()}\n\n${label}\n${url}` : text;
+}
+
+function formatScriptForUser(
+  script: Script,
+  user: User | null,
+  country: Country,
+  gender: "M" | "F" = "M",
+) {
+  const language = script.language === "EN" ? "EN" : "AR";
+  let body = applyCountryHeart(
+    applyGender(applyUserName(script.body, language, user), gender),
+    country,
+  );
+
+  body = refreshKnownOfficialLinks(body);
+
+  if (script.category === "Quick Scripts") {
+    return limitEmojiCount(body, 2);
+  }
+
+  body = removeDearTerms(body);
+  body = moveLeadingEmojiToEnd(body);
+  return appendMissingContextLink(script, body, country);
+}
+
 function variableLabel(token: string) {
   const clean = token.replace(/^[\[(]+|[\])]+$/g, "").trim();
   if (/membership type|type|plan|package|نوع|عضوية|الباقة/i.test(clean)) return "Membership type / نوع العضوية";
@@ -659,7 +783,7 @@ export default function DashboardPage() {
     return quickScripts
       .map(
         (script) =>
-          `${script.title}\n${applyCountryHeart(applyGender(applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user), "M"), country)}`,
+          `${script.title}\n${formatScriptForUser(script, user, country, "M")}`,
       )
       .join("\n\n━━━━━━━━━━━━━━━━━━━━\n\n");
   }, [quickScripts, user, country]);
@@ -697,7 +821,7 @@ export default function DashboardPage() {
   const searchIndex = useMemo(() => {
     const index = new Map<string, string>();
     for (const script of visibleScripts) {
-      const body = applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user);
+      const body = formatScriptForUser(script, user, country, quickGender[script.id] || "M");
       index.set(
         script.id,
         normalizeSearchText(
@@ -706,7 +830,7 @@ export default function DashboardPage() {
       );
     }
     return index;
-  }, [visibleScripts, user]);
+  }, [visibleScripts, user, country, quickGender]);
 
   const searchedScripts = useMemo(() => {
     const query = normalizeSearchText(scriptSearchValue);
@@ -787,14 +911,7 @@ export default function DashboardPage() {
   }, [scripts, country, language]);
 
   const branchHoursText = branchHoursScript
-    ? applyCountryHeart(
-        applyUserName(
-          branchHoursScript.body,
-          branchHoursScript.language === "EN" ? "EN" : "AR",
-          user,
-        ),
-        country,
-      )
+    ? formatScriptForUser(branchHoursScript, user, country)
     : "";
 
   const branchJoinUrl =
@@ -844,12 +961,12 @@ export default function DashboardPage() {
   useEffect(() => {
     if (selected) {
       setSelectedId(selected.id);
-      setEditorText(applyUserName(selected.body, selected.language, user));
+      setEditorText(formatScriptForUser(selected, user, country, quickGender[selected.id] || "M"));
     } else {
       setSelectedId("");
       setEditorText("");
     }
-  }, [selected, user]);
+  }, [selected, user, country, quickGender]);
 
   const flash = useCallback((text: string) => {
     setMessage(text);
@@ -858,7 +975,7 @@ export default function DashboardPage() {
 
   function selectScript(script: Script) {
     setSelectedId(script.id);
-    setEditorText(applyUserName(script.body, script.language, user));
+    setEditorText(formatScriptForUser(script, user, country, quickGender[script.id] || "M"));
   }
 
   async function toggleFavorite(scriptId: string) {
@@ -903,13 +1020,7 @@ export default function DashboardPage() {
   }, [flash, language]);
 
   const resolveScriptBody = useCallback((script: Script) => {
-    return applyCountryHeart(
-      applyGender(
-        applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
-        quickGender[script.id] || "M",
-      ),
-      country,
-    );
+    return formatScriptForUser(script, user, country, quickGender[script.id] || "M");
   }, [country, quickGender, user]);
 
   // One copy pipeline everywhere: applies name/gender/heart and tracks usage.
@@ -1339,13 +1450,6 @@ export default function DashboardPage() {
                 <div className="favorite-card-grid">
                   {favoriteQuickScripts.map((script) => {
                     const g = quickGender[script.id] || "M";
-                    const favBody = applyCountryHeart(
-                      applyGender(
-                        applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
-                        g,
-                      ),
-                      country,
-                    );
                     const favShowGender = hasGenderMarkers(script.body);
                     return (
                       <div
@@ -1436,13 +1540,7 @@ export default function DashboardPage() {
             <div className="quick-cards">
               {quickScripts.map((script) => {
                 const gender = quickGender[script.id] || "M";
-                const body = applyCountryHeart(
-                  applyGender(
-                    applyUserName(script.body, script.language === "EN" ? "EN" : "AR", user),
-                    gender,
-                  ),
-                  country,
-                );
+                const body = formatScriptForUser(script, user, country, gender);
                 const showGender = hasGenderMarkers(script.body);
                 const isEditing = editingQuickId === script.id;
                 const canReorder = isAdminRole(user?.role) && !isEditing;
@@ -1718,11 +1816,7 @@ export default function DashboardPage() {
                 ) : (
                   <div className="script-card-grid">
                     {displayedScripts.map((script) => {
-                      const body = applyUserName(
-                        script.body,
-                        script.language,
-                        user,
-                      );
+                      const body = formatScriptForUser(script, user, country, quickGender[script.id] || "M");
                       const isFavorite = favoriteIds.includes(script.id);
                       return (
                         <div
@@ -1774,7 +1868,7 @@ export default function DashboardPage() {
                       onClick={() =>
                         selected &&
                         setEditorText(
-                          applyUserName(selected.body, selected.language, user),
+                          formatScriptForUser(selected, user, country, quickGender[selected.id] || "M"),
                         )
                       }
                       disabled={!selected}
