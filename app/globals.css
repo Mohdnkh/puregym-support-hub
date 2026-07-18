@@ -2843,3 +2843,21 @@ body {
   filter: none !important;
   opacity: .35;
 }
+
+/* Script Library: remove the visual bottom stop so the workspace reaches the viewport edge. */
+.main {
+  min-height: 100dvh !important;
+}
+
+.main:has(.library-layout) {
+  padding-bottom: 0 !important;
+}
+
+.main:has(.library-layout) .library-layout {
+  min-height: calc(100dvh - 170px);
+}
+
+.main:has(.library-layout) .script-results,
+.main:has(.library-layout) .script-box {
+  min-height: calc(100dvh - 340px);
+}
