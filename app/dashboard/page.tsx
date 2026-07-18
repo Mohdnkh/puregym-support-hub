@@ -1823,7 +1823,6 @@ export default function DashboardPage() {
                   <div className="script-card-grid">
                     {displayedScripts.map((script) => {
                       const body = formatScriptForUser(script, user, country, quickGender[script.id] || "M");
-                      const isFavorite = favoriteIds.includes(script.id);
                       return (
                         <div
                           key={script.id}
@@ -1842,16 +1841,6 @@ export default function DashboardPage() {
                                 <span>{script.category}</span>
                               )}
                               <span>{script.country}</span>
-                              <button
-                                className={`star-button ${isFavorite ? "active" : ""}`}
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  toggleFavorite(script.id);
-                                }}
-                                title="Favorite"
-                              >
-                                {isFavorite ? "★" : "☆"}
-                              </button>
                             </div>
                           </div>
                           <p>{preview(body)}</p>
