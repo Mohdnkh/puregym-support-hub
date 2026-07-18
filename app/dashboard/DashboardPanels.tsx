@@ -484,8 +484,10 @@ export function ChatbotPanel() {
           ))}
           {loading && (
             <div className="message-row assistant">
-              <div className="message-bubble typing">
-                {uiLanguage === "AR" ? "جاري التفكير..." : "Thinking..."}
+              <div className="message-bubble typing-dots" aria-label={uiLanguage === "AR" ? "جاري الرد" : "Responding"}>
+                <span />
+                <span />
+                <span />
               </div>
             </div>
           )}
@@ -633,12 +635,6 @@ export function CalculatorPanel({ country }: { country: Country }) {
         >
           Hijri Months
         </button>
-        <button
-          className={`toggle ${tool === "policies" ? "active" : ""}`}
-          onClick={() => setTool("policies")}
-        >
-          📋 Policies KSA/UAE
-        </button>
       </div>
       {tool === "monthly-to-pif" && (
         <MonthlyToPif values={values} set={set} country={country} />
@@ -675,7 +671,6 @@ export function CalculatorPanel({ country }: { country: Country }) {
         <Discount values={values} set={set} country={country} />
       )}
       {tool === "hijri" && <HijriMonths />}
-      {tool === "policies" && <PolicyCompare />}
     </div>
   );
 }
@@ -1716,7 +1711,11 @@ export function AdminPanel({
       `Login details for ${data.email} — copy and send to the user:`,
       `Email: ${data.email}\nPassword: ${data.password}`,
     );
-    setStatus(`Password generated for ${data.email}.`);
+    setStatus(
+      isPending
+        ? `Account approved for ${data.email}. Default password: ${data.password}`
+        : `New generated password for ${data.email}.`,
+    );
   }
 
   async function changeUserRole(id: string, role: "USER" | "ADMIN" | "SUPER_ADMIN") {
@@ -1778,7 +1777,7 @@ export function AdminPanel({
   }
 
   async function deleteTrainerItem(id: string) {
-    if (!confirm("Delete this AI knowledge item?")) return;
+    if (!confirm("Delete this AI knowledge item permanently? Deactivate hides it from the AI without deleting it.")) return;
     const res = await fetch(`/api/ai/trainer?id=${encodeURIComponent(id)}`, {
       method: "DELETE",
     });
@@ -2034,8 +2033,8 @@ export function AdminPanel({
             <div className="category-tool-box">
               <h3>Activate / Deactivate category</h3>
               <p>
-                Hide or show the selected category and all its scripts for
-                everyone — without deleting anything.
+                Deactivate hides the selected category for everyone without deleting it.
+                Delete permanently removes it and cannot be undone.
               </p>
               <div className="inline-action-row rename-row">
                 <select
@@ -2375,8 +2374,8 @@ export function AdminPanel({
               <h2>AI Chatbot Trainer</h2>
               <p>
                 Add official policies, internal notes, FAQs, links, and approved
-                answers. The AI uses this knowledge without exposing private
-                user chats.
+                answers. Active items are included in the chatbot knowledge base
+                for all users.
               </p>
             </div>
             <div className="toolbar">

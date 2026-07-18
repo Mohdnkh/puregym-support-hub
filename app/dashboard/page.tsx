@@ -728,16 +728,6 @@ export default function DashboardPage() {
         ? [...filteredScripts, ...inactiveForCategory]
         : filteredScripts;
 
-  const favoriteScripts = useMemo(
-    () =>
-      visibleScripts.filter(
-        (script) =>
-          favoriteIds.includes(script.id) &&
-          script.category !== "Quick Scripts",
-      ),
-    [visibleScripts, favoriteIds],
-  );
-
   const mostUsedScripts = useMemo(
     () =>
       visibleScripts
@@ -1651,49 +1641,11 @@ export default function DashboardPage() {
               </div>
             )}
 
-            <div className="favorites-strip card">
-              <div className="section-head compact">
-                <div>
-                  <h2>⭐ Favorite Scripts</h2>
-                  <p>
-                    Your personal favorites only. They do not affect other
-                    users.
-                  </p>
-                </div>
-              </div>
-              {favoriteScripts.length ? (
-                <div className="favorite-card-grid">
-                  {favoriteScripts.map((script) => {
-                    const body = applyUserName(
-                      script.body,
-                      script.language,
-                      user,
-                    );
-                    return (
-                      <button
-                        key={script.id}
-                        className="mini-script-card"
-                        onClick={() => {
-                          setCategory(script.category);
-                          selectScript(script);
-                        }}
-                      >
-                        <b>{script.title}</b>
-                        <span>
-                          {script.category} • {script.country}
-                        </span>
-                        <span>{preview(body)}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="muted-text">
-                  Click the star on any script to keep it here.
-                </p>
-              )}
-            </div>
             <div className="category-bar card">
+              <div className="category-bar-head">
+                <b>{language === "AR" ? "اختر نوع السكربت" : "Choose a script category"}</b>
+                <span>{language === "AR" ? "اضغط على التصنيف لعرض سكربتاته" : "Click a category to filter scripts"}</span>
+              </div>
               <div className="category-row">
                 {categories.map((item) => {
                   const count = visibleScripts.filter(

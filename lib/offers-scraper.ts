@@ -1,4 +1,5 @@
 import { prisma } from "./db";
+import { callOpenAIText } from "./ai";
 
 type OfferSource = {
   country: "KSA" | "UAE";
@@ -269,6 +270,45 @@ export function formatOfferForCustomer(
   return lines.join("\n\n");
 }
 
+async function formatOfferForCustomerWithAi(
+  offer: string,
+  src: Pick<OfferSource, "country" | "language">,
+) {
+  const fallback = formatOfferForCustomer(offer, src);
+  const heart = src.country === "UAE" ? "💙" : "💚";
+  const languageName = src.language === "AR" ? "Arabic" : "English";
+
+  try {
+    const answer = await callOpenAIText({
+      system: [
+        "You rewrite official PureGym Arabia offer text into a short customer-ready support script.",
+        "Preserve exact facts only: discount, duration/scope, promo code, membership type, payment option, and checkout instructions.",
+        "Never invent prices, dates, availability, or conditions.",
+        "Do not mention the country name because the UI already shows KSA/UAE.",
+        "Use a warm support-agent tone, concise paragraphs, and the provided heart.",
+        "If the source is not a real promo offer, say it is a general join/benefit note, not a discount.",
+      ].join(" "),
+      user: [
+        `Language: ${languageName}`,
+        `Heart: ${heart}`,
+        `Raw official text:\n${cleanupOfferText(offer).slice(0, 1800)}`,
+        "",
+        src.language === "AR"
+          ? "اكتب النص النهائي فقط بالعربي. خليه جاهز للنسخ للعميل، مختصر وواضح."
+          : "Return only the final English customer message, ready to copy.",
+      ].join("\n\n"),
+      temperature: 0.2,
+      maxOutputTokens: 320,
+    });
+
+    const clean = answer.trim();
+    if (!clean || clean.length < 40) return fallback;
+    return clean;
+  } catch {
+    return fallback;
+  }
+}
+
 async function fetchHtml(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, {
@@ -324,7 +364,7 @@ export async function syncLiveOffers(): Promise<OfferSyncResult[]> {
       src.language === "AR"
         ? `\n\n— محدث تلقائياً من الموقع الرسمي (${stamp})`
         : `\n\n— Auto-updated from the official site (${stamp})`;
-    const body = `${formatOfferForCustomer(offer, src)}${footer}`;
+    const body = `${await formatOfferForCustomerWithAi(offer, src)}${footer}`;
 
     await prisma.script.upsert({
       where: { key },
