@@ -21,5 +21,3 @@ Thumbs.db
 tsconfig.tsbuildinfo
 docs/PureGym-Support-Hub-Overview-and-Cost.pdf
 next-env.d.ts
-.vercel
-.env.neon.tmp

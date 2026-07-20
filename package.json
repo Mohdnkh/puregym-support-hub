@@ -15,7 +15,6 @@
     "db:audit-legacy-quick-scripts": "tsx scripts/audit-legacy-quick-scripts.ts",
     "db:cleanup-legacy-quick-scripts": "tsx scripts/audit-legacy-quick-scripts.ts --cleanup",
     "content:sync-standard": "tsx scripts/import-quick-scripts.ts && tsx scripts/sync-official-links.ts && tsx scripts/run-offer-sync.ts",
-    "content:import-sheet-knowledge": "tsx scripts/import-sheet-knowledge.ts",
     "railway-build": "prisma generate && next build",
     "postinstall": "prisma generate"
   },
