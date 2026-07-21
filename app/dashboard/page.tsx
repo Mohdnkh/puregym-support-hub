@@ -1291,7 +1291,7 @@ export default function DashboardPage() {
             🔍 {language === "AR" ? "بحث سريع" : "Quick search"} <kbd>Ctrl+K</kbd>
           </button>
           {section !== "chatbot" && section !== "calculator" && section !== "admin" && (
-            <div className="toolbar context-switcher">
+            <div className="toolbar">
               <button
                 className={`toggle ksa ${country === "KSA" ? "active" : ""}`}
                 onClick={() => setCountry("KSA")}
