@@ -607,6 +607,7 @@ export default function DashboardPage() {
   const [quickNoteText, setQuickNoteText] = useState("");
   const [message, setMessage] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [showTopButton, setShowTopButton] = useState(false);
   const [scriptSearch, setScriptSearch] = useState("");
   const [branchSearch, setBranchSearch] = useState("");
   const [offerFilter, setOfferFilter] = useState<"active" | "inactive" | "all">("active");
@@ -733,6 +734,20 @@ export default function DashboardPage() {
     document.documentElement.dataset.theme = darkMode ? "dark" : "light";
     localStorage.setItem("pg_theme", darkMode ? "dark" : "light");
   }, [darkMode]);
+
+  useEffect(() => {
+    document.documentElement.dataset.country = country;
+  }, [country]);
+
+  useEffect(() => {
+    function onScroll() {
+      setShowTopButton(window.scrollY > 320);
+    }
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const visibleScripts = useMemo(() => {
     return scripts
@@ -1304,6 +1319,18 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
+
+        {section === "quick" && (
+          <button
+            type="button"
+            className={`scroll-top-button ${showTopButton ? "visible" : ""}`}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label={language === "AR" ? "الرجوع لأعلى الصفحة" : "Back to top"}
+            title={language === "AR" ? "الرجوع لأعلى الصفحة" : "Back to top"}
+          >
+            ↑
+          </button>
+        )}
 
         {message && <div className="toast">{message}</div>}
 
