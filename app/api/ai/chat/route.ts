@@ -28,10 +28,14 @@ function makeTitle(message: string) {
   return clean.length > 55 ? clean.slice(0, 55) + "..." : clean;
 }
 
+function isAiTooLargeError(error: unknown) {
+  const raw = error instanceof Error ? error.message : String(error || "");
+  return /request too large|tokens per minute|TPM|please reduce your message size|context_length|maximum context/i.test(raw);
+}
+
 function friendlyAiError(error: unknown, language: "AR" | "EN") {
   const raw = error instanceof Error ? error.message : String(error || "");
-  const isTooLarge =
-    /request too large|tokens per minute|TPM|please reduce your message size/i.test(raw);
+  const isTooLarge = isAiTooLargeError(error);
   const isMissingKey = /api key is missing/i.test(raw);
   const isRateLimit = /rate limit|too many requests/i.test(raw);
 
@@ -50,6 +54,22 @@ function friendlyAiError(error: unknown, language: "AR" | "EN") {
   if (isMissingKey) return "AI configuration is missing. Add a Groq/Gemini key in Vercel or the environment file.";
   if (isRateLimit) return "The AI provider hit a temporary rate limit. Please wait a minute and try again.";
   return "The AI service hit a temporary error. Please try again shortly.";
+}
+
+function compactStyleInstruction(country: "KSA" | "UAE" | null, language: "AR" | "EN") {
+  const countryText = country ? `Country: ${country}.` : "Country: infer from the question; if unclear and policy differs, ask one short clarification.";
+  const languageText = language === "AR" ? "Answer in natural Arabic." : "Answer in natural English.";
+
+  return [
+    "You are PureGym Arabia Assistant for internal support agents.",
+    languageText,
+    countryText,
+    "Be concise, accurate, and process-driven.",
+    "For freeze, cancellation, payments, app/login, QR/PIN, offers, branches, and membership cases: ask only the next missing operational detail; if enough details are present, give the decision, reason, next action, and a ready customer reply.",
+    "Do not invent prices, dates, remaining allowances, billing impact, links, or guarantees. If exact member data is missing, tell the agent what to verify in the member system.",
+    "Freeze rule: do not say freeze stops fees or deductions unless the provided policy and dates prove it.",
+    "Keep answers short enough for a live agent to use."
+  ].join(" ");
 }
 
 async function getOrCreateSession(params: { userId: string; sessionId?: string | null; country: "KSA" | "UAE"; language: "AR" | "EN"; message: string }) {
@@ -149,7 +169,7 @@ export async function POST(req: Request) {
     const storedHistory = await prisma.chatMessage.findMany({
       where: { sessionId: session.id },
       orderBy: { createdAt: "desc" },
-      take: 8,
+      take: 5,
       select: { role: true, content: true }
     });
 
@@ -163,11 +183,11 @@ export async function POST(req: Request) {
       .reverse()
       .filter((entry: { role: string; content: string }) => entry.role === "user" || entry.role === "assistant")
       .slice(0, -1)
-      .map((entry: { role: string; content: string }) => ({ role: entry.role as "user" | "assistant", content: entry.content.slice(0, 1200) }));
+      .map((entry: { role: string; content: string }) => ({ role: entry.role as "user" | "assistant", content: entry.content.slice(0, 700) }));
 
-    const fallbackHistory = (messages || []).slice(-4).map((entry) => ({
+    const fallbackHistory = (messages || []).slice(-3).map((entry) => ({
       role: entry.role,
-      content: entry.content.slice(0, 1200)
+      content: entry.content.slice(0, 700)
     }));
     const finalHistory = historyForAI.length ? historyForAI : fallbackHistory;
 
@@ -175,12 +195,43 @@ export async function POST(req: Request) {
       ? `The user's country context appears to be ${detectedCountry}. Answer for this country unless the user explicitly asks for a comparison.`
       : "The user did not clearly specify KSA or UAE, so the knowledge base includes both countries. Be smart: if the answer is the same for both countries, answer once and say it applies to both; if it differs, give a short KSA answer and a short UAE answer; ask for clarification only when the user needs one exact country-specific action, branch, price, link, or policy.";
 
-    const answer = await callOpenAIMultimodal({
-      system: `${styleInstruction(countryIsExplicit ? detectedCountry : null, detectedLanguage)} ${countryInstruction}${buildMemoryInstruction(memory?.summary, globalMemory)}\n\nKnowledge base:\n${knowledgeBase}`,
-      user: image?.dataUrl ? `${message}\n\nThe user attached an image. Analyze the image together with the request.` : message,
-      imageDataUrl: image?.dataUrl || null,
-      messages: finalHistory
-    });
+    const userPrompt = image?.dataUrl
+      ? `${message}\n\nThe user attached an image. Analyze the image together with the request.`
+      : message;
+    const systemPrompt = `${styleInstruction(countryIsExplicit ? detectedCountry : null, detectedLanguage)} ${countryInstruction}${buildMemoryInstruction(memory?.summary, globalMemory)}\n\nKnowledge base:\n${knowledgeBase}`;
+
+    let answer: string;
+    try {
+      answer = await callOpenAIMultimodal({
+        system: systemPrompt,
+        user: userPrompt,
+        imageDataUrl: image?.dataUrl || null,
+        messages: finalHistory,
+        maxOutputTokens: 650
+      });
+    } catch (error) {
+      if (!isAiTooLargeError(error)) throw error;
+
+      const compactHistory = finalHistory.slice(-2).map((entry) => ({
+        role: entry.role,
+        content: entry.content.slice(0, 450)
+      }));
+      const compactMemory = buildMemoryInstruction(
+        memory?.summary?.slice(0, 450),
+        globalMemory.slice(0, 600)
+      );
+      const compactCountry = countryIsExplicit && detectedCountry !== "ALL" ? detectedCountry : null;
+      const compactSystem = `${compactStyleInstruction(compactCountry, sessionLanguage)} ${countryInstruction}${compactMemory}\n\nCompact knowledge base:\n${knowledgeBase.slice(0, 1800)}`;
+
+      answer = await callOpenAIMultimodal({
+        system: compactSystem,
+        user: userPrompt.slice(0, image?.dataUrl ? 1200 : 1600),
+        imageDataUrl: image?.dataUrl || null,
+        messages: compactHistory,
+        temperature: 0.15,
+        maxOutputTokens: 450
+      });
+    }
 
     await prisma.chatMessage.create({
       data: {

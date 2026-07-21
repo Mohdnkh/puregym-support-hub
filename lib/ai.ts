@@ -21,9 +21,9 @@ type AiProvider = "groq" | "gemini" | "openai" | "custom";
 type KnowledgeScript = { title: string; category: string; country: string; language: string; body: string };
 type KnowledgeItem = { kind: string; country: string; language: string; title: string; sourceUrl: string | null; content: string };
 
-const KNOWLEDGE_CHAR_BUDGET = Number(process.env.AI_KNOWLEDGE_CHAR_BUDGET || 9500);
-const TRAINER_KNOWLEDGE_TAKE = Number(process.env.AI_TRAINER_ITEMS || 40);
-const SCRIPT_KNOWLEDGE_TAKE = Number(process.env.AI_SCRIPT_ITEMS || 90);
+const KNOWLEDGE_CHAR_BUDGET = Number(process.env.AI_KNOWLEDGE_CHAR_BUDGET || 3200);
+const TRAINER_KNOWLEDGE_TAKE = Number(process.env.AI_TRAINER_ITEMS || 8);
+const SCRIPT_KNOWLEDGE_TAKE = Number(process.env.AI_SCRIPT_ITEMS || 18);
 
 const AI_PROVIDER_PRESETS: Record<Exclude<AiProvider, "custom">, { baseUrl: string; model: string }> = {
   groq: {
@@ -293,7 +293,7 @@ async function getTrainerKnowledge(country?: AiCountry | null, language?: AiLang
       items,
       query,
       (item) => `${item.kind} ${item.title} ${item.sourceUrl || ""} ${item.content}`,
-    ).map((item) => `[AI Trainer | ${item.kind} | ${item.country} | ${item.language}] ${item.title}\nSource: ${item.sourceUrl || "internal"}\n${clipText(item.content, 900)}`);
+    ).map((item) => `[AI Trainer | ${item.kind} | ${item.country} | ${item.language}] ${item.title}\nSource: ${item.sourceUrl || "internal"}\n${clipText(item.content, 520)}`);
   } catch {
     return [];
   }
@@ -347,7 +347,7 @@ export async function getKnowledgeBaseText(country?: AiCountry | null, language?
   const sections = [
     ...officialKnowledge,
     ...trainerKnowledge,
-    ...rankedScripts.map((script) => `[Script Library | ${script.category} | ${script.country} | ${script.language}] ${script.title}\n${clipText(script.body, 700)}`)
+    ...rankedScripts.map((script) => `[Script Library | ${script.category} | ${script.country} | ${script.language}] ${script.title}\n${clipText(script.body, 420)}`)
   ];
 
   return packKnowledgeSections(sections);
