@@ -2851,15 +2851,24 @@ body {
 
 .main:has(.library-layout) {
   padding-bottom: 0 !important;
+  min-height: 100dvh !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .main:has(.library-layout) .library-layout {
-  min-height: calc(100dvh - 170px);
+  flex: 1 1 auto;
+  min-height: calc(100dvh - 405px);
+  padding-bottom: 0;
 }
 
 .main:has(.library-layout) .script-results,
 .main:has(.library-layout) .script-box {
-  min-height: calc(100dvh - 340px);
+  min-height: calc(100dvh - 405px);
+}
+
+.main:has(.library-layout) .script-results {
+  max-height: none !important;
 }
 
 /* Themed admin password dialog, replacing native browser prompt boxes. */
